@@ -10,7 +10,7 @@ public class Tank : MonoBehaviour
 
     // Base Items
     Controls controls; 
-    TankState tankState;
+    public TankState tankState;
 
 
     // Necessary Components
@@ -25,10 +25,14 @@ public class Tank : MonoBehaviour
     public float moveSpeed = 4;
     public float rotSpeed = 0.3f;
     public float gunRotSpeed = 3;
+    public float bulletSpeed = 3;
+    public float shotCooldownTime = 10f;
 
 
     // Object References
     public GameObject gun;
+    public GameObject bulletPrefab;
+    public Transform gunShotPos;
 
 
 
@@ -47,10 +51,12 @@ public class Tank : MonoBehaviour
     
     private void Awake() {
         controls = new Controls();
-        tankState = new TankMoveState(this);
+        tankState = new TankIdleState(this);
 
         rb = GetComponent<Rigidbody>();
         tankCollider = GetComponent<BoxCollider>();
+
+        controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
     }
 
     private void OnEnable() {
@@ -77,5 +83,7 @@ public abstract class TankState {
     public abstract TankState HandleMovement(Vector2 dir);
 
     public abstract TankState HandleGunRotation(float val);
+
+    public abstract TankState HandleShoot();
 
 }

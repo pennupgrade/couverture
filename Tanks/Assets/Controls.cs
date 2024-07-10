@@ -44,6 +44,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5d550dc-bbe2-4e18-b2e3-fb97fd94b355"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,50 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""RotateGun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""<>"",
+                    ""id"": ""58c5ff33-e274-46c5-a15a-0d9af212d24a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateGun"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7e428d76-028e-4d4b-8bb7-17404564eff1"",
+                    ""path"": ""<Keyboard>/comma"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""411a34f9-52d4-45cf-ac83-75445fb9e05f"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fb444af-2e9e-465f-8630-6587f173309c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +197,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_TankControls = asset.FindActionMap("TankControls", throwIfNotFound: true);
         m_TankControls_Move = m_TankControls.FindAction("Move", throwIfNotFound: true);
         m_TankControls_RotateGun = m_TankControls.FindAction("RotateGun", throwIfNotFound: true);
+        m_TankControls_Shoot = m_TankControls.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +261,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<ITankControlsActions> m_TankControlsActionsCallbackInterfaces = new List<ITankControlsActions>();
     private readonly InputAction m_TankControls_Move;
     private readonly InputAction m_TankControls_RotateGun;
+    private readonly InputAction m_TankControls_Shoot;
     public struct TankControlsActions
     {
         private @Controls m_Wrapper;
         public TankControlsActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_TankControls_Move;
         public InputAction @RotateGun => m_Wrapper.m_TankControls_RotateGun;
+        public InputAction @Shoot => m_Wrapper.m_TankControls_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_TankControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +284,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RotateGun.started += instance.OnRotateGun;
             @RotateGun.performed += instance.OnRotateGun;
             @RotateGun.canceled += instance.OnRotateGun;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(ITankControlsActions instance)
@@ -238,6 +297,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @RotateGun.started -= instance.OnRotateGun;
             @RotateGun.performed -= instance.OnRotateGun;
             @RotateGun.canceled -= instance.OnRotateGun;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(ITankControlsActions instance)
@@ -259,5 +321,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnRotateGun(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

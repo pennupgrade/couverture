@@ -1,20 +1,14 @@
+
 using UnityEngine;
 
-public class TankMoveState : TankState
+public class TankIdleState : TankState
 {
-    public TankMoveState(Tank tank) : base(tank) {}
+    public TankIdleState(Tank tank) : base(tank) {}
 
     public override TankState HandleMovement(Vector2 dir)
     {  
-        if (dir.magnitude < 0.1f) return new TankIdleState(tank);
-
-        float rot = dir.x * tank.rotSpeed;
-        float move = dir.y * tank.moveSpeed;
-
-        tank.rb.angularVelocity = new(0, rot, 0);
-        tank.rb.velocity = move * tank.transform.right;
-
-        return this;
+        if (dir.magnitude > 0.1f) return new TankMoveState(tank);
+        else return this;
     }
 
     public override TankState HandleGunRotation(float val)
@@ -27,7 +21,7 @@ public class TankMoveState : TankState
 
     public override TankState HandleShoot()
     {
-        // Debug.Log("Shoot from MoveState");
+        // Debug.Log("Shoot from IdleState");
 
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = tank.gun.transform.right * tank.bulletSpeed;
