@@ -11,14 +11,6 @@ public class TankIdleState : TankState
         else return this;
     }
 
-    public override TankState HandleGunRotation(float val)
-    {
-        Vector3 rot = tank.gun.transform.rotation.eulerAngles;
-
-        tank.gun.transform.rotation = Quaternion.Euler(rot.x, rot.y + (val * tank.gunRotSpeed * 0.1f), rot.z);
-        return this;
-    }
-
     public override TankState HandleShoot()
     {
         // Debug.Log("Shoot from IdleState");

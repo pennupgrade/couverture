@@ -37,15 +37,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""RotateGun"",
-                    ""type"": ""Value"",
-                    ""id"": ""a3343f72-e792-47b4-9610-b41a9a46fc76"",
-                    ""expectedControlType"": ""Analog"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""f5d550dc-bbe2-4e18-b2e3-fb97fd94b355"",
@@ -53,6 +44,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""3e7eb34b-e3c2-4d38-a89e-b50304b71df4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -112,72 +112,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""QE"",
-                    ""id"": ""03b69a49-888d-46e3-8808-8aad13f6e452"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""502b75c4-9ca3-423b-a72f-1267648b4c7d"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""be3bec07-76cf-428a-934d-544b780c810d"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""<>"",
-                    ""id"": ""58c5ff33-e274-46c5-a15a-0d9af212d24a"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""7e428d76-028e-4d4b-8bb7-17404564eff1"",
-                    ""path"": ""<Keyboard>/comma"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""411a34f9-52d4-45cf-ac83-75445fb9e05f"",
-                    ""path"": ""<Keyboard>/period"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateGun"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""6fb444af-2e9e-465f-8630-6587f173309c"",
                     ""path"": ""<Keyboard>/space"",
@@ -185,6 +119,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""579791d2-0fa2-4f1e-914b-474537db2004"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -196,8 +141,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // TankControls
         m_TankControls = asset.FindActionMap("TankControls", throwIfNotFound: true);
         m_TankControls_Move = m_TankControls.FindAction("Move", throwIfNotFound: true);
-        m_TankControls_RotateGun = m_TankControls.FindAction("RotateGun", throwIfNotFound: true);
         m_TankControls_Shoot = m_TankControls.FindAction("Shoot", throwIfNotFound: true);
+        m_TankControls_MousePos = m_TankControls.FindAction("MousePos", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -260,15 +205,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_TankControls;
     private List<ITankControlsActions> m_TankControlsActionsCallbackInterfaces = new List<ITankControlsActions>();
     private readonly InputAction m_TankControls_Move;
-    private readonly InputAction m_TankControls_RotateGun;
     private readonly InputAction m_TankControls_Shoot;
+    private readonly InputAction m_TankControls_MousePos;
     public struct TankControlsActions
     {
         private @Controls m_Wrapper;
         public TankControlsActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_TankControls_Move;
-        public InputAction @RotateGun => m_Wrapper.m_TankControls_RotateGun;
         public InputAction @Shoot => m_Wrapper.m_TankControls_Shoot;
+        public InputAction @MousePos => m_Wrapper.m_TankControls_MousePos;
         public InputActionMap Get() { return m_Wrapper.m_TankControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -281,12 +226,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @RotateGun.started += instance.OnRotateGun;
-            @RotateGun.performed += instance.OnRotateGun;
-            @RotateGun.canceled += instance.OnRotateGun;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @MousePos.started += instance.OnMousePos;
+            @MousePos.performed += instance.OnMousePos;
+            @MousePos.canceled += instance.OnMousePos;
         }
 
         private void UnregisterCallbacks(ITankControlsActions instance)
@@ -294,12 +239,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @RotateGun.started -= instance.OnRotateGun;
-            @RotateGun.performed -= instance.OnRotateGun;
-            @RotateGun.canceled -= instance.OnRotateGun;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @MousePos.started -= instance.OnMousePos;
+            @MousePos.performed -= instance.OnMousePos;
+            @MousePos.canceled -= instance.OnMousePos;
         }
 
         public void RemoveCallbacks(ITankControlsActions instance)
@@ -320,7 +265,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface ITankControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnRotateGun(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnMousePos(InputAction.CallbackContext context);
     }
 }
