@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
+// [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour
 {
 
@@ -61,7 +61,7 @@ public class Tank : MonoBehaviour
         tankState = new TankIdleState(this);
 
         rb = GetComponent<Rigidbody>();
-        tankCollider = GetComponent<BoxCollider>();
+        // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
     }
@@ -103,7 +103,7 @@ public abstract class TankState {
         Vector3 offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new (offset.x, 0, offset.z);
 
-        float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
+        float angle = Vector3.SignedAngle(-Vector3.right, dir, Vector3.up);
 
         Debug.Log(angle);
 
