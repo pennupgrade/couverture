@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 
@@ -43,7 +44,7 @@ public class Tank : MonoBehaviour
     void Update()
     {
         Vector2 moveDir = controls.TankControls.Move.ReadValue<Vector2>();
-        float gunRot = controls.TankControls.RotateGun.ReadValue<float>();
+        Vector2 gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
@@ -88,7 +89,32 @@ public abstract class TankState {
 
     public abstract TankState HandleMovement(Vector2 dir);
 
-    public abstract TankState HandleGunRotation(float val);
+    public virtual TankState HandleGunRotation(Vector2 val) {
+        // Debug.Log(Camera.main);
+        Ray ray = Camera.main.ScreenPointToRay(val);
+
+        Plane plane = new Plane(Vector3.up, tank.gun.transform.position);
+
+        float dist;
+        plane.Raycast(ray, out dist);
+
+        Vector3 point = ray.GetPoint(dist);
+
+        Vector3 offset = (point - tank.gun.transform.position).normalized;
+        Vector3 dir = new (offset.x, 0, offset.z);
+
+        float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
+
+        Debug.Log(angle);
+
+        Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
+
+        tank.gun.transform.rotation = Quaternion.Euler(0, angle, 0);
+
+        // Debug.Log(dir);
+
+        return this;
+    }
 
     public abstract TankState HandleShoot();
 
