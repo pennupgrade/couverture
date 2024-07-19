@@ -33,6 +33,10 @@ public class Tank : MonoBehaviour
     public GameObject gun;
     public GameObject bulletPrefab;
     public Transform gunShotPos;
+    public GameObject FrontWheel;
+    public GameObject BackWheel;
+    public GameObject Body;
+
 
 
 
@@ -43,6 +47,8 @@ public class Tank : MonoBehaviour
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
+
+        Debug.Log("TankState: " + tankState.GetType());
     }
 
 

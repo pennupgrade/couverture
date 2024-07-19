@@ -97,7 +97,7 @@ public class SuspensionTest : MonoBehaviour
         Body.transform.position = bodyPosition;
     }
 
-    void MoveTank()
+    void MoveTank(Vector2 dir)
     {
         // Function finds bodyVector, bodyPivot, and bodyNormal
         CalculateBodyProperties();
@@ -105,24 +105,7 @@ public class SuspensionTest : MonoBehaviour
         float speed = 2.0f;
         float rotSpeed = 100.0f;
 
-        Vector3 delta = new Vector3();
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            delta.x += 1.0f;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            delta.y -= 1.0f;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            delta.x -= 1.0f;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            delta.y += 1.0f;
-        }
+        Vector3 delta = new(dir.x, dir.y, 0);
 
         // This is a really fucking bad idea
         Vector3 direction = Vector3.ProjectOnPlane(bodyVector, transform.up);
@@ -133,7 +116,7 @@ public class SuspensionTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveTank();
+        // MoveTank();
         RaycastWheels();
         RotateBodyByWheels();
     }
