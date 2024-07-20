@@ -16,7 +16,7 @@ public class TankIdleState : TankState
         // Debug.Log("Shoot from IdleState");
 
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = tank.gun.transform.right * tank.bulletSpeed;
+        bullet.GetComponent<Rigidbody>().velocity = -tank.gun.transform.right * tank.bulletSpeed;
 
         return new TankShotCooldownState(tank);
     }

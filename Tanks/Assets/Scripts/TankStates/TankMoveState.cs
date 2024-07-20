@@ -37,12 +37,6 @@ public class TankMoveState : TankState
         return new TankShotCooldownState(tank);
     }
 
-
-
-
-
-
-
     void RaycastWheel(GameObject wheel, int id)
     {
         RaycastHit hit;
@@ -61,16 +55,27 @@ public class TankMoveState : TankState
             Vector3 hitPoint = hit.point;
             hitPoint += tank.transform.up * 0.2f; // 0.2f value is arbitrary, lifts up wheel
 
-            hitNormals[id] = hit.normal;
+            float hitDist = Vector3.Distance(hitPoint, origin);
+            Debug.Log("Wheel " + id + " dist: " + hitDist);
 
-            // The wheel needs to be rotated by the normal?
-            wheel.transform.localRotation = Quaternion.Euler(hit.normal);
+            // hit point is within range of falling smoothly
+            if (Vector3.Distance(hitPoint, origin) <= 2.0)
+            {
+                hitNormals[id] = hit.normal;
 
-            // vertically translate the wheel from the ground
-            Vector3 wheelPos = wheel.transform.position;
-            wheelPos.y = hitPoint.y;
-            wheel.transform.position = wheelPos;
+                // The wheel needs to be rotated by the normal?
+                wheel.transform.localRotation = Quaternion.Euler(hit.normal);
+
+                // vertically translate the wheel from the ground
+                Vector3 wheelPos = wheel.transform.position;
+                wheelPos.y = hitPoint.y;
+                wheel.transform.position = wheelPos;
+            }
         }
+
+        // Initiate gravity
+
+
     }
 
     void RaycastWheels()
@@ -105,7 +110,6 @@ public class TankMoveState : TankState
 
         // Find the angle between two points (wheels), and then rotates body
         Vector3 hitNormal = Vector3.Normalize(hitNormals[0] + hitNormals[1]);
-        //Vector3 forward = Vector3.Cross(Body.transform.right, hitNormal).normalized;
         Vector3 forward = Quaternion.Euler(0, 90, 0) * bodyVector;
         Vector3 desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
