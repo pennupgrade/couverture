@@ -103,13 +103,13 @@ public abstract class TankState {
         Vector3 offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new (offset.x, 0, offset.z);
 
-        float angle = Vector3.SignedAngle(-Vector3.right, dir, Vector3.up);
+        float angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
 
         Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
-        tank.gun.transform.rotation = Quaternion.Euler(0, angle, 0);
+        tank.gun.transform.localRotation = Quaternion.Euler(0, angle, 0);
 
         // Debug.Log(dir);
 
