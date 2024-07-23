@@ -19,8 +19,12 @@ public class TankMoveState : TankState
 
     public override TankState HandleShoot()
     {
-        // Debug.Log("Shoot from MoveState");
+        //Debug.Log("Shoot from MoveState");
+        if (tank.numBullets <= 0) {
+            return this;
+        }
 
+        tank.numBullets--;
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = tank.gun.transform.right * tank.bulletSpeed;
 

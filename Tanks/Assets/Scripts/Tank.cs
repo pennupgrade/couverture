@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class Tank : MonoBehaviour
+public class Tank : MonoBehaviour, IDestroyable
 {
 
     // Base Items
@@ -23,11 +23,10 @@ public class Tank : MonoBehaviour
 
 
     // Config Variables
-    public float moveSpeed = 4;
-    public float rotSpeed = 0.3f;
-    public float gunRotSpeed = 3;
+    public float moveSpeed = 3;
+    public float rotSpeed = 4;
     public float bulletSpeed = 3;
-    public float shotCooldownTime = 10f;
+    public float shotCooldownTime = 0.16f;
 
 
     // Object References
@@ -36,6 +35,10 @@ public class Tank : MonoBehaviour
     public Transform gunShotPos;
 
 
+    // Misc
+    [SerializeField] private int health;
+    public int numBullets;
+    [SerializeField] private bool isReloading;
 
     void Update()
     {
@@ -44,6 +47,30 @@ public class Tank : MonoBehaviour
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
+
+        if (!isReloading && numBullets < 4) {
+            StartCoroutine(reloadMagazine());
+        }
+    }
+
+    private IEnumerator reloadMagazine() {
+        isReloading = true;
+        while (numBullets < 4) {
+            yield return new WaitForSeconds(2);
+            numBullets++;
+            if (numBullets == 4) {
+                isReloading = false;
+                yield break;
+            }
+        }
+    }
+
+    public void takeDamage(int dmg) {
+        health -= dmg;
+        if (health <= 0) {
+            //Destroy(gameObject);
+            Debug.Log("You died");
+        } 
     }
 
 
@@ -58,6 +85,9 @@ public class Tank : MonoBehaviour
         tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
+
+        numBullets = 5;
+        health = 100;
     }
 
     private void OnEnable() {
@@ -99,7 +129,7 @@ public abstract class TankState {
 
         float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
 
-        Debug.Log(angle);
+        // Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
@@ -112,4 +142,8 @@ public abstract class TankState {
 
     public abstract TankState HandleShoot();
 
+}
+
+interface IDestroyable {
+    void takeDamage(int dmg);
 }
