@@ -23,10 +23,10 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
     // Config Variables
-    public float moveSpeed = 3;
-    public float rotSpeed = 4;
-    public float bulletSpeed = 3;
-    public float shotCooldownTime = 0.16f;
+    public float moveSpeed;
+    public float rotSpeed;
+    public float bulletSpeed;
+    public float shotCooldownTime;
 
 
     // Object References
