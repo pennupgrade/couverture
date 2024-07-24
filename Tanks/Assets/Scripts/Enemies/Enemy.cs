@@ -13,7 +13,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
 
 
 
-    public bool hasLineOfSight, aimReady;
+    public bool hasLineOfSight;
     public EnemyState state;
     protected float activeRadius;
     protected float rotSpeed, cTurn;
@@ -36,12 +36,18 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     }
 
     protected bool playerCheck() {
+        if (playerRB == null) {
+            return false;
+        }
         return Vector2.Distance(new Vector2(rb.position.x, rb.position.z),
                     new Vector2(playerRB.position.x, playerRB.position.z)) < activeRadius &&
                 Mathf.Abs(rb.position.y - playerRB.position.y) < 1 &&
                 lineOfSightCheck();
     }
     protected bool lineOfSightCheck() {
+        if (playerRB == null) {
+            return false;
+        }
         return !Physics.Raycast(playerRB.position, rb.position - playerRB.position, 
                     Vector3.Distance(rb.position, playerRB.position), 1 << 3);
     }
@@ -76,6 +82,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         return val;
     }
     protected void turnTurret() {
+        if (playerRB == null) {
+            return;
+        }
         if (MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
             TargetDir = result;
         } else TargetDir = (playerRB.position - rb.position).normalized;

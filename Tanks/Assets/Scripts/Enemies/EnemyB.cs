@@ -41,8 +41,7 @@ public class EnemyB : EnemyPathing
 
         if (state == EnemyState.Alert && reloadTimer < 0.01f) {
             hasLineOfSight = lineOfSightCheck();
-            aimReady = isAimed();
-            if (hasLineOfSight && aimReady) {
+            if (hasLineOfSight && isAimed()) {
                 fire();
                 reloadTimer = reload;
             } else {
