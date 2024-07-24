@@ -28,7 +28,7 @@ public class EnemyA : Enemy
                 checkTimer = 7;
             } else {
                 state = EnemyState.Idle;
-                checkTimer = 1.5f + Random.value;
+                checkTimer = 1 + Random.value;
             }
         }
 
@@ -39,7 +39,7 @@ public class EnemyA : Enemy
                 fire();
                 reloadTimer = reload;
             } else {
-                reloadTimer = 0.25f;
+                reloadTimer = 0.16f;
             }
         }
 

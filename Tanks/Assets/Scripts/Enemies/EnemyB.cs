@@ -35,7 +35,7 @@ public class EnemyB : EnemyPathing
                 checkTimer = 7;
             } else {
                 state = EnemyState.Idle;
-                checkTimer = 1.5f + Random.value;
+                checkTimer = 1 + Random.value;
             }
         }
 
@@ -46,7 +46,7 @@ public class EnemyB : EnemyPathing
                 fire();
                 reloadTimer = reload;
             } else {
-                reloadTimer = 0.25f;
+                reloadTimer = 0.16f;
             }
         }
 
