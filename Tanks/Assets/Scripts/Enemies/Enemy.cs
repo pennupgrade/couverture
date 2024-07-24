@@ -48,14 +48,21 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     
     protected bool isAimed() {
         return Vector3.Dot((playerRB.position - rb.position).normalized, 
-            gun.transform.right) > 0.96f;
+            gun.transform.right) > 0.96f || 
+            Vector3.Dot(TargetDir, gun.transform.right) > 0.96f;
     }
 
     protected IEnumerator idleTurn() {
         while (true) {
             yield return new WaitForSeconds(3);
             if (state == EnemyState.Idle) {
-                cTurn = (Random.value > 0.7f) ? 12 : ((Random.value > 0.45f) ? -12 : 0);
+                if (Vector3.Dot(gun.transform.forward, transform.right) > 0.4f) {
+                    cTurn = -12;
+                } else if (Vector3.Dot(gun.transform.forward, transform.right) < -0.4f) {
+                    cTurn = 12;
+                } else {
+                    cTurn = (Random.value < 0.3f) ? 12 : ((Random.value < 0.42f) ? -12 : 0);
+                }
             }
         }
     }
@@ -72,9 +79,14 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         if (MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
             TargetDir = result;
         } else TargetDir = (playerRB.position - rb.position).normalized;
-        if (Vector3.Dot(gun.transform.forward, TargetDir) > 0){
-            cTurn = -rotSpeed;
-        } else cTurn = rotSpeed;
+        float dir = Vector3.Dot(gun.transform.forward, TargetDir);
+        if (dir > 0.04f){
+            cTurn = Mathf.Max(-rotSpeed, cTurn - 180 * Time.fixedDeltaTime);
+        } else if (dir < -0.04f) {
+            cTurn = Mathf.Min(rotSpeed, cTurn + 180 * Time.fixedDeltaTime);
+        } else {
+            cTurn = 0;
+        }
     }
 
     protected void fire() {

@@ -9,9 +9,9 @@ public class EnemyA : Enemy
     void Start()
     {
         health = 100;
-        activeRadius = 7;
+        activeRadius = 6;
         state = EnemyState.Idle;
-        rotSpeed = 56;
+        rotSpeed = 60;
         dispersion = 24;
         reload = 4;
         bulletSpeed = 3;
@@ -25,7 +25,7 @@ public class EnemyA : Enemy
         if (checkTimer < 0.01f) {
             if (playerCheck()) {
                 state = EnemyState.Alert;
-                checkTimer = 8;
+                checkTimer = 7;
             } else {
                 state = EnemyState.Idle;
                 checkTimer = 1.5f + Random.value;
