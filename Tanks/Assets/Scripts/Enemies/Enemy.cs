@@ -68,6 +68,14 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         }
         return val;
     }
+    protected void turnTurret() {
+        if (MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
+            TargetDir = result;
+        } else TargetDir = (playerRB.position - rb.position).normalized;
+        if (Vector3.Dot(gun.transform.forward, TargetDir) > 0){
+            cTurn = -rotSpeed;
+        } else cTurn = rotSpeed;
+    }
 
     protected void fire() {
         GameObject bullet = Object.Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);

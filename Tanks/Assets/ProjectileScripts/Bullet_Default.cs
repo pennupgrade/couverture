@@ -25,14 +25,19 @@ public class Bullet_Default : Projectile
         Debug.Log("hit");
         if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
             d.takeDamage(damage);
-            Destroy(gameObject);
+            destruction();
         } else if (collision.gameObject.tag == "Environment"){
             Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
             rb.velocity = bounceDirection * lastVelocity.magnitude;
             bounces--;
             if (bounces == -1) {
-                Destroy(gameObject);
+                destruction();
             }
+        } else if (collision.gameObject.tag == "Projectile"){
+            destruction();
         }
+    }
+    public override void destruction() {
+        Destroy(gameObject);
     }
 }
