@@ -16,14 +16,16 @@ public class EnemyA : Enemy
         reload = 4;
         bulletSpeed = 2.5f;
         rb = GetComponent<Rigidbody>();
+        //coroutine for idle turret turning
         StartCoroutine(idleTurn());
     }
 
     // Update is called once per frame
     void Update()
     {
+        // changes between states depending on whether player is detected
         if (checkTimer < 0.01f) {
-            if (playerCheck()) {
+            if (checkIfPlayerDetected()) {
                 state = EnemyState.Alert;
                 checkTimer = 7;
             } else {
@@ -32,6 +34,7 @@ public class EnemyA : Enemy
             }
         }
 
+        // conditions for shooting
         if (state == EnemyState.Alert && reloadTimer < 0.01f) {
             hasLineOfSight = lineOfSightCheck();
             if (hasLineOfSight && isAimed()) {
@@ -46,6 +49,7 @@ public class EnemyA : Enemy
         checkTimer = TimerF(checkTimer);
     }
     void FixedUpdate() {
+        //turret turning
         if (state == EnemyState.Alert) {
             turnTurret();
         }

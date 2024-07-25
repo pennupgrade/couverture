@@ -16,7 +16,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     public bool hasLineOfSight;
     public EnemyState state;
     protected float activeRadius;
-    protected float rotSpeed, cTurn;
+    protected float rotSpeed, cTurn; // turning for turrets
     protected float checkTimer, reloadTimer;
     protected float reload;
     protected float bulletSpeed;
@@ -35,7 +35,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         Destroy(gameObject);
     }
 
-    protected bool playerCheck() {
+    protected bool checkIfPlayerDetected() {
         if (playerRB == null) {
             return false;
         }
@@ -107,6 +107,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
 }
 
 public enum EnemyState {
+    Start,
     Idle,
     Alert
 }
