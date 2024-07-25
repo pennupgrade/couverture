@@ -48,7 +48,7 @@ public class Tank : MonoBehaviour
 
 
     // Couroutine Garbage
-    public List<Coroutine> bulletCoroutineList;
+    public Coroutine activeBulletCoroutine;
 
 
     void Update()
@@ -93,8 +93,6 @@ public class Tank : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
-
-        bulletCoroutineList = new();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
@@ -158,11 +156,14 @@ public abstract class TankState {
         }
 
         tank.numBullets--;
-        GameObject bullet = UnityEngine.Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
          * (tank.gun.transform.right * tank.bulletSpeed);
-        tank.StopAllCoroutines();
-        tank.StartCoroutine(Reload());
+
+        if (tank.activeBulletCoroutine != null) {
+            tank.StopCoroutine(tank.activeBulletCoroutine);
+        }
+        tank.activeBulletCoroutine = tank.StartCoroutine(Reload());
 
         return this;
     }
@@ -176,6 +177,8 @@ public abstract class TankState {
             tank.numBullets++;
             Debug.Log("Reloaded to bullets: " + tank.numBullets);
         }
+
+        tank.activeBulletCoroutine = null;
     }
 
 }
