@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class Tank : MonoBehaviour, IDestroyable
+public class Tank : MonoBehaviour
 {
 
     // Base Items
@@ -42,11 +42,14 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject Body;
 
 
-
     // Misc
     [SerializeField] private int health;
     public int numBullets;
-    [SerializeField] private bool isReloading;
+
+
+    // Couroutine Garbage
+    public List<Coroutine> bulletCoroutineList;
+
 
     void Update()
     {
@@ -56,30 +59,30 @@ public class Tank : MonoBehaviour, IDestroyable
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
-        if (!isReloading && numBullets < 4) {
-            StartCoroutine(reloadMagazine());
-        }
+        // if (!isReloading && numBullets < 4) {
+        //     StartCoroutine(reloadMagazine());
+        // }
     }
 
-    private IEnumerator reloadMagazine() {
-        isReloading = true;
-        while (numBullets < 4) {
-            yield return new WaitForSeconds(2);
-            numBullets++;
-            if (numBullets == 4) {
-                isReloading = false;
-                yield break;
-            }
-        }
-    }
+    // private IEnumerator reloadMagazine() {
+    //     isReloading = true;
+    //     while (numBullets < 4) {
+    //         yield return new WaitForSeconds(2);
+    //         numBullets++;
+    //         if (numBullets == 4) {
+    //             isReloading = false;
+    //             yield break;
+    //         }
+    //     }
+    // }
 
-    public void takeDamage(int dmg) {
-        health -= dmg;
-        if (health <= 0) {
-            //Destroy(gameObject);
-            Debug.Log("You died");
-        } 
-    }
+    // public void takeDamage(int dmg) {
+    //     health -= dmg;
+    //     if (health <= 0) {
+    //         //Destroy(gameObject);
+    //         Debug.Log("You died");
+    //     } 
+    // }
 
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
@@ -90,6 +93,8 @@ public class Tank : MonoBehaviour, IDestroyable
 
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
+
+        bulletCoroutineList = new();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
@@ -147,7 +152,31 @@ public abstract class TankState {
         return this;
     }
 
-    public abstract TankState HandleShoot();
+    public virtual TankState HandleShoot() { 
+        if (tank.numBullets <= 0) {
+            return this;
+        }
+
+        tank.numBullets--;
+        GameObject bullet = UnityEngine.Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
+         * (tank.gun.transform.right * tank.bulletSpeed);
+        tank.StopAllCoroutines();
+        tank.StartCoroutine(Reload());
+
+        return this;
+    }
+
+    public virtual IEnumerator Reload() {
+        Debug.Log("Begun Reload");
+
+        while(tank.numBullets < 5) {
+            yield return new WaitForSeconds(1);
+
+            tank.numBullets++;
+            Debug.Log("Reloaded to bullets: " + tank.numBullets);
+        }
+    }
 
 }
 
