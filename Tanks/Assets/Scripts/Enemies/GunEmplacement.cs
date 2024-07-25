@@ -10,10 +10,11 @@ public class GunEmplacement : Enemy
         health = 100;
         activeRadius = 6;
         state = EnemyState.Idle;
-        rotSpeed = 60;
+        rotSpeed = 72;
         dispersion = 24;
-        reload = 4;
+        reload = 3;
         bulletSpeed = 2.5f;
+        leadChance = 0.25f;
         rb = GetComponent<Rigidbody>();
         //coroutine for idle turret turning
         StartCoroutine(idleTurn());

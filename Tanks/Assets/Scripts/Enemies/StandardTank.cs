@@ -16,12 +16,13 @@ public class StandardTank : EnemyPathing
         health = 100;
         activeRadius = 7;
         state = EnemyState.Start;
-        rotSpeed = 90;
+        rotSpeed = 108;
         dispersion = 24;
         reload = 3;
         bulletSpeed = 2.5f;
         speed = 1.2f;
         turnSpeed = 80;
+        leadChance = 0.2f;
         //coroutine for idle turret turning
         StartCoroutine(idleTurn());
         //coroutine for recalculating path to destination
@@ -59,7 +60,7 @@ public class StandardTank : EnemyPathing
 
         // when to set a new destination
         if (waypointTimer < 0.01f || hasReachedDest()) {
-            waypointTimer = 6 + 6 * Random.value;
+            waypointTimer = 4 + 4 * Random.value;
             destination = getRandomPoint(8);
             agent.SetDestination(destination);
         }

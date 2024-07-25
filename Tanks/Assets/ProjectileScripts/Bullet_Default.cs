@@ -13,7 +13,7 @@ public class Bullet_Default : Projectile
     {
         damage = 100;
         lifetime = 8;
-        bounces = 2;
+        bounces = 1;
         rb = GetComponent<Rigidbody>();
     }
 

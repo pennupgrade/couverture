@@ -36,7 +36,8 @@ public class TankMoveState : TankState
         // Tank move functions
         CalculateBodyProperties();
         Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
-        tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
+        tank.rb.velocity = tank.moveSpeed * direction * dir.y;
+        //tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
         tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
 
         // After moving, perform a raycast on both wheels for ground detection.

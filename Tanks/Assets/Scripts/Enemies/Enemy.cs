@@ -23,6 +23,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     protected float dispersion;
     protected int health;
     protected Vector3 TargetDir;
+    private bool leadPlayer;
+    protected float leadChance;
     
     public void takeDamage(int dmg) {
         health -= dmg;
@@ -53,9 +55,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     }
     
     protected bool isAimed() {
-        return Vector3.Dot((playerRB.position - rb.position).normalized, 
-            gun.transform.right) > 0.96f || 
-            Vector3.Dot(TargetDir, gun.transform.right) > 0.96f;
+        if (leadPlayer) {
+            return Vector3.Dot(TargetDir, gun.transform.right) > 0.95f;
+        }
+        return Vector3.Dot(TargetDir, gun.transform.right) > 0.965f;
     }
 
     protected IEnumerator idleTurn() {
@@ -85,14 +88,14 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         if (playerRB == null) {
             return;
         }
-        if (MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
+        if (leadPlayer && MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
             TargetDir = result;
         } else TargetDir = (playerRB.position - rb.position).normalized;
         float dir = Vector3.Dot(gun.transform.forward, TargetDir);
-        if (dir > 0.04f){
-            cTurn = Mathf.Max(-rotSpeed, cTurn - 180 * Time.fixedDeltaTime);
-        } else if (dir < -0.04f) {
-            cTurn = Mathf.Min(rotSpeed, cTurn + 180 * Time.fixedDeltaTime);
+        if (dir > 0.03f){
+            cTurn = Mathf.Max(-rotSpeed, cTurn - 900 * Time.fixedDeltaTime);
+        } else if (dir < -0.03f) {
+            cTurn = Mathf.Min(rotSpeed, cTurn + 900 * Time.fixedDeltaTime);
         } else {
             cTurn = 0;
         }
@@ -102,6 +105,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         GameObject bullet = Object.Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * (Random.value - 0.5f), Vector3.up)
          * (gun.transform.right * bulletSpeed);
+        leadPlayer = Random.value < leadChance;
     }
 
 }
