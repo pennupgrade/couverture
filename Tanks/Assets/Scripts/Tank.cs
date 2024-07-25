@@ -25,9 +25,12 @@ public class Tank : MonoBehaviour
     // Config Variables
     public float moveSpeed = 4;
     public float rotSpeed = 0.3f;
+    public float groundMargin = 0.2f;
+    public float wheelMaxDist = 3.0f;
     public float gunRotSpeed = 3;
     public float bulletSpeed = 3;
     public float shotCooldownTime = 10f;
+    public bool enableExperimentalGravity = true;
 
 
     // Object References
@@ -49,13 +52,12 @@ public class Tank : MonoBehaviour
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
-        Debug.Log("TankState: " + tankState.GetType());
+        //Debug.Log("TankState: " + tankState.GetType()); // Uncomment this if you need to debug
     }
 
 
-
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-    
+
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
@@ -105,7 +107,7 @@ public abstract class TankState {
 
         float angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
 
-        Debug.Log(angle);
+        //Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
@@ -117,5 +119,4 @@ public abstract class TankState {
     }
 
     public abstract TankState HandleShoot();
-
 }
