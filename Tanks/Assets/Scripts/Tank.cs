@@ -23,16 +23,24 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
     // Config Variables
-    public float moveSpeed;
-    public float rotSpeed;
-    public float bulletSpeed;
-    public float shotCooldownTime;
+    public float moveSpeed = 4;
+    public float rotSpeed = 0.3f;
+    public float groundMargin = 0.2f;
+    public float wheelMaxDist = 3.0f;
+    public float gunRotSpeed = 3;
+    public float bulletSpeed = 3;
+    public float shotCooldownTime = 10f;
+    public bool enableExperimentalGravity = true;
 
 
     // Object References
     public GameObject gun;
     public GameObject bulletPrefab;
     public Transform gunShotPos;
+    public GameObject FrontWheel;
+    public GameObject BackWheel;
+    public GameObject Body;
+
 
 
     // Misc
@@ -74,15 +82,14 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
 
-
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-    
+
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
 
         rb = GetComponent<Rigidbody>();
-        tankCollider = GetComponent<BoxCollider>();
+        // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
@@ -127,13 +134,13 @@ public abstract class TankState {
         Vector3 offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new (offset.x, 0, offset.z);
 
-        float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
+        float angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
 
         // Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
-        tank.gun.transform.rotation = Quaternion.Euler(0, angle, 0);
+        tank.gun.transform.localRotation = Quaternion.Euler(0, angle, 0);
 
         // Debug.Log(dir);
 
