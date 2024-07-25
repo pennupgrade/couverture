@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyB : EnemyPathing
+public class StandardTank : EnemyPathing
 {
     void Awake()
     {

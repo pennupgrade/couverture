@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Enemy: Gun Emplacement
-public class EnemyA : Enemy
+public class GunEmplacement : Enemy
 {
     // Start is called before the first frame update
     void Start()
