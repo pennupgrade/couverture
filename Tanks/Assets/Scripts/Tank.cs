@@ -5,8 +5,8 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
-// [RequireComponent(typeof(Collider))]
-public class Tank : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+public class Tank : MonoBehaviour, IDestroyable
 {
 
     // Base Items
@@ -31,6 +31,10 @@ public class Tank : MonoBehaviour
     public float bulletSpeed = 3;
     public float shotCooldownTime = 10f;
     public bool enableExperimentalGravity = true;
+    public float moveSpeed;
+    public float rotSpeed;
+    public float bulletSpeed;
+    public float shotCooldownTime;
 
 
     // Object References
@@ -43,6 +47,10 @@ public class Tank : MonoBehaviour
 
 
 
+    // Misc
+    [SerializeField] private int health;
+    public int numBullets;
+    [SerializeField] private bool isReloading;
 
     void Update()
     {
@@ -52,7 +60,29 @@ public class Tank : MonoBehaviour
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
-        //Debug.Log("TankState: " + tankState.GetType()); // Uncomment this if you need to debug
+        if (!isReloading && numBullets < 4) {
+            StartCoroutine(reloadMagazine());
+        }
+    }
+
+    private IEnumerator reloadMagazine() {
+        isReloading = true;
+        while (numBullets < 4) {
+            yield return new WaitForSeconds(2);
+            numBullets++;
+            if (numBullets == 4) {
+                isReloading = false;
+                yield break;
+            }
+        }
+    }
+
+    public void takeDamage(int dmg) {
+        health -= dmg;
+        if (health <= 0) {
+            //Destroy(gameObject);
+            Debug.Log("You died");
+        } 
     }
 
 
@@ -66,6 +96,9 @@ public class Tank : MonoBehaviour
         // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
+
+        numBullets = 5;
+        health = 100;
     }
 
     private void OnEnable() {
@@ -107,7 +140,7 @@ public abstract class TankState {
 
         float angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
 
-        //Debug.Log(angle);
+        // Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
@@ -119,4 +152,9 @@ public abstract class TankState {
     }
 
     public abstract TankState HandleShoot();
+
+}
+
+interface IDestroyable {
+    void takeDamage(int dmg);
 }
