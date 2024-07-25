@@ -43,7 +43,7 @@ public class TankMoveState : TankState
         // PositionTankByWheels checks if we are in free fall and makes tank's y fall.
         CenterPivotToChildren();
         RaycastWheels(out FrontHit, out BackHit);
-        //if (tank.enableExperimentalGravity) PositionTankByWheels(FrontHit, BackHit);
+        if (tank.enableExperimentalGravity) PositionTankByWheels(FrontHit, BackHit);
         RotateBodyByWheels();
 
         return this;
@@ -78,13 +78,13 @@ public class TankMoveState : TankState
         // We hit an object
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider.name);
+            //Debug.Log(hit.collider.name);
 
             Vector3 hitPoint = hit.point;
             float hitDist = Vector3.Distance(hitPoint, origin);
             hitDists[id] = hitDist;
 
-            if (hitDist <= tank.groundMargin + 0.02f || !tank.enableExperimentalGravity) // ???
+            if (hitDist <= tank.groundMargin + 0.01f || !tank.enableExperimentalGravity) // ???
             {
                 hitNormals[id] = hit.normal;
 

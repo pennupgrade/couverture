@@ -31,10 +31,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public float bulletSpeed = 3;
     public float shotCooldownTime = 10f;
     public bool enableExperimentalGravity = true;
-    public float moveSpeed;
-    public float rotSpeed;
-    public float bulletSpeed;
-    public float shotCooldownTime;
 
 
     // Object References
