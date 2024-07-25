@@ -19,7 +19,7 @@ public class EnemyB : EnemyPathing
         rotSpeed = 90;
         dispersion = 24;
         reload = 3;
-        bulletSpeed = 3;
+        bulletSpeed = 2.5f;
         speed = 1.2f;
         turnSpeed = 80;
         StartCoroutine(idleTurn());

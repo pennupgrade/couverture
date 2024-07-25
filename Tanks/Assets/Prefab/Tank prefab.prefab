@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 530571315904496349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.009, z: 0}
+  m_LocalPosition: {x: 0.0039, y: 0.009, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -492,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 3686202162548633103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0128, y: 0, z: 0.0001}
+  m_LocalPosition: {x: -0.0133, y: 0, z: 0.0001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -509,10 +509,10 @@ GameObject:
   - component: {fileID: 3333890237990636835}
   - component: {fileID: 5421411469498413301}
   - component: {fileID: 8699447814597592467}
-  - component: {fileID: 3853114560522740933}
+  - component: {fileID: 4025333484801462817}
   m_Layer: 2
   m_Name: Tank prefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -525,9 +525,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8410636013499981182}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.6902053, z: -0, w: -0.7236136}
+  m_LocalRotation: {x: 0, y: 0.6902071, z: -0, w: -0.7236119}
   m_LocalPosition: {x: 0.718, y: 0.201, z: 1.14}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7205137129310120829}
@@ -549,13 +549,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   tankCollider: {fileID: 0}
-  moveSpeed: 3
-  rotSpeed: 100
+  moveSpeed: 2.5
+  rotSpeed: 180
   groundMargin: 0.2
   wheelMaxDist: 3
-  gunRotSpeed: 2
-  bulletSpeed: 6
-  shotCooldownTime: 0.5
+  bulletSpeed: -2.5
   enableExperimentalGravity: 0
   gun: {fileID: 530571315904496349}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
@@ -563,6 +561,8 @@ MonoBehaviour:
   FrontWheel: {fileID: 2300565459145294251}
   BackWheel: {fileID: 3328427203571100217}
   Body: {fileID: 1917824168728784151}
+  health: 100
+  numBullets: 0
 --- !u!54 &8699447814597592467
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -571,7 +571,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8410636013499981182}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -590,15 +590,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &3853114560522740933
-MonoBehaviour:
+--- !u!65 &4025333484801462817
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8410636013499981182}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d78be5fb30190c14b8926f5f096cc7c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.666, y: 0.2, z: 0.4666}
+  m_Center: {x: 0, y: 0.16, z: 0}

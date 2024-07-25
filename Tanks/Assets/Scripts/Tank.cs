@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class Tank : MonoBehaviour
+public class Tank : MonoBehaviour, IDestroyable
 {
 
     // Base Items
@@ -23,13 +23,11 @@ public class Tank : MonoBehaviour
 
 
     // Config Variables
-    public float moveSpeed = 4;
-    public float rotSpeed = 0.3f;
+    public float moveSpeed;
+    public float rotSpeed;
     public float groundMargin = 0.2f;
     public float wheelMaxDist = 3.0f;
-    public float gunRotSpeed = 3;
-    public float bulletSpeed = 3;
-    public float shotCooldownTime = 10f;
+    public float bulletSpeed;
     public bool enableExperimentalGravity = true;
 
 
@@ -48,7 +46,7 @@ public class Tank : MonoBehaviour
 
 
     // Couroutine Garbage
-    public Coroutine activeBulletCoroutine;
+    public Coroutine activeBulletCoroutine, cooldownCoroutine;
 
 
     void Update()
@@ -76,13 +74,13 @@ public class Tank : MonoBehaviour
     //     }
     // }
 
-    // public void takeDamage(int dmg) {
-    //     health -= dmg;
-    //     if (health <= 0) {
-    //         //Destroy(gameObject);
-    //         Debug.Log("You died");
-    //     } 
-    // }
+    public void takeDamage(int dmg) {
+        health -= dmg;
+        if (health <= 0) {
+            //Destroy(gameObject);
+            Debug.Log("You died");
+        } 
+    }
 
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
@@ -116,7 +114,7 @@ public class Tank : MonoBehaviour
 public abstract class TankState {
     
     protected Tank tank;
-
+    protected bool onCooldown;
     public TankState(Tank tank) {
         this.tank = tank;
     }
@@ -151,28 +149,29 @@ public abstract class TankState {
     }
 
     public virtual TankState HandleShoot() { 
-        if (tank.numBullets <= 0) {
+        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null) {
             return this;
         }
 
         tank.numBullets--;
+        tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
          * (tank.gun.transform.right * tank.bulletSpeed);
 
-        if (tank.activeBulletCoroutine != null) {
-            tank.StopCoroutine(tank.activeBulletCoroutine);
+        if (tank.activeBulletCoroutine == null) {
+            tank.activeBulletCoroutine = tank.StartCoroutine(Reload());
         }
-        tank.activeBulletCoroutine = tank.StartCoroutine(Reload());
-
         return this;
+    }
+    public virtual IEnumerator Cooldown() {
+        yield return new WaitForSeconds(0.16f);
+        tank.cooldownCoroutine = null;
     }
 
     public virtual IEnumerator Reload() {
-        Debug.Log("Begun Reload");
-
         while(tank.numBullets < 5) {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
 
             tank.numBullets++;
             Debug.Log("Reloaded to bullets: " + tank.numBullets);

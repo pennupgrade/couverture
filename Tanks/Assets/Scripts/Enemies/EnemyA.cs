@@ -14,7 +14,7 @@ public class EnemyA : Enemy
         rotSpeed = 60;
         dispersion = 24;
         reload = 4;
-        bulletSpeed = 3;
+        bulletSpeed = 2.5f;
         rb = GetComponent<Rigidbody>();
         StartCoroutine(idleTurn());
     }
