@@ -18,19 +18,4 @@ public class TankMoveState : TankState
 
         return this;
     }
-
-    public override TankState HandleShoot()
-    {
-        //Debug.Log("Shoot from MoveState");
-        if (tank.numBullets <= 0) {
-            return this;
-        }
-
-        tank.numBullets--;
-        GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
-         * (tank.gun.transform.right * tank.bulletSpeed);
-
-        return new TankShotCooldownState(tank);
-    }
 }
