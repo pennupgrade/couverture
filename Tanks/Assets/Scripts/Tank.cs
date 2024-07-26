@@ -12,6 +12,7 @@ public class Tank : MonoBehaviour, IDestroyable
     // Base Items
     Controls controls; 
     public TankState tankState;
+    public TankController tankController;
 
 
     // Necessary Components
@@ -39,6 +40,10 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject BackWheel;
     public GameObject Body;
 
+    // Private references
+    private Vector3 bodyVector;
+    private Vector3 bodyPivot;
+    private Vector3 bodyNormal;
 
     // Misc
     [SerializeField] private int health;
@@ -53,6 +58,8 @@ public class Tank : MonoBehaviour, IDestroyable
     {
         Vector2 moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         Vector2 gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
+
+        tankController.DebugSomeStuff();
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
@@ -82,12 +89,12 @@ public class Tank : MonoBehaviour, IDestroyable
         } 
     }
 
-
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
+        tankController = new TankController(this);
 
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
@@ -107,8 +114,6 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
 }
-
-
 
 
 public abstract class TankState {
