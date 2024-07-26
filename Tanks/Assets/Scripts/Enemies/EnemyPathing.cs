@@ -10,7 +10,14 @@ public class EnemyPathing : Enemy
     [SerializeField] protected bool stopMovement;
     protected Vector3 destination;
     protected NavMeshAgent agent;
+    public EnemyPathing enemyToAlert;
 
+    public void alertEnemy() {
+        if (state == EnemyState.Start) {
+            state = EnemyState.Idle;
+            checkTimer = 1 + Random.value;
+        }
+    }
     protected Vector3 getRandomPoint(float radius) {
         for (int i = 0; i < 18; i++)
         {

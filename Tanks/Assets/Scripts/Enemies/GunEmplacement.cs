@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Enemy: Gun Emplacement
-public class EnemyA : Enemy
+public class GunEmplacement : Enemy
 {
     // Start is called before the first frame update
     void Start()
@@ -11,19 +10,22 @@ public class EnemyA : Enemy
         health = 100;
         activeRadius = 6;
         state = EnemyState.Idle;
-        rotSpeed = 60;
+        rotSpeed = 72;
         dispersion = 24;
-        reload = 4;
-        bulletSpeed = 3;
+        reload = 3;
+        bulletSpeed = 2.5f;
+        leadChance = 0.25f;
         rb = GetComponent<Rigidbody>();
+        //coroutine for idle turret turning
         StartCoroutine(idleTurn());
     }
 
     // Update is called once per frame
     void Update()
     {
+        // changes between states depending on whether player is detected
         if (checkTimer < 0.01f) {
-            if (playerCheck()) {
+            if (checkIfPlayerDetected()) {
                 state = EnemyState.Alert;
                 checkTimer = 7;
             } else {
@@ -32,6 +34,7 @@ public class EnemyA : Enemy
             }
         }
 
+        // conditions for shooting
         if (state == EnemyState.Alert && reloadTimer < 0.01f) {
             hasLineOfSight = lineOfSightCheck();
             if (hasLineOfSight && isAimed()) {
@@ -46,6 +49,7 @@ public class EnemyA : Enemy
         checkTimer = TimerF(checkTimer);
     }
     void FixedUpdate() {
+        //turret turning
         if (state == EnemyState.Alert) {
             turnTurret();
         }
