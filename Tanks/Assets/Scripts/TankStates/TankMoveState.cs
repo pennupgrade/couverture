@@ -2,32 +2,20 @@ using UnityEngine;
 
 public class TankMoveState : TankState
 {
-    public TankMoveState(Tank tank) : base(tank) {}
 
-    public override TankState HandleMovement(Vector2 dir)
-    {  
-        if (dir.magnitude < 0.1f) return new TankIdleState(tank);
-
-        float rot = dir.x * tank.rotSpeed;
-        float move = dir.y * tank.moveSpeed;
-
-        tank.rb.angularVelocity = new(0, rot, 0);
-        tank.rb.velocity = move * tank.transform.right;
-
-        return this;
+    public TankMoveState(Tank tank) : base(tank) {
     }
 
-    public override TankState HandleShoot()
+    public override TankState HandleMovement(Vector2 dir)
     {
-        //Debug.Log("Shoot from MoveState");
-        if (tank.numBullets <= 0) {
-            return this;
-        }
+        bool isAirborne = false;
+        //isAirborne = tank.tankProps.IsAirborne(); // TODO: When gravity gets added, consider this
 
-        tank.numBullets--;
-        GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = tank.gun.transform.right * tank.bulletSpeed;
+        if (dir.magnitude < 0.1f && !isAirborne) return new TankIdleState(tank);
 
-        return new TankShotCooldownState(tank);
+        // There is input, move tank
+        tank.tankController.MoveTank(dir);
+
+        return this;
     }
 }

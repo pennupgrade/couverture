@@ -12,5 +12,6 @@ public abstract class Projectile : MonoBehaviour
         lifetime -= Time.deltaTime;
         if (lifetime < 0) Destroy(gameObject);
     }
+    public abstract void destruction();
 
 }

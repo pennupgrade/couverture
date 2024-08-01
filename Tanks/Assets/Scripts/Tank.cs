@@ -12,6 +12,7 @@ public class Tank : MonoBehaviour, IDestroyable
     // Base Items
     Controls controls; 
     public TankState tankState;
+    public TankController tankController;
 
 
     // Necessary Components
@@ -25,45 +26,60 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     public float moveSpeed;
     public float rotSpeed;
+    public float groundMargin = 0.2f;
+    public float wheelMaxDist = 3.0f;
     public float bulletSpeed;
-    public float shotCooldownTime;
+    public bool enableExperimentalGravity = true;
 
 
     // Object References
     public GameObject gun;
     public GameObject bulletPrefab;
     public Transform gunShotPos;
+    public GameObject FrontWheel;
+    public GameObject BackWheel;
+    public GameObject Body;
 
+    // Private references
+    private Vector3 bodyVector;
+    private Vector3 bodyPivot;
+    private Vector3 bodyNormal;
 
     // Misc
     [SerializeField] private int health;
     public int numBullets;
-    [SerializeField] private bool isReloading;
+
+
+    // Couroutine Garbage
+    public Coroutine activeBulletCoroutine, cooldownCoroutine;
+
 
     void Update()
     {
         Vector2 moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         Vector2 gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
+        tankController.DebugSomeStuff();
+
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
-        if (!isReloading && numBullets < 4) {
-            StartCoroutine(reloadMagazine());
-        }
+        // if (!isReloading && numBullets < 4) {
+        //     StartCoroutine(reloadMagazine());
+        // }
     }
 
-    private IEnumerator reloadMagazine() {
-        isReloading = true;
-        while (numBullets < 4) {
-            yield return new WaitForSeconds(2);
-            numBullets++;
-            if (numBullets == 4) {
-                isReloading = false;
-                yield break;
-            }
-        }
-    }
+    // private IEnumerator reloadMagazine() {
+    //     isReloading = true;
+    //     while (numBullets < 4) {
+    //         yield return new WaitForSeconds(2);
+    //         numBullets++;
+    //         if (numBullets == 4) {
+    //             isReloading = false;
+    //             yield break;
+    //         }
+    //     }
+    // }
 
     public void takeDamage(int dmg) {
         health -= dmg;
@@ -73,16 +89,15 @@ public class Tank : MonoBehaviour, IDestroyable
         } 
     }
 
-
-
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-    
+
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
+        tankController = new TankController(this);
 
         rb = GetComponent<Rigidbody>();
-        tankCollider = GetComponent<BoxCollider>();
+        // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
@@ -101,12 +116,10 @@ public class Tank : MonoBehaviour, IDestroyable
 }
 
 
-
-
 public abstract class TankState {
     
     protected Tank tank;
-
+    protected bool onCooldown;
     public TankState(Tank tank) {
         this.tank = tank;
     }
@@ -127,20 +140,50 @@ public abstract class TankState {
         Vector3 offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new (offset.x, 0, offset.z);
 
-        float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
+        float angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
 
         // Debug.Log(angle);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, UnityEngine.Color.green);
 
-        tank.gun.transform.rotation = Quaternion.Euler(0, angle, 0);
+        tank.gun.transform.localRotation = Quaternion.Euler(0, angle, 0);
 
         // Debug.Log(dir);
 
         return this;
     }
 
-    public abstract TankState HandleShoot();
+    public virtual TankState HandleShoot() { 
+        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null) {
+            return this;
+        }
+
+        tank.numBullets--;
+        tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
+        GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
+         * (tank.gun.transform.right * tank.bulletSpeed);
+
+        if (tank.activeBulletCoroutine == null) {
+            tank.activeBulletCoroutine = tank.StartCoroutine(Reload());
+        }
+        return this;
+    }
+    public virtual IEnumerator Cooldown() {
+        yield return new WaitForSeconds(0.16f);
+        tank.cooldownCoroutine = null;
+    }
+
+    public virtual IEnumerator Reload() {
+        while(tank.numBullets < 5) {
+            yield return new WaitForSeconds(2);
+
+            tank.numBullets++;
+            Debug.Log("Reloaded to bullets: " + tank.numBullets);
+        }
+
+        tank.activeBulletCoroutine = null;
+    }
 
 }
 

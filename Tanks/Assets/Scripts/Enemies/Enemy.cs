@@ -13,16 +13,18 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
 
 
 
-    public bool hasLineOfSight, aimReady;
+    public bool hasLineOfSight;
     public EnemyState state;
     protected float activeRadius;
-    protected float rotSpeed, cTurn;
+    protected float rotSpeed, cTurn; // turning for turrets
     protected float checkTimer, reloadTimer;
     protected float reload;
     protected float bulletSpeed;
     protected float dispersion;
     protected int health;
     protected Vector3 TargetDir;
+    private bool leadPlayer;
+    protected float leadChance;
     
     public void takeDamage(int dmg) {
         health -= dmg;
@@ -35,27 +37,41 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         Destroy(gameObject);
     }
 
-    protected bool playerCheck() {
+    protected bool checkIfPlayerDetected() {
+        if (playerRB == null) {
+            return false;
+        }
         return Vector2.Distance(new Vector2(rb.position.x, rb.position.z),
                     new Vector2(playerRB.position.x, playerRB.position.z)) < activeRadius &&
                 Mathf.Abs(rb.position.y - playerRB.position.y) < 1 &&
                 lineOfSightCheck();
     }
     protected bool lineOfSightCheck() {
+        if (playerRB == null) {
+            return false;
+        }
         return !Physics.Raycast(playerRB.position, rb.position - playerRB.position, 
                     Vector3.Distance(rb.position, playerRB.position), 1 << 3);
     }
     
     protected bool isAimed() {
-        return Vector3.Dot((playerRB.position - rb.position).normalized, 
-            gun.transform.right) > 0.96f;
+        if (leadPlayer) {
+            return Vector3.Dot(TargetDir, gun.transform.right) > 0.95f;
+        }
+        return Vector3.Dot(TargetDir, gun.transform.right) > 0.965f;
     }
 
     protected IEnumerator idleTurn() {
         while (true) {
             yield return new WaitForSeconds(3);
             if (state == EnemyState.Idle) {
-                cTurn = (Random.value > 0.7f) ? 12 : ((Random.value > 0.45f) ? -12 : 0);
+                if (Vector3.Dot(gun.transform.forward, transform.right) > 0.4f) {
+                    cTurn = -12;
+                } else if (Vector3.Dot(gun.transform.forward, transform.right) < -0.4f) {
+                    cTurn = 12;
+                } else {
+                    cTurn = (Random.value < 0.3f) ? 12 : ((Random.value < 0.42f) ? -12 : 0);
+                }
             }
         }
     }
@@ -68,16 +84,34 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         }
         return val;
     }
+    protected void turnTurret() {
+        if (playerRB == null) {
+            return;
+        }
+        if (leadPlayer && MyMath.InterceptDirection(playerRB.position, rb.position, playerRB.velocity, bulletSpeed, out Vector3 result)){
+            TargetDir = result;
+        } else TargetDir = (playerRB.position - rb.position).normalized;
+        float dir = Vector3.Dot(gun.transform.forward, TargetDir);
+        if (dir > 0.03f){
+            cTurn = Mathf.Max(-rotSpeed, cTurn - 900 * Time.fixedDeltaTime);
+        } else if (dir < -0.03f) {
+            cTurn = Mathf.Min(rotSpeed, cTurn + 900 * Time.fixedDeltaTime);
+        } else {
+            cTurn = 0;
+        }
+    }
 
     protected void fire() {
         GameObject bullet = Object.Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * (Random.value - 0.5f), Vector3.up)
          * (gun.transform.right * bulletSpeed);
+        leadPlayer = Random.value < leadChance;
     }
 
 }
 
 public enum EnemyState {
+    Start,
     Idle,
     Alert
 }
