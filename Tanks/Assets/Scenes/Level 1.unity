@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 247316726}
   - component: {fileID: 247316725}
   m_Layer: 3
-  m_Name: Wall (11)
+  m_Name: SecondWall
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2259,7 +2259,7 @@ GameObject:
   - component: {fileID: 731695658}
   - component: {fileID: 731695657}
   m_Layer: 3
-  m_Name: Wall (12)
+  m_Name: FirstWall
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,7 +2504,7 @@ GameObject:
   - component: {fileID: 904514430}
   - component: {fileID: 904514429}
   m_Layer: 3
-  m_Name: Wall (13)
+  m_Name: ThirdWall
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3094,8 +3094,8 @@ MonoBehaviour:
   Player: {fileID: 1954672178}
   speed: 1
   offsetValueX: 0
-  offsetValueZ: 9.7
-  distanceThreshold: 5
+  offsetValueZ: 10
+  distanceThreshold: 3
 --- !u!1001 &966537341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3889,6 +3889,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toChange:
+  - {fileID: 2040400382}
+  - {fileID: 247316723}
+  - {fileID: 904514427}
+  - {fileID: 731695655}
 --- !u!33 &1195177598
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4695,6 +4700,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toChange:
+  - {fileID: 2040400382}
+  - {fileID: 247316723}
+  - {fileID: 904514427}
+  - {fileID: 731695655}
 --- !u!1 &1680942149
 GameObject:
   m_ObjectHideFlags: 0
@@ -6178,6 +6188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toChange:
+  - {fileID: 2040400382}
+  - {fileID: 247316723}
+  - {fileID: 904514427}
+  - {fileID: 731695655}
 --- !u!33 &2020911909
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6412,7 +6427,7 @@ GameObject:
   - component: {fileID: 2040400384}
   - component: {fileID: 2040400383}
   m_Layer: 3
-  m_Name: Wall (8)
+  m_Name: WallFinal
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
