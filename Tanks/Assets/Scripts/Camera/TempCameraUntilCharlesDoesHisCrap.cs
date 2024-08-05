@@ -39,7 +39,5 @@ public class TempCameraUntilCharlesDoesHisCrap : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(cameraPosition, targetPosition, speed * Time.deltaTime);
         }
 
-        Debug.Log(distance);
-
     }
 }
