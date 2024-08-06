@@ -52,7 +52,7 @@ public class PlayerCamera : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         mainCamera = Camera.main;
 
-        var playerPos = player.transform.position;
+        var playerPos = player.transform.Find("Body").transform.position;
         var cameraPos = mainCamera!.transform.position;
 
         distanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
@@ -62,7 +62,7 @@ public class PlayerCamera : MonoBehaviour
     private void Update() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
         
-        var playerPosition = player.transform.position;
+        var playerPosition = player.transform.Find("Body").transform.position;
         
         if (debugLines) {
             Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(range.left, 1f, 1f)), 
