@@ -42,9 +42,6 @@ public class PlayerCamera : MonoBehaviour
 
     [SerializeField] private bool debugLines;
     [SerializeField] private Range2d range;
-
-    // For some reason the vertical debug lines aren't exact, so we offset them a little
-    private const float VERTICAL_OFFSET = 0.025f;
     
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -62,7 +59,11 @@ public class PlayerCamera : MonoBehaviour
     private void Update() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
         
-        var playerPosition = player.transform.Find("Body").transform.position;
+        var playerPos = player.transform.Find("Body").transform.position;
+        var cameraPos = mainCamera.transform.position;
+        
+        var currDistanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
+        var distanceChanged = Mathf.Approximately(currDistanceFromPlayer, distanceFromPlayer);
         
         if (debugLines) {
             Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(range.left, 1f, 1f)), 
@@ -73,19 +74,22 @@ public class PlayerCamera : MonoBehaviour
                            mainCamera.ViewportToWorldPoint(new Vector3(range.right, 0f, 1f)), 
                            Color.white);
             
-            Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(0, range.bottom + VERTICAL_OFFSET, 1f)), 
-                           mainCamera.ViewportToWorldPoint(new Vector3(1f, range.bottom + VERTICAL_OFFSET, 1f)), 
+            Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(0, range.bottom, 1f)), 
+                           mainCamera.ViewportToWorldPoint(new Vector3(1f, range.bottom, 1f)), 
                            Color.white);
             
-            Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(0, range.top + VERTICAL_OFFSET, 1f)), 
-                           mainCamera.ViewportToWorldPoint(new Vector3(1f, range.top + VERTICAL_OFFSET, 1f)), 
+            Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(0, range.top, 1f)), 
+                           mainCamera.ViewportToWorldPoint(new Vector3(1f, range.top, 1f)), 
                            Color.white);
         }
         
-        var viewPos = mainCamera.WorldToViewportPoint(playerPosition);
-        if (range.IsWithinBounds(viewPos.x, viewPos.y)) return;
+        var viewPos = mainCamera.WorldToViewportPoint(playerPos);
         
-        var newPosition = playerPosition + (Vector3.Normalize(cameraDirection) * distanceFromPlayer);
+        // Only update camera position if the distance to the camera has changed, or the tank has gone
+        // out of bounds. Otherwise, we return early
+        if (range.IsWithinBounds(viewPos.x, viewPos.y) && !distanceChanged) return;
+        
+        var newPosition = playerPos + (Vector3.Normalize(cameraDirection) * distanceFromPlayer);
         mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, newPosition, Time.deltaTime);
     }
 }
