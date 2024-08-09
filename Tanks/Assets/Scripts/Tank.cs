@@ -161,7 +161,7 @@ public abstract class TankState {
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
          * (tank.gun.transform.right * tank.bulletSpeed);
 
         if (tank.activeBulletCoroutine == null) {
