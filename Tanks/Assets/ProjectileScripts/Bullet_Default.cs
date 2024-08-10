@@ -12,7 +12,7 @@ public class Bullet_Default : Projectile
     void Start()
     {
         damage = 100;
-        lifetime = 8;
+        lifetime = 12;
         bounces = 1;
         rb = GetComponent<Rigidbody>();
     }
@@ -22,7 +22,7 @@ public class Bullet_Default : Projectile
     }
 
     void OnCollisionEnter(Collision collision) {
-        Debug.Log("hit");
+        //Debug.Log("hit");
         if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
             d.takeDamage(damage);
             destruction();
