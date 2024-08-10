@@ -26,7 +26,7 @@ public class Bullet_Default : Projectile
         if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
             d.takeDamage(damage);
             destruction();
-        } else if (collision.gameObject.tag == "Environment"){
+        } else if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged"){
             Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
             rb.velocity = bounceDirection * lastVelocity.magnitude;
             bounces--;
