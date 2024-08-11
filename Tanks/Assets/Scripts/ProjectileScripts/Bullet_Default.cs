@@ -11,9 +11,6 @@ public class Bullet_Default : Projectile
     // Start is called before the first frame update
     void Start()
     {
-        damage = 100;
-        lifetime = 12;
-        bounces = 1;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -34,20 +31,15 @@ public class Bullet_Default : Projectile
     }
 
     void OnCollisionEnter(Collision collision) {
-        // Refactored this a bit -- Anthony 8/10
+        // Refactored this a bit -- Kevin 8/11
+        if (defaultCollisionChecks(collision)) return;
+        
         Vector3 wallNormal = collision.contacts[0].normal;
         Vector3 bulletDir = lastVelocity.normalized;
-
-        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) // hit a player
+        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
         {
-            d.takeDamage(damage);
-            destruction();
+            ReflectBullet(bulletDir, wallNormal);
             return;
-        }
-
-        if (collision.gameObject.tag == "Projectile") // Parry other projectile
-        {
-            destruction();
         }
 
         if (collision.gameObject.tag == "OneWay")
@@ -61,13 +53,5 @@ public class Bullet_Default : Projectile
 
             ReflectBullet(bulletDir, wallNormal);
         }
-
-        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
-        {
-            ReflectBullet(bulletDir, wallNormal);
-        }
-    }
-    public override void destruction() {
-        Destroy(gameObject);
     }
 }
