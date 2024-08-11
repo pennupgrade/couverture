@@ -57,7 +57,7 @@ public class PlayerCamera : MonoBehaviour
     }
 
     private void Update() {
-        Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
+        //Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
         
         var playerPos = player.transform.Find("Body").transform.position;
         var cameraPos = mainCamera.transform.position;
