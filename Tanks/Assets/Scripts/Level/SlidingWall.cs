@@ -20,7 +20,7 @@ public class SlidingWall : Activatable
         float timer = 0;
         while (timer <= 1) {
             transform.position = Vector3.Lerp(transform.position, dest, timer);
-            timer += Time.deltaTime * 2;
+            timer += Time.deltaTime * 1.5f;
             yield return null;
         }
         transform.position = dest;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RemoveWalls : MonoBehaviour
 {
+    [SerializeField] private float yOffset = 2;
     public bool reusable;
     private bool onCooldown;
     public GameObject[] toChange;
@@ -33,14 +34,22 @@ public class RemoveWalls : MonoBehaviour
             }
 
             if (!reusable) {
-                //for now
-                gameObject.SetActive(!gameObject.activeSelf);
-                //or 
-                //onCooldown = true;
+                StartCoroutine(slideButtonDown());
             } else {
                 StartCoroutine(cooldownTimer());
             }
         }
+    }
+    private IEnumerator slideButtonDown() {
+        onCooldown = true;
+        float timer = 0;
+        while (timer <= 1) {
+            transform.position = Vector3.Lerp(transform.position, 
+                transform.position + new Vector3(0, -yOffset, 0), timer);
+            timer += Time.deltaTime * 0.5f;
+            yield return null;
+        }
+        gameObject.SetActive(false);
     }
     private IEnumerator cooldownTimer() {
         onCooldown = true;
