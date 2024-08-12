@@ -18,10 +18,10 @@ public class Rocket : Projectile
         Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, 0, spinSpeed) * Time.fixedDeltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
     }
-    
 
     void OnCollisionEnter(Collision collision) {
         if (defaultCollisionChecks(collision)) return;
+
         if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
         {
             destruction();
@@ -33,15 +33,12 @@ public class Rocket : Projectile
 
         if (collision.gameObject.tag == "OneWay")
         {
-            Debug.Log(Vector3.Dot(bulletDir, wallNormal));
-
             if (Vector3.Dot(bulletDir, wallNormal) > 0) // Angle check to see if bullet is behind wall
             {
                 return;
             }
 
             destruction();
-
         }
     }
 }
