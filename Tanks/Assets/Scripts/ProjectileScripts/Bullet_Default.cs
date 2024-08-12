@@ -44,7 +44,6 @@ public class Bullet_Default : Projectile
 
         if (collision.gameObject.tag == "OneWay")
         {
-            Debug.Log(Vector3.Dot(bulletDir, wallNormal));
 
             if (Vector3.Dot(bulletDir, wallNormal) > 0) // Angle check to see if bullet is behind wall
             {
