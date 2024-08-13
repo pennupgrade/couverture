@@ -2,58 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemoveWalls : MonoBehaviour
+public class ActivatorButton : MonoBehaviour
 {
-    [SerializeField] private float yOffset = 2;
+    [SerializeField] private Vector3 vOffset = new Vector3(0, -2, 0);
     public bool reusable;
-    private bool onCooldown;
+    protected bool onCooldown;
     public GameObject[] toChange;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (!onCooldown && other.transform.tag == "Player")
         {
-            foreach (GameObject g in toChange) {
-                if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
-                    aObj.activate();
-                } else {
-                    //for spawning enemies
-                    g.gameObject.SetActive(!g.activeSelf);
-                }
-            }
-
-            if (!reusable) {
-                StartCoroutine(slideButtonDown());
+            buttonPressed();
+        }
+    }
+    protected void buttonPressed() {
+        foreach (GameObject g in toChange) {
+            if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
+                aObj.activate();
             } else {
-                StartCoroutine(cooldownTimer());
+                //for spawning enemies
+                g.gameObject.SetActive(!g.activeSelf);
             }
+        }
+
+        if (!reusable) {
+            StartCoroutine(slideButtonDown());
+        } else {
+            StartCoroutine(cooldownTimer());
         }
     }
     private IEnumerator slideButtonDown() {
         onCooldown = true;
         float timer = 0;
+        Vector3 startPos = transform.localPosition;
         while (timer <= 1) {
-            transform.position = Vector3.Lerp(transform.position, 
-                transform.position + new Vector3(0, -yOffset, 0), timer);
-            timer += Time.deltaTime * 0.5f;
+            transform.localPosition = Vector3.Lerp(startPos, 
+                startPos + vOffset, timer);
+            timer += Time.deltaTime * 0.8f;
             yield return null;
         }
         gameObject.SetActive(false);
     }
-    private IEnumerator cooldownTimer() {
+    protected virtual IEnumerator cooldownTimer() {
         onCooldown = true;
+        //change button appearance
         yield return new WaitForSeconds(0.6f);
+        //revert button appearance
         onCooldown = false;
     }
 

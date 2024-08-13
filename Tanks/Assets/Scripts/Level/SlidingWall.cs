@@ -18,8 +18,9 @@ public class SlidingWall : Activatable
     }
     private IEnumerator slideWall(Vector3 dest) {
         float timer = 0;
+        Vector3 startPos = transform.position;
         while (timer <= 1) {
-            transform.position = Vector3.Lerp(transform.position, dest, timer);
+            startPos = Vector3.Lerp(startPos, dest, timer);
             timer += Time.deltaTime * 1.5f;
             yield return null;
         }
