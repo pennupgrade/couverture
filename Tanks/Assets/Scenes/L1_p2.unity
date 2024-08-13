@@ -2535,6 +2535,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677407156}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &680933017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 680933019}
+  - component: {fileID: 680933018}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &680933018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680933017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: c4c28ae68f4d36b46b70ce6dd74939fe, type: 2}
+--- !u!4 &680933019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680933017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.8498745, y: -16.70008, z: -16.433905}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &687694111
 GameObject:
   m_ObjectHideFlags: 0
@@ -4863,6 +4912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vOffset: {x: 0, y: -2, z: 0}
   reusable: 0
   toChange:
   - {fileID: 2040400382}
@@ -5885,6 +5935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vOffset: {x: 0, y: -2, z: 0}
   reusable: 0
   toChange:
   - {fileID: 2040400382}
@@ -6666,6 +6717,7 @@ MonoBehaviour:
   Body: {fileID: 0}
   health: 0
   numBullets: 0
+  stunned: 0
 --- !u!4 &1790302284
 Transform:
   m_ObjectHideFlags: 0
@@ -7784,6 +7836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f47e967bf847498e9d5b2ca34b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vOffset: {x: 0, y: -2, z: 0}
   reusable: 0
   toChange:
   - {fileID: 2040400382}
@@ -8667,3 +8720,4 @@ SceneRoots:
   - {fileID: 1067637863}
   - {fileID: 115161929}
   - {fileID: 631524002}
+  - {fileID: 680933019}
