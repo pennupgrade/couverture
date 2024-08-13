@@ -11,7 +11,7 @@ public class TankMoveState : TankState
         bool isAirborne = false;
         //isAirborne = tank.tankProps.IsAirborne(); // TODO: When gravity gets added, consider this
 
-        if (dir.magnitude < 0.1f && !isAirborne) return new TankIdleState(tank);
+        if (tank.stunned || dir.magnitude < 0.1f && !isAirborne) return new TankIdleState(tank);
 
         // There is input, move tank
         tank.tankController.MoveTank(dir);

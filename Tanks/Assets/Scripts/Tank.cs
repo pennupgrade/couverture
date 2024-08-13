@@ -48,6 +48,7 @@ public class Tank : MonoBehaviour, IDestroyable
     // Misc
     [SerializeField] private int health;
     public int numBullets;
+    public bool stunned;
 
 
     // Couroutine Garbage
@@ -87,6 +88,15 @@ public class Tank : MonoBehaviour, IDestroyable
             //Destroy(gameObject);
             Debug.Log("You died");
         } 
+    }
+
+    public void incapacitate(float time) {
+        StartCoroutine(stunCoroutine( time));
+    }
+    private IEnumerator stunCoroutine(float time) {
+        stunned = true;
+        yield return new WaitForSeconds(time);
+        stunned = false;
     }
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
@@ -189,4 +199,5 @@ public abstract class TankState {
 
 interface IDestroyable {
     void takeDamage(int dmg);
+    void incapacitate(float time);
 }

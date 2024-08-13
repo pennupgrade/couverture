@@ -23,6 +23,7 @@ public class Bullet_Default : Projectile
         Vector3 bounceDirection = Vector3.Reflect(bulletDir, wallNormal);
         rb.velocity = bounceDirection * lastVelocity.magnitude;
         bounces--;
+        damage += 300;
         if (bounces < 0) // changed from == -1 in case... something weird happens
         {
             destruction();

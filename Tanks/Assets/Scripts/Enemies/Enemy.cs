@@ -10,7 +10,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     public Transform gunShotPos;
     public Rigidbody rb;
     public Rigidbody playerRB;
-
+    public delegate void OnDeath();
+    public event OnDeath onDeath;
 
 
     public bool hasLineOfSight;
@@ -22,16 +23,21 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     protected float bulletSpeed;
     protected float dispersion;
     protected int health;
+    private bool isDead;
     protected Vector3 TargetDir;
     private bool leadPlayer;
     protected float leadChance;
     
     public void takeDamage(int dmg) {
         health -= dmg;
-        if (health <= 0) {
+        if (health <= 0 && !isDead) {
+            isDead = true;
+            onDeath?.Invoke();
             destruction();
-        } 
+            onDeath = null;
+        }
     }
+    public void incapacitate(float time) {}
 
     protected virtual void destruction() {
         Destroy(gameObject);

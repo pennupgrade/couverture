@@ -7,7 +7,7 @@ public class GunEmplacement : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        health = 100;
+        health = 300;
         activeRadius = 6;
         state = EnemyState.Idle;
         rotSpeed = 72;

@@ -7,7 +7,7 @@ public class TankIdleState : TankState
 
     public override TankState HandleMovement(Vector2 dir)
     {
-        if (dir.magnitude > 0.1f) return new TankMoveState(tank);
+        if (dir.magnitude > 0.1f && !tank.stunned) return new TankMoveState(tank);
         else return this;
     }
 }
