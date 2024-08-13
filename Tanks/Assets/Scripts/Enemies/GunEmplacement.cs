@@ -15,6 +15,8 @@ public class GunEmplacement : Enemy
         reload = 3;
         bulletSpeed = 2.5f;
         leadChance = 0.25f;
+        damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
+
         rb = GetComponent<Rigidbody>();
         //coroutine for idle turret turning
         StartCoroutine(idleTurn());

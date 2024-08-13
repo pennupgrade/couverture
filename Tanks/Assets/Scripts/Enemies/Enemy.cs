@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     public Rigidbody playerRB;
     public delegate void OnDeath();
     public event OnDeath onDeath;
-
+    protected DamageFlash damageFlash;
 
     public bool hasLineOfSight;
     public EnemyState state;
@@ -30,6 +30,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     
     public void takeDamage(int dmg) {
         health -= dmg;
+        damageFlash.CallDamageFlash(this);
         if (health <= 0 && !isDead) {
             isDead = true;
             onDeath?.Invoke();

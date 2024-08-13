@@ -40,16 +40,12 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject BackWheel;
     public GameObject Body;
 
-    // Private references
-    private Vector3 bodyVector;
-    private Vector3 bodyPivot;
-    private Vector3 bodyNormal;
-
     // Misc
     [SerializeField] private int health;
     public int numBullets;
     public bool stunned;
 
+    private DamageFlash damageFlash;
 
     // Couroutine Garbage
     public Coroutine activeBulletCoroutine, cooldownCoroutine;
@@ -84,6 +80,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     public void takeDamage(int dmg) {
         health -= dmg;
+        damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             //Destroy(gameObject);
             Debug.Log("You died");
@@ -105,6 +102,7 @@ public class Tank : MonoBehaviour, IDestroyable
         controls = new Controls();
         tankState = new TankIdleState(this);
         tankController = new TankController(this);
+        damageFlash = new DamageFlash(Body);
 
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();

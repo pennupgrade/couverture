@@ -23,6 +23,8 @@ public class StandardTank : EnemyPathing
         speed = 1.2f;
         turnSpeed = 80;
         leadChance = 0.2f;
+        damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
+
         //coroutine for idle turret turning
         StartCoroutine(idleTurn());
         //coroutine for recalculating path to destination
