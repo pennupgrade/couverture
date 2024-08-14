@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Bullet_Default : Projectile
 {
+    [SerializeField] private bool changeWhenBounce = true;
     [SerializeField] private int bounces;
     private Rigidbody rb;
     private Vector3 lastVelocity;
+    private Material material;
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        if (changeWhenBounce) {
+            material = GetComponent<MeshRenderer>().material;
+        }
     }
 
     void FixedUpdate () {
@@ -27,8 +32,10 @@ public class Bullet_Default : Projectile
         if (bounces < 0) // changed from == -1 in case... something weird happens
         {
             destruction();
+        } else if (changeWhenBounce)
+        {
+            material.SetFloat("_Glowy", 1);
         }
-        return;
     }
 
     void OnCollisionEnter(Collision collision) {
