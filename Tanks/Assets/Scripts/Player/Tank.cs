@@ -33,8 +33,9 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
     // Object References
-    public GameObject gun;
     public GameObject bulletPrefab;
+    public GameObject explosionPrefab;
+    public GameObject gun;
     public Transform gunShotPos;
     public GameObject FrontWheel;
     public GameObject BackWheel;
@@ -83,6 +84,10 @@ public class Tank : MonoBehaviour, IDestroyable
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             //Destroy(gameObject);
+            /* if (explosionPrefab != null) {
+                GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                Destroy(expl, 2);
+            } */
             Debug.Log("You died");
         } 
     }

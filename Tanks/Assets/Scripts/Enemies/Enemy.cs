@@ -7,6 +7,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     // Object References
     public GameObject gun;
     public GameObject bulletPrefab;
+    public GameObject explosionPrefab;
     public Transform gunShotPos;
     public Rigidbody rb;
     public Rigidbody playerRB;
@@ -41,6 +42,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
     public void incapacitate(float time) {}
 
     protected virtual void destruction() {
+        if (explosionPrefab != null) {
+            GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(expl, 2);
+        }
         Destroy(gameObject);
     }
 

@@ -6,7 +6,7 @@ public abstract class Projectile : MonoBehaviour
 {
     [SerializeField] protected int damage;
     [SerializeField] protected float lifetime;
-    //[SerializeField] protected GameObject explosion;
+    [SerializeField] protected GameObject explosionPrefab;
     private bool destroyed;
 
     protected virtual void Update()
@@ -17,8 +17,11 @@ public abstract class Projectile : MonoBehaviour
     public virtual void destruction() {
         if (destroyed) return;
         destroyed = true;
+        if (explosionPrefab != null) {
+            GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(expl, 2);
+        }
         Destroy(gameObject);
-        //instantiate explosion
     }
 
     protected bool defaultCollisionChecks(Collision collision) {
