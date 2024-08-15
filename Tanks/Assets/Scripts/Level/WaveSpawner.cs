@@ -62,6 +62,8 @@ public class WaveSpawner : Activatable
         foreach (GameObject g in endUnlock) {
             if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
                 aObj.activate();
+            } else {
+                g.SetActive(!g.activeSelf);
             }
         }
     }
