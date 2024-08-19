@@ -21,6 +21,10 @@ public abstract class Projectile : MonoBehaviour
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 2);
         }
+        if (transform.GetChild(0).gameObject.TryGetComponent<MeshTrail>(out MeshTrail mt)) {
+            transform.GetChild(0).parent = null;
+            mt.kill();
+        }
         Destroy(gameObject);
     }
 
