@@ -11,6 +11,7 @@ public class Rocket : Projectile
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
     }
 
     // Update is called once per frame
