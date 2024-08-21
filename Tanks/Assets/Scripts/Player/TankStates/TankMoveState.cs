@@ -19,7 +19,7 @@ public class TankMoveState : TankState
         return this;
     }
     public override TankState HandleShoot() { 
-        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null) {
+        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) {
             return this;
         }
 
@@ -28,6 +28,9 @@ public class TankMoveState : TankState
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
          * (tank.gun.transform.right * tank.bulletSpeed);
+        bullet.GetComponent<Bullet_Default>().addBounceChange();
+        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+
 
         if (tank.activeBulletCoroutine == null) {
             tank.activeBulletCoroutine = tank.StartCoroutine(Reload());

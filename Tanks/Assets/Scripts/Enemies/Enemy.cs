@@ -117,6 +117,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable
         GameObject bullet = Object.Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * (Random.value - 0.5f), Vector3.up)
          * (gun.transform.right * bulletSpeed);
+        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
         leadPlayer = Random.value < leadChance;
     }
 

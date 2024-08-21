@@ -132,7 +132,6 @@ public class Tank : MonoBehaviour, IDestroyable
 public abstract class TankState {
     
     protected Tank tank;
-    protected bool onCooldown;
     public TankState(Tank tank) {
         this.tank = tank;
     }
@@ -166,8 +165,14 @@ public abstract class TankState {
         return this;
     }
 
+    protected bool spawnInsideWallCheck() {
+        return 
+        Physics.Raycast(tank.gameObject.transform.position, tank.gunShotPos.position - tank.gameObject.transform.position, 
+        Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
+    }
+
     public virtual TankState HandleShoot() { 
-        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null) {
+        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) {
             return this;
         }
 
@@ -176,6 +181,9 @@ public abstract class TankState {
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
          * (tank.gun.transform.right * tank.bulletSpeed);
+        bullet.GetComponent<Bullet_Default>().addBounceChange();
+        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+
 
         if (tank.activeBulletCoroutine == null) {
             tank.activeBulletCoroutine = tank.StartCoroutine(Reload());

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet_Default : Projectile
 {
-    [SerializeField] private bool changeWhenBounce = true;
+    private bool changeWhenBounce;
     [SerializeField] private int bounces;
     private Rigidbody rb;
     private Vector3 lastVelocity;
@@ -14,9 +14,6 @@ public class Bullet_Default : Projectile
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        if (changeWhenBounce) {
-            material = GetComponent<MeshRenderer>().material;
-        }
     }
 
     void FixedUpdate () {
@@ -27,6 +24,7 @@ public class Bullet_Default : Projectile
     {
         Vector3 bounceDirection = Vector3.Reflect(bulletDir, wallNormal);
         rb.velocity = bounceDirection * lastVelocity.magnitude;
+        transform.rotation = Quaternion.LookRotation(rb.velocity);
         bounces--;
         damage += 300;
         if (bounces < 0) // changed from == -1 in case... something weird happens
@@ -60,5 +58,9 @@ public class Bullet_Default : Projectile
 
             ReflectBullet(bulletDir, wallNormal);
         }
+    }
+    public void addBounceChange() {
+        changeWhenBounce = true;
+        material = GetComponent<MeshRenderer>().material;
     }
 }
