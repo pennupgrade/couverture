@@ -42,7 +42,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     // Base Items
     private Controls controls;
-
+    public Vector3 Velocity;
     private DamageFlash damageFlash;
 
     // Couroutine Garbage

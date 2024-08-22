@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1280516497823088108}
   - component: {fileID: 5653182065859045178}
   m_Layer: 8
-  m_Name: StandardTank
+  m_Name: Scavenger
   m_TagString: Tank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,16 +133,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0bffb12fd13184988e39614f2eeb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  straightLineAtStart: 1
+  moveStartRange: 0
   gun: {fileID: 2460960197050759849}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gunShotPos: {fileID: 5137332229895161474}
   rb: {fileID: 0}
+  player: {fileID: 0}
   playerRB: {fileID: 0}
-  hasLineOfSight: 0
-  state: 0
-  stopMovement: 0
-  enemyToAlert: {fileID: 0}
+  pTank: {fileID: 0}
+  speed: 0
+  turnSpeed: 0
+  cSpeed: 0
+  stopTurns: 0
+  destination: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  health: 0
+  FOV: 0
+  sightRange: 0
+  gunRange: 0
+  reload: 0
+  bulletSpeed: 0
+  rotSpeed: 0
+  cTurretTurn: 0
+  TargetDir: {x: 0, y: 0, z: 0}
+  leadChance: 0
+  numBullets: 0
+  cooldownTime: 0
 --- !u!65 &7213060708967754453
 BoxCollider:
   m_ObjectHideFlags: 0
