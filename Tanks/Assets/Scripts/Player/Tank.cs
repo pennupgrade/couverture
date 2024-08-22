@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour, IDestroyable
 {
+    public const float RELOAD_TIME = 2f;
+    public const float COOLDOWN_TIME = 0.16f;
+
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
 
@@ -34,13 +37,16 @@ public class Tank : MonoBehaviour, IDestroyable
     public int numBullets;
     public bool stunned;
 
-    // Couroutine Garbage
-    public Coroutine activeBulletCoroutine, cooldownCoroutine;
+    public float reloadProgress;
+    public float cooldownProgress;
 
     // Base Items
     private Controls controls;
 
     private DamageFlash damageFlash;
+
+    // Couroutine Garbage
+    public Coroutine reloadCoroutine, cooldownCoroutine;
     public TankController tankController;
     public TankState tankState;
 
@@ -175,25 +181,37 @@ public abstract class TankState
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 
-
-        if (tank.activeBulletCoroutine == null) tank.activeBulletCoroutine = tank.StartCoroutine(Reload());
+        // Reload bullets if we're not already doing so
+        if (tank.reloadCoroutine == null) tank.reloadCoroutine = tank.StartCoroutine(Reload());
         return this;
     }
 
     public virtual IEnumerator Cooldown() {
-        yield return new WaitForSeconds(0.16f);
+        tank.cooldownProgress = 0f;
+
+        while (tank.cooldownProgress <= Tank.COOLDOWN_TIME) {
+            tank.cooldownProgress += Time.deltaTime;
+            yield return null;
+        }
+
         tank.cooldownCoroutine = null;
+        yield return null;
     }
 
     public virtual IEnumerator Reload() {
         while (tank.numBullets < 5) {
-            yield return new WaitForSeconds(2);
+            tank.reloadProgress = 0f;
+
+            while (tank.reloadProgress <= Tank.RELOAD_TIME) {
+                tank.reloadProgress += Time.deltaTime;
+                yield return null;
+            }
 
             tank.numBullets++;
-            Debug.Log("Reloaded to bullets: " + tank.numBullets);
         }
 
-        tank.activeBulletCoroutine = null;
+        tank.reloadCoroutine = null;
+        yield return null;
     }
 }
 
