@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class Scav_Alert : EnemyAlertState
+{
+    private bool playerGone, leadPlayer;
+    public Scav_Alert(Enemy enemy) : base(enemy) {
+        leadPlayer = false;
+    }
+
+    public override Enemy_State Move(Vector3 _)
+    {
+        if (enemy.wayPointUpdate == null) {
+            enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
+        } else if (hasReachedDest()) {
+            enemy.destination = getRandomPoint(6);
+            enemy.agent.SetDestination(enemy.destination);
+        }
+        turnTowardsVector(enemy.agent.desiredVelocity);
+        return this;
+    }
+    private IEnumerator recalcPath() {
+        while (true) {
+            for (int i = 0; i < 4; i++) {
+                if (i == 0) {
+                    enemy.destination = getRandomPoint(5);
+                }
+                enemy.agent.SetDestination(enemy.destination);
+                yield return new WaitForSeconds(3);
+            }
+        }
+    }
+
+    public override Enemy_State Patrol(Vector3 playerPos)
+    {
+        if (enemy.alertPatrol == null) {
+            playerGone = false;
+            enemy.alertPatrol = enemy.StartCoroutine(alertPatroller());
+        } else {
+            if (playerGone) {
+                removeCoroutine(enemy.alertPatrol);
+                removeCoroutine(enemy.activeShootPeriodically);
+                removeCoroutine(enemy.wayPointUpdate);
+                return new Scav_Idle(enemy);
+            }
+        }
+        return this;
+    }
+    private IEnumerator alertPatroller() {
+        while (true) {
+            playerGone = !checkIfPlayerDetected(false);
+            yield return new WaitForSeconds(7);
+        }
+    }
+
+    public override Enemy_State RotateTurret(Vector3 _) {
+        turnTurretTowardPlayer(leadPlayer);
+        return this;
+    }
+    public override Enemy_State Shoot(Vector3 _) {
+        if (enemy.activeShootPeriodically == null) {
+            enemy.activeShootPeriodically = enemy.StartCoroutine(shootCor());
+        }
+        return this;
+    }
+    private IEnumerator shootCor() {
+        while (true) {            
+            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange) {
+                fire(24);
+                leadPlayer = Random.value < enemy.leadChance;
+                yield return new WaitForSeconds(enemy.reload);
+            } else {
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
+    }
+}
