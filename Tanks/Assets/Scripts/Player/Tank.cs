@@ -8,11 +8,14 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 2f;
     public const float COOLDOWN_TIME = 0.16f;
 
+    // Base Items
+    public Controls controls;
+    public TankState tankState;
+    public TankController tankController;
+
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
-
     [HideInInspector] public Collider tankCollider;
-
 
     // Config Variables
     public float moveSpeed;
@@ -21,7 +24,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public float wheelMaxDist = 3.0f;
     public float bulletSpeed;
     public bool enableExperimentalGravity = true;
-
 
     // Object References
     public GameObject bulletPrefab;
@@ -36,19 +38,13 @@ public class Tank : MonoBehaviour, IDestroyable
     public int health;
     public int numBullets;
     public bool stunned;
-
+    public Vector3 Velocity;
+    private DamageFlash damageFlash;
     public float reloadProgress;
     public float cooldownProgress;
 
-    // Base Items
-    private Controls controls;
-    public Vector3 Velocity;
-    private DamageFlash damageFlash;
-
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
-    public TankController tankController;
-    public TankState tankState;
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
@@ -124,7 +120,6 @@ public class Tank : MonoBehaviour, IDestroyable
         stunned = false;
     }
 }
-
 
 public abstract class TankState
 {
@@ -213,10 +208,4 @@ public abstract class TankState
         tank.reloadCoroutine = null;
         yield return null;
     }
-}
-
-internal interface IDestroyable
-{
-    void takeDamage(int dmg);
-    void incapacitate(float time);
 }
