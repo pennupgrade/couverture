@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1071,6 +1071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 1193857371}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
+  explosionPrefab: {fileID: 0}
   gunShotPos: {fileID: 1193857369}
   rb: {fileID: 0}
   playerRB: {fileID: 1400881168}
@@ -1502,7 +1503,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76fba45e18e55064c91ca8f85ff9009c, type: 2}
+  - {fileID: 2100000, guid: 1e4e68ee6db7b49359e7a5d34a284a4b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1779,14 +1780,16 @@ MonoBehaviour:
   wheelMaxDist: 3
   bulletSpeed: 3
   enableExperimentalGravity: 1
-  gun: {fileID: 3655000509426967117}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
+  explosionPrefab: {fileID: 0}
+  gun: {fileID: 3655000509426967117}
   gunShotPos: {fileID: 1171727879}
   FrontWheel: {fileID: 0}
   BackWheel: {fileID: 0}
   Body: {fileID: 0}
   health: 0
   numBullets: 0
+  stunned: 0
 --- !u!1 &1403347339
 GameObject:
   m_ObjectHideFlags: 0
@@ -2296,14 +2299,16 @@ MonoBehaviour:
   wheelMaxDist: 3
   bulletSpeed: 3
   enableExperimentalGravity: 1
-  gun: {fileID: 2036816185}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
+  explosionPrefab: {fileID: 0}
+  gun: {fileID: 2036816185}
   gunShotPos: {fileID: 1499997552}
   FrontWheel: {fileID: 0}
   BackWheel: {fileID: 0}
   Body: {fileID: 0}
   health: 0
   numBullets: 0
+  stunned: 0
 --- !u!4 &1790302284
 Transform:
   m_ObjectHideFlags: 0
