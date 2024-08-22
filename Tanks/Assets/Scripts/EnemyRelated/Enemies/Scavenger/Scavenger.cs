@@ -3,9 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StandardTank : EnemyPathing
+public class Scavenger : Enemy
 {
-    void Awake()
+    void Awake() {
+        enemyState = new Scav_Start(this);
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        //set enemy values
+        health = 200;
+        gunRange = 8;
+        sightRange = 9;
+        FOV = 0.6f;
+        rotSpeed = 90;
+        reload = 3;
+        bulletSpeed = 2.5f;
+        leadChance = 0.25f;
+        speed = 1.2f;
+        turnSpeed = 80;
+        
+        damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
+        findPlayer();
+        agentSetup();
+        rb = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 playerPos = player.transform.position;
+        enemyState = enemyState.Patrol(playerPos);
+        enemyState = enemyState.RotateTurret(playerPos);
+        enemyState = enemyState.Shoot(playerPos);
+
+        gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
+    }
+    void FixedUpdate() {
+        agent.nextPosition = transform.position;
+        if (isStunned) return;
+        //turning
+        if (!stopTurns && moveStraightTimer == null) {
+            enemyState = enemyState.Move(playerRB.position);
+        }
+        //moving
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+    }
+
+
+    /* void Awake()
     {
         rb = GetComponent<Rigidbody>();
         agentSetup();
@@ -85,16 +131,14 @@ public class StandardTank : EnemyPathing
         //necessary for controlling the NavAgent yourself
         agent.nextPosition = transform.position;
         //move forwards, unless a wall was hit
-        if (!stopMovement) {
-            rb.velocity = speed * transform.right;
-        }
+        rb.velocity = cSpeed * transform.right;
         //tank turning
         turnTowardsPath();
-    }
+    }*/
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
-             && !stopMovement){
-            StartCoroutine(stopMove());
+             && cSpeed > 0.01f){
+            StartCoroutine(stopMove(1.5f));
         }
     }
 }

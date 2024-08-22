@@ -148,6 +148,7 @@ public class TankController
     {
         Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
         tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
+        tank.Velocity = tank.moveSpeed * direction * dir.y;
         tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
     }
 
