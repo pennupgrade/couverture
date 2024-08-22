@@ -18,10 +18,11 @@ public abstract class EnemyStartState : Enemy_State
         }
         frameTimer = 10;
 
-        if (changeState || checkIfPlayerDetected(true) || 
+        if (changeState || 
             (enemy.moveStartRange != 0 && Vector2.Distance(new Vector2(enemy.rb.position.x, enemy.rb.position.z),
                 new Vector2(enemy.playerRB.position.x, enemy.playerRB.position.z)) <= enemy.moveStartRange &&
-                Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) < 1.4f))
+                Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) < 1.4f) ||
+            checkIfPlayerDetected(true))
         {
             enemy.cSpeed = enemy.speed;
             if (enemy.straightLineAtStart) {
