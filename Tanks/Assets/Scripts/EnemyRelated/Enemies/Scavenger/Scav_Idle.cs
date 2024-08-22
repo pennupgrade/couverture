@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+
+public class Scav_Idle : EnemyIdleState
+{
+    private int frameTimer;
+    public Scav_Idle(Enemy enemy) : base(enemy) {
+        frameTimer = 1;
+    }
+
+    public override Enemy_State Move(Vector3 _)
+    {
+        if (enemy.wayPointUpdate == null) {
+            enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
+        } else if (hasReachedDest()) {
+            enemy.destination = getRandomPoint(8);
+            enemy.agent.SetDestination(enemy.destination);
+        }
+        turnTowardsVector(enemy.agent.desiredVelocity);
+        return this;
+    }
+    private IEnumerator recalcPath() {
+        while (true) {
+            for (int i = 0; i < 4; i++) {
+                if (i == 0) {
+                    enemy.destination = getRandomPoint(6);
+                }
+                enemy.agent.SetDestination(enemy.destination);
+                yield return new WaitForSeconds(3);
+            }
+        }
+    }
+
+    public override Enemy_State Patrol(Vector3 playerPos)
+    {
+        frameTimer--;
+        if (frameTimer > 0) {
+            return this;
+        }
+        frameTimer = 6;
+
+        if (checkIfPlayerDetected(true)) {
+            removeCoroutine(enemy.idleTurretCor);
+            removeCoroutine(enemy.wayPointUpdate);
+            return new Scav_Alert(enemy);
+        }
+        return this;
+    }
+
+    public override Enemy_State RotateTurret(Vector3 _) {
+        if (enemy.idleTurretCor == null) {
+            enemy.idleTurretCor = enemy.StartCoroutine(idleTurretTurn());
+        }
+        return this;
+    }
+}

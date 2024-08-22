@@ -45,7 +45,7 @@ public class Tank : MonoBehaviour, IDestroyable
     [SerializeField] private int health;
     public int numBullets;
     public bool stunned;
-
+    public Vector3 Velocity;
     private DamageFlash damageFlash;
 
     // Couroutine Garbage
@@ -206,9 +206,4 @@ public abstract class TankState {
         tank.activeBulletCoroutine = null;
     }
 
-}
-
-interface IDestroyable {
-    void takeDamage(int dmg);
-    void incapacitate(float time);
 }
