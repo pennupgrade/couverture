@@ -1,12 +1,21 @@
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletCount : MonoBehaviour
 {
     [SerializeField] private Tank tank;
-    [SerializeField] private TMP_Text bullets;
+    [SerializeField] private List<BulletIcon> bulletIcons;
+
+    private int prevCount;
 
     private void Update() {
-        bullets.text = $"Bullets: <b>{tank.numBullets}</b>";
+        var count = tank.numBullets;
+
+        if (prevCount == count) return;
+
+        for (var i = 0; i < count; i++) bulletIcons[i].fadeTo(Color.white);
+        for (var i = count; i < 5; i++) bulletIcons[i].fadeTo(Color.clear);
+
+        prevCount = count;
     }
 }

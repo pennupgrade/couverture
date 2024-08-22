@@ -1,5 +1,3 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +5,6 @@ public class Healthbar : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private Tank tank;
-    [SerializeField] private TMP_Text percentage;
 
     private Slider slider;
 
@@ -17,10 +14,7 @@ public class Healthbar : MonoBehaviour
 
     // Update is called once per frame
     private void Update() {
-        var value = tank.health / maxHealth;
-
-        slider.value = value;
-        percentage.text = $"{Math.Round(value * 100)}%";
+        slider.value = tank.health / maxHealth;
     }
 
     // TODO: animate slider going up and down?
