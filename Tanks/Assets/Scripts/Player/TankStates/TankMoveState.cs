@@ -27,7 +27,7 @@ public class TankMoveState : TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
-         * (tank.gun.transform.right * tank.bulletSpeed);
+         * (tank.gun.transform.right * -bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 

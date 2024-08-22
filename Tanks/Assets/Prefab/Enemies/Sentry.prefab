@@ -47,14 +47,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72795faef9a0e344abd2d16567bef7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  straightLineAtStart: 0
+  moveStartRange: 0
   gun: {fileID: 6266495652320551901}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gunShotPos: {fileID: 3718705191312973814}
   rb: {fileID: 0}
+  player: {fileID: 0}
   playerRB: {fileID: 0}
-  hasLineOfSight: 0
-  state: 0
+  pTank: {fileID: 0}
+  speed: 0
+  turnSpeed: 0
+  cSpeed: 0
+  stopTurns: 0
+  destination: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  health: 0
+  FOV: 0
+  sightRange: 0
+  gunRange: 0
+  reload: 0
+  rotSpeed: 0
+  cTurretTurn: 0
+  TargetDir: {x: 0, y: 0, z: 0}
+  leadChance: 0
+  numBullets: 0
+  cooldownTime: 0
 --- !u!65 &2589323094498148320
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -215,6 +234,10 @@ PrefabInstance:
     - target: {fileID: 8126171226479889075, guid: a17b28cb71452d447855c0f3c8c0e9c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508578397005448349, guid: a17b28cb71452d447855c0f3c8c0e9c8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0437
       objectReference: {fileID: 0}
     - target: {fileID: 8607515202645269358, guid: a17b28cb71452d447855c0f3c8c0e9c8, type: 3}
       propertyPath: m_LocalPosition.x

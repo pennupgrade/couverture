@@ -18,7 +18,7 @@ public class Scav_Alert : EnemyAlertState
             enemy.destination = getRandomPoint(6);
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity);
+        turnTowardsVector(enemy.agent.desiredVelocity, 300);
         return this;
     }
     private IEnumerator recalcPath() {
@@ -40,9 +40,16 @@ public class Scav_Alert : EnemyAlertState
             enemy.alertPatrol = enemy.StartCoroutine(alertPatroller());
         } else {
             if (playerGone) {
-                removeCoroutine(enemy.alertPatrol);
-                removeCoroutine(enemy.activeShootPeriodically);
-                removeCoroutine(enemy.wayPointUpdate);
+                if (enemy.alertPatrol != null) {
+                    enemy.StopCoroutine(enemy.alertPatrol);
+                    enemy.alertPatrol = null;
+                }   if (enemy.activeShootPeriodically != null) {
+                    enemy.StopCoroutine(enemy.activeShootPeriodically);
+                    enemy.activeShootPeriodically = null;
+                }   if (enemy.wayPointUpdate != null) {
+                    enemy.StopCoroutine(enemy.wayPointUpdate);
+                    enemy.wayPointUpdate = null;
+                }   
                 return new Scav_Idle(enemy);
             }
         }

@@ -11,6 +11,9 @@ public class Bullet_Default : Projectile
     private Material material;
     
     // Start is called before the first frame update
+    void Awake() {
+        bulletSpeed = 2.5f;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();

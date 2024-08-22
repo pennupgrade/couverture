@@ -28,7 +28,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public float rotSpeed;
     public float groundMargin = 0.2f;
     public float wheelMaxDist = 3.0f;
-    public float bulletSpeed;
     public bool enableExperimentalGravity = true;
 
 
@@ -180,7 +179,7 @@ public abstract class TankState {
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         GameObject bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
-         * (tank.gun.transform.right * tank.bulletSpeed);
+         * (tank.gun.transform.right * -bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 

@@ -35,7 +35,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public Coroutine wayPointUpdate;
 
     // movement
-    public float speed, turnSpeed, cSpeed;
+    public float speed, turnSpeed, cSpeed, cTurnSpeed;
     [SerializeField] protected bool stopTurns;
     public Vector3 destination;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent agent;
@@ -46,13 +46,13 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public float FOV;
     [HideInInspector] public float sightRange, gunRange;
     [HideInInspector] public float reload;
-    [HideInInspector] public float bulletSpeed;
     public float rotSpeed, cTurretTurn; // turrets
     [HideInInspector] public Vector3 TargetDir;
     [HideInInspector] public float leadChance;
     
     // bullet stuff
     public int numBullets;
+    [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
 
 
@@ -72,9 +72,15 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     protected IEnumerator stopMove(float length) {
         cSpeed = 0;
+        yield return new WaitForSeconds(0.1f);
+        if (moveStraightTimer != null) {
+            cSpeed = speed;
+            yield break;
+        }
         yield return new WaitForSeconds(length);
         cSpeed = speed;
     }
+    public virtual void bulletWarn(Rigidbody bullet) {}
 //-----------------------------------------------------
     protected float TimerF(float val)
     {

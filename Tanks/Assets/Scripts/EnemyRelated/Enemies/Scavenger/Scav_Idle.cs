@@ -19,7 +19,7 @@ public class Scav_Idle : EnemyIdleState
             enemy.destination = getRandomPoint(8);
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity);
+        turnTowardsVector(enemy.agent.desiredVelocity, 300);
         return this;
     }
     private IEnumerator recalcPath() {
@@ -43,8 +43,13 @@ public class Scav_Idle : EnemyIdleState
         frameTimer = 6;
 
         if (checkIfPlayerDetected(true)) {
-            removeCoroutine(enemy.idleTurretCor);
-            removeCoroutine(enemy.wayPointUpdate);
+            if (enemy.idleTurretCor != null) {
+                enemy.StopCoroutine(enemy.idleTurretCor);
+                enemy.idleTurretCor = null;
+            } if (enemy.wayPointUpdate != null) {
+                enemy.StopCoroutine(enemy.wayPointUpdate);
+                enemy.wayPointUpdate = null;
+            }
             return new Scav_Alert(enemy);
         }
         return this;
