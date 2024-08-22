@@ -16,7 +16,7 @@ public class Sentry : Enemy
         sightRange = 8;
         FOV = 0.6f;
         rotSpeed = 60;
-        reload = 3;
+        reload = 4;
         bulletSpeed = 2.5f;
         leadChance = 0.2f;
         

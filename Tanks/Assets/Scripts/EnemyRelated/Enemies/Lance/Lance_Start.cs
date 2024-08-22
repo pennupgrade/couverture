@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lance_Start : MonoBehaviour
+public class Lance_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Lance_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        return (alert) ? new Lance_Alert(enemy) : new Lance_Idle(enemy);
     }
 }

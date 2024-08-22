@@ -8,6 +8,9 @@ public class Rocket : Projectile
     private Rigidbody rb;
     
     // Start is called before the first frame update
+    void Awake() {
+        bulletSpeed = 5;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();

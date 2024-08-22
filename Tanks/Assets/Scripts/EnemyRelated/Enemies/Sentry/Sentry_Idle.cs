@@ -18,7 +18,10 @@ public class Sentry_Idle : EnemyIdleState
         frameTimer = 6;
 
         if (checkIfPlayerDetected(true)) {
-            removeCoroutine(enemy.idleTurretCor);
+            if (enemy.idleTurretCor != null) {
+                enemy.StopCoroutine(enemy.idleTurretCor);
+                enemy.idleTurretCor = null;
+            }
             return new Sentry_Alert(enemy);
         }
         return this;

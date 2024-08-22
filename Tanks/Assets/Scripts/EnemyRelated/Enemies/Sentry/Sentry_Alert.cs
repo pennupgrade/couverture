@@ -16,8 +16,13 @@ public class Sentry_Alert : EnemyAlertState
             enemy.alertPatrol = enemy.StartCoroutine(alertPatroller());
         } else {
             if (playerGone) {
-                removeCoroutine(enemy.alertPatrol);
-                removeCoroutine(enemy.activeShootPeriodically);
+                if (enemy.alertPatrol != null) {
+                    enemy.StopCoroutine(enemy.alertPatrol);
+                    enemy.alertPatrol = null;
+                }   if (enemy.activeShootPeriodically != null) {
+                    enemy.StopCoroutine(enemy.activeShootPeriodically);
+                    enemy.activeShootPeriodically = null;
+                }
                 return new Sentry_Idle(enemy);
             }
         }

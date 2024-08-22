@@ -7,6 +7,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected int damage;
     [SerializeField] protected float lifetime;
     [SerializeField] protected GameObject explosionPrefab;
+    public float bulletSpeed;
     private bool destroyed;
 
     protected virtual void Update()

@@ -79,8 +79,12 @@ public abstract class Enemy_State
         if (enemy.playerRB == null) {
             return false;
         }
-        return !Physics.Raycast(enemy.playerRB.position, enemy.rb.position - enemy.playerRB.position, 
-                    getDist(), 1 << 3);
+        return !Physics.Raycast(enemy.playerRB.position, 
+            enemy.rb.position - enemy.playerRB.position, getDist(), 1 << 3);
+    }
+    protected bool checkFriendlyFire(float dist) {
+        return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.right,
+            enemy.playerRB.position - enemy.rb.position, dist, 1 << 8);
     }
     protected bool isAimed() {
         return Vector3.Dot(enemy.TargetDir, enemy.gun.transform.right) > 0.975f;
@@ -89,7 +93,8 @@ public abstract class Enemy_State
         if (enemy.playerRB == null) {
             return;
         }
-        if (leadPlayer && MyMath.InterceptDirection(enemy.playerRB.position, enemy.rb.position, enemy.pTank.Velocity, enemy.bulletSpeed, out Vector3 result)){
+        if (leadPlayer && MyMath.InterceptDirection(enemy.playerRB.position, enemy.rb.position, enemy.pTank.Velocity, 
+                enemy.bulletSpeed, out Vector3 result)){
             enemy.TargetDir = result;
         } else enemy.TargetDir = (enemy.playerRB.position - enemy.rb.position).normalized;
 
@@ -109,7 +114,7 @@ public abstract class Enemy_State
     protected void fire(float dispersion) {
         GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * (Random.value - 0.5f), Vector3.up)
-         * (enemy.gun.transform.right * enemy.bulletSpeed);
+         * (enemy.gun.transform.right * bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
     }
 
@@ -118,9 +123,23 @@ public abstract class Enemy_State
     protected Vector3 getRandomPoint(float radius) {
         for (int i = 0; i < 18; i++)
         {
-            Vector3 randomPoint = enemy.transform.position + UnityEngine.Random.insideUnitSphere * radius;
+            Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f) {
+                    return hit.position;
+                }
+            }
+        }
+        return Vector3.zero;
+    }
+    protected Vector3 getRandomNavPoint(Vector3 point, float radius) {
+        for (int i = 0; i < 18; i++)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(point + radius * UnityEngine.Random.insideUnitSphere,
+                 out hit, 1.0f, NavMesh.AllAreas))
             {
                 if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f) {
                     return hit.position;
@@ -133,14 +152,26 @@ public abstract class Enemy_State
         return Vector2.Distance(new Vector2(enemy.rb.position.x, enemy.rb.position.z),
                     new Vector2(enemy.destination.x, enemy.destination.z)) < 1;
     }
-    protected void turnTowardsVector(Vector3 v) {
+    protected void turnTowardsVector(Vector3 v, float accel) {
         float dir = Vector3.Dot(enemy.transform.forward, v);
         if (dir > 0.03f) {
-            enemy.transform.eulerAngles -= enemy.turnSpeed * Time.fixedDeltaTime * Vector3.up; 
-            enemy.gun.transform.eulerAngles += 0.5f * enemy.turnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            if (enemy.cTurnSpeed > 0) {
+                enemy.cTurnSpeed -= 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Max(-enemy.turnSpeed, enemy.cTurnSpeed - accel * Time.fixedDeltaTime);
+            }
         } else if (dir < -0.03f) {
-            enemy.transform.eulerAngles += enemy.turnSpeed * Time.fixedDeltaTime * Vector3.up;
-            enemy.gun.transform.eulerAngles -= 0.5f * enemy.turnSpeed * Time.fixedDeltaTime * Vector3.up;
+            if (enemy.cTurnSpeed < 0) {
+                enemy.cTurnSpeed += 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Min(enemy.turnSpeed, enemy.cTurnSpeed + accel * Time.fixedDeltaTime);
+            }
+        } else {
+            if (enemy.cTurnSpeed < 20) {
+                enemy.cTurnSpeed = 0;
+            } else {
+                enemy.cTurnSpeed /= 1.2f;
+            }
         }
     }
 
