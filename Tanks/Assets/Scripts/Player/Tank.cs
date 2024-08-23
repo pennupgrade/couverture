@@ -90,18 +90,16 @@ public class Tank : MonoBehaviour, IDestroyable
     public void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
-        if (health <= 0)
-        {
-            if (explosionPrefab != null)
-            {
-                GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        if (health <= 0) {
+            if (explosionPrefab != null) {
+                var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
                 Destroy(expl, 2);
             }
 
             LivesManager.Instance.LoseLife();
 
-            float respawnTime = LivesManager.Instance.GetRespawnTime();
-            Camera.main.GetComponent<PlayerCamera>().Kill(respawnTime);
+            var respawnTime = LivesManager.Instance.GetRespawnTime();
+            Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
         }
@@ -169,7 +167,8 @@ public abstract class TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
-        * (tank.gun.transform.right * -bullet.GetComponent<Projectile>().bulletSpeed);
+                                                    * (tank.gun.transform.right *
+                                                       -bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 
