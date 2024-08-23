@@ -27,6 +27,11 @@ public class LivesManager : MonoBehaviour
         }
     }
 
+    public int GetLives()
+    {
+        return lives;
+    }
+
     public float GetRespawnTime()
     {
         return respawnTime;
