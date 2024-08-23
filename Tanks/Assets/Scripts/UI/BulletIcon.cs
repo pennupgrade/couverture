@@ -27,5 +27,7 @@ public class BulletIcon : MonoBehaviour
 
             yield return null;
         }
+
+        filled.color = color;
     }
 }
