@@ -96,13 +96,18 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            LivesManager.Instance.LoseLife();
+            GameManager.Instance.livesManager.LoseLife();
 
-            var respawnTime = LivesManager.Instance.GetRespawnTime();
+            var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
         }
+    }
+
+    public void Dissolve(float dissolveTime)
+    {
+        damageFlash.CallDissolve(this, dissolveTime);
     }
 
     public void incapacitate(float time) {

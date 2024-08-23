@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageFlash
+public class DamageFlash // DamageFlash is a terrible name
 {
     // Used this tutorial: https://www.youtube.com/watch?v=rq6yGh-piIU
     // Someone please refactor this later so that it's actually good
@@ -34,6 +34,11 @@ public class DamageFlash
         _damageFlashCorountine = mono.StartCoroutine(DamageFlasher());
     }
 
+    public void CallDissolve(MonoBehaviour mono, float dissolveTime)
+    {
+        mono.StartCoroutine(Dissolve(dissolveTime));
+    }
+
     public void AddMaterialFromGameObject(GameObject gameObject)
     {
         MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -63,20 +68,35 @@ public class DamageFlash
         }
     }
 
-    private void SetFlashColor()
+    private IEnumerator Dissolve(float dissolveTime)
+    {
+        float elapsedTime = 0f;
+        float reducedDissolveTime = Mathf.Max(0.01f, dissolveTime - 0.1f);
+
+        while (elapsedTime < reducedDissolveTime - 0.02f)
+        {
+            elapsedTime += Time.deltaTime * 1.2f;
+
+            float dissolveAmount = Mathf.Lerp(0f, 1f, (elapsedTime) / reducedDissolveTime);
+            SetFloatUniform("_Dissolve", dissolveAmount);
+
+            yield return null;
+        }
+
+        SetFloatUniform("_Dissolve", 1.0f);
+    }
+    
+
+    private void SetFloatUniform(string uniform, float amount)
     {
         for (int i = 0; i < materials.Length; i++)
         {
-            materials[i].SetColor("_FlashColor", _flashColor); // _FlashColor uniform determined in ShaderGraph
+            materials[i].SetFloat(uniform, amount); // _FlashAmount uniform determined in ShaderGraph
         }
     }
 
     private void SetFlashAmount(float amount)
     {
-        for (int i = 0; i < materials.Length; i++)
-        {
-            materials[i].SetFloat("_FlashAmount", amount); // _FlashAmount uniform determined in ShaderGraph
-        }
+        SetFloatUniform("_FlashAmount", amount);
     }
-
 }
