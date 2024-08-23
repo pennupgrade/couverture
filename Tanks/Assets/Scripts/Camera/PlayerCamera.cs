@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [Serializable] public class Range2d
@@ -38,10 +39,12 @@ public class PlayerCamera : MonoBehaviour
 
     private Vector3 cameraVelocity;
     private Vector3 cameraDirection;
+    private Vector3 ogCamPos;
     private float distanceFromPlayer;
 
     [SerializeField] private bool debugLines;
     [SerializeField] private Range2d range;
+    [SerializeField] private bool isDead = false;
     
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -54,10 +57,46 @@ public class PlayerCamera : MonoBehaviour
 
         distanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
         cameraDirection = Vector3.Normalize(cameraPos - playerPos);
+        ogCamPos = cameraPos;
+    }
+
+    public void Kill(float duration)
+    {
+        Debug.Log("Player died, initiate camera death sequence");
+        StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
+        isDead = true;
+    }
+
+    private IEnumerator SmoothMoveCamera(Vector3 endPos, float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration - 0.015f)
+        {
+            float distance = Vector3.Distance(mainCamera.transform.position, ogCamPos);
+
+            // Calculate the required speed to move the camera within the maxDuration
+            float speed = distance / duration;
+
+            // Calculate the interpolation factor, ensuring it doesn’t overshoot the target
+            float interpolationFactor = Mathf.Min(speed * Time.deltaTime, 1.0f);
+
+            // Interpolate the camera position towards the target position
+            mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, ogCamPos, interpolationFactor);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.transform.position = endPos;
     }
 
     private void Update() {
+        if (isDead) return;
+
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
+
+        if (player == null) return;
         
         var playerPos = player.transform.Find("Body").transform.position;
         var cameraPos = mainCamera.transform.position;

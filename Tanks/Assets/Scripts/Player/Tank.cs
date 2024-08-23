@@ -8,6 +8,8 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 1.8f;
     public const float COOLDOWN_TIME = 0.16f;
 
+    public int LIVES = 5;
+
     // Base Items
     public Controls controls;
     public TankState tankState;
@@ -85,28 +87,24 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.Disable();
     }
 
-    // private IEnumerator reloadMagazine() {
-    //     isReloading = true;
-    //     while (numBullets < 4) {
-    //         yield return new WaitForSeconds(2);
-    //         numBullets++;
-    //         if (numBullets == 4) {
-    //             isReloading = false;
-    //             yield break;
-    //         }
-    //     }
-    // }
-
     public void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0)
-            //Destroy(gameObject);
-            /* if (explosionPrefab != null) {
+        {
+            if (explosionPrefab != null)
+            {
                 GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
                 Destroy(expl, 2);
-            } */
-            Debug.Log("You died");
+            }
+
+            LivesManager.Instance.LoseLife();
+
+            float respawnTime = LivesManager.Instance.GetRespawnTime();
+            Camera.main.GetComponent<PlayerCamera>().Kill(respawnTime);
+
+            gameObject.SetActive(false);
+        }
     }
 
     public void incapacitate(float time) {
