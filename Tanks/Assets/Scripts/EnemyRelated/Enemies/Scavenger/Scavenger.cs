@@ -32,6 +32,8 @@ public class Scavenger : Enemy
     // Update is called once per frame
     void Update()
     {
+        if (player == null) return;
+
         Vector3 playerPos = player.transform.position;
         enemyState = enemyState.Patrol(playerPos);
         enemyState = enemyState.RotateTurret(playerPos);
@@ -40,6 +42,8 @@ public class Scavenger : Enemy
         gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }
     void FixedUpdate() {
+        if (playerRB == null) return;
+
         agent.nextPosition = transform.position;
         if (isStunned) return;
         //turning
