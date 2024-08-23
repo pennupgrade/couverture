@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class MeshTrail : MonoBehaviour
 {
-    public Material mat;
-    public Mesh mesh;
-    public Vector3 scale;
+    public GameObject meshPrefab;
     public float destroyTime;
     public float changeRate;
     public float spawnRate;
@@ -17,13 +15,9 @@ public class MeshTrail : MonoBehaviour
     }
 
     void SpawnMesh() {
-        GameObject gm = new GameObject();
+        GameObject gm = Instantiate(meshPrefab);
         gm.transform.SetPositionAndRotation(gameObject.transform.position, gameObject.transform.rotation);
-        gm.transform.localScale = scale;
-        MeshFilter mf = gm.AddComponent<MeshFilter>();
-        MeshRenderer mr = gm.AddComponent<MeshRenderer>();
-        mr.material = mat;
-        mf.mesh = mesh;
+        MeshRenderer mr = gm.GetComponent<MeshRenderer>();
         StartCoroutine(AnimateMaterial(mr.material, changeRate));
         Destroy(gm, destroyTime);
     }
