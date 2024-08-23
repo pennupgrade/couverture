@@ -61,7 +61,7 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
-        health = 100;
+        //health = 100; // WHATS THE POINT
     }
 
 

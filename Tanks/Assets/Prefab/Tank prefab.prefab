@@ -547,13 +547,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LIVES: 5
   rb: {fileID: 0}
   tankCollider: {fileID: 0}
   moveSpeed: 1.5
   rotSpeed: 240
   groundMargin: 0.2
   wheelMaxDist: 3
-  bulletSpeed: -2.5
   enableExperimentalGravity: 0
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
@@ -562,9 +562,12 @@ MonoBehaviour:
   FrontWheel: {fileID: 2300565459145294251}
   BackWheel: {fileID: 3328427203571100217}
   Body: {fileID: 1917824168728784151}
-  health: 100
+  health: 200
   numBullets: 0
   stunned: 0
+  Velocity: {x: 0, y: 0, z: 0}
+  reloadProgress: 0
+  cooldownProgress: 0
 --- !u!54 &8699447814597592467
 Rigidbody:
   m_ObjectHideFlags: 0
