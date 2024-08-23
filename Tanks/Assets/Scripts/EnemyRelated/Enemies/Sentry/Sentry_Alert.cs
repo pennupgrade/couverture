@@ -46,6 +46,7 @@ public class Sentry_Alert : EnemyAlertState
         return this;
     }
     private IEnumerator shootCor() {
+        yield return new WaitForSeconds(0.16f);
         while (true) {            
             if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange) {
                 fire(24);
