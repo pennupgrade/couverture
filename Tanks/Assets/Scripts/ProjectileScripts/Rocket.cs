@@ -9,7 +9,7 @@ public class Rocket : Projectile
     
     // Start is called before the first frame update
     void Awake() {
-        bulletSpeed = 5;
+        bulletSpeed = 5.5f;
     }
     void Start()
     {

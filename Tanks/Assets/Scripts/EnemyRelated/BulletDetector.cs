@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletDetector : MonoBehaviour
 {
+    private Enemy enemy;
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemy = transform.parent.gameObject.GetComponent<Enemy>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag == "Projectile" && other.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb)) {
+            enemy.bulletWarn(rb);
+        }
     }
 }

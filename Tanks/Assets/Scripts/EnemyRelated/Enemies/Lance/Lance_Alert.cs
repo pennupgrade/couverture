@@ -83,7 +83,7 @@ public class Lance_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         while (true) {            
             if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(6)) {
-                fire(0);
+                fire(10);
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.reload);
             } else {

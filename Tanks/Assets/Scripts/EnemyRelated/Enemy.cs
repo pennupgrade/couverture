@@ -33,9 +33,11 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public Coroutine alertPatrol;
     public Coroutine reloadCor;
     public Coroutine wayPointUpdate;
+    public Coroutine avoidBulletCor;
 
     // movement
     public float speed, turnSpeed, cSpeed, cTurnSpeed;
+    public float dodgeChance;
     [SerializeField] protected bool stopTurns;
     public Vector3 destination;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent agent;
@@ -80,7 +82,66 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         yield return new WaitForSeconds(length);
         cSpeed = speed;
     }
-    public virtual void bulletWarn(Rigidbody bullet) {}
+    //----------------------------------bullet dodging--------------------------------------
+    protected void turnTowardsVector(Vector3 v) {
+        float dir = Vector3.Dot(transform.forward, v);
+        if (dir > 0.02f) {
+            if (cTurnSpeed > 0) {
+                cTurnSpeed -= 720 * Time.deltaTime;
+            } else {
+                cTurnSpeed = Mathf.Max(-turnSpeed, cTurnSpeed - 720 * Time.deltaTime);
+            }
+        } else if (dir < -0.02f) {
+            if (cTurnSpeed < 0) {
+                cTurnSpeed += 720 * Time.deltaTime;
+            } else {
+                cTurnSpeed = Mathf.Min(turnSpeed, cTurnSpeed + 720 * Time.deltaTime);
+            }
+        } else {
+            cTurnSpeed = 0;
+        }
+    }
+    protected IEnumerator avoidBullet(Vector3 desired, Rigidbody bullet) {
+        stopTurns = true;
+        while (Vector3.Dot(desired, transform.right) < 0.995f){
+            turnTowardsVector(desired);
+            transform.eulerAngles += cTurnSpeed * Time.deltaTime * Vector3.up;
+            gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.deltaTime * Vector3.up;
+            yield return null;
+        }
+        while (bullet != null && Vector3.Distance(transform.position, bullet.position) > 
+                Vector3.Distance(transform.position, bullet.position + bullet.velocity.normalized)) {
+            yield return new WaitForSeconds(0.16f);
+        }
+        stopTurns = false;
+        avoidBulletCor = null;
+    }
+    public virtual void bulletWarn(Rigidbody bullet) {
+        if (bullet == null || isStunned || avoidBulletCor != null || dodgeChance < Random.value) {
+            return;
+        }
+        if (cSpeed == 0) {
+            alert();
+            return;
+        }
+        Vector3 rbForward = bullet.velocity.normalized;
+        Vector3 badDir;
+        if (MyMath.InterceptDirection(rb.position, bullet.position, cSpeed * transform.right, 
+                bullet.velocity.magnitude, out Vector3 result)){
+            badDir = result;
+            Debug.DrawRay(bullet.position, 2 * badDir, Color.red, 1);
+        } else return;
+
+        if (Vector2.Dot(new Vector2(rbForward.x, rbForward.z),
+                new Vector2(badDir.x, badDir.z)) > 0.77f) {
+            float frontDot = Vector3.Dot(transform.right, rbForward);
+            if (frontDot > 0.66f || frontDot < -0.66f) {
+                avoidBulletCor = StartCoroutine(avoidBullet((Random.value > 0.5f) ? transform.forward : -transform.forward, bullet));
+            } else {
+                avoidBulletCor = StartCoroutine(avoidBullet((frontDot > 0) ? rbForward : -rbForward, bullet));
+            }
+        }
+    }
 //-----------------------------------------------------
     protected float TimerF(float val)
     {

@@ -18,10 +18,11 @@ public class Lance : Enemy
         FOV = 0.8f;
         rotSpeed = 72;
         reload = 4.5f;
-        bulletSpeed = 5;
+        bulletSpeed = 5f;
         leadChance = 0.5f;
         speed = 1.2f;
         turnSpeed = 100;
+        dodgeChance = 0.8f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
