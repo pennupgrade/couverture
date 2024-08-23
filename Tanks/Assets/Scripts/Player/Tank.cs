@@ -85,28 +85,22 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.Disable();
     }
 
-    // private IEnumerator reloadMagazine() {
-    //     isReloading = true;
-    //     while (numBullets < 4) {
-    //         yield return new WaitForSeconds(2);
-    //         numBullets++;
-    //         if (numBullets == 4) {
-    //             isReloading = false;
-    //             yield break;
-    //         }
-    //     }
-    // }
-
     public void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
-        if (health <= 0)
-            //Destroy(gameObject);
-            /* if (explosionPrefab != null) {
-                GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        if (health <= 0) {
+            if (explosionPrefab != null) {
+                var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
                 Destroy(expl, 2);
-            } */
-            Debug.Log("You died");
+            }
+
+            LivesManager.Instance.LoseLife();
+
+            var respawnTime = LivesManager.Instance.GetRespawnTime();
+            Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
+
+            gameObject.SetActive(false);
+        }
     }
 
     public void incapacitate(float time) {
@@ -171,7 +165,8 @@ public abstract class TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
-        * (tank.gun.transform.right * -bullet.GetComponent<Projectile>().bulletSpeed);
+                                                    * (tank.gun.transform.right *
+                                                       -bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 
