@@ -22,7 +22,6 @@ public class DamageFlash
     {
         Init();
         AddMaterialFromGameObject(root);
-        Debug.Log("Loaded num elements: " + materials.Length);
     }
 
     private void Init()

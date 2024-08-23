@@ -54,15 +54,19 @@ public class LivesManager : MonoBehaviour
         StartCoroutine(TimerToRestart(respawnTime, CurrentLevel));
     }
 
+    // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
     private IEnumerator TimerToRestart(float duration, string sceneName) {
         var elapsedTime = 0f;
 
-        while (elapsedTime < duration) {
+        var operation = SceneManager.LoadSceneAsync(sceneName);
+        operation!.allowSceneActivation = false;
+
+        while (elapsedTime <= duration) {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        Debug.Log("restart scene");
-        SceneManager.LoadScene(sceneName);
+        Debug.Log($"Restart to scene '{sceneName}'");
+        operation.allowSceneActivation = true;
     }
 }

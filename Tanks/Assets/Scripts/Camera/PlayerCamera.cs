@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 [Serializable]
 public class Range2d
@@ -69,19 +70,14 @@ public class PlayerCamera : MonoBehaviour
 
     private IEnumerator SmoothMoveCamera(Vector3 endPos, float duration) {
         var elapsedTime = 0f;
+        var initialCamPos = mainCamera.transform.position;
 
-        while (elapsedTime < duration - 0.015f) {
-            var distance = Vector3.Distance(mainCamera.transform.position, ogCamPos);
+        // Animation duration should be a little faster
+        var animDuration = duration - 0.1f;
 
-            // Calculate the required speed to move the camera within the maxDuration
-            var speed = distance / duration;
-
-            // Calculate the interpolation factor, ensuring it doesn't overshoot the target
-            var interpolationFactor = Mathf.Min(speed * Time.deltaTime, 1.0f);
-
-            // Interpolate the camera position towards the target position
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, ogCamPos, interpolationFactor);
-
+        while (elapsedTime < animDuration) {
+            var t = Easing.InOutPower(elapsedTime / animDuration, 5);
+            mainCamera.transform.position = Vector3.Slerp(initialCamPos, ogCamPos, t);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
