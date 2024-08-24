@@ -29,7 +29,7 @@ public class Bullet_Default : Projectile
         rb.velocity = bounceDirection * lastVelocity.magnitude;
         transform.rotation = Quaternion.LookRotation(rb.velocity);
         bounces--;
-        damage += 300;
+        damage += 100;
         if (bounces < 0) // changed from == -1 in case... something weird happens
         {
             destruction();
