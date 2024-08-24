@@ -47,8 +47,6 @@ public class TankController
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
         bodyPivot = 0.50f * wheelDistances * bodyVector + BackWheelPos;
 
-        Debug.Log(bodyPivot);
-
         // Some vector math to get the body's normal (does Unity have a function for this?)
         bodyNormal = Vector3.Cross(bodyVector, tank.transform.up);
         bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyVector));
