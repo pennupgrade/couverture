@@ -15,6 +15,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public GameObject gun;
     public GameObject bulletPrefab;
     public GameObject explosionPrefab;
+    public GameObject bulletExplosionPrefab;
     public Transform gunShotPos;
     public Rigidbody rb;
     public GameObject player;
@@ -158,6 +159,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         if (health <= 0 && !isDead) {
             isDead = true;
             onDeath?.Invoke();
+
             destruction();
             onDeath = null;
         }
@@ -177,10 +179,40 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
     }
 
+    public void spawnBulletBoom()
+    {
+        Vector3 pos = transform.position;
+
+        float randX = Random.Range(-1, 1f);
+        float randY = Random.Range(-1, 1f);
+        float randZ = Random.Range(-1, 1f);
+
+        Vector3 randPos = new Vector3(randX, randY, randZ);
+        randPos.Normalize();
+
+        float range = 0.15f;
+        randPos *= range;
+        randPos += pos;
+
+        GameObject expl = Instantiate(bulletExplosionPrefab, randPos, Quaternion.identity);
+        ParticleSystem.MainModule pMain = expl.GetComponent<ParticleSystem>().main;
+        pMain.startSize = new ParticleSystem.MinMaxCurve(0.07f, 0.3f);
+
+        Destroy(expl, 2);
+    }
+
     protected virtual void destruction() {
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 2);
+        }
+        if (bulletExplosionPrefab != null)
+        {
+            // 4am code
+            for (int i = 0; i < 4; i++)
+            {
+                spawnBulletBoom();
+            }
         }
         Destroy(gameObject);
     }
