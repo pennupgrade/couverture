@@ -45,7 +45,9 @@ public class TankController
 
         // Position the body in the middle of the two wheels
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
-        bodyPivot = 0.5f * wheelDistances * bodyVector + BackWheelPos;
+        bodyPivot = 0.50f * wheelDistances * bodyVector + BackWheelPos;
+
+        Debug.Log(bodyPivot);
 
         // Some vector math to get the body's normal (does Unity have a function for this?)
         bodyNormal = Vector3.Cross(bodyVector, tank.transform.up);
@@ -129,7 +131,7 @@ public class TankController
 
         // Use this to translate based on normal
         Vector3 bodyPosition = bodyPivot;
-        bodyPosition += bodyNormal * -0.075f;
+        bodyPosition += bodyNormal * -0.045f;
         tank.Body.transform.position = bodyPosition;
     }
 
