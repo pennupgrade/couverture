@@ -177,7 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442b133983a8fc440b3ae1da10a4dcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
   tank: {fileID: 1155985348964352763}
 --- !u!1 &1625949453626569755
 GameObject:
@@ -860,6 +859,7 @@ MonoBehaviour:
     right: 0.55
     bottom: 0.45
     top: 0.55
+  isDead: 0
 --- !u!114 &7939427703630503327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1935,6 +1935,10 @@ PrefabInstance:
     - target: {fileID: 3333890237990636835, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5421411469498413301, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: health
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5421411469498413301, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: groundMargin
