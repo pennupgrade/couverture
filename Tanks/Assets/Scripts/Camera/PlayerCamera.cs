@@ -47,6 +47,9 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private bool debugLines;
     [SerializeField] private Range2d range;
     [SerializeField] private bool isDead;
+    [SerializeField] private bool cinemaMode;
+    [SerializeField] private float cinemaSpeed;
+    [SerializeField] private Vector3 cinematicDirection;
 
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -86,6 +89,12 @@ public class PlayerCamera : MonoBehaviour
     }
 
     private void Update() {
+        if (cinemaMode)
+        {
+            mainCamera.transform.position += Vector3.Normalize(cinematicDirection) * Time.deltaTime * cinemaSpeed;
+            return;
+        }
+
         if (isDead) return;
 
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
