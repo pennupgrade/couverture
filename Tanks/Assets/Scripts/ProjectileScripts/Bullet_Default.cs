@@ -29,13 +29,13 @@ public class Bullet_Default : Projectile
         rb.velocity = bounceDirection * lastVelocity.magnitude;
         transform.rotation = Quaternion.LookRotation(rb.velocity);
         bounces--;
-        damage += 100;
         if (bounces < 0) // changed from == -1 in case... something weird happens
         {
             destruction();
         } else if (changeWhenBounce)
         {
             material.SetFloat("_Glowy", 1);
+            damage *= 3;
         }
     }
 

@@ -61,7 +61,6 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
-        //health = 100; // WHATS THE POINT
     }
 
 
@@ -88,7 +87,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
-        health -= dmg;
+        health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {
