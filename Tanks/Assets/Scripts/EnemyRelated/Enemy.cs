@@ -17,10 +17,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public GameObject explosionPrefab;
     public GameObject bulletExplosionPrefab;
     public Transform gunShotPos;
-    public Rigidbody rb;
-    public GameObject player;
-    public Rigidbody playerRB;
-    public Tank pTank;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public GameObject player;
+    [HideInInspector] public Rigidbody playerRB;
+    [HideInInspector] public Tank pTank;
 
     // Damage related
     public delegate void OnDeath();
@@ -37,10 +37,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public Coroutine avoidBulletCor;
 
     // movement
-    public float speed, turnSpeed, cSpeed, cTurnSpeed;
-    public float dodgeChance;
+    [HideInInspector] public float speed, turnSpeed, cSpeed, cTurnSpeed;
+    [HideInInspector] public float dodgeChance;
     [SerializeField] protected bool stopTurns;
-    public Vector3 destination;
+    [HideInInspector] public Vector3 destination;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent agent;
 
     // the rest
@@ -49,12 +49,12 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public float FOV;
     [HideInInspector] public float sightRange, gunRange;
     [HideInInspector] public float reload;
-    public float rotSpeed, cTurretTurn; // turrets
+    [HideInInspector] public float rotSpeed, cTurretTurn; // turrets
     [HideInInspector] public Vector3 TargetDir;
     [HideInInspector] public float leadChance;
     
     // bullet stuff
-    public int numBullets;
+    [HideInInspector] public int numBullets;
     [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
 
