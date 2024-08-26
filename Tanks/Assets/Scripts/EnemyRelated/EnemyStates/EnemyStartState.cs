@@ -19,15 +19,7 @@ public abstract class EnemyStartState : Enemy_State
         frameTimer = 10;
 
         if (checkIfPlayerDetected(true)) {
-            enemy.cSpeed = enemy.speed;
-            if (enemy.straightLineAtStart) {
-                enemy.moveStraightTimer = enemy.StartCoroutine(straightLineTimer());
-            }
-            if (enemy.idleTurretCor != null) {
-                enemy.StopCoroutine(enemy.idleTurretCor);
-                enemy.idleTurretCor = null;
-            }
-
+            transitionHelper();
             return stateToTransitionTo(true);
         }
 
@@ -36,18 +28,20 @@ public abstract class EnemyStartState : Enemy_State
                 new Vector2(enemy.playerRB.position.x, enemy.playerRB.position.z)) <= enemy.moveStartRange &&
                 Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) < 1.4f))
         {
-            enemy.cSpeed = enemy.speed;
-            if (enemy.straightLineAtStart) {
-                enemy.moveStraightTimer = enemy.StartCoroutine(straightLineTimer());
-            }
-            if (enemy.idleTurretCor != null) {
-                enemy.StopCoroutine(enemy.idleTurretCor);
-                enemy.idleTurretCor = null;
-            }
-
+            transitionHelper();
             return stateToTransitionTo(false);
         }
         return this;
+    }
+    private void transitionHelper() {
+        enemy.cSpeed = enemy.speed;
+        if (enemy.straightLineAtStart) {
+            enemy.moveStraightTimer = enemy.StartCoroutine(straightLineTimer());
+        }
+        if (enemy.idleTurretCor != null) {
+            enemy.StopCoroutine(enemy.idleTurretCor);
+            enemy.idleTurretCor = null;
+        }
     }
     protected abstract Enemy_State stateToTransitionTo(bool alert);
     private IEnumerator straightLineTimer() {

@@ -53,7 +53,7 @@ public class DamageFlash // DamageFlash is a terrible name
     private IEnumerator DamageFlasher()
     {
         //SetFlashColor();
-        Debug.Log("Damage coroutine activated");
+        //Debug.Log("Damage coroutine activated");
 
         float elapsedTime = 0f;
 

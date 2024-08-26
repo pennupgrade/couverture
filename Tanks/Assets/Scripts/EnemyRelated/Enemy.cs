@@ -204,7 +204,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     protected virtual void destruction() {
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(expl, 2);
+            Destroy(expl, 5);
         }
         if (bulletExplosionPrefab != null)
         {
