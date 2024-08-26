@@ -66,6 +66,6 @@ public class Scout : Enemy
 
     public void signalFlare() {
         GameObject flare = Instantiate(signalPrefab, transform.position + 0.2f * Vector3.up, Quaternion.identity);
-        Destroy(flare, 6);
+        Destroy(flare, 10);
     }
 }
