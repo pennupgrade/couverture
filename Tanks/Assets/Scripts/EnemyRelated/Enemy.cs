@@ -54,7 +54,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public float leadChance;
     
     // bullet stuff
-    [HideInInspector] public int numBullets;
+    public int numBullets, magSize;
     [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
 

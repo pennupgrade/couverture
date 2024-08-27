@@ -79,8 +79,8 @@ public abstract class Enemy_State
         if (enemy.playerRB == null) {
             return false;
         }
-        return !Physics.Raycast(enemy.playerRB.position, 
-            enemy.rb.position - enemy.playerRB.position, getDist(), 1 << 3);
+        return !Physics.Raycast(enemy.playerRB.position + Vector3.up, 
+            enemy.rb.position - (enemy.playerRB.position + Vector3.up), getDist(), 1 << 3);
     }
     protected bool checkFriendlyFire(float dist) {
         return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.right,
@@ -124,27 +124,52 @@ public abstract class Enemy_State
         for (int i = 0; i < 18; i++)
         {
             Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
-            randomPoint.y = enemy.transform.position.y;
+            randomPoint.y = enemy.rb.position.y;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f) {
+                if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f) {
                     return hit.position;
                 }
             }
         }
         return Vector3.zero;
     }
+    protected Vector3 getLOSPoint(Vector3 pos, float radius, float avoidRadius) {
+        for (int i = 0; i < 20; i++)
+        {
+            Vector3 randomPoint = pos + radius * UnityEngine.Random.insideUnitSphere;
+            randomPoint.y = enemy.rb.position.y;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
+                Debug.Log("drew ray");
+                Debug.DrawRay(newPos, enemy.playerRB.position + 0.25f * Vector3.up - newPos, Color.green, 2);
+                if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f &&
+                    !Physics.Raycast(newPos, (enemy.playerRB.position + 0.25f * Vector3.up) - newPos, 
+                    Vector3.Distance(newPos, (enemy.playerRB.position + 0.25f * Vector3.up)), 1 << 3) &&
+                    Vector3.Distance(enemy.player.transform.position, newPos) > avoidRadius) {
+
+                    return hit.position;
+                }
+            }
+        }
+        return getRandomPoint(radius);
+    }
+    
     protected Vector3 getRandomHidePoint(float radius) {
         for (int i = 0; i < 18; i++)
         {
             Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
-            randomPoint.y = enemy.transform.position.y;
+            randomPoint.y = enemy.rb.position.y;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f && 
-                    Physics.Raycast(enemy.rb.position, enemy.playerRB.position - enemy.rb.position, getDist(), 1 << 3)) {
+                Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
+                if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f && 
+                    Physics.Raycast(newPos, (enemy.playerRB.position  + 0.25f * Vector3.up) - newPos, 
+                    Vector3.Distance(newPos, enemy.playerRB.position + 0.25f * Vector3.up), 1 << 3)) {
                     return hit.position;
                 }
             }
@@ -152,7 +177,7 @@ public abstract class Enemy_State
         return getRandomPoint(radius);
     }
     protected Vector3 getPlayerPoint(float radius) {
-        if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1f) {
+        if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1.2f) {
             return getRandomPoint(6);
         }
         for (int i = 0; i < 10; i++)
