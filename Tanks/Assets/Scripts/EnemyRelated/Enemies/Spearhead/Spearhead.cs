@@ -13,7 +13,7 @@ public class Spearhead : Enemy
     {
         //set enemy values
         health = 300;
-        gunRange = 6;
+        gunRange = 5;
         sightRange = 8;
         FOV = 0.9f;
         rotSpeed = 90;

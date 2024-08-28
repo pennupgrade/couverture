@@ -58,13 +58,13 @@ public abstract class Enemy_State
         if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 1.4f) {
             return false;
         }
-        //if distance under 5, only check if in LOS
+        //if distance under 4, only check if in LOS
         //otherwise also check if it is in the FOV triangle
         float d = Vector2.Distance(new Vector2(enemy.rb.position.x, enemy.rb.position.z),
             new Vector2(enemy.playerRB.position.x, enemy.playerRB.position.z));
         if (!useFOV) {
             return d < enemy.sightRange && lineOfSightCheck();
-        } else if (d > 5) {
+        } else if (d > 4) {
             Vector3 gunDirection = enemy.gun.transform.right;
             Vector3 gunToPlayer = (enemy.playerRB.position - enemy.gun.transform.position).normalized;
             return d < enemy.sightRange && Vector3.Dot(gunDirection, gunToPlayer) > (1 - enemy.FOV) && lineOfSightCheck();
@@ -111,9 +111,9 @@ public abstract class Enemy_State
             }
         }
     }
-    protected void fire(float dispersion) {
+    protected void fire(float dispersion, bool random = true) {
         GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * (Random.value - 0.5f), Vector3.up)
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * (enemy.gun.transform.right * bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
     }

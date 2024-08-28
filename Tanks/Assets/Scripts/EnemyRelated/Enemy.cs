@@ -153,16 +153,19 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
         return val;
     }
-     public void takeDamage(int dmg) {
+    public virtual void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0 && !isDead) {
-            isDead = true;
-            onDeath?.Invoke();
-
-            destruction();
-            onDeath = null;
+            die();
         }
+    }
+    protected void die() {
+        isDead = true;
+        onDeath?.Invoke();
+
+        destruction();
+        onDeath = null;
     }
     public void incapacitate(float time) {
         StartCoroutine(stunTimer(time));

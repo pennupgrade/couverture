@@ -18,7 +18,6 @@ public class Spear_Alert : EnemyAlertState
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
             enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 1.5f);
-            Debug.Log("reached");
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -28,11 +27,9 @@ public class Spear_Alert : EnemyAlertState
         while (true) {
             for (int i = 0; i < 3; i++) {
                 if (i == 0 && lineOfSightCheck() && getDist() < 5) {
-                    Debug.Log("wander");
                     enemy.destination = getRandomPoint(3);
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 1.5f);
-                    Debug.Log("change");
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(2.4f);
