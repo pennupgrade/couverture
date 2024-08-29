@@ -130,13 +130,13 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         if (MyMath.InterceptDirection(rb.position, bullet.position, cSpeed * transform.right, 
                 bullet.velocity.magnitude, out Vector3 result)){
             badDir = result;
-            Debug.DrawRay(bullet.position, 2 * badDir, Color.red, 1);
+            //Debug.DrawRay(bullet.position, 2 * badDir, Color.red, 1);
         } else return;
 
         if (Vector2.Dot(new Vector2(rbForward.x, rbForward.z),
-                new Vector2(badDir.x, badDir.z)) > 0.77f) {
+                new Vector2(badDir.x, badDir.z)) > 0.82f) {
             float frontDot = Vector3.Dot(transform.right, rbForward);
-            if (frontDot > 0.66f || frontDot < -0.66f) {
+            if (frontDot > 0.58f || frontDot < -0.75f) {
                 avoidBulletCor = StartCoroutine(avoidBullet((Random.value > 0.5f) ? transform.forward : -transform.forward, bullet));
             } else {
                 avoidBulletCor = StartCoroutine(avoidBullet((frontDot > 0) ? rbForward : -rbForward, bullet));

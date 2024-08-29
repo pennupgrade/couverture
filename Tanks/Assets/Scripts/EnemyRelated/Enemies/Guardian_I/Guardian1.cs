@@ -29,6 +29,10 @@ public class Guardian1 : ShieldedEnemy
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
+        if (shieldEnabled) {
+            shieldSetup();
+            StartCoroutine(activateShield());
+        }
         rb = GetComponent<Rigidbody>();
     }
 

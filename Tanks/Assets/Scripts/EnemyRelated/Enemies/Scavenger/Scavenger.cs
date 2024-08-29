@@ -20,7 +20,7 @@ public class Scavenger : Enemy
         reload = 3.5f;
         bulletSpeed = 2.5f;
         leadChance = 0.25f;
-        speed = 1.2f;
+        speed = 1;
         turnSpeed = 80;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

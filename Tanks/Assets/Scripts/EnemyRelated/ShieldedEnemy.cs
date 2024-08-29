@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class ShieldedEnemy : Enemy
 {
-    public Material shield;
+    public GameObject shield;
+    private Material shieldMat;
     public bool shieldEnabled;
     private bool shieldActivated;
+    protected void shieldSetup() {
+        shieldMat = shield.GetComponent<MeshRenderer>().material;
+    }
     public override void takeDamage(int dmg) {
-        if (shieldEnabled) {
+        if (shieldActivated) {
             StartCoroutine(deactivateShield());
             return;
         }
@@ -18,16 +22,26 @@ public class ShieldedEnemy : Enemy
             die();
         }
     }
-    private IEnumerator activateShield() {
+    protected IEnumerator activateShield() {
+        float i = 1;
+        while (i > 0) {
+            i -= 0.05f;
+            shieldMat.SetFloat("_Dissolve", i);
+            yield return new WaitForSeconds(0.06f);
+        }
         shieldActivated = true;
-
-        yield return new WaitForSeconds(1);
+        shieldMat.SetFloat("_Dissolve", 0);
     }
     private IEnumerator deactivateShield() {
         shieldActivated = false;
+        float i = 0;
+        while (i < 1) {
+            i += 0.12f;
+            shieldMat.SetFloat("_Dissolve", i);
+            yield return new WaitForSeconds(0.05f);
+        }
+        shieldMat.SetFloat("_Dissolve", 1);
         StartCoroutine(reactivateShield());
-
-        yield return new WaitForSeconds(1);
     }
     protected virtual IEnumerator reactivateShield() {
         yield return new WaitForSeconds(16);

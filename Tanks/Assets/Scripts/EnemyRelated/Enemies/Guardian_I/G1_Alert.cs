@@ -16,7 +16,7 @@ public class G1_Alert : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 1.5f);
+            enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 2.5f);
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -28,7 +28,7 @@ public class G1_Alert : EnemyAlertState
                 if (i == 0 && lineOfSightCheck() && getDist() < 5) {
                     enemy.destination = getRandomPoint(4);
                 } else if (i == 0){
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 1.5f);
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 2.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(3);

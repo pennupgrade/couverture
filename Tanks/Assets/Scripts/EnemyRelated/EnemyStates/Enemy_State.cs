@@ -79,8 +79,8 @@ public abstract class Enemy_State
         if (enemy.playerRB == null) {
             return false;
         }
-        return !Physics.Raycast(enemy.playerRB.position + Vector3.up, 
-            enemy.rb.position - (enemy.playerRB.position + Vector3.up), getDist(), 1 << 3);
+        return !Physics.Raycast(enemy.playerRB.position + 0.2f * Vector3.up, 
+            enemy.rb.position - (enemy.playerRB.position + 0.2f * Vector3.up), getDist(), 1 << 3);
     }
     protected bool checkFriendlyFire(float dist) {
         return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.right,
@@ -145,10 +145,10 @@ public abstract class Enemy_State
             {
                 Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
                 Debug.Log("drew ray");
-                Debug.DrawRay(newPos, enemy.playerRB.position + 0.25f * Vector3.up - newPos, Color.green, 2);
+                Debug.DrawRay(newPos, enemy.playerRB.position + 0.2f * Vector3.up - newPos, Color.green, 2);
                 if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f &&
-                    !Physics.Raycast(newPos, (enemy.playerRB.position + 0.25f * Vector3.up) - newPos, 
-                    Vector3.Distance(newPos, (enemy.playerRB.position + 0.25f * Vector3.up)), 1 << 3) &&
+                    !Physics.Raycast(newPos, (enemy.playerRB.position + 0.2f * Vector3.up) - newPos, 
+                    Vector3.Distance(newPos, (enemy.playerRB.position + 0.2f * Vector3.up)), 1 << 3) &&
                     Vector3.Distance(enemy.player.transform.position, newPos) > avoidRadius) {
 
                     return hit.position;
@@ -168,8 +168,8 @@ public abstract class Enemy_State
             {
                 Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
                 if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f && 
-                    Physics.Raycast(newPos, (enemy.playerRB.position  + 0.25f * Vector3.up) - newPos, 
-                    Vector3.Distance(newPos, enemy.playerRB.position + 0.25f * Vector3.up), 1 << 3)) {
+                    Physics.Raycast(newPos, (enemy.playerRB.position  + 0.2f * Vector3.up) - newPos, 
+                    Vector3.Distance(newPos, enemy.playerRB.position + 0.2f * Vector3.up), 1 << 3)) {
                     return hit.position;
                 }
             }

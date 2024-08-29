@@ -22,7 +22,7 @@ public class Scout : Enemy
         reload = 3;
         bulletSpeed = 2;
         leadChance = 0.25f;
-        speed = 1.5f;
+        speed = 1.3f;
         turnSpeed = 100;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
