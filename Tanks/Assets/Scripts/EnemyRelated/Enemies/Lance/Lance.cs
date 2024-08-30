@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lance : Enemy
+public class Lance : ShieldedEnemy
 {
     public Vector3 homePoint;
     void Awake() {
@@ -18,7 +18,7 @@ public class Lance : Enemy
         FOV = 0.8f;
         rotSpeed = 72;
         reload = 4.5f;
-        bulletSpeed = 5f;
+        bulletSpeed = 5.75f;
         leadChance = 0.5f;
         speed = 1.2f;
         turnSpeed = 110;
@@ -27,6 +27,10 @@ public class Lance : Enemy
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
+        if (shieldEnabled) {
+            shieldSetup();
+            StartCoroutine(activateShield());
+        }
         rb = GetComponent<Rigidbody>();
         homePoint = rb.position;
     }

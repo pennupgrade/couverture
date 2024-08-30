@@ -1,18 +1,126 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Phantom_Alert : MonoBehaviour
+public class Phantom_Alert : EnemyAlertState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private bool playerGone, leadPlayer, wander;
+    public Phantom_Alert(Enemy enemy) : base(enemy) {
+        enemy.numBullets = 4;
+        leadPlayer = false;
+        wander = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override Enemy_State Move(Vector3 _)
     {
-        
+        if (enemy.wayPointUpdate == null) {
+            enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
+        } else if (hasReachedDest()) {
+            if (wander) {
+                enemy.destination = getRandomPoint(6);
+            } else {
+                enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3f);
+            }
+            wander = Random.value < 0.4f;
+            enemy.agent.SetDestination(enemy.destination);
+        }
+        turnTowardsVector(enemy.agent.desiredVelocity, 300);
+        return this;
+    }
+    private IEnumerator recalcPath() {
+        while (true) {
+            for (int i = 0; i < 4; i++) {
+                if (i == 0 && lineOfSightCheck() && getDist() < 5) {
+                    enemy.destination = getRandomPoint(4);
+                } else if (i == 0){
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3f);
+                }
+                enemy.agent.SetDestination(enemy.destination);
+                yield return new WaitForSeconds(2.5f);
+            }
+        }
+    }
+
+    public override Enemy_State Patrol(Vector3 playerPos)
+    {
+        if (enemy.alertPatrol == null) {
+            playerGone = false;
+            enemy.alertPatrol = enemy.StartCoroutine(alertPatroller());
+        } else {
+            if (playerGone) {
+                if (enemy.alertPatrol != null) {
+                    enemy.StopCoroutine(enemy.alertPatrol);
+                    enemy.alertPatrol = null;
+                }   if (enemy.activeShootPeriodically != null) {
+                    enemy.StopCoroutine(enemy.activeShootPeriodically);
+                    enemy.activeShootPeriodically = null;
+                }   if (enemy.wayPointUpdate != null) {
+                    enemy.StopCoroutine(enemy.wayPointUpdate);
+                    enemy.wayPointUpdate = null;
+                }   if (enemy.reloadCor != null) {
+                    enemy.StopCoroutine(enemy.reloadCor);
+                    enemy.reloadCor = null;
+                }
+                return new Phantom_Idle(enemy);
+            }
+        }
+        return this;
+    }
+    private IEnumerator alertPatroller() {
+        while (true) {
+            playerGone = !checkIfPlayerDetected(false);
+            yield return new WaitForSeconds(9);
+        }
+    }
+
+    public override Enemy_State RotateTurret(Vector3 _) {
+        turnTurretTowardPlayer(leadPlayer);
+        return this;
+    }
+    public override Enemy_State Shoot(Vector3 _) {
+        if (enemy.activeShootPeriodically == null) {
+            enemy.activeShootPeriodically = enemy.StartCoroutine(shootCor());
+        }
+        if (enemy.reloadCor == null) {
+            enemy.reloadCor = enemy.StartCoroutine(reloader());
+        }
+        return this;
+    }
+    private IEnumerator reloader() {
+        yield return new WaitForSeconds(0.2f);
+        while (true) {
+            if (enemy.numBullets < enemy.magSize) {
+                yield return new WaitForSeconds(enemy.reload);
+                enemy.numBullets++;
+            } else {
+                yield return null;
+            }
+        }
+    }
+    private IEnumerator shootCor() {
+        yield return new WaitForSeconds(0.16f);
+        while (true) {   
+            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
+                if (enemy.numBullets == enemy.magSize && getDist() < 6 && Random.value < 0.6f) {
+                    int left = (Random.value) < 0.5f ? 1 : -1;
+                    for (int i = 0; i < 4; i++) {
+                        fire(left * (-8 + 8 * i), false);
+                        yield return new WaitForSeconds(enemy.cooldownTime / 2);
+                    }
+                    yield return new WaitForSeconds(enemy.cooldownTime / 2);
+                    enemy.numBullets = 1;
+                } else if (Random.value < 0.8f){
+                    fire(24);
+                    enemy.numBullets--;
+                    leadPlayer = Random.value < enemy.leadChance;
+                    yield return new WaitForSeconds(enemy.cooldownTime);
+                } else {
+                    yield return new WaitForSeconds(enemy.reload);
+                }
+            } else {
+                yield return new WaitForSeconds(0.16f);
+            }
+        }
     }
 }

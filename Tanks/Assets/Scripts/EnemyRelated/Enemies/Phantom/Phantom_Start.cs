@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Phantom_Start : MonoBehaviour
+public class Phantom_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Phantom_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        enemy.StartCoroutine(((Phantom)enemy).activateCamo());
+        return (alert) ? new Phantom_Alert(enemy) : new Phantom_Idle(enemy);
     }
 }

@@ -12,6 +12,7 @@ public class DamageFlash // DamageFlash is a terrible name
 
     private Material[] materials;
     private Coroutine _damageFlashCorountine;
+    private Coroutine invisFlickerCor;
 
     public DamageFlash()
     {
@@ -37,6 +38,20 @@ public class DamageFlash // DamageFlash is a terrible name
     public void CallDissolve(MonoBehaviour mono, float dissolveTime)
     {
         mono.StartCoroutine(Dissolve(dissolveTime));
+    }
+    public void CallInvisFlicker(MonoBehaviour mono, float duration)
+    {
+        if (invisFlickerCor == null) {
+            invisFlickerCor = mono.StartCoroutine(InvisFlicker(duration));
+        }
+    }
+    public void CallInvisDamage(MonoBehaviour mono, float duration)
+    {
+        mono.StartCoroutine(InvisDamage(duration));
+    }
+    public void CallElectricity(MonoBehaviour mono, float duration)
+    {
+        mono.StartCoroutine(Electricity(duration));
     }
 
     public void AddMaterialFromGameObject(GameObject gameObject)
@@ -67,6 +82,18 @@ public class DamageFlash // DamageFlash is a terrible name
             yield return null;
         }
     }
+    private IEnumerator InvisDamage(float duration)
+    {
+        yield return new WaitForSeconds(0.1f);
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float amount = Mathf.Lerp(1f, 0f, (elapsedTime) / duration);
+            SetFloatUniform("_OutlineDamage", amount);
+            yield return null;
+        }
+    }
 
     private IEnumerator Dissolve(float dissolveTime)
     {
@@ -84,6 +111,35 @@ public class DamageFlash // DamageFlash is a terrible name
         }
 
         SetFloatUniform("_Dissolve", 1.0f);
+    }
+    private IEnumerator InvisFlicker(float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration / 2)
+        {
+            elapsedTime += Time.deltaTime;
+            float amount = Mathf.Lerp(0f, 1f, (elapsedTime) / (duration / 2));
+            SetFloatUniform("_Outline", amount);
+            yield return null;
+        }
+        elapsedTime = 0f;
+        while (elapsedTime < duration / 2)
+        {
+            elapsedTime += Time.deltaTime;
+            float amount = Mathf.Lerp(1, 0, (elapsedTime) / (duration / 2));
+            SetFloatUniform("_Outline", amount);
+            yield return null;
+        }
+
+        SetFloatUniform("_Outline", 0);
+        invisFlickerCor = null;
+    }
+    private IEnumerator Electricity(float duration)
+    {
+        SetFloatUniform("_Electricity", 1f);
+        yield return new WaitForSeconds(duration);
+        SetFloatUniform("_Electricity", 0f);
     }
     
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class G1_Idle : EnemyIdleState
 {
-    private int frameTimer;
+    protected int frameTimer;
     public G1_Idle(Enemy enemy) : base(enemy) {
         frameTimer = 1;
     }

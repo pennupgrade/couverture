@@ -171,6 +171,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         StartCoroutine(stunTimer(time));
     }
     private IEnumerator stunTimer(float time) {
+        damageFlash.CallElectricity(this, time);
         isStunned = true;
         yield return new WaitForSeconds(time);
         isStunned = false;

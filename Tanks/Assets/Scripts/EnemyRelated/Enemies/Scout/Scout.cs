@@ -20,7 +20,7 @@ public class Scout : Enemy
         FOV = 1.2f;
         rotSpeed = 120;
         reload = 3;
-        bulletSpeed = 2;
+        bulletSpeed = 2.7f;
         leadChance = 0.25f;
         speed = 1.3f;
         turnSpeed = 100;

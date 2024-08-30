@@ -20,7 +20,7 @@ public class Guardian1 : ShieldedEnemy
         reload = 4;
         magSize = 3;
         numBullets = magSize;
-        bulletSpeed = 2.3f;
+        bulletSpeed = 2.7f;
         leadChance = 0.3f;
         speed = 1.2f;
         turnSpeed = 110;

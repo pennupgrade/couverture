@@ -115,6 +115,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     private IEnumerator stunCoroutine(float time) {
         stunned = true;
+        damageFlash.CallElectricity(this, time);
         yield return new WaitForSeconds(time);
         stunned = false;
     }
