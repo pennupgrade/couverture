@@ -2,17 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RicochetRocket : MonoBehaviour
+public class RicochetRocket : Projectile
 {
+    [SerializeField] private int bounces;
+    private Rigidbody rb;
+    private Vector3 lastVelocity;
+    
     // Start is called before the first frame update
+    void Awake() {
+        bulletSpeed = 5.5f;
+    }
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate () {
+        lastVelocity = rb.velocity;
+    }
+
+    private void ReflectBullet(Vector3 bulletDir, Vector3 wallNormal)
     {
+        Vector3 bounceDirection = Vector3.Reflect(bulletDir, wallNormal);
+        rb.velocity = bounceDirection * lastVelocity.magnitude;
+        transform.rotation = Quaternion.LookRotation(rb.velocity);
+        bounces--;
+        if (bounces < 0)
+        {
+            destruction();
+        }
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        if (defaultCollisionChecks(collision)) return;
         
+        Vector3 wallNormal = collision.contacts[0].normal;
+        Vector3 bulletDir = lastVelocity.normalized;
+        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
+        {
+            ReflectBullet(bulletDir, wallNormal);
+            return;
+        }
+
+        if (collision.gameObject.tag == "OneWay")
+        {
+
+            if (Vector3.Dot(bulletDir, wallNormal) > 0) // Angle check to see if bullet is behind wall
+            {
+                return;
+            }
+
+            ReflectBullet(bulletDir, wallNormal);
+        }
     }
 }

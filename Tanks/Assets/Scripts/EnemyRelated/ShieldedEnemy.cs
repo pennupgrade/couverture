@@ -6,6 +6,7 @@ public class ShieldedEnemy : Enemy
 {
     public GameObject shield;
     private Material shieldMat;
+    [Tooltip("If true, enemy will start with shield generator")]
     public bool shieldEnabled;
     private bool shieldActivated;
     protected void shieldSetup() {
