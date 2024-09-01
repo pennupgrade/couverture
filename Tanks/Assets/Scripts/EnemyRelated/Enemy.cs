@@ -176,6 +176,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         yield return new WaitForSeconds(time);
         isStunned = false;
     }
+    public int getHealth() {
+        return health;
+    }
 
     public virtual void alert() {
         if (enemyState is EnemyStartState) {

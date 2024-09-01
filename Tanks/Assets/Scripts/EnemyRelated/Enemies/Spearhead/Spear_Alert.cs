@@ -8,7 +8,7 @@ public class Spear_Alert : EnemyAlertState
     private bool playerGone, leadPlayer;
     public Spear_Alert(Enemy enemy) : base(enemy) {
         leadPlayer = false;
-        enemy.speed = 1.8f;
+        enemy.speed = 1.7f;
         enemy.cSpeed = enemy.speed;
     }
 
@@ -17,7 +17,7 @@ public class Spear_Alert : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 1.5f);
+            enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 3f);
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -26,10 +26,14 @@ public class Spear_Alert : EnemyAlertState
     private IEnumerator recalcPath() {
         while (true) {
             for (int i = 0; i < 3; i++) {
-                if (i == 0 && lineOfSightCheck() && getDist() < 5) {
+                if (getDist() < 3 && lineOfSightCheck()) {
+                    Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
+                    dir.y = 0;
+                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
+                } else if (i == 0 && lineOfSightCheck() && getDist() < 5) {
                     enemy.destination = getRandomPoint(3);
                 } else if (i == 0){
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 1.5f);
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 4.5f, 3f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(2.4f);

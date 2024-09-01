@@ -8,11 +8,15 @@ public class ShieldedEnemy : Enemy
     private Material shieldMat;
     [Tooltip("If true, enemy will start with shield generator")]
     public bool shieldEnabled;
+    protected bool invincible;
     private bool shieldActivated;
     protected void shieldSetup() {
         shieldMat = shield.GetComponent<MeshRenderer>().material;
     }
     public override void takeDamage(int dmg) {
+        if (invincible) {
+            return;
+        }
         if (shieldActivated) {
             StartCoroutine(deactivateShield());
             return;
@@ -42,11 +46,22 @@ public class ShieldedEnemy : Enemy
             yield return new WaitForSeconds(0.05f);
         }
         shieldMat.SetFloat("_Dissolve", 1);
-        StartCoroutine(reactivateShield());
+        if (shieldEnabled) {
+            StartCoroutine(reactivateShield());
+        }
     }
     protected virtual IEnumerator reactivateShield() {
         yield return new WaitForSeconds(16);
         StartCoroutine(activateShield());
+    }
+
+    public void setInvincible(bool inv) {
+        invincible = inv;
+        if (inv) {
+            if (!shieldEnabled) {
+                StartCoroutine(activateShield());
+            }
+        }
     }
 
 }

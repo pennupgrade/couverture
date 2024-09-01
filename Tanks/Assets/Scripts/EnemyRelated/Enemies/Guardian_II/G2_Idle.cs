@@ -2,17 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class G2_Idle : MonoBehaviour
+public class G2_Idle : G1_Idle
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public G2_Idle(Enemy enemy) : base(enemy) {
+        enemy.speed = 1.4f;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override Enemy_State Patrol(Vector3 playerPos)
     {
-        
+        frameTimer--;
+        if (frameTimer > 0) {
+            return this;
+        }
+        frameTimer = 6;
+
+        if (checkIfPlayerDetected(true)) {
+            if (enemy.idleTurretCor != null) {
+                enemy.StopCoroutine(enemy.idleTurretCor);
+                enemy.idleTurretCor = null;
+            } if (enemy.wayPointUpdate != null) {
+                enemy.StopCoroutine(enemy.wayPointUpdate);
+                enemy.wayPointUpdate = null;
+            }
+
+            return new G2_Alert(enemy);
+        }
+        return this;
     }
 }

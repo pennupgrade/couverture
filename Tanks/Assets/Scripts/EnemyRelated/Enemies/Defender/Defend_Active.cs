@@ -63,7 +63,7 @@ public class Defend_Active : EnemyAlertState
         for (int i = 0; i < 3; i++) {
             RaycastHit hit;
             if (Physics.Raycast(rayPos, rayDir, out hit, rayDist, 1 << 3)) {
-                Debug.DrawRay(rayPos, Vector3.Distance(rayPos, hit.point) * rayDir.normalized, Color.red, 1);
+                //Debug.DrawRay(rayPos, Vector3.Distance(rayPos, hit.point) * rayDir.normalized, Color.red, 1);
                 if (Physics.Raycast(rayPos, rayDir, Vector3.Distance(rayPos, hit.point), 1 << 8)) {
                     return this;
                 }

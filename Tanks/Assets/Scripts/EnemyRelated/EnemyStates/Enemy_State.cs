@@ -144,8 +144,7 @@ public abstract class Enemy_State
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
                 Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
-                Debug.Log("drew ray");
-                Debug.DrawRay(newPos, enemy.playerRB.position + 0.2f * Vector3.up - newPos, Color.green, 2);
+                //Debug.DrawRay(newPos, enemy.playerRB.position + 0.2f * Vector3.up - newPos, Color.green, 2);
                 if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f &&
                     !Physics.Raycast(newPos, (enemy.playerRB.position + 0.2f * Vector3.up) - newPos, 
                     Vector3.Distance(newPos, (enemy.playerRB.position + 0.2f * Vector3.up)), 1 << 3) &&
@@ -155,7 +154,7 @@ public abstract class Enemy_State
                 }
             }
         }
-        return getRandomPoint(radius);
+        return getPlayerPoint(2);
     }
     
     protected Vector3 getRandomHidePoint(float radius) {
@@ -189,21 +188,32 @@ public abstract class Enemy_State
                 return hit.position;
             }
         }
-        return Vector3.zero;
+        return getRandomPoint(radius);
     }
     protected Vector3 getRandomNavPoint(Vector3 point, float radius) {
         for (int i = 0; i < 18; i++)
         {
+            Vector3 randomPoint = point + radius * UnityEngine.Random.insideUnitSphere;
+            randomPoint.y = enemy.rb.position.y;
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(point + radius * UnityEngine.Random.insideUnitSphere,
-                 out hit, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
                 if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f) {
                     return hit.position;
                 }
             }
         }
-        return Vector3.zero;
+        return getRandomPoint(radius);
+    }
+    protected Vector3 getRandomNavPointAwayFromPlayer(Vector3 point, float radius, float avoidRadius) {
+        Vector3 p;
+        int i = 0;
+        do {
+            p = getRandomNavPoint(point, radius);
+            i++;
+        } while (Vector2.Distance(new Vector2(enemy.playerRB.position.x, enemy.playerRB.position.z),
+        new Vector2(p.x, p.z)) < avoidRadius && i < 8);
+        return p;
     }
     protected bool hasReachedDest() {
         return Vector2.Distance(new Vector2(enemy.rb.position.x, enemy.rb.position.z),

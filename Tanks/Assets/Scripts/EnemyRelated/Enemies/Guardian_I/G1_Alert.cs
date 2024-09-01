@@ -16,7 +16,7 @@ public class G1_Alert : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3f);
+            enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -25,13 +25,17 @@ public class G1_Alert : EnemyAlertState
     private IEnumerator recalcPath() {
         while (true) {
             for (int i = 0; i < 3; i++) {
-                if (i == 0 && lineOfSightCheck() && getDist() < 5) {
+                if (getDist() < 3.2f && lineOfSightCheck()) {
+                    Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
+                    dir.y = 0;
+                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
+                } else if (i == 0 && lineOfSightCheck() && getDist() < 5) {
                     enemy.destination = getRandomPoint(4);
                 } else if (i == 0){
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3f);
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(2.5f);
             }
         }
     }
@@ -64,7 +68,7 @@ public class G1_Alert : EnemyAlertState
     private IEnumerator alertPatroller() {
         while (true) {
             playerGone = !checkIfPlayerDetected(false);
-            yield return new WaitForSeconds(9);
+            yield return new WaitForSeconds(12);
         }
     }
 
@@ -86,7 +90,11 @@ public class G1_Alert : EnemyAlertState
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
-                enemy.numBullets++;
+                if (enemy.numBullets == 1 || Random.value < 0.82f) {
+                    enemy.numBullets++;
+                } else {
+                    enemy.numBullets = enemy.magSize;
+                }
             } else {
                 yield return null;
             }
@@ -98,13 +106,13 @@ public class G1_Alert : EnemyAlertState
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.6f) {
                     int left = (Random.value) < 0.5f ? 1 : -1;
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < enemy.magSize; i++) {
                         fire(left * (-10 + 10 * i), false);
                         yield return new WaitForSeconds(enemy.cooldownTime / 2);
                     }
                     yield return new WaitForSeconds(enemy.cooldownTime / 2);
                     enemy.numBullets = 1;
-                } else if (Random.value < 0.8f){
+                } else if (enemy.numBullets == enemy.magSize || Random.value < 0.8f){
                     fire(30);
                     enemy.numBullets--;
                     leadPlayer = Random.value < enemy.leadChance;

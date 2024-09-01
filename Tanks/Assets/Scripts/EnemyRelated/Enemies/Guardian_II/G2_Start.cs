@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class G2_Start : MonoBehaviour
+public class G2_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public G2_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        enemy.StartCoroutine(((Guardian2)enemy).deployMines());
+        return (alert) ? new G2_Alert(enemy) : new G2_Idle(enemy);
     }
 }

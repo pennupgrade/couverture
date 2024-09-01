@@ -13,12 +13,12 @@ public class Spearhead : Enemy
     {
         //set enemy values
         health = 300;
-        gunRange = 5;
+        gunRange = 4.5f;
         sightRange = 8;
         FOV = 0.9f;
         rotSpeed = 90;
         reload = 5;
-        cooldownTime = 0.35f;
+        cooldownTime = 0.4f;
         magSize = 3;
         numBullets = magSize;
         bulletSpeed = 2.6f;

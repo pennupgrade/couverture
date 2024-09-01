@@ -14,7 +14,7 @@ public class G1_Idle : EnemyIdleState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getRandomPoint(6);
+            enemy.destination = getRandomPoint(7);
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -24,7 +24,7 @@ public class G1_Idle : EnemyIdleState
         while (true) {
             for (int i = 0; i < 4; i++) {
                 if (i == 0) {
-                    enemy.destination = getRandomPoint(5);
+                    enemy.destination = getRandomPoint(6);
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(3);
