@@ -14,9 +14,18 @@ public class ActivatorButton : MonoBehaviour
         if (!onCooldown && other.transform.tag == "Player")
         {
             buttonPressed();
+
+            if (!reusable)
+            {
+                StartCoroutine(slideButtonDown());
+            }
+            else
+            {
+                StartCoroutine(cooldownTimer());
+            }
         }
     }
-    protected void buttonPressed() {
+    protected virtual void buttonPressed() {
         foreach (GameObject g in toChange) {
             if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
                 aObj.activate();
@@ -24,12 +33,6 @@ public class ActivatorButton : MonoBehaviour
                 //for spawning enemies
                 g.gameObject.SetActive(!g.activeSelf);
             }
-        }
-
-        if (!reusable) {
-            StartCoroutine(slideButtonDown());
-        } else {
-            StartCoroutine(cooldownTimer());
         }
     }
     private IEnumerator slideButtonDown() {

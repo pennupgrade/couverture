@@ -114,7 +114,6 @@ public class FadeOutSequence : MonoBehaviour
 
                 while (text.Length != thankYouMessage.Length)
                 {
-                    Debug.Log("jiwubyfuweif");
                     if (time > 0.05f)
                     {
                         text += thankYouMessage[i];

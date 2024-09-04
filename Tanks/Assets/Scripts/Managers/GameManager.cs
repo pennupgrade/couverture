@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public float respawnTime;
     public int totalLives;
 
-
     void Awake()
     {
         if (Instance == null)
@@ -35,7 +34,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
     }
 
-    public void RestartSublevel() // me when I dedicate a whole function to call a coroutine
+    public void RestartSublevel()
     {
         GoToSubLevel(livesManager.GetRespawnTime(), SceneManager.GetActiveScene().name);
     }
