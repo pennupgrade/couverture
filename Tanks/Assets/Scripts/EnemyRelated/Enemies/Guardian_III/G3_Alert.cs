@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class G2_Alert : EnemyAlertState
+public class G3_Alert : G2_Alert
 {
-    protected bool playerGone, leadPlayer;
-    public G2_Alert(Enemy enemy) : base(enemy) {
+    public G3_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 5;
-        enemy.speed = 1.8f;
         leadPlayer = false;
     }
 
@@ -24,7 +22,7 @@ public class G2_Alert : EnemyAlertState
             }
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity, 300);
+        turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
         return this;
     }
     private IEnumerator recalcPath() {
@@ -67,69 +65,9 @@ public class G2_Alert : EnemyAlertState
                     enemy.StopCoroutine(enemy.reloadCor);
                     enemy.reloadCor = null;
                 }
-                return new G2_Idle(enemy);
+                return new G3_Idle(enemy);
             }
         }
         return this;
-    }
-    protected IEnumerator alertPatroller() {
-        while (true) {
-            playerGone = !checkIfPlayerDetected(false);
-            yield return new WaitForSeconds(15);
-        }
-    }
-
-    public override Enemy_State RotateTurret(Vector3 _) {
-        turnTurretTowardPlayer(leadPlayer);
-        return this;
-    }
-    public override Enemy_State Shoot(Vector3 _) {
-        if (enemy.activeShootPeriodically == null) {
-            enemy.activeShootPeriodically = enemy.StartCoroutine(shootCor());
-        }
-        if (enemy.reloadCor == null) {
-            enemy.reloadCor = enemy.StartCoroutine(reloader());
-        }
-        return this;
-    }
-    private IEnumerator reloader() {
-        yield return new WaitForSeconds(0.2f);
-        while (true) {
-            if (enemy.numBullets < enemy.magSize) {
-                yield return new WaitForSeconds(enemy.reload);
-                if (enemy.numBullets == 1 || Random.value < 0.85f) {
-                    enemy.numBullets++;
-                } else {
-                    enemy.numBullets = enemy.magSize;
-                }
-            } else {
-                yield return null;
-            }
-        }
-    }
-    private IEnumerator shootCor() {
-        yield return new WaitForSeconds(0.16f);
-        while (true) {   
-            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
-                if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.75f) {
-                    int left = (Random.value) < 0.5f ? 1 : -1;
-                    for (int i = 0; i < enemy.magSize; i++) {
-                        fire(left * (-28 + 14 * i), false);
-                        yield return new WaitForSeconds(0.38f);
-                    }
-                    yield return new WaitForSeconds(enemy.cooldownTime);
-                    enemy.numBullets = 1;
-                } else if (enemy.numBullets >= 3 || Random.value < 0.8f){
-                    fire(24);
-                    enemy.numBullets--;
-                    leadPlayer = Random.value < enemy.leadChance;
-                    yield return new WaitForSeconds(enemy.cooldownTime);
-                } else {
-                    yield return new WaitForSeconds(enemy.reload);
-                }
-            } else {
-                yield return new WaitForSeconds(0.16f);
-            }
-        }
     }
 }

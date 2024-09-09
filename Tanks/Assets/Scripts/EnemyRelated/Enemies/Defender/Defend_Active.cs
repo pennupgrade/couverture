@@ -57,7 +57,7 @@ public class Defend_Active : EnemyAlertState
 
         if (enemy.reloadCor != null) return this;
 
-        rayDist = 24;
+        rayDist = 33;
         rayPos = enemy.gun.transform.position;
         rayDir = enemy.gun.transform.right;
         for (int i = 0; i < 3; i++) {

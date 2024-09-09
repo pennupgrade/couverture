@@ -241,5 +241,29 @@ public abstract class Enemy_State
             }
         }
     }
+    //------------------helper functions for omni movement--------------------------------
 
+    protected void turnTowardsVectorOmni(Vector3 v, float accel) {
+        ((EnemyOmniMove)enemy).backwards = Vector3.Dot(enemy.transform.right, v) < 0;
+        float dir = Vector3.Dot(enemy.transform.forward, v);
+        if ((dir > 0.03f && !((EnemyOmniMove)enemy).backwards) || (dir < -0.03f && ((EnemyOmniMove)enemy).backwards)) {
+            if (enemy.cTurnSpeed > 0) {
+                enemy.cTurnSpeed -= 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Max(-enemy.turnSpeed, enemy.cTurnSpeed - accel * Time.fixedDeltaTime);
+            }
+        } else if ((dir < -0.03f && !((EnemyOmniMove)enemy).backwards) || (dir > 0.03f && ((EnemyOmniMove)enemy).backwards)) {
+            if (enemy.cTurnSpeed < 0) {
+                enemy.cTurnSpeed += 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Min(enemy.turnSpeed, enemy.cTurnSpeed + accel * Time.fixedDeltaTime);
+            }
+        } else {
+            if (enemy.cTurnSpeed < 20) {
+                enemy.cTurnSpeed = 0;
+            } else {
+                enemy.cTurnSpeed /= 1.2f;
+            }
+        }
+    }
 }

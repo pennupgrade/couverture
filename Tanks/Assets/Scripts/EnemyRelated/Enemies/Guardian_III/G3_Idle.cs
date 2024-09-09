@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class G1_Idle : EnemyIdleState
+public class G3_Idle : G1_Idle
 {
-    protected int frameTimer;
-    public G1_Idle(Enemy enemy) : base(enemy) {
+    public G3_Idle(Enemy enemy) : base(enemy) {
         frameTimer = 1;
     }
 
@@ -17,19 +16,8 @@ public class G1_Idle : EnemyIdleState
             enemy.destination = getRandomPoint(7);
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity, 300);
+        turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
         return this;
-    }
-    protected IEnumerator recalcPath() {
-        while (true) {
-            for (int i = 0; i < 4; i++) {
-                if (i == 0) {
-                    enemy.destination = getRandomPoint(6);
-                }
-                enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(3);
-            }
-        }
     }
 
     public override Enemy_State Patrol(Vector3 playerPos)
@@ -49,14 +37,7 @@ public class G1_Idle : EnemyIdleState
                 enemy.wayPointUpdate = null;
             }
 
-            return new G1_Alert(enemy);
-        }
-        return this;
-    }
-
-    public override Enemy_State RotateTurret(Vector3 _) {
-        if (enemy.idleTurretCor == null) {
-            enemy.idleTurretCor = enemy.StartCoroutine(idleTurretTurn());
+            return new G3_Alert(enemy);
         }
         return this;
     }
