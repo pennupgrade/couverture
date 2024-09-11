@@ -39,7 +39,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     // movement
     [HideInInspector] public float speed, turnSpeed, cSpeed, cTurnSpeed;
     [HideInInspector] public float dodgeChance;
-    [SerializeField] protected bool stopTurns;
+    [SerializeField]
+    protected bool stopTurns;
     [HideInInspector] public Vector3 destination;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent agent;
 

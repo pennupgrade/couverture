@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyOmniMove : ShieldedEnemy
 {
-    public bool backwards, accel;
+    [HideInInspector] public bool backwards, accel;
     private GameObject bullet;
     
 

@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Javelin_Hide : G1_Idle
 {
+    private bool reloadDone;
     public Javelin_Hide(Enemy enemy) : base(enemy) {
         frameTimer = 1;
+        enemy.StartCoroutine(beamCooldown());
+    }
+
+    private IEnumerator beamCooldown() {
+        yield return new WaitForSeconds(enemy.cooldownTime);
+        reloadDone = true;
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -13,7 +20,7 @@ public class Javelin_Hide : G1_Idle
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getRandomPoint(7);
+            enemy.destination = getRandomHidePoint(8);
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
@@ -22,8 +29,12 @@ public class Javelin_Hide : G1_Idle
     protected override IEnumerator recalcPath() {
         while (true) {
             for (int i = 0; i < 4; i++) {
-                if (i == 0) {
-                    enemy.destination = getRandomPoint(6);
+                if (getDist() < 3.5f && lineOfSightCheck()) {
+                    Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
+                    dir.y = 0;
+                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
+                } else if (i == 0) {
+                    enemy.destination = getRandomHidePoint(8);
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(3);
@@ -39,7 +50,7 @@ public class Javelin_Hide : G1_Idle
         }
         frameTimer = 6;
 
-        if (checkIfPlayerDetected(true)) {
+        if (reloadDone) {
             if (enemy.idleTurretCor != null) {
                 enemy.StopCoroutine(enemy.idleTurretCor);
                 enemy.idleTurretCor = null;
@@ -48,8 +59,13 @@ public class Javelin_Hide : G1_Idle
                 enemy.wayPointUpdate = null;
             }
 
-            return new Javelin_Attack(enemy);
+            return new Javelin_Idle(enemy);
         }
+        return this;
+    }
+
+    public override Enemy_State RotateTurret(Vector3 _) {
+        turnTurretTowardPlayerTimeDelay(false, 0f);
         return this;
     }
 }

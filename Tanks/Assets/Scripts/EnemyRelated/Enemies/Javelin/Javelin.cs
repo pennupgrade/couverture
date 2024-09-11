@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Javelin : EnemyOmniMove
 {
+    public GameObject flashParticles;
+    public LayerMask lm;
+    [HideInInspector]
     public bool stationary;
     void Awake() {
         enemyState = new Javelin_Start(this);
@@ -13,12 +16,13 @@ public class Javelin : EnemyOmniMove
     {
         //set enemy values
         health = 200;
-        gunRange = 7;
+        gunRange = 6.5f;
         sightRange = 9;
-        FOV = 0.8f;
+        FOV = 1.25f;
         rotSpeed = 90;
         cooldownTime = 7;
         numBullets = 2;
+        leadChance = 0.7f;
         speed = 1.8f;
         turnSpeed = 180;
         
@@ -35,17 +39,21 @@ public class Javelin : EnemyOmniMove
         enemyState = enemyState.Patrol(playerPos);
         enemyState = enemyState.RotateTurret(playerPos);
         enemyState = enemyState.Shoot(playerPos);
-
-        gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
+        if (!stationary) {
+            gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
+        }
     }
     void FixedUpdate() {
         agent.nextPosition = transform.position;
-        if (isStunned || stationary) return;
+        if (isStunned) return;
 
         //dodging
-        stopTurns = detectBullet(2);
+        stopTurns = detectBullet(1.7f);
         if (stopTurns) {
             dodge();
+            if (!accel) {
+                alert();
+            }
         }
 
         //turning
@@ -57,9 +65,36 @@ public class Javelin : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 12 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 12 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 20 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 20 * Time.fixedDeltaTime)));
         }
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        if (!stationary) {
+            transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        }
+    }
+
+
+    public IEnumerator muzzleFlash() {
+        flashParticles.GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(1.3f);
+        flashParticles.GetComponent<ParticleSystem>().Stop();
+    }
+    public void fireBeam(float dist) {
+        StartCoroutine(beamLineRenderer(dist));
+    }
+    private IEnumerator beamLineRenderer(float dist) {
+        LineRenderer lr = Instantiate(bulletPrefab).GetComponent<LineRenderer>();
+        lr.enabled = true;
+        lr.SetPosition(0, gunShotPos.position - 0.1f * gun.transform.right);
+        lr.SetPosition(1, gunShotPos.position + dist * gun.transform.right);
+        GameObject bulletExp = Instantiate(bulletExplosionPrefab, gunShotPos.position + dist * gun.transform.right, Quaternion.identity);
+        float fadeOutSpeed = 0;
+        while (fadeOutSpeed < 1) {
+            fadeOutSpeed += Time.deltaTime;
+            float m_color = Mathf.Lerp(1, 0, fadeOutSpeed);
+            lr.materials[0].SetFloat("_Transparency", m_color);
+            yield return null;
+        }
+        Destroy(lr.gameObject);
     }
 }

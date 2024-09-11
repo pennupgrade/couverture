@@ -41,4 +41,11 @@ public class Javelin_Idle : G1_Idle
         }
         return this;
     }
+    public override Enemy_State RotateTurret(Vector3 _) {
+        if (enemy.idleTurretCor == null) {
+            enemy.idleTurretCor = enemy.StartCoroutine(idleTurretTurn());
+        }
+        return this;
+    }
 }
+

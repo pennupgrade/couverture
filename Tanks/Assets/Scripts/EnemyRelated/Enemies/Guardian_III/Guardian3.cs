@@ -54,6 +54,9 @@ public class Guardian3 : EnemyOmniMove
         stopTurns = detectBullet(2);
         if (stopTurns) {
             dodge();
+            if (!accel) {
+                alert();
+            }
         }
 
         //turning
