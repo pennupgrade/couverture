@@ -156,6 +156,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public virtual void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
+        alert();
         if (health <= 0 && !isDead) {
             die();
         }

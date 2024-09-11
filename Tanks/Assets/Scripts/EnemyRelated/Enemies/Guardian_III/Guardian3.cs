@@ -18,14 +18,13 @@ public class Guardian3 : EnemyOmniMove
         FOV = 0.9f;
         rotSpeed = 108;
         cooldownTime = 0.6f;
-        reload = 3;
+        reload = 3.5f;
         magSize = 5;
         numBullets = magSize;
         bulletSpeed = 2.7f;
         leadChance = 0.33f;
         speed = 1.6f;
         turnSpeed = 180;
-        dodgeChance = 0.85f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();

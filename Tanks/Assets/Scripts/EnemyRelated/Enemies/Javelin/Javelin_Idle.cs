@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Javelin_Hide : G1_Idle
+public class Javelin_Idle : G1_Idle
 {
-    public Javelin_Hide(Enemy enemy) : base(enemy) {
+    public Javelin_Idle(Enemy enemy) : base(enemy) {
         frameTimer = 1;
     }
 
@@ -18,17 +18,6 @@ public class Javelin_Hide : G1_Idle
         }
         turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
         return this;
-    }
-    protected override IEnumerator recalcPath() {
-        while (true) {
-            for (int i = 0; i < 4; i++) {
-                if (i == 0) {
-                    enemy.destination = getRandomPoint(6);
-                }
-                enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(3);
-            }
-        }
     }
 
     public override Enemy_State Patrol(Vector3 playerPos)

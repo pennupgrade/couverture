@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Javelin_Start : MonoBehaviour
+public class Javelin_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Javelin_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        ((EnemyOmniMove)enemy).accel = true;
+        return (alert) ? new Javelin_Attack(enemy) : new Javelin_Idle(enemy);
     }
 }

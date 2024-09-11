@@ -16,7 +16,7 @@ public abstract class EnemyStartState : Enemy_State
         if (frameTimer > 0) {
             return this;
         }
-        frameTimer = 10;
+        frameTimer = 20;
 
         if (checkIfPlayerDetected(true)) {
             transitionHelper();

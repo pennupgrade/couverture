@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Phantom : Enemy
 { 
+    public bool camoOnStart;
     void Awake() {
         enemyState = new Phantom_Start(this);
     }
@@ -30,6 +31,9 @@ public class Phantom : Enemy
         findPlayer();
         agentSetup();
         rb = GetComponent<Rigidbody>();
+        if (camoOnStart) {
+            damageFlash.CallDissolve(this, 2);
+        }
     }
 
     // Update is called once per frame
@@ -61,7 +65,9 @@ public class Phantom : Enemy
         }
     }
     public IEnumerator activateCamo() {
-        damageFlash.CallDissolve(this, 2);
+        if (!camoOnStart) {
+            damageFlash.CallDissolve(this, 2);
+        }
         yield return new WaitForSeconds(2);
         while (true) {
             yield return new WaitForSeconds(2.5f + Random.value);
