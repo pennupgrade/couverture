@@ -117,20 +117,20 @@ public class TankController
     // Rotates the body based on the forward vector of the Tank, calcualted by the wheels
     private void RotateBodyByWheels()
     {
-        Debug.DrawRay(bodyPivot, bodyVector, UnityEngine.Color.red);
+        //Debug.DrawRay(bodyPivot, bodyVector, UnityEngine.Color.red);
 
-        // Find the angle between two points (wheels), and then rotates body
-        hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
-        forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
-        desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
+        //// Find the angle between two points (wheels), and then rotates body
+        //hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
+        //forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
+        //desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
+        //Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
 
-        tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
+        //tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
-        // Use this to translate based on normal
-        Vector3 bodyPosition = bodyPivot;
-        bodyPosition += bodyNormal * -0.045f;
-        tank.Body.transform.position = bodyPosition;
+        //// Use this to translate based on normal
+        //Vector3 bodyPosition = bodyPivot;
+        //bodyPosition += bodyNormal * -0.045f;
+        //tank.Body.transform.position = bodyPosition;
     }
 
     // Use this to see your vector angles if you're having problems
@@ -146,10 +146,40 @@ public class TankController
     // the tank object itself, only the body. Thus, we only want to translate the tank and "rotate" to TURN in X,Y space only, not Z
     public void TranslateTank(Vector2 dir)
     {
-        Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
-        tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
-        tank.Velocity = tank.moveSpeed * direction * dir.y;
-        tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
+        //Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
+        //tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
+        //tank.Velocity = tank.moveSpeed * direction * dir.y;
+        //tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
+
+
+        float rotSpeed = 200f;
+        float moveSpeed = 7f;
+
+        Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
+        Vector3 tankForward = -tank.Body.transform.right;
+
+
+        Debug.DrawRay(bodyPivot, playerInput * 10f, Color.yellow);
+        Debug.DrawRay(bodyPivot, tankForward * 10f, Color.magenta);
+
+
+
+        // Calculate the angles for both forward and backward directions
+        float angleForward = Vector3.Angle(playerInput, tankForward);
+        float angleBackward = Vector3.Angle(playerInput, -tankForward);
+
+        // Determine the optimal direction to move towards
+        bool faceBackward = angleBackward < angleForward;
+
+        // Calculate the target rotation based on the optimal direction
+        Vector3 targetDirection = faceBackward ? -playerInput : playerInput;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+        // Rotate towards the target rotation. The speed is a function of the player input magnitude. Light player input still influences movement.
+        tank.Body.transform.rotation = Quaternion.RotateTowards(tank.Body.transform.rotation, targetRotation, playerInput.magnitude * rotSpeed * Time.deltaTime);
+
+        // Move as a function of the angle between the player and target direction. This means the tank won't move until it's finished rotating.
+        //tank.Body.transform.position += moveSpeed * playerInput * Mathf.Exp(-Mathf.Min(angleForward, angleBackward)) * Time.deltaTime;
     }
 
     // Called in TankMoveState to move the tank
