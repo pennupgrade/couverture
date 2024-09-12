@@ -12,4 +12,9 @@ public abstract class EnemyAlertState : Enemy_State
 
     public abstract override Enemy_State RotateTurret(Vector3 playerPos);
     public abstract override Enemy_State Shoot(Vector3 playerPos);
+
+    protected int getNumEnemies(float r) {
+        Collider[] hitColliders = new Collider[8];
+        return Physics.OverlapSphereNonAlloc(enemy.transform.position, r, hitColliders, 1 << 8);
+    }
 }

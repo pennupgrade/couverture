@@ -53,11 +53,11 @@ public abstract class Enemy_State
     protected virtual IEnumerator idleTurretTurnOmni() {
         while (true) {
             yield return new WaitForSeconds(2.5f);
-            float dot = Vector3.Dot(enemy.gun.transform.forward, enemy.transform.right);
-            if (!((EnemyOmniMove)enemy).backwards && dot > 0.6f || ((EnemyOmniMove)enemy).backwards && dot < -0.6f) {
-                enemy.cTurretTurn = -13;
-            } else if (!((EnemyOmniMove)enemy).backwards && dot < -0.6f || ((EnemyOmniMove)enemy).backwards && dot > 0.6f) {
-                enemy.cTurretTurn = 13;
+            float dot = Vector3.Dot(enemy.gun.transform.right, enemy.transform.right);
+            if (!((EnemyOmniMove)enemy).backwards && dot < -0.6f) {
+                enemy.cTurretTurn = -30;
+            } else if (((EnemyOmniMove)enemy).backwards && dot > 0.6f) {
+                enemy.cTurretTurn = 30;
             } else {
                 float r = Random.value;
                 if (Mathf.Abs(enemy.cTurretTurn) > 0) {
