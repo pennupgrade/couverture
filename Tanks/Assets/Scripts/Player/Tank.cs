@@ -24,7 +24,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public float rotSpeed;
     public float groundMargin = 0.2f;
     public float wheelMaxDist = 3.0f;
-    public bool enableGod = true;
+    public bool enableGod = false;
 
     // Object References
     public GameObject bulletPrefab;

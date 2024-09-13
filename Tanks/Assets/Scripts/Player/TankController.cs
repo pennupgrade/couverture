@@ -10,7 +10,7 @@ public class TankController
     private Tank tank;
 
     // Important vectors
-    private Vector3 bodyVector;
+    private Vector3 bodyForward;
     private Vector3 bodyPivot;
     private Vector3 bodyNormal;
 
@@ -41,15 +41,15 @@ public class TankController
         Vector3 BackWheelPos = tank.BackWheel.transform.position;
 
         // vector representing "forward" vector of the tank
-        bodyVector = Vector3.Normalize(FrontWheelPos - BackWheelPos);
+        bodyForward = Vector3.Normalize(FrontWheelPos - BackWheelPos);
 
         // Position the body in the middle of the two wheels
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
-        bodyPivot = 0.50f * wheelDistances * bodyVector + BackWheelPos;
+        bodyPivot = 0.50f * wheelDistances * bodyForward + BackWheelPos;
 
         // Some vector math to get the body's normal (does Unity have a function for this?)
-        bodyNormal = Vector3.Cross(bodyVector, tank.transform.up);
-        bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyVector));
+        bodyNormal = Vector3.Cross(bodyForward, tank.transform.up);
+        bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyForward));
     }
 
     // Performs a raycast from the wheel onto the ground, returns a boolean as to whether or not there is a hit
@@ -115,12 +115,12 @@ public class TankController
     }
 
     // Rotates the body based on the forward vector of the Tank, calcualted by the wheels
-    private void RotateBodyByWheels()
+    private void TransformBody()
     {
 
         // Find the angle between two points (wheels), and then rotates body
         hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
-        forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
+        forward = Quaternion.AngleAxis(90, hitNormal) * bodyForward;
         desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
 
@@ -153,7 +153,7 @@ public class TankController
         Vector3 direction = normalizedInput;
         direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
 
-        Vector3 tankForward = Vector3.Normalize(bodyVector);
+        Vector3 tankForward = bodyForward; // bodyForward is basically "forward"
 
         Debug.DrawRay(bodyPivot, tankForward * 1f, Color.white);
         Debug.DrawRay(bodyPivot, direction * 1f, Color.yellow);
@@ -180,7 +180,7 @@ public class TankController
         TransformTank(dir);
         RaycastWheels();
         PositionWheels();
-        RotateBodyByWheels();
+        TransformBody();
 
         //DebugSomeStuff();
     }
