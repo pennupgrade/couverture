@@ -145,22 +145,29 @@ public class TankController
     public void TransformTank(Vector2 dir)
     {
         float rotSpeed = 200f;
-        float moveSpeed = 1f;
+        float moveSpeed = 2f;
 
         Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
         Vector3 normalizedInput = Vector3.Normalize(playerInput);
 
         Vector3 direction = normalizedInput;
         direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
+        Vector3 backDir = -direction;
 
         Vector3 tankForward = bodyForward; // bodyForward is basically "forward"
+        Vector3 tankBackward = -bodyForward;
+
+        float angleForward = Vector3.Angle(playerInput, tankForward);
+        float angleBackward = Vector3.Angle(playerInput, tankBackward);
 
         Debug.DrawRay(bodyPivot, tankForward * 1f, Color.white);
         Debug.DrawRay(bodyPivot, direction * 1f, Color.yellow);
 
+        Vector3 targetDir = angleForward < angleBackward ? direction : backDir;
+
         Quaternion targetRotate = Quaternion.RotateTowards(
                 tank.transform.rotation, 
-                Quaternion.LookRotation(direction),
+                Quaternion.LookRotation(targetDir),
                 playerInput.magnitude * rotSpeed * Time.deltaTime
             );
 
