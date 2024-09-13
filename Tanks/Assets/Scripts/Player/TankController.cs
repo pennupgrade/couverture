@@ -99,7 +99,7 @@ public class TankController
 
         float hitDist = Vector3.Distance(hitPoint, origin);
 
-        if (hitDist <= tank.groundMargin + 0.02f || !tank.enableExperimentalGravity)
+        if (hitDist <= tank.groundMargin + 0.02f)
         {
             // vertically translate the wheel from the ground
             hitPoint += tank.transform.up * tank.groundMargin; // 0.2f value is arbitrary, lifts up wheel
@@ -117,20 +117,18 @@ public class TankController
     // Rotates the body based on the forward vector of the Tank, calcualted by the wheels
     private void RotateBodyByWheels()
     {
-        //Debug.DrawRay(bodyPivot, bodyVector, UnityEngine.Color.red);
+        // Find the angle between two points (wheels), and then rotates body
+        hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
+        forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
+        desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
 
-        //// Find the angle between two points (wheels), and then rotates body
-        //hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
-        //forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
-        //desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
-        //Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
+        tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
-        //tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
-
-        //// Use this to translate based on normal
-        //Vector3 bodyPosition = bodyPivot;
-        //bodyPosition += bodyNormal * -0.045f;
-        //tank.Body.transform.position = bodyPosition;
+        // Use this to translate based on normal
+        Vector3 bodyPosition = bodyPivot;
+        bodyPosition += bodyNormal * -0.045f;
+        tank.Body.transform.position = bodyPosition;
     }
 
     // Use this to see your vector angles if you're having problems
@@ -142,53 +140,48 @@ public class TankController
     }
 
     // Self explanatory name, using a Vector2 direction for (x,y), we translate the tank based on the projected forward vector
-    // We do this because we separate the body from the rest in terms of orientation, wheels should never be rotated along with
-    // the tank object itself, only the body. Thus, we only want to translate the tank and "rotate" to TURN in X,Y space only, not Z
-    public void TranslateTank(Vector2 dir)
+    // We only rotate the body to give off the illusion that the tank is angled on the slope
+    // When rotating the tank for movement, we rotate the transform such that its rotated angle is always aligned by the vertical axis
+    // This simplifies calculation for forward movement later on
+    public void TransformTank(Vector2 dir)
     {
-        //Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
-        //tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
-        //tank.Velocity = tank.moveSpeed * direction * dir.y;
-        //tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
-
+        //Debug.DrawRay(bodyPivot, bodyVector * 10.0f, UnityEngine.Color.red);
 
         float rotSpeed = 200f;
-        float moveSpeed = 7f;
+        float moveSpeed = 1f;
 
         Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
-        Vector3 tankForward = -tank.Body.transform.right;
+        Vector3 tankForward = Vector3.Normalize(bodyVector);
+        Vector3 direction = Vector3.Normalize(playerInput);
+        direction = Quaternion.AngleAxis(90, Vector3.up) * direction;
 
+        // Rotation transformation
+        Debug.DrawRay(bodyPivot, tankForward * 1f, Color.white);
+        Debug.DrawRay(bodyPivot, direction * 1f, Color.yellow);
 
-        Debug.DrawRay(bodyPivot, playerInput * 10f, Color.yellow);
-        Debug.DrawRay(bodyPivot, tankForward * 10f, Color.magenta);
+        Quaternion targetRotate = Quaternion.RotateTowards(
+                tank.transform.rotation, 
+                Quaternion.LookRotation(direction),
+                playerInput.magnitude * rotSpeed * Time.deltaTime
+            );
 
+        tank.transform.rotation = targetRotate;
 
-
-        // Calculate the angles for both forward and backward directions
-        float angleForward = Vector3.Angle(playerInput, tankForward);
-        float angleBackward = Vector3.Angle(playerInput, -tankForward);
-
-        // Determine the optimal direction to move towards
-        bool faceBackward = angleBackward < angleForward;
-
-        // Calculate the target rotation based on the optimal direction
-        Vector3 targetDirection = faceBackward ? -playerInput : playerInput;
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-
-        // Rotate towards the target rotation. The speed is a function of the player input magnitude. Light player input still influences movement.
-        tank.Body.transform.rotation = Quaternion.RotateTowards(tank.Body.transform.rotation, targetRotation, playerInput.magnitude * rotSpeed * Time.deltaTime);
-
-        // Move as a function of the angle between the player and target direction. This means the tank won't move until it's finished rotating.
-        //tank.Body.transform.position += moveSpeed * playerInput * Mathf.Exp(-Mathf.Min(angleForward, angleBackward)) * Time.deltaTime;
+        // Translational transformation, move as a function of the angle between the player and target direction.
+        // This means the tank won't move until it's finished rotating.
+        float theta = Vector3.Dot(direction, tankForward);
+        tank.transform.position += moveSpeed * direction * Mathf.Exp(-Mathf.Abs(theta)) * Time.deltaTime;
     }
 
     // Called in TankMoveState to move the tank
     public void MoveTank(Vector2 dir)
     {
         CalculateBodyProperties();
-        TranslateTank(dir);
+        TransformTank(dir);
         RaycastWheels();
         PositionWheels();
         RotateBodyByWheels();
+
+        //DebugSomeStuff();
     }
 }
