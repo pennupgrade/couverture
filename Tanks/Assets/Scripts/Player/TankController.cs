@@ -144,12 +144,11 @@ public class TankController
     // Only interacts with the tank transforms -- do not touch the body in anyway
     public void TransformTank(Vector2 dir)
     {
-        float rotSpeed = 200f;
-        float moveSpeed = 2f;
-
+        // Constructing the player input vector
         Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
         Vector3 normalizedInput = Vector3.Normalize(playerInput);
 
+        // Constructing the direction and inverse of the input direction and the tank's forward vector
         Vector3 direction = normalizedInput;
         direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
         Vector3 backDir = -direction;
@@ -157,27 +156,25 @@ public class TankController
         Vector3 tankForward = bodyForward; // bodyForward is basically "forward"
         Vector3 tankBackward = -bodyForward;
 
+        // Choose the target direction based on the angle between the player input and the tank's forward/backward vectors
         float angleForward = Vector3.Angle(playerInput, tankForward);
         float angleBackward = Vector3.Angle(playerInput, tankBackward);
 
-        Debug.DrawRay(bodyPivot, tankForward * 1f, Color.white);
-        Debug.DrawRay(bodyPivot, direction * 1f, Color.yellow);
-
         Vector3 targetDir = angleForward < angleBackward ? direction : backDir;
 
+        // Rotate the tank towards the target direction
         Quaternion targetRotate = Quaternion.RotateTowards(
-                tank.transform.rotation, 
+                tank.transform.rotation,
                 Quaternion.LookRotation(targetDir),
-                playerInput.magnitude * rotSpeed * Time.deltaTime
+                playerInput.magnitude * tank.rotSpeed * Time.deltaTime
             );
-
-        float theta = Vector3.Dot(direction, tankForward);
-        Debug.Log(theta);
-
         tank.transform.rotation = targetRotate;
 
-        // Move as a function of the angle between the player and target direction. This means the tank won't move until it's finished rotating.
-        tank.transform.position += moveSpeed * normalizedInput * Mathf.Exp(-Mathf.Abs(theta)) * Time.deltaTime;
+        // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
+        // This means the tank will start moving when it's finished rotating
+        float theta = Vector3.Dot(direction, tankForward);
+        tank.Velocity = tank.moveSpeed * normalizedInput * Mathf.Exp(-Mathf.Abs(theta));
+        tank.transform.position += tank.Velocity * Time.deltaTime;
     }
 
     // Called in TankMoveState to move the tank
