@@ -37,8 +37,8 @@ public class Defend_Active : EnemyAlertState
         enemy.cTurretTurn = -enemy.rotSpeed;
         while (true) {
             yield return new WaitForSeconds(1.2f);
-            if (Vector3.Dot(enemy.gun.transform.right, enemy.transform.right) < 0) {
-                if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.right) > 0) {
+            if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.forward) < 0) {
+                if (Vector3.Dot(-enemy.gun.transform.right, enemy.transform.forward) > 0) {
                     enemy.cTurretTurn = -enemy.rotSpeed;
                 } else {
                     enemy.cTurretTurn = enemy.rotSpeed;
@@ -59,7 +59,7 @@ public class Defend_Active : EnemyAlertState
 
         rayDist = 33;
         rayPos = enemy.gun.transform.position;
-        rayDir = enemy.gun.transform.right;
+        rayDir = enemy.gun.transform.forward;
         for (int i = 0; i < 3; i++) {
             RaycastHit hit;
             if (Physics.Raycast(rayPos, rayDir, out hit, rayDist, 1 << 3)) {
@@ -78,6 +78,9 @@ public class Defend_Active : EnemyAlertState
 
             } else {
                 if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 2)) {
+                    if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 8)) {
+                        return this;
+                    }
                     fireRockets(6);
                 }
                 return this;

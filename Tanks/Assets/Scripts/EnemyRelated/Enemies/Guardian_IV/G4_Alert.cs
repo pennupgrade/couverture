@@ -17,7 +17,7 @@ public class G4_Alert : G2_Alert
         } else if (hasReachedDest()) {
             if (enemy.getHealth() < 300 && Random.value < 0.5f) {
                 enemy.destination = getRandomHidePoint(8);
-            } else if (getNumEnemies(9) < 1) {
+            } else if (getNumEnemies(9) < 3) {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4f);
             } else {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
@@ -30,19 +30,19 @@ public class G4_Alert : G2_Alert
     private IEnumerator recalcPath() {
         while (true) {
             for (int i = 0; i < 3; i++) {
-                if (getDist() < 3.2f && lineOfSightCheck()) {
+                if (getDist() < 3.5f && lineOfSightCheck()) {
                     Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
                     dir.y = 0;
                     enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
                 } else if (enemy.getHealth() < 300 && Random.value < 0.5f) {
                     enemy.destination = getRandomHidePoint(8);
-                } else if (i == 0 && getNumEnemies(9) < 1) {
+                } else if (i == 0 && getNumEnemies(9) < 3) {
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4.5f);
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(2.4f);
             }
         }
     }

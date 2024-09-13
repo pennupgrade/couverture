@@ -103,7 +103,7 @@ public class Javelin_Attack : EnemyAlertState
         enemy.numBullets = 0;
         
         Vector3 rayPos = enemy.gunShotPos.position;
-        Vector3 rayDir = enemy.gun.transform.right;
+        Vector3 rayDir = enemy.gun.transform.forward;
         RaycastHit hit;
         if (Physics.Raycast(rayPos, rayDir, out hit, 20, ((Javelin)enemy).lm)) {
             //Debug.DrawRay(rayPos, Vector3.Distance(rayPos, hit.point) * rayDir.normalized, Color.blue, 1);

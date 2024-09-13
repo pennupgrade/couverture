@@ -51,13 +51,14 @@ public class Javelin : EnemyOmniMove
         stopTurns = detectBullet(1.7f);
         if (stopTurns) {
             dodge();
+            transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
             if (!accel) {
                 alert();
             }
         }
-
         //turning
-        if (!stopTurns && moveStraightTimer == null) {
+        else if (moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
             gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
@@ -69,7 +70,7 @@ public class Javelin : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 20 * Time.fixedDeltaTime)));
         }
         if (!stationary) {
-            transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+            transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
         }
     }
 
@@ -85,8 +86,8 @@ public class Javelin : EnemyOmniMove
     private IEnumerator beamLineRenderer(float dist) {
         LineRenderer lr = Instantiate(bulletPrefab).GetComponent<LineRenderer>();
         lr.enabled = true;
-        lr.SetPosition(0, gunShotPos.position - 0.1f * gun.transform.right);
-        lr.SetPosition(1, gunShotPos.position + dist * gun.transform.right);
+        lr.SetPosition(0, gunShotPos.position - 0.1f * gun.transform.forward);
+        lr.SetPosition(1, gunShotPos.position + dist * gun.transform.forward);
         GameObject bulletExp = Instantiate(bulletExplosionPrefab, gunShotPos.position + dist * gun.transform.right, Quaternion.identity);
         float fadeOutSpeed = 0;
         while (fadeOutSpeed < 1) {
