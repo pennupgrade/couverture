@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class G2_Alert : EnemyAlertState
 {
-    private bool playerGone, leadPlayer;
+    protected bool playerGone, leadPlayer;
     public G2_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 5;
         enemy.speed = 1.8f;
@@ -72,10 +72,10 @@ public class G2_Alert : EnemyAlertState
         }
         return this;
     }
-    private IEnumerator alertPatroller() {
+    protected IEnumerator alertPatroller() {
         while (true) {
             playerGone = !checkIfPlayerDetected(false);
-            yield return new WaitForSeconds(15);
+            yield return new WaitForSeconds(16);
         }
     }
 

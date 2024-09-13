@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tank : MonoBehaviour, IDestroyable
 {
     public const float RELOAD_TIME = 1.8f;
-    public const float COOLDOWN_TIME = 0.16f;
+    public const float COOLDOWN_TIME = 0.2f;
 
     public int LIVES = 5;
 

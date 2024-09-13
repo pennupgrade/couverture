@@ -39,7 +39,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     // movement
     [HideInInspector] public float speed, turnSpeed, cSpeed, cTurnSpeed;
     [HideInInspector] public float dodgeChance;
-    [SerializeField] protected bool stopTurns;
+    [HideInInspector] protected bool stopTurns;
     [HideInInspector] public Vector3 destination;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent agent;
 
@@ -156,6 +156,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public virtual void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
+        alert();
         if (health <= 0 && !isDead) {
             die();
         }

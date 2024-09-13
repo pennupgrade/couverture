@@ -13,10 +13,10 @@ public class Defender : ShieldedEnemy
     {
         //set enemy values
         health = 300;
-        sightRange = 14;
+        sightRange = 15;
         FOV = 1.2f;
         rotSpeed = 45;
-        reload = 6;
+        reload = 3;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();

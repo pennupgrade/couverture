@@ -20,7 +20,7 @@ public class G1_Idle : EnemyIdleState
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
         return this;
     }
-    private IEnumerator recalcPath() {
+    protected virtual IEnumerator recalcPath() {
         while (true) {
             for (int i = 0; i < 4; i++) {
                 if (i == 0) {

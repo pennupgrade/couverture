@@ -28,6 +28,8 @@ public abstract class Projectile : MonoBehaviour
                 mt.kill();
             } else if (transform.GetChild(0).gameObject.TryGetComponent<ParticleSystem>(out ParticleSystem ps)){
                 ps.Stop();
+                //for rocket
+                transform.GetChild(0).localScale = 1 / transform.localScale.x * transform.GetChild(0).localScale;
                 Destroy(transform.GetChild(0).gameObject, 2.5f);
             }
             transform.GetChild(0).parent = null;

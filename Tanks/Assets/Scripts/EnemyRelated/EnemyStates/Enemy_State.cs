@@ -50,6 +50,29 @@ public abstract class Enemy_State
 
         }
     }
+    protected virtual IEnumerator idleTurretTurnOmni() {
+        while (true) {
+            yield return new WaitForSeconds(2.5f);
+            float dot = Vector3.Dot(enemy.gun.transform.right, enemy.transform.right);
+            if (!((EnemyOmniMove)enemy).backwards && dot < -0.6f) {
+                enemy.cTurretTurn = -30;
+            } else if (((EnemyOmniMove)enemy).backwards && dot > 0.6f) {
+                enemy.cTurretTurn = 30;
+            } else {
+                float r = Random.value;
+                if (Mathf.Abs(enemy.cTurretTurn) > 0) {
+                    enemy.cTurretTurn = 0;
+                } else if (r < 0.4f) {
+                    enemy.cTurretTurn = 10;
+                } else if (r < 0.8f) {
+                    enemy.cTurretTurn = -10;
+                } else {
+                    enemy.cTurretTurn = 0;
+                }
+            }
+
+        }
+    }
     protected bool checkIfPlayerDetected(bool useFOV) {
         if (enemy.playerRB == null) {
             return false;
@@ -98,6 +121,21 @@ public abstract class Enemy_State
             enemy.TargetDir = result;
         } else enemy.TargetDir = (enemy.playerRB.position - enemy.rb.position).normalized;
 
+        turnTurretVecMath();
+    }
+    protected void turnTurretTowardPlayerTimeDelay(bool leadPlayer, float duration) {
+        if (enemy.playerRB == null) {
+            return;
+        }
+        if (leadPlayer){
+            enemy.TargetDir = ((enemy.playerRB.position + enemy.pTank.Velocity * duration) - enemy.rb.position).normalized;
+        } else {
+            enemy.TargetDir = (enemy.playerRB.position - enemy.rb.position).normalized;
+        }
+
+        turnTurretVecMath();
+    }
+    protected void turnTurretVecMath() {
         float dir = Vector3.Dot(enemy.gun.transform.forward, enemy.TargetDir);
         if (dir > 0.02f){
             enemy.cTurretTurn = Mathf.Max(-enemy.rotSpeed, enemy.cTurretTurn - 900 * Time.deltaTime);
@@ -241,5 +279,29 @@ public abstract class Enemy_State
             }
         }
     }
+    //------------------helper functions for omni movement--------------------------------
 
+    protected void turnTowardsVectorOmni(Vector3 v, float accel) {
+        ((EnemyOmniMove)enemy).backwards = Vector3.Dot(enemy.transform.right, v) < 0;
+        float dir = Vector3.Dot(enemy.transform.forward, v);
+        if ((dir > 0.03f && !((EnemyOmniMove)enemy).backwards) || (dir < -0.03f && ((EnemyOmniMove)enemy).backwards)) {
+            if (enemy.cTurnSpeed > 0) {
+                enemy.cTurnSpeed -= 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Max(-enemy.turnSpeed, enemy.cTurnSpeed - accel * Time.fixedDeltaTime);
+            }
+        } else if ((dir < -0.03f && !((EnemyOmniMove)enemy).backwards) || (dir > 0.03f && ((EnemyOmniMove)enemy).backwards)) {
+            if (enemy.cTurnSpeed < 0) {
+                enemy.cTurnSpeed += 2 * accel * Time.fixedDeltaTime;
+            } else {
+                enemy.cTurnSpeed = Mathf.Min(enemy.turnSpeed, enemy.cTurnSpeed + accel * Time.fixedDeltaTime);
+            }
+        } else {
+            if (enemy.cTurnSpeed < 20) {
+                enemy.cTurnSpeed = 0;
+            } else {
+                enemy.cTurnSpeed /= 1.2f;
+            }
+        }
+    }
 }

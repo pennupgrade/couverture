@@ -18,7 +18,7 @@ public class Guardian2 : ShieldedEnemy
         FOV = 0.9f;
         rotSpeed = 108;
         cooldownTime = 0.6f;
-        reload = 3;
+        reload = 3.5f;
         magSize = 5;
         numBullets = magSize;
         bulletSpeed = 2.7f;
