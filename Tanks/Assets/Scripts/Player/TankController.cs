@@ -117,6 +117,7 @@ public class TankController
     // Rotates the body based on the forward vector of the Tank, calcualted by the wheels
     private void RotateBodyByWheels()
     {
+
         // Find the angle between two points (wheels), and then rotates body
         hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
         forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
@@ -140,22 +141,20 @@ public class TankController
     }
 
     // Self explanatory name, using a Vector2 direction for (x,y), we translate the tank based on the projected forward vector
-    // We only rotate the body to give off the illusion that the tank is angled on the slope
-    // When rotating the tank for movement, we rotate the transform such that its rotated angle is always aligned by the vertical axis
-    // This simplifies calculation for forward movement later on
+    // Only interacts with the tank transforms -- do not touch the body in anyway
     public void TransformTank(Vector2 dir)
     {
-        //Debug.DrawRay(bodyPivot, bodyVector * 10.0f, UnityEngine.Color.red);
-
         float rotSpeed = 200f;
         float moveSpeed = 1f;
 
         Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
-        Vector3 tankForward = Vector3.Normalize(bodyVector);
-        Vector3 direction = Vector3.Normalize(playerInput);
-        direction = Quaternion.AngleAxis(90, Vector3.up) * direction;
+        Vector3 normalizedInput = Vector3.Normalize(playerInput);
 
-        // Rotation transformation
+        Vector3 direction = normalizedInput;
+        direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
+
+        Vector3 tankForward = Vector3.Normalize(bodyVector);
+
         Debug.DrawRay(bodyPivot, tankForward * 1f, Color.white);
         Debug.DrawRay(bodyPivot, direction * 1f, Color.yellow);
 
@@ -165,12 +164,13 @@ public class TankController
                 playerInput.magnitude * rotSpeed * Time.deltaTime
             );
 
+        float theta = Vector3.Dot(direction, tankForward);
+        Debug.Log(theta);
+
         tank.transform.rotation = targetRotate;
 
-        // Translational transformation, move as a function of the angle between the player and target direction.
-        // This means the tank won't move until it's finished rotating.
-        float theta = Vector3.Dot(direction, tankForward);
-        tank.transform.position += moveSpeed * direction * Mathf.Exp(-Mathf.Abs(theta)) * Time.deltaTime;
+        // Move as a function of the angle between the player and target direction. This means the tank won't move until it's finished rotating.
+        tank.transform.position += moveSpeed * normalizedInput * Mathf.Exp(-Mathf.Abs(theta)) * Time.deltaTime;
     }
 
     // Called in TankMoveState to move the tank
