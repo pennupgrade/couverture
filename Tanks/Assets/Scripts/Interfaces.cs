@@ -8,5 +8,5 @@ interface IDestroyable {
 }
 
 interface IAlertableEnemy {
-    void alert();
+    void alert(bool alertState);
 }

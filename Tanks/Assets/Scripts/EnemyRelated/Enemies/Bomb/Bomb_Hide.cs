@@ -9,7 +9,6 @@ public class Bomb_Hide : EnemyIdleState
     private bool attackMode;
     public Bomb_Hide(Enemy enemy) : base(enemy) {
         attackMode = false;
-        enemy.speed += 0.5f;
         enemy.cSpeed = enemy.speed;
         enemy.StartCoroutine(attackDelay());
     }

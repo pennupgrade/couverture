@@ -181,9 +181,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         return health;
     }
 
-    public virtual void alert() {
+    public virtual void alert(bool alertState = false) {
         if (enemyState is EnemyStartState) {
-            ((EnemyStartState)enemyState).ChangeToIdle();
+            ((EnemyStartState)enemyState).ChangeToIdle(alertState);
         }
     }
 
