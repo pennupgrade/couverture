@@ -50,7 +50,7 @@ public class Bomb : Enemy
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
         }
         //moving
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")

@@ -31,9 +31,9 @@ public abstract class Enemy_State
     protected virtual IEnumerator idleTurretTurn() {
         while (true) {
             yield return new WaitForSeconds(3);
-            if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.right) > 0.6f) {
+            if (Vector3.Dot(-enemy.gun.transform.right, enemy.transform.forward) > 0.6f) {
                 enemy.cTurretTurn = -12;
-            } else if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.right) < -0.6f) {
+            } else if (Vector3.Dot(-enemy.gun.transform.right, enemy.transform.forward) < -0.6f) {
                 enemy.cTurretTurn = 12;
             } else {
                 float r = Random.value;
@@ -53,7 +53,7 @@ public abstract class Enemy_State
     protected virtual IEnumerator idleTurretTurnOmni() {
         while (true) {
             yield return new WaitForSeconds(2.5f);
-            float dot = Vector3.Dot(enemy.gun.transform.right, enemy.transform.right);
+            float dot = Vector3.Dot(enemy.gun.transform.forward, enemy.transform.forward);
             if (!((EnemyOmniMove)enemy).backwards && dot < -0.6f) {
                 enemy.cTurretTurn = -30;
             } else if (((EnemyOmniMove)enemy).backwards && dot > 0.6f) {
@@ -88,7 +88,7 @@ public abstract class Enemy_State
         if (!useFOV) {
             return d < enemy.sightRange && lineOfSightCheck();
         } else if (d > 4) {
-            Vector3 gunDirection = enemy.gun.transform.right;
+            Vector3 gunDirection = enemy.gun.transform.forward;
             Vector3 gunToPlayer = (enemy.playerRB.position - enemy.gun.transform.position).normalized;
             return d < enemy.sightRange && Vector3.Dot(gunDirection, gunToPlayer) > (1 - enemy.FOV) && lineOfSightCheck();
         } else {
@@ -106,11 +106,11 @@ public abstract class Enemy_State
             enemy.rb.position - (enemy.playerRB.position + 0.2f * Vector3.up), getDist(), 1 << 3);
     }
     protected bool checkFriendlyFire(float dist) {
-        return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.right,
+        return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.forward,
             enemy.playerRB.position - enemy.rb.position, dist, 1 << 8);
     }
     protected bool isAimed() {
-        return Vector3.Dot(enemy.TargetDir, enemy.gun.transform.right) > 0.975f;
+        return Vector3.Dot(enemy.TargetDir, enemy.gun.transform.forward) > 0.975f;
     }
     protected void turnTurretTowardPlayer(bool leadPlayer) {
         if (enemy.playerRB == null) {
@@ -136,7 +136,7 @@ public abstract class Enemy_State
         turnTurretVecMath();
     }
     protected void turnTurretVecMath() {
-        float dir = Vector3.Dot(enemy.gun.transform.forward, enemy.TargetDir);
+        float dir = Vector3.Dot(-enemy.gun.transform.right, enemy.TargetDir);
         if (dir > 0.02f){
             enemy.cTurretTurn = Mathf.Max(-enemy.rotSpeed, enemy.cTurretTurn - 900 * Time.deltaTime);
         } else if (dir < -0.02f) {
@@ -152,7 +152,7 @@ public abstract class Enemy_State
     protected void fire(float dispersion, bool random = true) {
         GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
-         * (enemy.gun.transform.right * bullet.GetComponent<Projectile>().bulletSpeed);
+         * (enemy.gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
     }
 
@@ -258,7 +258,7 @@ public abstract class Enemy_State
                     new Vector2(enemy.destination.x, enemy.destination.z)) < 1;
     }
     protected void turnTowardsVector(Vector3 v, float accel) {
-        float dir = Vector3.Dot(enemy.transform.forward, v);
+        float dir = Vector3.Dot(-enemy.transform.right, v);
         if (dir > 0.03f) {
             if (enemy.cTurnSpeed > 0) {
                 enemy.cTurnSpeed -= 2 * accel * Time.fixedDeltaTime;
@@ -282,8 +282,8 @@ public abstract class Enemy_State
     //------------------helper functions for omni movement--------------------------------
 
     protected void turnTowardsVectorOmni(Vector3 v, float accel) {
-        ((EnemyOmniMove)enemy).backwards = Vector3.Dot(enemy.transform.right, v) < 0;
-        float dir = Vector3.Dot(enemy.transform.forward, v);
+        ((EnemyOmniMove)enemy).backwards = Vector3.Dot(enemy.transform.forward, v) < 0;
+        float dir = Vector3.Dot(-enemy.transform.right, v);
         if ((dir > 0.03f && !((EnemyOmniMove)enemy).backwards) || (dir < -0.03f && ((EnemyOmniMove)enemy).backwards)) {
             if (enemy.cTurnSpeed > 0) {
                 enemy.cTurnSpeed -= 2 * accel * Time.fixedDeltaTime;

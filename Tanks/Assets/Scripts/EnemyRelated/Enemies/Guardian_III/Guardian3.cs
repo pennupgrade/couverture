@@ -18,7 +18,7 @@ public class Guardian3 : EnemyOmniMove
         FOV = 0.9f;
         rotSpeed = 108;
         cooldownTime = 0.6f;
-        reload = 3.5f;
+        reload = 3;
         magSize = 5;
         numBullets = magSize;
         bulletSpeed = 2.7f;
@@ -71,7 +71,7 @@ public class Guardian3 : EnemyOmniMove
             cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 12 * Time.fixedDeltaTime)) : 
                                 (Mathf.Min(speed, cSpeed + 12 * Time.fixedDeltaTime)));
         }
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     public IEnumerator deployMines() {
         yield return new WaitForSeconds(4);

@@ -18,7 +18,7 @@ public class Guardian2 : ShieldedEnemy
         FOV = 0.9f;
         rotSpeed = 108;
         cooldownTime = 0.6f;
-        reload = 3.5f;
+        reload = 3;
         magSize = 5;
         numBullets = magSize;
         bulletSpeed = 2.7f;
@@ -57,7 +57,7 @@ public class Guardian2 : ShieldedEnemy
             gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
         //moving
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")

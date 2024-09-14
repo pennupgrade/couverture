@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Scout : Enemy
+public class Scout : PatrollingEnemy
 {
     public bool warningSent;
     public GameObject signalPrefab;
@@ -55,7 +55,7 @@ public class Scout : Enemy
             gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
         //moving
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")

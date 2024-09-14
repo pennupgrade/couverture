@@ -3,32 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Spearhead : Enemy
+public class Wasp : PatrollingEnemyOmni
 {
     void Awake() {
-        enemyState = new Spear_Start(this);
+        enemyState = new Wasp_Start(this);
     }
     // Start is called before the first frame update
     void Start()
     {
         //set enemy values
-        health = 300;
-        gunRange = 4.5f;
+        health = 100;
+        gunRange = 7;
         sightRange = 8;
-        FOV = 0.9f;
-        rotSpeed = 90;
-        reload = 5;
-        cooldownTime = 0.4f;
-        magSize = 3;
-        numBullets = magSize;
+        FOV = 0.7f;
+        rotSpeed = 108;
+        reload = 4.5f;
         bulletSpeed = 2.6f;
         leadChance = 0.25f;
-        speed = 1.4f;
-        turnSpeed = 120;
+        speed = 2f;
+        turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
+        if (shieldEnabled) {
+            shieldSetup();
+            StartCoroutine(activateShield());
+        }
         rb = GetComponent<Rigidbody>();
     }
 
@@ -45,23 +46,21 @@ public class Spearhead : Enemy
         gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }
     void FixedUpdate() {
-        if (playerRB == null) return;
-
         agent.nextPosition = transform.position;
         if (isStunned) return;
+
         //turning
-        if (!stopTurns && moveStraightTimer == null) {
+        if (moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
+
         //moving
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
-    }
-    void OnCollisionEnter(Collision collision) {
-        if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
-             && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1.2f));
+        if (accel && moveStraightTimer == null) {
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 18 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 18 * Time.fixedDeltaTime)));
         }
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
 }

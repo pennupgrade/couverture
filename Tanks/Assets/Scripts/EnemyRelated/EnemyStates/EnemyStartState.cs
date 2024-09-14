@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyStartState : Enemy_State
 {
-    private bool changeState;
+    private bool changeState, alertState;
     private int frameTimer;
     public EnemyStartState(Enemy enemy) : base(enemy) {
         frameTimer = 1;
@@ -18,7 +18,7 @@ public abstract class EnemyStartState : Enemy_State
         }
         frameTimer = 20;
 
-        if (checkIfPlayerDetected(true)) {
+        if (alertState || checkIfPlayerDetected(true)) {
             transitionHelper();
             return stateToTransitionTo(true);
         }
@@ -64,7 +64,11 @@ public abstract class EnemyStartState : Enemy_State
         return this;
     }
 
-    public void ChangeToIdle() {
-        changeState = true;
+    public void ChangeToIdle(bool alertState) {
+        if (!alertState) {
+            changeState = true;
+        } else {
+            alertState = true;
+        }
     }
 }

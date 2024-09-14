@@ -30,16 +30,23 @@ public class EnemyOmniMove : ShieldedEnemy
     protected void dodge() {
         if (bullet == null) return;
         Vector3 dir = (transform.position - bullet.transform.position).normalized; 
-        if (Mathf.Abs(Vector3.Dot(bullet.transform.right, dir)) > 0.3f) {
+        float mag = (transform.position - bullet.transform.position).magnitude;
+        if (mag < 0.4f || Mathf.Abs(Vector3.Dot(bullet.transform.right, dir)) > 0.35f) {
             turnTowardsVectorOmni(dir);
         } else {
-            turnTowardsVectorOmni((Vector3.Cross((numBullets > 1) ? dir : -dir, Vector3.up) + dir).normalized);
+            if (Vector3.Dot(dir, Vector3.Cross(bullet.transform.forward, Vector3.up)) > 0) {
+                turnTowardsVectorOmni((Vector3.Cross(bullet.transform.forward, Vector3.up) + dir).normalized);
+            } else {
+                turnTowardsVectorOmni((Vector3.Cross(Vector3.up, bullet.transform.forward) + dir).normalized);
+            }
+            
         }
     }
 
     protected void turnTowardsVectorOmni(Vector3 v) {
-        backwards = Vector3.Dot(transform.right, v) < 0;
-        float dir = Vector3.Dot(transform.forward, v);
+        //Debug.DrawRay(transform.position, 3* v, Color.red);
+        backwards = Vector3.Dot(transform.forward, v) < 0;
+        float dir = Vector3.Dot(-transform.right, v);
         if ((dir > 0.03f && !backwards) || (dir < -0.03f && backwards)) {
             if (cTurnSpeed > 0) {
                 cTurnSpeed -= 2 * 400 * Time.fixedDeltaTime;

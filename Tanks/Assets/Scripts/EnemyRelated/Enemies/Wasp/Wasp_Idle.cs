@@ -4,33 +4,33 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class Scav_Idle : EnemyIdleState
+public class Wasp_Idle : EnemyIdleState
 {
     private int frameTimer, wpIndex;
-    public Scav_Idle(Enemy enemy) : base(enemy) {
+    public Wasp_Idle(Enemy enemy) : base(enemy) {
         frameTimer = 1;
         wpIndex = -1;
     }
 
     public override Enemy_State Move(Vector3 _)
     {
-        if (((PatrollingEnemy)enemy).followWaypoints && wpIndex == -1) {
+        if (((PatrollingEnemyOmni)enemy).followWaypoints && wpIndex == -1) {
             wpIndex = 0;
-            enemy.destination = getRandomNavPoint(((PatrollingEnemy)enemy).waypoints[wpIndex], 1);
-            wpIndex = ((PatrollingEnemy)enemy).increment(wpIndex);
+            enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex], 1);
+            wpIndex = ((PatrollingEnemyOmni)enemy).increment(wpIndex);
             enemy.agent.SetDestination(enemy.destination);
-        } else if (!((PatrollingEnemy)enemy).followWaypoints && enemy.wayPointUpdate == null) {
+        } else if (!((PatrollingEnemyOmni)enemy).followWaypoints && enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            if (((PatrollingEnemy)enemy).followWaypoints) {
-                enemy.destination = getRandomNavPoint(((PatrollingEnemy)enemy).waypoints[wpIndex], 1);
-                wpIndex = ((PatrollingEnemy)enemy).increment(wpIndex);
+            if (((PatrollingEnemyOmni)enemy).followWaypoints) {
+                enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex], 1);
+                wpIndex = ((PatrollingEnemyOmni)enemy).increment(wpIndex);
             } else {
                 enemy.destination = getRandomPoint(8);
             }
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity, 300);
+        turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
         return this;
     }
     private IEnumerator recalcPath() {
@@ -61,7 +61,7 @@ public class Scav_Idle : EnemyIdleState
                 enemy.StopCoroutine(enemy.wayPointUpdate);
                 enemy.wayPointUpdate = null;
             }
-            return new Scav_Alert(enemy);
+            return new Wasp_Alert(enemy);
         }
         return this;
     }

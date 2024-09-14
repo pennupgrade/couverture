@@ -85,7 +85,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     //----------------------------------bullet dodging--------------------------------------
     protected void turnTowardsVector(Vector3 v) {
-        float dir = Vector3.Dot(transform.forward, v);
+        float dir = Vector3.Dot(-transform.right, v);
         if (dir > 0.02f) {
             if (cTurnSpeed > 0) {
                 cTurnSpeed -= 720 * Time.deltaTime;
@@ -104,7 +104,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     protected IEnumerator avoidBullet(Vector3 desired, Rigidbody bullet) {
         stopTurns = true;
-        while (Vector3.Dot(desired, transform.right) < 0.995f){
+        while (Vector3.Dot(desired, transform.forward) < 0.995f){
             turnTowardsVector(desired);
             transform.eulerAngles += cTurnSpeed * Time.deltaTime * Vector3.up;
             gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.deltaTime * Vector3.up;
@@ -127,7 +127,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
         Vector3 rbForward = bullet.velocity.normalized;
         Vector3 badDir;
-        if (MyMath.InterceptDirection(rb.position, bullet.position, cSpeed * transform.right, 
+        if (MyMath.InterceptDirection(rb.position, bullet.position, cSpeed * transform.forward, 
                 bullet.velocity.magnitude, out Vector3 result)){
             badDir = result;
             //Debug.DrawRay(bullet.position, 2 * badDir, Color.red, 1);
@@ -135,9 +135,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
         if (Vector2.Dot(new Vector2(rbForward.x, rbForward.z),
                 new Vector2(badDir.x, badDir.z)) > 0.82f) {
-            float frontDot = Vector3.Dot(transform.right, rbForward);
+            float frontDot = Vector3.Dot(transform.forward, rbForward);
             if (frontDot > 0.58f || frontDot < -0.75f) {
-                avoidBulletCor = StartCoroutine(avoidBullet((Random.value > 0.5f) ? transform.forward : -transform.forward, bullet));
+                avoidBulletCor = StartCoroutine(avoidBullet((Random.value > 0.5f) ? transform.right : -transform.right, bullet));
             } else {
                 avoidBulletCor = StartCoroutine(avoidBullet((frontDot > 0) ? rbForward : -rbForward, bullet));
             }
@@ -181,9 +181,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         return health;
     }
 
-    public virtual void alert() {
+    public virtual void alert(bool alertState = false) {
         if (enemyState is EnemyStartState) {
-            ((EnemyStartState)enemyState).ChangeToIdle();
+            ((EnemyStartState)enemyState).ChangeToIdle(alertState);
         }
     }
 

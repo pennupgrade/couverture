@@ -18,7 +18,7 @@ public class Guardian4 : EnemyOmniMove
         FOV = 1.4f;
         rotSpeed = 108;
         cooldownTime = 0.8f;
-        reload = 3f;
+        reload = 100f;
         magSize = 2;
         numBullets = magSize;
         bulletSpeed = 5.7f;
@@ -51,16 +51,17 @@ public class Guardian4 : EnemyOmniMove
         if (isStunned) return;
 
         //dodging
-        stopTurns = detectBullet(2);
+        stopTurns = detectBullet(1.8f);
         if (stopTurns) {
             dodge();
+            transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
             if (!accel) {
                 alert();
             }
         }
-
         //turning
-        if (!stopTurns && moveStraightTimer == null) {
+        else if (moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
             gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
@@ -71,7 +72,7 @@ public class Guardian4 : EnemyOmniMove
             cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 18 * Time.fixedDeltaTime)) : 
                                 (Mathf.Min(speed, cSpeed + 18 * Time.fixedDeltaTime)));
         }
-        transform.position += cSpeed * Time.fixedDeltaTime * transform.right;
+        transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     public IEnumerator deployMines() {
         yield return new WaitForSeconds(4);
