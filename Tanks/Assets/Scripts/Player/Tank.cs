@@ -24,7 +24,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public float rotSpeed;
     public float groundMargin = 0.2f;
     public float wheelMaxDist = 3.0f;
-    public bool enableExperimentalGravity = true;
+    public bool enableGod = false;
 
     // Object References
     public GameObject bulletPrefab;
@@ -87,6 +87,8 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
+        if (enableGod) return;
+
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {

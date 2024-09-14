@@ -10,7 +10,7 @@ public class TankController
     private Tank tank;
 
     // Important vectors
-    private Vector3 bodyVector;
+    private Vector3 bodyForward;
     private Vector3 bodyPivot;
     private Vector3 bodyNormal;
 
@@ -41,15 +41,15 @@ public class TankController
         Vector3 BackWheelPos = tank.BackWheel.transform.position;
 
         // vector representing "forward" vector of the tank
-        bodyVector = Vector3.Normalize(FrontWheelPos - BackWheelPos);
+        bodyForward = Vector3.Normalize(FrontWheelPos - BackWheelPos);
 
         // Position the body in the middle of the two wheels
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
-        bodyPivot = 0.50f * wheelDistances * bodyVector + BackWheelPos;
+        bodyPivot = 0.50f * wheelDistances * bodyForward + BackWheelPos;
 
         // Some vector math to get the body's normal (does Unity have a function for this?)
-        bodyNormal = Vector3.Cross(bodyVector, tank.transform.up);
-        bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyVector));
+        bodyNormal = Vector3.Cross(bodyForward, tank.transform.up);
+        bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyForward));
     }
 
     // Performs a raycast from the wheel onto the ground, returns a boolean as to whether or not there is a hit
@@ -99,7 +99,7 @@ public class TankController
 
         float hitDist = Vector3.Distance(hitPoint, origin);
 
-        if (hitDist <= tank.groundMargin + 0.02f || !tank.enableExperimentalGravity)
+        if (hitDist <= tank.groundMargin + 0.02f)
         {
             // vertically translate the wheel from the ground
             hitPoint += tank.transform.up * tank.groundMargin; // 0.2f value is arbitrary, lifts up wheel
@@ -115,13 +115,12 @@ public class TankController
     }
 
     // Rotates the body based on the forward vector of the Tank, calcualted by the wheels
-    private void RotateBodyByWheels()
+    private void TransformBody()
     {
-        Debug.DrawRay(bodyPivot, bodyVector, UnityEngine.Color.red);
 
         // Find the angle between two points (wheels), and then rotates body
         hitNormal = Vector3.Normalize(hitPoints[0].normal + hitPoints[1].normal);
-        forward = Quaternion.AngleAxis(90, hitNormal) * bodyVector;
+        forward = Quaternion.AngleAxis(90, hitNormal) * bodyForward;
         desiredForward = Vector3.ProjectOnPlane(forward, hitNormal).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(desiredForward, hitNormal);
 
@@ -142,23 +141,51 @@ public class TankController
     }
 
     // Self explanatory name, using a Vector2 direction for (x,y), we translate the tank based on the projected forward vector
-    // We do this because we separate the body from the rest in terms of orientation, wheels should never be rotated along with
-    // the tank object itself, only the body. Thus, we only want to translate the tank and "rotate" to TURN in X,Y space only, not Z
-    public void TranslateTank(Vector2 dir)
+    // Only interacts with the tank transforms -- do not touch the body in anyway
+    public void TransformTank(Vector2 dir)
     {
-        Vector3 direction = Vector3.ProjectOnPlane(bodyVector, tank.transform.up);
-        tank.transform.position += tank.moveSpeed * direction * dir.y * Time.deltaTime;
-        tank.Velocity = tank.moveSpeed * direction * dir.y;
-        tank.transform.RotateAround(bodyPivot, tank.transform.up, tank.rotSpeed * dir.x * Time.deltaTime);
+        // Constructing the player input vector
+        Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
+        Vector3 normalizedInput = Vector3.Normalize(playerInput);
+
+        // Constructing the direction and inverse of the input direction and the tank's forward vector
+        Vector3 direction = normalizedInput;
+        direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
+        Vector3 backDir = -direction;
+
+        Vector3 tankForward = bodyForward; // bodyForward is basically "forward"
+        Vector3 tankBackward = -bodyForward;
+
+        // Choose the target direction based on the angle between the player input and the tank's forward/backward vectors
+        float angleForward = Vector3.Angle(playerInput, tankForward);
+        float angleBackward = Vector3.Angle(playerInput, tankBackward);
+
+        Vector3 targetDir = angleForward < angleBackward ? direction : backDir;
+
+        // Rotate the tank towards the target direction
+        Quaternion targetRotate = Quaternion.RotateTowards(
+                tank.transform.rotation,
+                Quaternion.LookRotation(targetDir),
+                playerInput.magnitude * tank.rotSpeed * Time.deltaTime
+            );
+        tank.transform.rotation = targetRotate;
+
+        // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
+        // This means the tank will start moving when it's finished rotating
+        float theta = Vector3.Dot(direction, tankForward);
+        tank.Velocity = tank.moveSpeed * normalizedInput * Mathf.Exp(-Mathf.Abs(theta));
+        tank.transform.position += tank.Velocity * Time.deltaTime;
     }
 
     // Called in TankMoveState to move the tank
     public void MoveTank(Vector2 dir)
     {
         CalculateBodyProperties();
-        TranslateTank(dir);
+        TransformTank(dir);
         RaycastWheels();
         PositionWheels();
-        RotateBodyByWheels();
+        TransformBody();
+
+        //DebugSomeStuff();
     }
 }
