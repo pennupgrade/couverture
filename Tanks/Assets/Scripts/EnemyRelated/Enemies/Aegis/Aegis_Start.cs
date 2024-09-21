@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Aegis_Start : MonoBehaviour
+public class Aegis_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Aegis_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        ((EnemyOmniMove)enemy).accel = true;
+        return (alert) ? new Aegis_Alert(enemy) : new Aegis_Idle(enemy);
     }
 }

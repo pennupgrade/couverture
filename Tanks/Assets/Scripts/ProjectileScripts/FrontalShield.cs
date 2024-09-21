@@ -23,9 +23,7 @@ public class FrontalShield : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("arrived");
         if (Vector3.Dot(other.transform.forward, transform.forward) > 0) return;
-        Debug.Log("here");
         other.transform.forward = Vector3.Reflect(other.transform.forward, transform.forward);
         other.gameObject.GetComponent<Rigidbody>().velocity = other.transform.forward * other.gameObject.GetComponent<Rigidbody>().velocity.magnitude;
     }

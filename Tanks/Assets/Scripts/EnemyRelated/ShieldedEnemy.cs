@@ -28,6 +28,7 @@ public class ShieldedEnemy : Enemy
         }
     }
     protected IEnumerator activateShield() {
+        if (shield == null) yield break;
         float i = 1;
         while (i > 0) {
             i -= 0.05f;
