@@ -12,7 +12,7 @@ public class Bullet_Default : Projectile
     
     // Start is called before the first frame update
     void Awake() {
-        bulletSpeed = 2.5f;
+        bulletSpeed = 3;
     }
     void Start()
     {

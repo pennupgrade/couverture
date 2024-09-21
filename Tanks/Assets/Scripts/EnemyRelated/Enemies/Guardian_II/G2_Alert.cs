@@ -115,7 +115,7 @@ public class G2_Alert : EnemyAlertState
                     int left = (Random.value) < 0.5f ? 1 : -1;
                     for (int i = 0; i < enemy.magSize; i++) {
                         fire(left * (-28 + 14 * i), false);
-                        yield return new WaitForSeconds(0.38f);
+                        yield return new WaitForSeconds(0.42f);
                     }
                     yield return new WaitForSeconds(enemy.cooldownTime);
                     enemy.numBullets = 1;

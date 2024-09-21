@@ -66,8 +66,8 @@ public class Javelin : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 20 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 20 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         if (!stationary) {
             transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;

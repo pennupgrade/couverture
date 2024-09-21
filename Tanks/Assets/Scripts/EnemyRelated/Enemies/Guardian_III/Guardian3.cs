@@ -12,7 +12,7 @@ public class Guardian3 : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 400;
+        health = 300;
         gunRange = 9;
         sightRange = 10;
         FOV = 0.9f;
@@ -21,10 +21,10 @@ public class Guardian3 : EnemyOmniMove
         reload = 3;
         magSize = 5;
         numBullets = magSize;
-        bulletSpeed = 2.7f;
+        bulletSpeed = 3.2f;
         leadChance = 0.33f;
         speed = 1.6f;
-        turnSpeed = 180;
+        turnSpeed = 150;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -51,9 +51,11 @@ public class Guardian3 : EnemyOmniMove
         if (isStunned) return;
 
         //dodging
-        stopTurns = detectBullet(2);
+        stopTurns = detectBullet(1.8f);
         if (stopTurns) {
             dodge();
+            transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
             if (!accel) {
                 alert();
             }
@@ -68,8 +70,8 @@ public class Guardian3 : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 12 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 12 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 8 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }

@@ -21,7 +21,7 @@ public class Spearhead : Enemy
         cooldownTime = 0.4f;
         magSize = 3;
         numBullets = magSize;
-        bulletSpeed = 2.6f;
+        bulletSpeed = 3.1f;
         leadChance = 0.25f;
         speed = 1.4f;
         turnSpeed = 120;

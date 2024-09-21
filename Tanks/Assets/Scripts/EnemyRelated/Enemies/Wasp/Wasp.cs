@@ -18,7 +18,7 @@ public class Wasp : PatrollingEnemyOmni
         FOV = 0.7f;
         rotSpeed = 108;
         reload = 4.5f;
-        bulletSpeed = 2.6f;
+        bulletSpeed = 3.1f;
         leadChance = 0.25f;
         speed = 2f;
         turnSpeed = 160;

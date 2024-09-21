@@ -14,10 +14,10 @@ public class Lance_Alert : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            if (Vector3.Distance(((Lance)enemy).homePoint, enemy.rb.position) > 10) {
-                enemy.destination = getRandomNavPoint(((Lance)enemy).homePoint, 6);
+            if (Vector3.Distance(((Lance)enemy).homePoint, enemy.rb.position) > 6) {
+                enemy.destination = getRandomNavPoint(((Lance)enemy).homePoint, 5);
             } else {
-                enemy.destination = getRandomPoint(6);
+                enemy.destination = getRandomPoint(5);
             }
             enemy.agent.SetDestination(enemy.destination);
         }

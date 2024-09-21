@@ -14,7 +14,7 @@ public class ShieldedEnemy : Enemy
         shieldMat = shield.GetComponent<MeshRenderer>().material;
     }
     public override void takeDamage(int dmg) {
-        if (invincible) {
+        if (shieldActivated && invincible) {
             return;
         }
         if (shieldActivated) {
@@ -51,7 +51,7 @@ public class ShieldedEnemy : Enemy
         }
     }
     protected virtual IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(16);
+        yield return new WaitForSeconds(20);
         StartCoroutine(activateShield());
     }
 
@@ -62,6 +62,9 @@ public class ShieldedEnemy : Enemy
                 StartCoroutine(activateShield());
             }
         }
+    }
+    public bool getShieldActivated() {
+        return shieldActivated;
     }
 
 }

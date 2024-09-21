@@ -15,19 +15,4 @@ public class TankMoveState : TankState
 
         return this;
     }
-
-    public override TankState HandleShoot() {
-        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
-
-        tank.numBullets--;
-        tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
-        var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(30 * (Random.value - 0.5f), Vector3.up)
-            * (tank.gun.transform.right * -bullet.GetComponent<Projectile>().bulletSpeed);
-        bullet.GetComponent<Bullet_Default>().addBounceChange();
-        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
-
-        if (tank.reloadCoroutine == null) tank.reloadCoroutine = tank.StartCoroutine(Reload());
-        return this;
-    }
 }

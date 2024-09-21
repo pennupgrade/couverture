@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lance : ShieldedEnemy
 {
-    public Vector3 homePoint;
+    [HideInInspector] public Vector3 homePoint;
     void Awake() {
         enemyState = new Lance_Start(this);
     }
@@ -17,11 +17,11 @@ public class Lance : ShieldedEnemy
         sightRange = 11;
         FOV = 0.8f;
         rotSpeed = 72;
-        reload = 4.5f;
+        reload = 4;
         bulletSpeed = 5.75f;
         leadChance = 0.5f;
         speed = 1.2f;
-        turnSpeed = 110;
+        turnSpeed = 180;
         dodgeChance = 0.8f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

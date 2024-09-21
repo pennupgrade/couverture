@@ -14,10 +14,10 @@ public class Lance_Idle : EnemyIdleState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            if (Vector3.Distance(((Lance)enemy).homePoint, enemy.rb.position) > 8) {
+            if (Vector3.Distance(((Lance)enemy).homePoint, enemy.rb.position) > 7) {
                 enemy.destination = getRandomNavPoint(((Lance)enemy).homePoint, 4);
             } else {
-                enemy.destination = getRandomPoint(6);
+                enemy.destination = getRandomPoint(5);
             }
             enemy.agent.SetDestination(enemy.destination);
         }

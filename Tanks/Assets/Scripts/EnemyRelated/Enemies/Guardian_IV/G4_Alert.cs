@@ -17,6 +17,12 @@ public class G4_Alert : G2_Alert
         } else if (hasReachedDest()) {
             if (enemy.getHealth() < 300 && Random.value < 0.5f) {
                 enemy.destination = getRandomHidePoint(8);
+            } else if (((Guardian4)enemy).defensive) {
+                if (Vector3.Distance(((Guardian4)enemy).homePoint, enemy.rb.position) > 6) {
+                    enemy.destination = getRandomNavPoint(((Guardian4)enemy).homePoint, 4);
+                } else {
+                    enemy.destination = getRandomPoint(5);
+                }
             } else if (getNumEnemies(9) < 3) {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4f);
             } else {
@@ -36,6 +42,12 @@ public class G4_Alert : G2_Alert
                     enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
                 } else if (enemy.getHealth() < 300 && Random.value < 0.5f) {
                     enemy.destination = getRandomHidePoint(8);
+                } else if (i == 0 && ((Guardian4)enemy).defensive) {
+                    if (Vector3.Distance(((Guardian4)enemy).homePoint, enemy.rb.position) > 6) {
+                        enemy.destination = getRandomNavPoint(((Guardian4)enemy).homePoint, 4);
+                    } else {
+                        enemy.destination = getRandomPoint(5);
+                    }
                 } else if (i == 0 && getNumEnemies(9) < 3) {
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4.5f);
                 } else if (i == 0){

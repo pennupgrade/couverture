@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour, IDestroyable
 {
-    public const float RELOAD_TIME = 1.8f;
-    public const float COOLDOWN_TIME = 0.2f;
+    public const float RELOAD_TIME = 1.5f;
+    public const float COOLDOWN_TIME = 0.18f;
 
     public int LIVES = 5;
 

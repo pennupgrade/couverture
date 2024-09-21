@@ -20,10 +20,10 @@ public class Scout : PatrollingEnemy
         FOV = 1.2f;
         rotSpeed = 120;
         reload = 3;
-        bulletSpeed = 2.7f;
+        bulletSpeed = 3.2f;
         leadChance = 0.25f;
         speed = 1.3f;
-        turnSpeed = 100;
+        turnSpeed = 120;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();

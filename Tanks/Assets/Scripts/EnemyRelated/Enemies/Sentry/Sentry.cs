@@ -17,7 +17,7 @@ public class Sentry : Enemy
         FOV = 0.6f;
         rotSpeed = 60;
         reload = 4;
-        bulletSpeed = 2.5f;
+        bulletSpeed = 3;
         leadChance = 0.2f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

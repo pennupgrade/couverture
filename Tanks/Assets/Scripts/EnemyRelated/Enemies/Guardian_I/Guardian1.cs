@@ -11,7 +11,7 @@ public class Guardian1 : ShieldedEnemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 400;
         gunRange = 9;
         sightRange = 10;
         FOV = 0.8f;
@@ -20,10 +20,10 @@ public class Guardian1 : ShieldedEnemy
         reload = 4;
         magSize = 3;
         numBullets = magSize;
-        bulletSpeed = 2.7f;
+        bulletSpeed = 3.2f;
         leadChance = 0.3f;
         speed = 1.2f;
-        turnSpeed = 110;
+        turnSpeed = 180;
         dodgeChance = 0.8f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

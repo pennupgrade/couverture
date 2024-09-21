@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class G5_Start : MonoBehaviour
+public class G5_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public G5_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        enemy.StartCoroutine(((Guardian5)enemy).deployMines());
+        ((EnemyOmniMove)enemy).accel = true;
+        return (alert) ? new G5_Alert(enemy) : new G5_Idle(enemy);
     }
 }

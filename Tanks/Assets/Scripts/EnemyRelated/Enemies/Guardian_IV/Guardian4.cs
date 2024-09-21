@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Guardian4 : EnemyOmniMove
 {
+    public bool defensive;
+    [HideInInspector] public Vector3 homePoint;
     public GameObject minePrefab;
     void Awake() {
         enemyState = new G4_Start(this);
@@ -12,19 +14,19 @@ public class Guardian4 : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 400;
+        health = 300;
         gunRange = 10;
         sightRange = 10;
         FOV = 1.4f;
         rotSpeed = 108;
         cooldownTime = 0.8f;
-        reload = 100f;
+        reload = 4.5f;
         magSize = 2;
         numBullets = magSize;
         bulletSpeed = 5.7f;
         leadChance = 0.4f;
-        speed = 1.8f;
-        turnSpeed = 200;
+        speed = 1.7f;
+        turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -34,6 +36,7 @@ public class Guardian4 : EnemyOmniMove
             StartCoroutine(activateShield());
         }
         rb = GetComponent<Rigidbody>();
+        homePoint = rb.position;
     }
 
     // Update is called once per frame
@@ -69,8 +72,8 @@ public class Guardian4 : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 18 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 18 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }

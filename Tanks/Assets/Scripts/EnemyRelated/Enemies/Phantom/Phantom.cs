@@ -21,10 +21,10 @@ public class Phantom : Enemy
         reload = 4;
         magSize = 4;
         numBullets = magSize;
-        bulletSpeed = 2.7f;
+        bulletSpeed = 3.2f;
         leadChance = 0.3f;
         speed = 1.2f;
-        turnSpeed = 110;
+        turnSpeed = 200;
         dodgeChance = 0.8f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

@@ -18,7 +18,7 @@ public class Scavenger : PatrollingEnemy
         FOV = 0.6f;
         rotSpeed = 90;
         reload = 3.5f;
-        bulletSpeed = 2.5f;
+        bulletSpeed = 3;
         leadChance = 0.25f;
         speed = 1;
         turnSpeed = 80;

@@ -54,7 +54,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public float leadChance;
     
     // bullet stuff
-    public int numBullets, magSize;
+    [HideInInspector] public int numBullets, magSize;
     [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
 
@@ -139,7 +139,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
             if (frontDot > 0.58f || frontDot < -0.75f) {
                 avoidBulletCor = StartCoroutine(avoidBullet((Random.value > 0.5f) ? transform.right : -transform.right, bullet));
             } else {
-                avoidBulletCor = StartCoroutine(avoidBullet((frontDot > 0) ? rbForward : -rbForward, bullet));
+                avoidBulletCor = StartCoroutine(avoidBullet((frontDot > 0) ? ((transform.position - bullet.transform.position).normalized) : -rbForward, bullet));
             }
         }
     }
