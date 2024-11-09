@@ -8,7 +8,8 @@ public class Rocket : Projectile
     private Rigidbody rb;
     
     // Start is called before the first frame update
-    void Awake() {
+    protected override void Awake() {
+        base.Awake();
         bulletSpeed = 5.5f;
     }
     void Start()

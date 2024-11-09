@@ -11,7 +11,8 @@ public class Bullet_Default : Projectile
     private Material material;
     
     // Start is called before the first frame update
-    void Awake() {
+    protected override void Awake() {
+        base.Awake();
         bulletSpeed = 3;
     }
     void Start()
@@ -34,8 +35,11 @@ public class Bullet_Default : Projectile
         {
             material.SetFloat("_Glowy", 1);
             damage *= 3;
-            transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
+
+        if (!destroyed)
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
+
         bounces--;
     }
 

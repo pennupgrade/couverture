@@ -9,7 +9,8 @@ public class RicochetRocket : Projectile
     private Vector3 lastVelocity;
     
     // Start is called before the first frame update
-    void Awake() {
+    protected override void Awake() {
+        base.Awake();
         bulletSpeed = 5.5f;
     }
     void Start()

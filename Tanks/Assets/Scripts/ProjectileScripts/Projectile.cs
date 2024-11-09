@@ -8,7 +8,16 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected float lifetime;
     [SerializeField] protected GameObject explosionPrefab;
     public float bulletSpeed;
-    private bool destroyed;
+    protected bool destroyed;
+
+    public float dontDamageOnSpawnDelay=0.1f;
+
+    protected float startLifetime;
+
+    protected virtual void Awake()
+    {
+        startLifetime = lifetime;
+    }
 
     protected virtual void Update()
     {
@@ -44,7 +53,7 @@ public abstract class Projectile : MonoBehaviour
     }
 
     protected bool defaultCollisionChecks(Collision collision) {
-        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) // hit a player
+        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d) && (startLifetime-lifetime)>dontDamageOnSpawnDelay) // hit a player
         {
             d.takeDamage(damage);
             destruction();
