@@ -31,6 +31,14 @@ public class Range2d
     }
 }
 
+[Serializable]
+public struct CinemaSettings
+{
+    public bool mode;
+    public float speed;
+    public Vector3 direction;
+}
+
 /// <summary>
 /// The initial Transform values set in the Inspector for the Camera are used to follow the player.
 /// </summary>
@@ -43,13 +51,13 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 cameraDirection;
     private Vector3 ogCamPos;
     private float distanceFromPlayer;
+    private float maxFieldOfView;
 
     [SerializeField] private bool debugLines;
-    [SerializeField] private Range2d range;
     [SerializeField] private bool isDead;
-    [SerializeField] private bool cinemaMode;
-    [SerializeField] private float cinemaSpeed;
-    [SerializeField] private Vector3 cinematicDirection;
+    [Range(0f, 1f)] [SerializeField] private float zoom;
+    [SerializeField] private Range2d range;
+    [SerializeField] private CinemaSettings cinema;
 
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -63,6 +71,8 @@ public class PlayerCamera : MonoBehaviour
         distanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
         cameraDirection = Vector3.Normalize(cameraPos - playerPos);
         ogCamPos = cameraPos;
+
+        maxFieldOfView = mainCamera.fieldOfView;
     }
 
     public void Kill(float duration) {
@@ -89,9 +99,9 @@ public class PlayerCamera : MonoBehaviour
     }
 
     private void Update() {
-        if (cinemaMode)
+        if (cinema.mode)
         {
-            mainCamera.transform.position += Vector3.Normalize(cinematicDirection) * Time.deltaTime * cinemaSpeed;
+            mainCamera.transform.position += Vector3.Normalize(cinema.direction) * (Time.deltaTime * cinema.speed);
             return;
         }
 
@@ -106,6 +116,8 @@ public class PlayerCamera : MonoBehaviour
 
         var currDistanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
         var distanceChanged = Mathf.Approximately(currDistanceFromPlayer, distanceFromPlayer);
+
+        mainCamera.fieldOfView = Mathf.Lerp(1f, maxFieldOfView, 1f - zoom);
 
         if (debugLines) {
             Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(range.left, 1f, 1f)),
