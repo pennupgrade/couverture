@@ -27,16 +27,16 @@ public class Bullet_Default : Projectile
     {
         Vector3 bounceDirection = Vector3.Reflect(bulletDir, wallNormal);
         rb.velocity = bounceDirection * lastVelocity.magnitude;
-        transform.rotation = Quaternion.LookRotation(rb.velocity);
-        bounces--;
-        if (bounces < 0) // changed from == -1 in case... something weird happens
+        if (bounces <= 0) // changed from == -1 in case... something weird happens
         {
             destruction();
         } else if (changeWhenBounce)
         {
             material.SetFloat("_Glowy", 1);
             damage *= 3;
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
+        bounces--;
     }
 
     void OnCollisionEnter(Collision collision) {
@@ -65,5 +65,15 @@ public class Bullet_Default : Projectile
     public void addBounceChange() {
         changeWhenBounce = true;
         material = GetComponent<MeshRenderer>().material;
+    }
+
+    protected override void removeObjectFromGame()
+    {
+        GetComponent<Animator>().Play("DefaultBulletFadeOut");
+        rb.velocity = Vector3.zero;
+        GetComponent<Collider>().enabled = false;
+        this.enabled = false;
+
+        Destroy(gameObject, 0.25f);
     }
 }
