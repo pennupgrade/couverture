@@ -203,10 +203,12 @@ public abstract class TankState
         tank.animationProgress = 0f;
         var meshMaterial = tank.gunShotPos.parent.GetComponent<MeshRenderer>().material;
 
+
+
         while (tank.animationProgress <= Tank.COOLDOWN_TIME)
         {
-            tank.animationProgress += Time.deltaTime / 1.9f;
-            float boomProg = Mathf.Min(0.99f, tank.animationProgress / (Tank.COOLDOWN_TIME));
+            tank.animationProgress += Time.deltaTime / 1.5f;
+            float boomProg = Mathf.Min(0.99f, tank.animationProgress / (Tank.COOLDOWN_TIME)); // 0-1
 
             meshMaterial.SetFloat("_Boom", Mathf.Max(0.0f, boomProg));
             yield return null;
