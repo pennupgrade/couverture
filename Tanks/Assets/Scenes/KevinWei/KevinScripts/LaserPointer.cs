@@ -11,6 +11,7 @@ public class LaserPointer : MonoBehaviour
 
     public LayerMask layersToIgnore;
 
+    public Transform endTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,8 @@ public class LaserPointer : MonoBehaviour
         {
             lineRenderer.SetPosition(1, transform.position + transform.forward * maxDistance);
         }
+
+        endTransform.position = lineRenderer.GetPosition(1);
 
     }
 }
