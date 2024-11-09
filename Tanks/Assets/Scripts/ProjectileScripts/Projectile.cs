@@ -34,6 +34,12 @@ public abstract class Projectile : MonoBehaviour
             }
             transform.GetChild(0).parent = null;
         }
+
+        removeObjectFromGame();
+    }
+
+    protected virtual void removeObjectFromGame()
+    {
         Destroy(gameObject);
     }
 
