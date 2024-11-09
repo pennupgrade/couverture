@@ -128,7 +128,7 @@ public class TankController
 
         // Use this to translate based on normal
         Vector3 bodyPosition = bodyPivot;
-        bodyPosition += bodyNormal * -0.045f;
+        bodyPosition += bodyNormal * 0.045f;
         tank.Body.transform.position = bodyPosition;
     }
 

@@ -43,6 +43,7 @@ public class Tank : MonoBehaviour, IDestroyable
     private DamageFlash damageFlash;
     public float reloadProgress;
     public float cooldownProgress;
+    public float animationProgress;
 
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
@@ -147,7 +148,7 @@ public abstract class TankState
         var offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new(offset.x, 0, offset.z);
 
-        var angle = Vector3.SignedAngle(-tank.transform.right, dir, Vector3.up);
+        var angle = Vector3.SignedAngle(tank.transform.forward, dir, Vector3.up);
 
         // Debug.Log(angle);
 
@@ -174,8 +175,8 @@ public abstract class TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
-                                                    * (tank.gun.transform.right *
-                                                       -bullet.GetComponent<Projectile>().bulletSpeed);
+                                                    * (tank.gun.transform.forward *
+                                                       bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 
@@ -186,9 +187,28 @@ public abstract class TankState
 
     public virtual IEnumerator Cooldown() {
         tank.cooldownProgress = 0f;
+        tank.StartCoroutine(AnimationCooldown());
 
         while (tank.cooldownProgress <= Tank.COOLDOWN_TIME) {
             tank.cooldownProgress += Time.deltaTime;
+            yield return null;
+        }
+
+        tank.cooldownCoroutine = null;
+        yield return null;
+    }
+
+    public virtual IEnumerator AnimationCooldown()
+    {
+        tank.animationProgress = 0f;
+        var meshMaterial = tank.gunShotPos.parent.GetComponent<MeshRenderer>().material;
+
+        while (tank.animationProgress <= Tank.COOLDOWN_TIME)
+        {
+            tank.animationProgress += Time.deltaTime / 1.9f;
+            float boomProg = Mathf.Min(0.99f, tank.animationProgress / (Tank.COOLDOWN_TIME));
+
+            meshMaterial.SetFloat("_Boom", Mathf.Max(0.0f, boomProg));
             yield return null;
         }
 
