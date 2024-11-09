@@ -51,13 +51,13 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 cameraDirection;
     private Vector3 ogCamPos;
     private float distanceFromPlayer;
-    private float maxFieldOfView;
 
     [SerializeField] private bool debugLines;
     [SerializeField] private bool isDead;
-    [Range(0f, 1f)] [SerializeField] private float zoom;
     [SerializeField] private Range2d range;
     [SerializeField] private CinemaSettings cinema;
+    [SerializeField] [Range(0f, 1f)] private float zoom;
+    [SerializeField] private Vector2 fieldOfViewBounds;
 
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -72,7 +72,7 @@ public class PlayerCamera : MonoBehaviour
         cameraDirection = Vector3.Normalize(cameraPos - playerPos);
         ogCamPos = cameraPos;
 
-        maxFieldOfView = mainCamera.fieldOfView;
+        SetZoom();
     }
 
     public void Kill(float duration) {
@@ -98,6 +98,10 @@ public class PlayerCamera : MonoBehaviour
         mainCamera.transform.position = endPos;
     }
 
+    private void SetZoom() {
+        mainCamera.fieldOfView = Mathf.Lerp(fieldOfViewBounds.x, fieldOfViewBounds.y, 1f - zoom);
+    }
+    
     private void Update() {
         if (cinema.mode)
         {
@@ -109,6 +113,11 @@ public class PlayerCamera : MonoBehaviour
 
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
 
+        // Zoom in and out
+        var scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        zoom = Mathf.Clamp(zoom + scrollInput, 0f, 1f);
+        SetZoom();
+
         if (player == null) return;
 
         var playerPos = player.transform.Find("Body").transform.position;
@@ -116,9 +125,7 @@ public class PlayerCamera : MonoBehaviour
 
         var currDistanceFromPlayer = Vector3.Distance(playerPos, cameraPos);
         var distanceChanged = Mathf.Approximately(currDistanceFromPlayer, distanceFromPlayer);
-
-        mainCamera.fieldOfView = Mathf.Lerp(1f, maxFieldOfView, 1f - zoom);
-
+        
         if (debugLines) {
             Debug.DrawLine(mainCamera.ViewportToWorldPoint(new Vector3(range.left, 1f, 1f)),
                            mainCamera.ViewportToWorldPoint(new Vector3(range.left, 0f, 1f)),
