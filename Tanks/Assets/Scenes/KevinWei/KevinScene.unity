@@ -1063,6 +1063,7 @@ MonoBehaviour:
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 3959
+  endTransform: {fileID: 0}
 --- !u!1001 &636310458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1121,7 +1122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7797374622446002017, guid: ed16a69962b70a145944fa001692e3c1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1154,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6927564543452708396, guid: d7e16d3694eb8c64fb535724e3c14950, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7358721669894127454, guid: d7e16d3694eb8c64fb535724e3c14950, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1945,7 +1946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1127751483681425069, guid: c2ce7ae589314f14482b4e5591731f40, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2967744132402779008, guid: c2ce7ae589314f14482b4e5591731f40, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4256,6 +4257,7 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   reloadProgress: 2
   cooldownProgress: 0.16
+  animationProgress: 0
 --- !u!222 &4642097752941799716
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4818,15 +4820,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugLines: 0
+  isDead: 0
+  zoom: 0
   range:
     left: 0.45
     right: 0.55
     bottom: 0.45
     top: 0.55
-  isDead: 0
-  cinemaMode: 0
-  cinemaSpeed: 0
-  cinematicDirection: {x: 0, y: 0, z: 0}
+  cinema:
+    mode: 0
+    speed: 0
+    direction: {x: 0, y: 0, z: 0}
 --- !u!23 &6455858549055365723
 MeshRenderer:
   m_ObjectHideFlags: 0

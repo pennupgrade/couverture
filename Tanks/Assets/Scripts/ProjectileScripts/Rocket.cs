@@ -45,4 +45,14 @@ public class Rocket : Projectile
             destruction();
         }
     }
+
+    protected override void removeObjectFromGame()
+    {
+        GetComponent<Animator>().Play("DefaultBulletFadeOut");
+        rb.velocity = Vector3.zero;
+        GetComponent<Collider>().enabled = false;
+        this.enabled = false;
+
+        Destroy(gameObject, 0.25f);
+    }
 }
