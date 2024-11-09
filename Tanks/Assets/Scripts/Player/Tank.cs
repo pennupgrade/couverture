@@ -34,6 +34,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject FrontWheel;
     public GameObject BackWheel;
     public GameObject Body;
+    public Animator cannonAnimator;
 
     // Misc
     public int health;
@@ -185,7 +186,9 @@ public abstract class TankState
         return this;
     }
 
-    public virtual IEnumerator Cooldown() {
+    public virtual IEnumerator Cooldown()
+    {
+        tank.cannonAnimator.SetTrigger("Fire");
         tank.cooldownProgress = 0f;
         tank.StartCoroutine(AnimationCooldown());
 
@@ -201,7 +204,7 @@ public abstract class TankState
     public virtual IEnumerator AnimationCooldown()
     {
         tank.animationProgress = 0f;
-        var meshMaterial = tank.gunShotPos.parent.GetComponent<MeshRenderer>().material;
+        var meshMaterial = tank.cannonAnimator.gameObject.GetComponent<MeshRenderer>().material;
 
 
 
