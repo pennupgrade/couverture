@@ -35,6 +35,5 @@ public class LaserPointer : MonoBehaviour
         }
 
         endTransform.position = lineRenderer.GetPosition(1);
-
     }
 }

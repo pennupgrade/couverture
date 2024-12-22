@@ -6,6 +6,7 @@ public class SlidingWall : Activatable
 {
     public Vector3 slideOffset;
     [SerializeField] private int activatesNeeded = 1;
+    [SerializeField] private float speed = 1.5f;
     private Coroutine slideCor;
     // Start is called before the first frame update
     public override void activate() {
@@ -24,7 +25,7 @@ public class SlidingWall : Activatable
         Vector3 startPos = transform.position;
         while (timer <= 1) {
             transform.position = Vector3.Lerp(startPos, dest, timer);
-            timer += Time.deltaTime * 1.5f;
+            timer += Time.deltaTime * speed;
             yield return null;
         }
         transform.position = dest;

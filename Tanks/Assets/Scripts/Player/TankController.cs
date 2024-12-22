@@ -5,6 +5,14 @@ using UnityEngine;
 // Building this class to reduce redundancies in our state code.
 // Should this be renamed y'all? - Anthony
 
+enum WheelID : ushort
+{
+    Front = 0,
+    Back = 1,
+    Left = 2,
+    Right = 3
+}
+
 public class TankController
 {
     private Tank tank;
@@ -37,8 +45,8 @@ public class TankController
     // Assigns normal of the body pointing up, forward vector of the tank, and the pivot position
     public void CalculateBodyProperties()
     {
-        Vector3 FrontWheelPos = tank.FrontWheel.transform.position;
-        Vector3 BackWheelPos = tank.BackWheel.transform.position;
+        Vector3 FrontWheelPos = tank.Wheels[(int)WheelID.Front].transform.position;
+        Vector3 BackWheelPos = tank.Wheels[(int)WheelID.Back].transform.position;
 
         // vector representing "forward" vector of the tank
         bodyForward = Vector3.Normalize(FrontWheelPos - BackWheelPos);
@@ -79,8 +87,8 @@ public class TankController
     // Assigns FrontHit and BackHit true/false
     public void RaycastWheels()
     {
-        FrontHit = RaycastWheel(tank.FrontWheel, 0);
-        BackHit = RaycastWheel(tank.BackWheel, 1);
+        FrontHit = RaycastWheel(tank.Wheels[(int)WheelID.Front], 0);
+        BackHit = RaycastWheel(tank.Wheels[(int)WheelID.Back], 1);
     }
 
     // Checks if front and back wheels raycast hit the ground
@@ -93,7 +101,7 @@ public class TankController
     // Repositions a wheel based on its hit point from raycast (not physically-accurate suspension)
     private void PositionWheelByHit(int id)
     {
-        GameObject wheel = id == 0 ? tank.FrontWheel : tank.BackWheel;
+        GameObject wheel = tank.Wheels[id];
         Vector3 origin = wheel.transform.position;
         Vector3 hitPoint = hitPoints[id].point;
 
@@ -140,6 +148,29 @@ public class TankController
         Debug.DrawRay(bodyPivot, desiredForward, UnityEngine.Color.magenta);
     }
 
+    public void RotateTank(Vector3 playerInput, Vector3 direction)
+    {
+        Vector3 tankForward = bodyForward;
+        Vector3 tankBackward = -bodyForward;
+        Vector3 backDir = -direction;
+
+        // Choose the target direction based on the angle between the player input and the tank's forward/backward vectors
+        float angleForward = Vector3.Angle(playerInput, tankForward);
+        float angleBackward = Vector3.Angle(playerInput, tankBackward);
+
+        Vector3 targetDir = angleForward < angleBackward ? direction : backDir;
+        Transform rotatingObject = tank.transform.Find("Wheels");
+
+        // Rotate the tank towards the target direction
+        Quaternion targetRotate = Quaternion.RotateTowards(
+                rotatingObject.rotation,
+                Quaternion.LookRotation(targetDir),
+                playerInput.magnitude * tank.rotSpeed * Time.deltaTime
+            );
+
+        tank.transform.rotation = targetRotate;
+    }
+
     // Self explanatory name, using a Vector2 direction for (x,y), we translate the tank based on the projected forward vector
     // Only interacts with the tank transforms -- do not touch the body in anyway
     public void TransformTank(Vector2 dir)
@@ -150,30 +181,21 @@ public class TankController
 
         // Constructing the direction and inverse of the input direction and the tank's forward vector
         Vector3 direction = normalizedInput;
-        direction = Quaternion.AngleAxis(90, Vector3.up) * direction; // pretty sure this can be by flipping x and z in the vector
-        Vector3 backDir = -direction;
 
-        Vector3 tankForward = bodyForward; // bodyForward is basically "forward"
-        Vector3 tankBackward = -bodyForward;
+        bool rotate = false;
+        float thetaFallOff = 1.0f;
 
-        // Choose the target direction based on the angle between the player input and the tank's forward/backward vectors
-        float angleForward = Vector3.Angle(playerInput, tankForward);
-        float angleBackward = Vector3.Angle(playerInput, tankBackward);
+        if (rotate) // disable for now, if this is a roomba then it doesn't matter
+        {
+            RotateTank(playerInput, direction);
 
-        Vector3 targetDir = angleForward < angleBackward ? direction : backDir;
+            // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
+            // This means the tank will start moving when it's finished rotating
+            float theta = Vector3.Dot(direction, bodyForward);
+            thetaFallOff = Mathf.Exp(-Mathf.Abs(theta));
+        }
 
-        // Rotate the tank towards the target direction
-        Quaternion targetRotate = Quaternion.RotateTowards(
-                tank.transform.rotation,
-                Quaternion.LookRotation(targetDir),
-                playerInput.magnitude * tank.rotSpeed * Time.deltaTime
-            );
-        tank.transform.rotation = targetRotate;
-
-        // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
-        // This means the tank will start moving when it's finished rotating
-        float theta = Vector3.Dot(direction, tankForward);
-        tank.Velocity = tank.moveSpeed * normalizedInput * Mathf.Exp(-Mathf.Abs(theta));
+        tank.Velocity = tank.moveSpeed * normalizedInput * thetaFallOff;
         tank.transform.position += tank.Velocity * Time.deltaTime;
     }
 

@@ -314,12 +314,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2300565459145294251}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.185, y: 0, z: 0}
-  m_LocalScale: {x: 0.21629, y: 0.12388226, z: 0.21629}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.18500015, y: 0, z: 0}
+  m_LocalScale: {x: 0.21628998, y: 0.12388226, z: 0.21628998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3333890237990636835}
+  m_Father: {fileID: 5617172977863589640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1988773770645843764
 MeshFilter:
@@ -421,12 +421,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3328427203571100217}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.158, y: 0, z: -0}
-  m_LocalScale: {x: 0.21629, y: 0.12388226, z: 0.21629}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15799965, y: 0, z: 0}
+  m_LocalScale: {x: 0.21628998, y: 0.12388226, z: 0.21628998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3333890237990636835}
+  m_Father: {fileID: 5617172977863589640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8135486619409201725
 MeshFilter:
@@ -888,8 +888,7 @@ Transform:
   m_LocalScale: {x: 1.5000001, y: 1.5, z: 1.5000001}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7205137129310120829}
-  - {fileID: 5053809553954116509}
+  - {fileID: 5617172977863589640}
   - {fileID: 6539573252726545366}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 272.707, z: 0}
@@ -917,8 +916,7 @@ MonoBehaviour:
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gun: {fileID: 259834041627840154}
   gunShotPos: {fileID: 2603477584315941685}
-  FrontWheel: {fileID: 2300565459145294251}
-  BackWheel: {fileID: 3328427203571100217}
+  Wheels: []
   Body: {fileID: 953294478648327036}
   cannonAnimator: {fileID: 4885353482959154726}
   health: 300
@@ -976,6 +974,39 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.35, y: 0.2, z: 0.35}
   m_Center: {x: 0, y: 0.16, z: 0}
+--- !u!1 &8603297638241225263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5617172977863589640}
+  m_Layer: 2
+  m_Name: Wheels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5617172977863589640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8603297638241225263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7205137129310120829}
+  - {fileID: 5053809553954116509}
+  m_Father: {fileID: 3333890237990636835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3809285502561397108
 PrefabInstance:
   m_ObjectHideFlags: 0
