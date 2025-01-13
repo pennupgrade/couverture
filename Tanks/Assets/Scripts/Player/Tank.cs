@@ -31,6 +31,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
+    public GameObject WheelsRef;
     public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
@@ -68,8 +69,6 @@ public class Tank : MonoBehaviour, IDestroyable
     private void Update() {
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
-
-        tankController.DebugSomeStuff();
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);

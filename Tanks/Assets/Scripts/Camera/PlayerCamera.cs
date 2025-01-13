@@ -39,6 +39,14 @@ public struct CinemaSettings
     public Vector3 direction;
 }
 
+[Serializable]
+public struct ZoomSettings
+{
+    public bool enable;
+    [Range(0f, 1f)] public float zoom;
+    public Vector2 fieldOfViewBounds;
+}
+
 /// <summary>
 /// The initial Transform values set in the Inspector for the Camera are used to follow the player.
 /// </summary>
@@ -56,8 +64,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private bool isDead;
     [SerializeField] private Range2d range;
     [SerializeField] private CinemaSettings cinema;
-    [SerializeField] [Range(0f, 1f)] private float zoom;
-    [SerializeField] private Vector2 fieldOfViewBounds;
+    [SerializeField] private ZoomSettings zm;
 
     private void Awake() {
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
@@ -72,7 +79,7 @@ public class PlayerCamera : MonoBehaviour
         cameraDirection = Vector3.Normalize(cameraPos - playerPos);
         ogCamPos = cameraPos;
 
-        SetZoom();
+        //SetZoom();
     }
 
     public void Kill(float duration) {
@@ -99,7 +106,7 @@ public class PlayerCamera : MonoBehaviour
     }
 
     private void SetZoom() {
-        mainCamera.fieldOfView = Mathf.Lerp(fieldOfViewBounds.x, fieldOfViewBounds.y, 1f - zoom);
+        mainCamera.fieldOfView = Mathf.Lerp(zm.fieldOfViewBounds.x, zm.fieldOfViewBounds.y, 1f - zm.zoom);
     }
     
     private void Update() {
@@ -114,9 +121,13 @@ public class PlayerCamera : MonoBehaviour
         Debug.Assert(range.IsValid(), "Camera bounds are invalid!");
 
         // Zoom in and out
-        var scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        zoom = Mathf.Clamp(zoom + scrollInput, 0f, 1f);
-        SetZoom();
+
+        if (zm.enable)
+        {
+            var scrollInput = Input.GetAxis("Mouse ScrollWheel");
+            zm.zoom = Mathf.Clamp(zm.zoom + scrollInput, 0f, 1f);
+            SetZoom();
+        }
 
         if (player == null) return;
 
