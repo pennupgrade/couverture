@@ -13,12 +13,16 @@ public class CrabBucketAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter");
-        playerInRange = true;
+        if(other.gameObject.tag == "Player")
+        {
+            playerInRange = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Exit");
-        playerInRange = false;
+        if (other.gameObject.tag == "Player")
+        {
+            playerInRange = false;
+        }
     }
 }

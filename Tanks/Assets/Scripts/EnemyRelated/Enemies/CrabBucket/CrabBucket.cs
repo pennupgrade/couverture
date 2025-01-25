@@ -8,12 +8,15 @@ public class CrabBucket : MonoBehaviour
     bool attacking = false;
     float attackWaitTime = 3;
     private CrabBucketAttack attackScript;
+    private ParticleSystem attackEffects;
 
     // Start is called before the first frame update
     void Start()
     {
         m_Collider = gameObject.GetComponent<SphereCollider>();
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
+        attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
+        Debug.Log(attackEffects.isPaused);
     }
 
     // Update is called once per frame
@@ -53,6 +56,7 @@ public class CrabBucket : MonoBehaviour
     private void Attack()
     {
         Debug.Log("One Attack");
+        attackEffects.Play();
         if (attackScript.isPlayerInRange())
         {
             Debug.Log("Deals Damage");
