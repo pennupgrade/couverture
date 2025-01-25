@@ -34,6 +34,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
+    public Character charType;
 
     // Misc
     public int health;
@@ -73,6 +74,8 @@ public class Tank : MonoBehaviour, IDestroyable
 
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
+
+        
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
