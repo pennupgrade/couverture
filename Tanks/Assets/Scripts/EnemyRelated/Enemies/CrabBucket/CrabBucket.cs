@@ -6,9 +6,11 @@ public class CrabBucket : MonoBehaviour
 {
     private Collider m_Collider;
     bool attacking = false;
-    float attackWaitTime = 3;
+    float attackWaitTime = 1.5f;
+    float attackWaitTimeCounter = 0;
     private CrabBucketAttack attackScript;
     private ParticleSystem attackEffects;
+    private AudioSource sound;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,9 @@ public class CrabBucket : MonoBehaviour
         m_Collider = gameObject.GetComponent<SphereCollider>();
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
+        sound = gameObject.GetComponent<AudioSource>();
         Debug.Log(attackEffects.isPaused);
+        attackWaitTimeCounter = attackWaitTime;
     }
 
     // Update is called once per frame
@@ -24,14 +28,14 @@ public class CrabBucket : MonoBehaviour
     {
         if (attacking)
         {
-            if(attackWaitTime >= 3)
+            if(attackWaitTimeCounter >= attackWaitTime)
             {
                 Attack();
-                attackWaitTime = 0;
+                attackWaitTimeCounter = 0;
             }
             else
             {
-                attackWaitTime += Time.fixedDeltaTime;
+                attackWaitTimeCounter += Time.fixedDeltaTime;
             }
         }
     }
@@ -49,7 +53,7 @@ public class CrabBucket : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             attacking = false;
-            attackWaitTime = 3;
+            attackWaitTimeCounter = attackWaitTime;
         }
     }
 
@@ -60,6 +64,7 @@ public class CrabBucket : MonoBehaviour
         if (attackScript.isPlayerInRange())
         {
             Debug.Log("Deals Damage");
+            sound.Play();
         }
         else
         {
