@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class CrabBucketAttack : MonoBehaviour
 {
-    public bool playerInRange;
+    private bool playerInRange = false;
+
+    public bool isPlayerInRange()
+    {
+        return playerInRange;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
