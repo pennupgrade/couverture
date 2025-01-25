@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class CrabBucket : MonoBehaviour
 {
-    private Collider m_Collider;
+    private SphereCollider m_Collider;
+    private SphereCollider m_DealDamageCollider;
+
+    [SerializeField]
+    float SensingRange = 3;
+    [SerializeField]
+    float AttackRange = 2;
     bool attacking = false;
+    [SerializeField]
     float attackWaitTime = 1.5f;
     float attackWaitTimeCounter = 0;
+    [SerializeField]
+    int damage = 100;
+
     private CrabBucketAttack attackScript;
     private ParticleSystem attackEffects;
     private AudioSource sound;
@@ -16,16 +26,22 @@ public class CrabBucket : MonoBehaviour
     void Start()
     {
         m_Collider = gameObject.GetComponent<SphereCollider>();
+        m_Collider.radius = SensingRange;
+        m_DealDamageCollider = gameObject.GetComponentInChildren<SphereCollider>();
+        m_DealDamageCollider.radius = AttackRange;
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
         sound = gameObject.GetComponentInChildren<AudioSource>();
-        Debug.Log(attackEffects.isPaused);
         attackWaitTimeCounter = attackWaitTime;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //For Serialize Field to Work During RunTime
+        m_Collider.radius = SensingRange;
+        m_DealDamageCollider.radius = AttackRange;
+
         if (attacking)
         {
             if(attackWaitTimeCounter >= attackWaitTime)
@@ -64,6 +80,7 @@ public class CrabBucket : MonoBehaviour
         if (attackScript.isPlayerInRange())
         {
             Debug.Log("Deals Damage");
+            attackScript.getPlayer().gameObject.GetComponent<Tank>().takeDamage(damage);
             sound.Play();
         }
         else
