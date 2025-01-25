@@ -18,7 +18,7 @@ public class CrabBucket : MonoBehaviour
         m_Collider = gameObject.GetComponent<SphereCollider>();
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
-        sound = gameObject.GetComponent<AudioSource>();
+        sound = gameObject.GetComponentInChildren<AudioSource>();
         Debug.Log(attackEffects.isPaused);
         attackWaitTimeCounter = attackWaitTime;
     }
