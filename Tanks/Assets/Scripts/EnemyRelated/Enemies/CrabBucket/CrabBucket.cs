@@ -6,20 +6,22 @@ public class CrabBucket : MonoBehaviour
 {
     private Collider m_Collider;
     bool attacking = false;
-    float attackWaitTime = 2;
+    float attackWaitTime = 3;
+    public CrabBucketAttack attackScript;
 
     // Start is called before the first frame update
     void Start()
     {
         m_Collider = gameObject.GetComponent<SphereCollider>();
+        attackScript.playerInRange = false;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (attacking)
         {
-            if(attackWaitTime >= 2)
+            if(attackWaitTime >= 3)
             {
                 Attack();
                 attackWaitTime = 0;
@@ -36,7 +38,6 @@ public class CrabBucket : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             attacking = true;
-            Debug.Log("Player Enter");
         }
     }
 
@@ -45,13 +46,20 @@ public class CrabBucket : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             attacking = false;
-            attackWaitTime = 2;
-            Debug.Log("Player Exit");
+            attackWaitTime = 3;
         }
     }
 
     private void Attack()
     {
         Debug.Log("One Attack");
+        if (attackScript.playerInRange)
+        {
+            Debug.Log("Deals Damage");
+        }
+        else
+        {
+            Debug.Log("Missed");
+        }
     }
 }
