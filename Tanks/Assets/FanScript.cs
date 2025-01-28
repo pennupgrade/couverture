@@ -10,7 +10,7 @@ public class FanScript : MonoBehaviour
     void Start()
     {
         basePushPower = 0.8f;
-        maxEffectiveDistance = transform.Find("FanCollider").transform.lossyScale.y;
+        maxEffectiveDistance = transform.Find("FanCollider").transform.lossyScale.y; // nitpicky but maybe just attach the FanCollider as a reference - Anthony
     }
 
     // Update is called once per frame
@@ -25,18 +25,18 @@ public class FanScript : MonoBehaviour
         float zComponent = Mathf.Cos(fanAngle);
         float xComponent = Mathf.Sin(fanAngle);
         float distance = getDistanceFromPlayer(player);
-        float distancePower = 1;
+        float distancePower = 1; // get rid of this - Anthony
         if (distance < 2)
         {
             distancePower = 5f;
         }
         player.transform.position +=
-            0.8f * maxEffectiveDistance / distance
+            0.8f * maxEffectiveDistance / distance // Kevin D. wants more power - Anthony
             * basePushPower * Time.deltaTime
-            * new Vector3(xComponent, 0, zComponent);
+            * new Vector3(xComponent, 0, zComponent); // I think you can just do like += transform.forward * magnitude and it'd effectively be the same - Anthony
     }
 
-    float getDistanceFromPlayer(Collider player)
+    float getDistanceFromPlayer(Collider player) // you can use Vector2.Distance for shorter code - Anthony
     {
         float x1 = transform.position.x;
         float z1 = transform.position.z;
