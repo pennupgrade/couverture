@@ -22,8 +22,8 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     public float moveSpeed;
     public float rotSpeed;
-    public float groundMargin = 0.2f;
-    public float wheelMaxDist = 3.0f;
+    public float groundMargin;
+    public float wheelMaxDist;
     public bool enableGod = false;
 
     // Object References
@@ -70,6 +70,7 @@ public class Tank : MonoBehaviour, IDestroyable
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
+        tankController.RayCastTank();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 

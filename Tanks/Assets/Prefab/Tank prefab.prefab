@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 259834041627840154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 6.6174433e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0.11666667, z: 0.0014200212}
-  m_LocalScale: {x: 0.66666627, y: 0.6666667, z: 0.66666627}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0021300327}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2603477584315941685}
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 3071698708263383673}
   - {fileID: 4157682739922492196}
   - {fileID: 5086074856586301775}
-  m_Father: {fileID: 3333890237990636835}
+  m_Father: {fileID: 6539573252726545366}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4874390478985767520
 MeshFilter:
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 6539573252726545366}
   - component: {fileID: 8956190215636415522}
   - component: {fileID: 4908234280192694700}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.11666667, z: 0}
   m_LocalScale: {x: 0.6666664, y: 0.6666667, z: 0.6666664}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1086883101479026843}
   m_Father: {fileID: 3333890237990636835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8956190215636415522
@@ -421,7 +422,7 @@ Transform:
   m_GameObject: {fileID: 3328427203571100217}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15799965, y: 0, z: 0}
+  m_LocalPosition: {x: 0.15799965, y: 0, z: -0.1579996}
   m_LocalScale: {x: 0.21628998, y: 0.12388226, z: 0.21628998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -887,7 +888,6 @@ Transform:
   m_LocalScale: {x: 1.5000001, y: 1.5, z: 1.5000001}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1086883101479026843}
   - {fileID: 5617172977863589640}
   - {fileID: 6539573252726545366}
   m_Father: {fileID: 0}
@@ -916,6 +916,7 @@ MonoBehaviour:
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gun: {fileID: 259834041627840154}
   gunShotPos: {fileID: 2603477584315941685}
+  WheelsRef: {fileID: 0}
   Wheels: []
   Body: {fileID: 953294478648327036}
   cannonAnimator: {fileID: 4885353482959154726}
@@ -948,7 +949,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112

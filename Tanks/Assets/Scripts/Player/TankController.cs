@@ -6,6 +6,8 @@ public struct Wheel
     public GameObject obj;
     public RaycastHit hit;
     public bool isHit;
+    public float fallDelta;
+    public float maxFall;
 }
 
 public class TankController
@@ -17,7 +19,6 @@ public class TankController
     private Vector3 bodyOrigin;
     private Vector3 bodyNormal;
 
-    private Vector3 prevDir;
     private Vector3 hitNormal;
 
     int front = 0; // someone better than me at coding can refactor this :)
@@ -33,6 +34,8 @@ public class TankController
         for (int i = 0; i < tank.Wheels.Length; i++)
         {
             wheels[i].obj = tank.Wheels[i];
+            wheels[i].fallDelta = 0.0f;
+            wheels[i].maxFall = 0.14f;
         }
     }
 
@@ -71,13 +74,8 @@ public class TankController
         RaycastWheel(ref wheels[back]);
     }
 
-    public bool IsAirborne()
-    {
-        RaycastWheels();
-        return wheels[front].isHit && wheels[back].isHit;
-    }
 
-    private void PositionWheelByHit(ref Wheel wheel)
+    private void PositionWheelByHit(ref Wheel wheel, bool isAirborne)
     {
         Vector3 origin = wheel.obj.transform.position;
         Vector3 hitPoint = wheel.hit.point;
@@ -85,18 +83,53 @@ public class TankController
         float hitDist = Vector3.Distance(hitPoint, origin);
 
         // project wheels onto ground, then lift up by gMargin
-        if (hitDist <= tank.groundMargin + 0.02f)
+        if (hitDist <= tank.groundMargin + 0.025f)
         {
             hitPoint += tank.transform.up * tank.groundMargin;
             wheel.obj.transform.position = hitPoint;
+            wheel.fallDelta = 0.0f;
+            return;
         }
+
+        if (isAirborne)
+        {
+            // both wheels are not airborne
+            wheel.fallDelta = 0;
+        }
+
+        if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
+        {
+            Debug.Log(wheel.fallDelta + ", " + hitDist);
+            float dy = 1.5f * Time.deltaTime;
+            wheel.fallDelta += dy;
+            wheel.obj.transform.position -= Vector3.up * dy;
+        }
+    }
+    public bool IsAirborne()
+    {
+        for (int i = 0; i < wheels.Length; i++)
+        {
+            if (wheels[i].isHit)
+            {
+                float hitDist = Vector3.Distance(
+                    wheels[i].obj.transform.position,
+                    wheels[i].hit.point);
+
+                if (hitDist <= tank.groundMargin + 0.02f)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     private void PositionWheels()
     {
+        bool isAirborne = IsAirborne();
+
         for (int i = 0; i < wheels.Length; i++)
         {
-            if (wheels[i].isHit) PositionWheelByHit(ref wheels[i]);
+            if (wheels[i].isHit) PositionWheelByHit(ref wheels[i], isAirborne);
         }
     }
 
@@ -116,12 +149,10 @@ public class TankController
         tank.Body.transform.position = bodyPosition;
     }
 
-    // Use this to see your vector angles if you're having problems
     public void DebugSomeStuff()
     {
-        /*Debug.DrawRay(bodyOrigin, forward, UnityEngine.Color.red);
-        Debug.DrawRay(bodyOrigin, hitNormal, UnityEngine.Color.cyan);
-        Debug.DrawRay(bodyOrigin, desiredForward, UnityEngine.Color.magenta);*/
+        Debug.DrawRay(bodyOrigin, tank.transform.forward, UnityEngine.Color.cyan);
+        Debug.DrawRay(bodyOrigin, tank.Body.transform.forward, UnityEngine.Color.red);
     }
 
     public void RotateWheels(Vector3 direction, float magnitude)
@@ -135,7 +166,6 @@ public class TankController
             targetQuat = wheelsRef.transform.rotation;
         }
 
-        // Rotate the tank towards the target direction
         Quaternion targetRotate = Quaternion.RotateTowards(
                 wheelsRef.transform.rotation,
                 targetQuat,
@@ -159,28 +189,31 @@ public class TankController
         //float theta = Vector3.Dot(direction, bodyForward);
         //thetaFallOff = Mathf.Exp(-Mathf.Abs(theta));
 
-        if (direction != prevDir)
-        {
-            prevDir = direction;
-        }
-
         tank.Velocity = tank.moveSpeed * direction * thetaFallOff;
+
+        // ensure y is not weird af
+        Vector3 tankPos = tank.transform.position;
+        tankPos.y = bodyOrigin.y;
+        //tank.transform.position = tankPos;
         tank.transform.position += tank.Velocity * Time.deltaTime;
+    }
+
+    public void RayCastTank()
+    {
+        // Project the wheels onto the ground and adjust necessary positions
+        CalculateBodyVectors(
+            wheels[front].obj.transform.position,
+            wheels[back].obj.transform.position);
+        RaycastWheels();
+        PositionWheels();
+        TransformBody();
     }
 
     // Called in TankMoveState to move the tank, dir.mag is > 0
     public void MoveTank(Vector2 dir)
     {
-        CalculateBodyVectors(
-            wheels[front].obj.transform.position, 
-            wheels[back].obj.transform.position);
         TransformTank(dir);
-
-        // Project the wheels onto the ground and adjust necessary positions
-        RaycastWheels();
-        PositionWheels();
-        TransformBody();
-
+        //RayCastTank();
         DebugSomeStuff();
     }
 }

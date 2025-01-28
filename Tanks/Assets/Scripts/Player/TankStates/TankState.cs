@@ -28,7 +28,7 @@ public abstract class TankState
         var offset = (point - tank.gun.transform.position).normalized;
         Vector3 dir = new(offset.x, 0, offset.z);
 
-        var angle = Vector3.SignedAngle(tank.transform.forward, dir, Vector3.up);
+        var angle = Vector3.SignedAngle(tank.Body.transform.forward, dir, Vector3.up);
 
         Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, Color.green);
 
