@@ -6,7 +6,8 @@ public abstract class Character : MonoBehaviour
 {
     protected Tank tank;
 
-    protected virtual void Start()
+    protected virtual void Start() 
+    // i still think you should use a constructor :( idk if this will be bad if we have many objects in a scene - Anthony
     {
         tank = GameObject.FindObjectOfType<Tank>();
     }
