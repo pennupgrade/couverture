@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class FanScript : MonoBehaviour
 {
+    [SerializeField]
     private float basePushPower;
     private float maxEffectiveDistance;
     // Start is called before the first frame update
     void Start()
     {
-        basePushPower = 0.8f;
         maxEffectiveDistance = transform.Find("FanCollider").transform.lossyScale.y; // nitpicky but maybe just attach the FanCollider as a reference - Anthony
     }
 
