@@ -153,6 +153,8 @@ public abstract class Enemy_State
         GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * (enemy.gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
+
+        bullet.GetComponent<Bullet_Default>().parent = enemy.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
     }
 

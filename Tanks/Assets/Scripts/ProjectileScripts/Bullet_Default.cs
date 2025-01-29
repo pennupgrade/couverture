@@ -9,6 +9,7 @@ public class Bullet_Default : Projectile
     private Rigidbody rb;
     private Vector3 lastVelocity;
     private Material material;
+    public GameObject parent;
     
     // Start is called before the first frame update
     protected override void Awake() {

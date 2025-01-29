@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028373, g: 0.22571398, b: 0.30692294, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1069,14 +1069,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72795faef9a0e344abd2d16567bef7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  straightLineAtStart: 0
+  moveStartRange: 0
   gun: {fileID: 1193857371}
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 0}
+  bulletExplosionPrefab: {fileID: 0}
   gunShotPos: {fileID: 1193857369}
   rb: {fileID: 0}
+  player: {fileID: 0}
   playerRB: {fileID: 1400881168}
-  hasLineOfSight: 0
-  state: 0
+  pTank: {fileID: 0}
+  speed: 0
+  turnSpeed: 0
+  cSpeed: 0
+  cTurnSpeed: 0
+  dodgeChance: 0
+  destination: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  health: 0
+  FOV: 0
+  sightRange: 0
+  gunRange: 0
+  reload: 0
+  rotSpeed: 0
+  cTurretTurn: 0
+  TargetDir: {x: 0, y: 0, z: 0}
+  leadChance: 0
+  numBullets: 0
+  magSize: 0
+  bulletSpeed: 0
+  cooldownTime: 0
 --- !u!4 &802135081
 Transform:
   m_ObjectHideFlags: 0
@@ -1772,24 +1795,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LIVES: 5
   rb: {fileID: 0}
   tankCollider: {fileID: 0}
   moveSpeed: 3
   rotSpeed: 4
   groundMargin: 0.2
   wheelMaxDist: 3
-  bulletSpeed: 3
-  enableExperimentalGravity: 1
+  enableGod: 0
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 0}
   gun: {fileID: 3655000509426967117}
   gunShotPos: {fileID: 1171727879}
-  FrontWheel: {fileID: 0}
-  BackWheel: {fileID: 0}
+  Wheels: []
   Body: {fileID: 0}
+  cannonAnimator: {fileID: 0}
   health: 0
   numBullets: 0
   stunned: 0
+  Velocity: {x: 0, y: 0, z: 0}
+  reloadProgress: 0
+  cooldownProgress: 0
+  animationProgress: 0
 --- !u!1 &1403347339
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,24 +2318,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LIVES: 5
   rb: {fileID: 0}
   tankCollider: {fileID: 0}
   moveSpeed: 3
   rotSpeed: 4
   groundMargin: 0.2
   wheelMaxDist: 3
-  bulletSpeed: 3
-  enableExperimentalGravity: 1
+  enableGod: 0
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 0}
   gun: {fileID: 2036816185}
   gunShotPos: {fileID: 1499997552}
-  FrontWheel: {fileID: 0}
-  BackWheel: {fileID: 0}
+  Wheels: []
   Body: {fileID: 0}
+  cannonAnimator: {fileID: 0}
   health: 0
   numBullets: 0
   stunned: 0
+  Velocity: {x: 0, y: 0, z: 0}
+  reloadProgress: 0
+  cooldownProgress: 0
+  animationProgress: 0
 --- !u!4 &1790302284
 Transform:
   m_ObjectHideFlags: 0
@@ -2606,6 +2637,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915375795}
   m_Mesh: {fileID: 2959467708922500008, guid: 9914c3512de29e0499be696b52201d2b, type: 3}
+--- !u!1001 &1962560431
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.615182
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000009536743
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.6465564
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961162998704425126, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5316735759819154397, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
+      propertyPath: m_Name
+      value: destructable
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2367b8c54c72b48cfafdb35b3988c511, type: 3}
 --- !u!1 &2036816185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1403122847384500406, guid: a17b28cb71452d447855c0f3c8c0e9c8, type: 3}
@@ -2834,3 +2922,4 @@ SceneRoots:
   - {fileID: 141044953}
   - {fileID: 923764510}
   - {fileID: 305254040}
+  - {fileID: 1962560431}
