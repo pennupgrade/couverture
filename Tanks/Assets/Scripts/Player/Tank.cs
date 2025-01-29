@@ -75,8 +75,6 @@ public class Tank : MonoBehaviour, IDestroyable
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
-        
-
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
         // }

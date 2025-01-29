@@ -30,6 +30,7 @@ public class RocketChar : Character
                                                         * (tank.gun.transform.forward *
                                                            bullet.GetComponent<Projectile>().bulletSpeed);
             bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+            bullet.GetComponent<Projectile>().parent = tank.gameObject;
             currCD = cooldown;
         }
     }

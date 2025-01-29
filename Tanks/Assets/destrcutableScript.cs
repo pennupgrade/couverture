@@ -29,7 +29,7 @@ public class destrcutableScript : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        Bullet_Default bullet = collision.gameObject.GetComponent<Bullet_Default>();
+        Projectile bullet = collision.gameObject.GetComponent<Projectile>(); // how can we handle other bullets differently too
 
         if(bullet != null)
         {
