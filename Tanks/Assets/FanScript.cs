@@ -52,12 +52,8 @@ public class FanScript : MonoBehaviour
 
     float getDistanceFromPlayer(Collider player)
     {
-        float x1 = transform.position.x;
-        float z1 = transform.position.z;
-
-        float x2 = player.transform.position.x;
-        float z2 = player.transform.position.z;
-
-        return Vector2.Distance(new Vector2(x1, z1), new Vector2(x2, z2));
+        return Vector2.Distance(
+            new Vector2(transform.position.x, transform.position.z), 
+            new Vector2(player.transform.position.x, player.transform.position.z));
     }
 }
