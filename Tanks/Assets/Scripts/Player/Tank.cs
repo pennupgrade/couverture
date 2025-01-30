@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -50,6 +51,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
+
+    //effects
+    private List<TimedEffect> effects = new();
+
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
     private void Awake() {
@@ -64,6 +69,33 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
+
+
+
+        //Temporary TimedEffect
+        TimedEffect effect = new(15.0f, 
+            (tank) => {
+                tank.moveSpeed *= 5.0f;
+            },
+            (tank) => {
+                tank.moveSpeed /= 5.0f;
+            }
+        );
+
+        addEffect(effect);
+    }
+
+
+
+
+    ~Tank() {
+        effects.ForEach(x => x.Kill(this));
+    }
+
+
+    public void addEffect(TimedEffect timedEffect) {
+        effects.Add(timedEffect);
+        timedEffect.Start(this);
     }
 
 
@@ -74,6 +106,12 @@ public class Tank : MonoBehaviour, IDestroyable
         tankController.RayCastTank();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
+
+        for(int i = 0; i < effects.Count; i++) {
+            if (!effects[i].enabled) {
+                effects.RemoveAt(i);
+            }
+        }
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
