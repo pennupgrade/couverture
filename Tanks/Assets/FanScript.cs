@@ -4,39 +4,52 @@ using UnityEngine;
 
 public class FanScript : MonoBehaviour
 {
-    private float basePushPower;         //linear factor
-    private float exponentialPushPower;  //base in the exponential decay
+    public enum PowerFunction
+    {
+        Linear,
+        Exponential,
+        Hyperbolic
+    };
 
+    [SerializeField] // Using [SerializeField] can expose the below float to the editor - Anthony
+    private float basePushPower, exponentialPushPower, linearPushPower, hyperPushPower;
 
     private float maxEffectiveDistance;
     public GameObject fanCollider;
+    public PowerFunction functionType;
 
     // Start is called before the first frame update
     void Start()
     {
-        basePushPower = 2.5f;
-        exponentialPushPower = 2f;
         maxEffectiveDistance = fanCollider.transform.lossyScale.y;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void pushPlayer(Collider player)
     {
         float distance = getDistanceFromPlayer(player);
-       
-        player.transform.position +=
 
+        float falloff = 1.0f;
+
+        switch (functionType)
+        {
+            case PowerFunction.Linear:
+                falloff = Mathf.Lerp(0, linearPushPower, 1.0f - (distance / maxEffectiveDistance));
+                break;
+            case PowerFunction.Exponential:
+                falloff = Mathf.Pow(exponentialPushPower, maxEffectiveDistance - distance);
+                break;
+            case PowerFunction.Hyperbolic:
+                falloff = hyperPushPower * maxEffectiveDistance / distance;
+                break;
+            default:
+                break;
+        }
+
+        player.transform.position +=
             //this factor is always at least 1
-            Mathf.Pow(exponentialPushPower, maxEffectiveDistance - distance)
-            * basePushPower * Time.deltaTime
+            falloff * basePushPower * Time.deltaTime
             * transform.forward;
     }
-    
+
     float getDistanceFromPlayer(Collider player)
     {
         float x1 = transform.position.x;
