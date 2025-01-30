@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CrabBucket : MonoBehaviour
 {
-    float SensingRange = 3; // I think this variable isn't used - Anthony
-    float AttackRange = 2;
     bool attacking = false;
     [SerializeField]
     float attackWaitTime = 1.5f;
