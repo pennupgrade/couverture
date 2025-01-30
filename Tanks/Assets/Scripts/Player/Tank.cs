@@ -73,16 +73,16 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
         //Temporary TimedEffect
-        TimedEffect effect = new(15.0f, 
-            (tank) => {
-                tank.moveSpeed *= 5.0f;
-            },
-            (tank) => {
-                tank.moveSpeed /= 5.0f;
-            }
-        );
+        // TimedEffect effect = new(15.0f, 
+        //     (tank) => {
+        //         tank.moveSpeed *= 5.0f;
+        //     },
+        //     (tank) => {
+        //         tank.moveSpeed /= 5.0f;
+        //     }
+        // );
 
-        addEffect(effect);
+        // addEffect(effect);
     }
 
 
