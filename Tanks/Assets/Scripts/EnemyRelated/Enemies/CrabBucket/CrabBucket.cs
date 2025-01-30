@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class CrabBucket : MonoBehaviour
 {
-    private SphereCollider m_Collider;
-    private SphereCollider m_DealDamageCollider;
-
-    [SerializeField]
     float SensingRange = 3; // I think this variable isn't used - Anthony
-    [SerializeField]
     float AttackRange = 2;
     bool attacking = false;
     [SerializeField]
@@ -25,10 +20,6 @@ public class CrabBucket : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_Collider = gameObject.GetComponent<SphereCollider>();
-        m_Collider.radius = SensingRange;
-        m_DealDamageCollider = gameObject.GetComponentInChildren<SphereCollider>();
-        m_DealDamageCollider.radius = AttackRange;
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
         sound = gameObject.GetComponentInChildren<AudioSource>();
@@ -38,10 +29,6 @@ public class CrabBucket : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //For Serialize Field to Work During RunTime
-        m_Collider.radius = SensingRange; 
-        m_DealDamageCollider.radius = AttackRange; // is this line and above necessary if you assign their values on 29 and 31 - Anthony
-
         if (attacking)
         {
             if(attackWaitTimeCounter >= attackWaitTime) 
