@@ -58,7 +58,7 @@ public class TankController
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
 
-        if (hit.collider != null)
+        if (hit.collider != null && hit.transform.tag == "Untagged")
         {
             wheel.hit = hit;
             wheel.isHit = true;
