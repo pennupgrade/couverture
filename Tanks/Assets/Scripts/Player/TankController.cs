@@ -58,7 +58,7 @@ public class TankController
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
 
-        if (hit.collider != null && hit.transform.tag != "Projectile")
+        if (hit.collider != null && hit.collider.gameObject.layer != 7)
         {
             wheel.hit = hit;
             wheel.isHit = true;
