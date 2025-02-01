@@ -16,7 +16,7 @@ public class BossStateMachine : MonoBehaviour
 
     // Constants
     private double timeUntilAttack = 5;
-    private const double MELEE_DISTANCE = 1f;
+    private const double MELEE_DISTANCE = 4f;
     private const double TIME_BETWEEN_BULLETS = 0.5f;
 
     // Attack Specific Parameters
@@ -66,18 +66,18 @@ public class BossStateMachine : MonoBehaviour
         if (newState == State.Attacking)
         {
             Debug.Log("Switching To Attack State");
-            if (Vector3.Distance(player.transform.position, transform.position) > MELEE_DISTANCE)
+            if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE)
             {
-                // Choose between Shotgun and Melee
+                // Chose between shotgun and melee
+                currentAttack = Attack.Shotgun;
             }
             else
             {
                 // Choose between summon, shoot, and charge
+                currentAttack = Attack.Shoot;
+                timer = TIME_BETWEEN_BULLETS;
+                numBulletsShot = 0;
             }
-            //currentAttack = Attack.Shoot;
-            //timer = TIME_BETWEEN_BULLETS;
-            //numBulletsShot = 0;
-            currentAttack = Attack.Shotgun;
         }
     }
 
