@@ -43,10 +43,9 @@ public class CrabBucket : MonoBehaviour
                 attackWaitTimeCounter += Time.fixedDeltaTime;
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
-        }
-
-        sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
+            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
             1, attackWaitTimeCounter * 4);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,6 +64,8 @@ public class CrabBucket : MonoBehaviour
             attackWaitTimeCounter = attackWaitTime; 
             // if you go in and out of the trigger, the crab will immediately attack
             // I fee like attackWaitTimeCounter should start at 0 - Anthony
+            sphere_indicator.transform.localScale = new Vector3(0.1f,
+            1, 0.1f);
         }
     }
 
