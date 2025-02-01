@@ -23,8 +23,8 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     public float moveSpeed;
     public float rotSpeed;
-    public float groundMargin = 0.2f;
-    public float wheelMaxDist = 3.0f;
+    public float groundMargin;
+    public float wheelMaxDist;
     public bool enableGod = false;
 
     // Object References
@@ -32,6 +32,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
+    public GameObject WheelsRef;
     public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
@@ -72,16 +73,16 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
         //Temporary TimedEffect
-        TimedEffect effect = new(15.0f, 
-            (tank) => {
-                tank.moveSpeed *= 5.0f;
-            },
-            (tank) => {
-                tank.moveSpeed /= 5.0f;
-            }
-        );
+        // TimedEffect effect = new(15.0f, 
+        //     (tank) => {
+        //         tank.moveSpeed *= 5.0f;
+        //     },
+        //     (tank) => {
+        //         tank.moveSpeed /= 5.0f;
+        //     }
+        // );
 
-        addEffect(effect);
+        // addEffect(effect);
     }
 
 
@@ -102,8 +103,7 @@ public class Tank : MonoBehaviour, IDestroyable
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
-        tankController.DebugSomeStuff();
-
+        tankController.RayCastTank();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
