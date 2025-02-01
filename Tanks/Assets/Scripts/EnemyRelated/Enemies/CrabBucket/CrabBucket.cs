@@ -13,16 +13,17 @@ public class CrabBucket : MonoBehaviour
 
     private CrabBucketAttack attackScript;
     private ParticleSystem attackEffects;
-    private AudioSource sound;
+    [SerializeField] private AudioSource sound;
+    [SerializeField] private AudioSource blockedSound;
 
     [SerializeField] private GameObject sphere_indicator;
+    [SerializeField] private LayerMask obstacleLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
-        sound = gameObject.GetComponentInChildren<AudioSource>();
         attackWaitTimeCounter = attackWaitTime;
     }
 
@@ -75,9 +76,22 @@ public class CrabBucket : MonoBehaviour
         // but honestly your choice, I think this is fine - Anthony
         if (attackScript.isPlayerInRange()) 
         {
-            Debug.Log("Deals Damage");
-            attackScript.getPlayer().gameObject.GetComponent<Tank>().takeDamage(damage);
-            sound.Play();
+            GameObject player = attackScript.getPlayer().gameObject;
+
+            // Raycast
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (!Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer))
+            {
+                Debug.Log("Deals Damage");
+                player.GetComponent<Tank>().takeDamage(damage);
+                sound.Play();
+            }
+            else
+            {
+                Debug.Log("Attack Blocked by Obstacle");
+                blockedSound.Play();
+            }
         }
         else
         {
