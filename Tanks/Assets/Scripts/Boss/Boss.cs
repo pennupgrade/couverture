@@ -4,92 +4,55 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    private State currentState;
-    private double timer;
-    private double timeUntilAttack;
-    private Attack currentAttack;
-    private const double MELEE_DISTANCE = 1f;
+    public GameObject bulletPrefab;
     private GameObject player;
-
+    [SerializeField] private GameObject gun;
+    private Transform shotgunBarrel1;
+    private Transform shotgunBarrel2;
+    private float bulletSpeed;
 
     private void Awake()
     {
-        currentState = State.Idle;
-        currentAttack = Attack.None;
-        timer = 0;
-        timeUntilAttack = 5;
+        player = GameObject.FindGameObjectWithTag("Player");
+        shotgunBarrel1 = gun.transform.GetChild(0);
+        shotgunBarrel2 = gun.transform.GetChild(1);
+    }
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
-        {
-            Debug.Log("Could not find player");
-        }
+    public void shootBullet(int barrel = 0)
+    {
+        Debug.Log("Bullet Shot");
+        Transform startPos;
+        if (barrel == 0)
+            startPos = gun.transform;
+        else if (barrel == 1)
+            startPos = shotgunBarrel1;
+        else
+            startPos = shotgunBarrel2;
+
+        bool random = true;
+        float dispersion = 0.5f;
+        GameObject bullet = Object.Instantiate(bulletPrefab, startPos.position, Quaternion.identity);
+        //bullet.GetComponent<Rigidbody>().velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
+        // * (new Vector3(target.x - startPos.x, 0, target.z - startPos.z)).normalized * bullet.GetComponent<Projectile>().bulletSpeed);
+        //bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+        bullet.GetComponent<Rigidbody>().velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
+         * startPos.forward * bullet.GetComponent<Projectile>().bulletSpeed);
+        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+    }
+
+    public void shootShotgun()
+    {
+        Debug.Log("Shotgun Shot");
+        shootBullet();
+        shootBullet(1);
+        shootBullet(2);
     }
 
     private void Update()
     {
-        if (currentState == State.Idle)
-        {
-            timer += Time.deltaTime;
-            if (timer > timeUntilAttack)
-            {
-                switchToState(State.Attacking);
-            }
-            doIdleState();
-        }
-        else if (currentState == State.Attacking)
-        {
-            doAttackState();
-        }
-    }
-
-    private void switchToState(State newState)
-    {
-        if (newState == State.Idle)
-        {
-            timer = 0;
-            return;
-        }
-        if (newState == State.Attacking)
-        {
-            if (Vector3.Distance(player.transform.position, transform.position) > MELEE_DISTANCE)
-            {
-                // Choose between Shotgun and Melee
-            }
-            else
-            {
-                // Choose between summon, shoot, and charge
-            }
-
-        }
-    }
-
-    private void doIdleState()
-    {
-        // Track Onto Player
-    }
-
-    private void doAttackState()
-    {
-        switch (currentAttack)
-        {
-
-        }
-    }
-
-    private enum State
-    {
-        Idle,
-        Attacking
-    }
-
-    private enum Attack
-    {
-        Shotgun,
-        Shoot,
-        Charge,
-        Summon,
-        Melee,
-        None
+        float GUN_DISTANCE = 1f;
+        Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
+        gun.transform.position = transform.position + movePos;
+        gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
     }
 }
