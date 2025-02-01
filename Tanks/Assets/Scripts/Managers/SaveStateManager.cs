@@ -10,14 +10,14 @@ using System.IO;
 using System.Net.NetworkInformation;
 
 [Serializable]
-public class InventoryManager
+public class SaveStateManager
 {
     private const string SAVE_LOCATION = "save_data.json";
-    public static InventoryManager loadInventory() {
+    public static SaveStateManager loadInventory() {
         StreamReader reader = new StreamReader(SAVE_LOCATION);
         string jsonData = reader.ReadToEnd();
         reader.Close();
-        InventoryManager outManager = JsonUtility.FromJson<InventoryManager>(jsonData);
+        SaveStateManager outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
         outManager.setup();
         return outManager;
     }
@@ -67,7 +67,7 @@ public class InventoryManager
 
 
     // Save the inventory to a file so the state of a player can be loaded
-    public void saveInventory() {
+    public void saveGameState() {
         // update unlockedCharList
         List<string> newCharList = new List<string>(unlockedChars.Count);
         foreach (string x in unlockedChars) {
