@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class destrcutableScript : MonoBehaviour
 {
-    public Material red;
-    public Material green;
     private DamageFlash damageFlash;
     public GameObject Body;
+    public int hits;
 
     // Start is called before the first frame update
     void Start()
@@ -28,22 +27,30 @@ public class destrcutableScript : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        Bullet_Default bullet = collision.gameObject.GetComponent<Bullet_Default>();
-        if(bullet != null)
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        if(projectile != null)
         {
             
-            GameObject parent = bullet.parent;
+            GameObject parent = projectile.parent;
             if(parent.tag == "Player")
-            {
-                Debug.Log("here");
+            { 
                 damageFlash.CallDamageFlash(this);
-                destroy();
+                hits--;
+                if (hits == 0)
+                {
+                    destroy();
+                }
+                    
                 
             }
             else if (parent.tag == "Tank")
             {
-                Debug.Log("red");
-                this.GetComponent<Renderer>().material = red;
+                damageFlash.CallDamageFlash(this);
+                hits--;
+                if (hits == 0)
+                {
+                    destroy();
+                }
             }
         }
     }

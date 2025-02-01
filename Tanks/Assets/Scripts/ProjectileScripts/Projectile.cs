@@ -9,6 +9,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected GameObject explosionPrefab;
     public float bulletSpeed;
     protected bool destroyed;
+    public GameObject parent;
 
     public float dontDamageOnSpawnDelay=0.1f;
 
