@@ -7,12 +7,13 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected int damage;
     [SerializeField] protected float lifetime;
     [SerializeField] protected GameObject explosionPrefab;
-    public float bulletSpeed;
+
     protected bool destroyed;
-
-    public float dontDamageOnSpawnDelay=0.1f;
-
     protected float startLifetime;
+
+    public GameObject parent;
+    public float bulletSpeed;
+    public float dontDamageOnSpawnDelay = 0.1f;
 
     protected virtual void Awake()
     {
@@ -26,11 +27,14 @@ public abstract class Projectile : MonoBehaviour
     }
     public virtual void destruction() {
         if (destroyed) return;
+
         destroyed = true;
+
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 2);
         }
+
         //first child should be a trail
         if (transform.childCount != 0) {
             if (transform.GetChild(0).gameObject.TryGetComponent<MeshTrail>(out MeshTrail mt)) {
