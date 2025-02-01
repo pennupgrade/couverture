@@ -67,7 +67,7 @@ public class InventoryManager
 
 
     // Save the inventory to a file so the state of a player can be loaded
-    void saveInventory() {
+    public void saveInventory() {
         // update unlockedCharList
         List<string> newCharList = new List<string>(unlockedChars.Count);
         foreach (string x in unlockedChars) {
@@ -75,6 +75,8 @@ public class InventoryManager
         }
         unlockedCharList = newCharList;
 
-        // TODO: SERIALIZE DATA
+
+        // write JSON to file
+        File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
     }
 }
