@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -22,8 +23,8 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     public float moveSpeed;
     public float rotSpeed;
-    public float groundMargin = 0.2f;
-    public float wheelMaxDist = 3.0f;
+    public float groundMargin;
+    public float wheelMaxDist;
     public bool enableGod = false;
 
     // Object References
@@ -31,9 +32,11 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
+    public GameObject WheelsRef;
     public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
+    public Character charType;
 
     // Misc
     public int health;
@@ -47,6 +50,10 @@ public class Tank : MonoBehaviour, IDestroyable
 
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
+
+
+    //effects
+    private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
@@ -62,6 +69,33 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
+
+
+
+        //Temporary TimedEffect
+        // TimedEffect effect = new(15.0f, 
+        //     (tank) => {
+        //         tank.moveSpeed *= 5.0f;
+        //     },
+        //     (tank) => {
+        //         tank.moveSpeed /= 5.0f;
+        //     }
+        // );
+
+        // addEffect(effect);
+    }
+
+
+
+
+    ~Tank() {
+        effects.ForEach(x => x.Kill(this));
+    }
+
+
+    public void addEffect(TimedEffect timedEffect) {
+        effects.Add(timedEffect);
+        timedEffect.Start(this);
     }
 
 
@@ -69,10 +103,15 @@ public class Tank : MonoBehaviour, IDestroyable
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
-        tankController.DebugSomeStuff();
-
+        tankController.RayCastTank();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
+
+        for(int i = 0; i < effects.Count; i++) {
+            if (!effects[i].enabled) {
+                effects.RemoveAt(i);
+            }
+        }
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
