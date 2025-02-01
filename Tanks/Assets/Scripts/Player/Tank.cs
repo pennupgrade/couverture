@@ -69,20 +69,6 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
-
-
-
-        //Temporary TimedEffect
-        TimedEffect effect = new(15.0f, 
-            (tank) => {
-                tank.moveSpeed *= 5.0f;
-            },
-            (tank) => {
-                tank.moveSpeed /= 5.0f;
-            }
-        );
-
-        addEffect(effect);
     }
 
 
@@ -111,6 +97,23 @@ public class Tank : MonoBehaviour, IDestroyable
             if (!effects[i].enabled) {
                 effects.RemoveAt(i);
             }
+        }
+
+        // FOR TESTING PURPOSES, SHOULD BE REMOVED
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            Debug.Log("Adding Speed");
+
+            //Temporary TimedEffect
+            TimedEffect effect = new(15.0f, 
+                (tank) => {
+                    tank.moveSpeed *= 2.0f;
+                },
+                (tank) => {
+                    tank.moveSpeed /= 2.0f;
+                }
+            );
+
+            addEffect(effect);
         }
 
         // if (!isReloading && numBullets < 4) {
