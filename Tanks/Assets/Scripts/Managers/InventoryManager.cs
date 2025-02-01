@@ -31,7 +31,7 @@ public class InventoryManager
     private HashSet<string> unlockedChars;
 
     // must be run after deserialization to correctly setup stuff
-    void setup() {
+    public void setup() {
         // clean up unused characters
         unlockedChars = new HashSet<string>();
         foreach (string character in unlockedCharList) {
@@ -42,7 +42,7 @@ public class InventoryManager
     }
 
     // unlock character
-    void unlockCharacter(string character) {
+    public void unlockCharacter(string character) {
         if (!allChars.Contains(character)) {
             throw new ArgumentException();
         }
@@ -50,7 +50,7 @@ public class InventoryManager
     }
 
     // Switch character
-    void switchCharacter(Tank t, string changeTo) {
+    public void switchCharacter(Tank t, string changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = createNewChar(changeTo);
         }

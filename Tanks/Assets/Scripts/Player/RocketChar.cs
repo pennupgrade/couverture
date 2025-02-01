@@ -6,7 +6,7 @@ public class RocketChar : Character
 {
     public float cooldown;
     private float currCD = 0;
-    public GameObject rocketPrefab = Resources.Load<GameObject>("Rocket.prefab");
+    public GameObject rocketPrefab = Resources.Load<GameObject>("Rocket");
 
     public override void Ability(Tank tank)
     {
