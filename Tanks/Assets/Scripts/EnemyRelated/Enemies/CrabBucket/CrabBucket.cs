@@ -15,6 +15,8 @@ public class CrabBucket : MonoBehaviour
     private ParticleSystem attackEffects;
     private AudioSource sound;
 
+    [SerializeField] private GameObject sphere_indicator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,9 @@ public class CrabBucket : MonoBehaviour
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
         }
+
+        sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
+            1, attackWaitTimeCounter * 4);
     }
 
     private void OnTriggerEnter(Collider other)
