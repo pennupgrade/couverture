@@ -182,7 +182,7 @@ public class TankController
         Vector3 direction = Vector3.Normalize(playerInput);
 
         float thetaFallOff = 1.0f;
-        RotateWheels(direction, playerInput.magnitude);
+        //RotateWheels(direction, playerInput.magnitude);
 
         // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
         // This means the tank will start moving when it's finished rotating
