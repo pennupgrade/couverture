@@ -14,51 +14,54 @@ public class SaveStateManager
 {
     private const string SAVE_LOCATION = "save_data.json";
     public static SaveStateManager loadInventory() {
-        StreamReader reader = new StreamReader(SAVE_LOCATION);
-        string jsonData = reader.ReadToEnd();
-        reader.Close();
-        SaveStateManager outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+        SaveStateManager outManager;
+        try {
+            using (StreamReader reader = new StreamReader(SAVE_LOCATION)) {
+                string jsonData = reader.ReadToEnd();
+                outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+            }
+        } catch (IOException) {
+            outManager = new SaveStateManager();
+        }
         outManager.setup();
         return outManager;
     }
 
+    public enum CharacterOption {
+        NONE,
+        DEFAULT_CAT
+    }
+
     // JSON representation for unlocked characters is an array of unlocked character id's
-    private static HashSet<string> allChars = new HashSet<string>(new string[]{"default_cat", "catfish"});
-
-    public List<string> unlockedCharList = new List<string>();
+    public List<CharacterOption> unlockedCharList = new List<CharacterOption>();
 
 
-    private HashSet<string> unlockedChars;
+    private HashSet<CharacterOption> unlockedChars;
 
     // must be run after deserialization to correctly setup stuff
     public void setup() {
         // clean up unused characters
-        unlockedChars = new HashSet<string>();
-        foreach (string character in unlockedCharList) {
-            if (allChars.Contains(character)) {
-                unlockedChars.Add(character);
-            }
+        unlockedChars = new HashSet<CharacterOption>();
+        foreach (CharacterOption character in unlockedCharList) {
+            unlockedChars.Add(character);
         }
     }
 
     // unlock character
-    public void unlockCharacter(string character) {
-        if (!allChars.Contains(character)) {
-            throw new ArgumentException();
-        }
+    public void unlockCharacter(CharacterOption character) {
         unlockedChars.Add(character);
     }
 
     // Switch character
-    public void switchCharacter(Tank t, string changeTo) {
+    public void switchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = createNewChar(changeTo);
         }
     }
 
-    private Character createNewChar(string characterId) {
+    private Character createNewChar(CharacterOption characterId) {
         switch (characterId) {
-            case "default_cat":
+            case CharacterOption.DEFAULT_CAT:
                 return new RocketChar();
             default:
                 throw new ArgumentException();
@@ -69,12 +72,10 @@ public class SaveStateManager
     // Save the inventory to a file so the state of a player can be loaded
     public void saveGameState() {
         // update unlockedCharList
-        List<string> newCharList = new List<string>(unlockedChars.Count);
-        foreach (string x in unlockedChars) {
-            newCharList.Add(x);
+        unlockedCharList.Clear();
+        foreach (CharacterOption x in unlockedChars) {
+            unlockedCharList.Add(x);
         }
-        unlockedCharList = newCharList;
-
 
         // write JSON to file
         File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
