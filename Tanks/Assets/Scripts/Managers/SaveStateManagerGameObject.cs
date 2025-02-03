@@ -12,7 +12,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public SaveStateManager.CharacterOption defaultTestingCat;
 
 
-    // THIS IS MEANT FOR TESTING, WILL AUTOMATICALLY UNLOCK AND USE THE CAT SPECIFIED IN defaultCat!!!!
+    // THIS IS MEANT FOR TESTING, WILL AUTOMATICALLY UNLOCK AND USE THE CAT SPECIFIED IN defaultTestingCat!!!!
     // TO HAVE THIS DO NOTHING, HAVE defaultCat set to NONE
     void setDefaultCat() {
         if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
