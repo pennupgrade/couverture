@@ -47,9 +47,12 @@ public class SaveStateManager
         }
     }
 
-    // unlock character
-    public void unlockCharacter(CharacterOption character) {
-        unlockedChars.Add(character);
+
+    //          CHARACTER STUFF
+
+    // unlock character, returns true if character wasn't unlocked before (successfully unlocked) and false otherwise
+    public bool unlockCharacter(CharacterOption character) {
+        return unlockedChars.Add(character);
     }
 
     // Switch character
@@ -68,6 +71,8 @@ public class SaveStateManager
         };
     }
 
+
+    //          SAVE GAME STATE
 
     // Save the inventory to a file so the state of a player can be loaded
     public void saveGameState() {
