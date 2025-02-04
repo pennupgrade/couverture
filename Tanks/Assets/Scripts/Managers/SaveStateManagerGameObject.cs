@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class SaveStateManagerGameObject : MonoBehaviour
@@ -59,6 +60,15 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public void switchCharacter(SaveStateManager.CharacterOption c) {
         stateManager.switchCharacter(findTank(), c);
+    }
+
+    public HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
+        HashSet<SaveStateManager.CharacterOption> outSet = new();
+        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        foreach (SaveStateManager.CharacterOption c in stateManager.unlockedCharList) {
+            outSet.Add(c);
+        }
+        return outSet;
     }
 
     // SAVE AND LOAD
