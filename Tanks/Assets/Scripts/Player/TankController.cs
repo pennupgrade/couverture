@@ -99,7 +99,6 @@ public class TankController
 
         if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
         {
-            Debug.Log(wheel.fallDelta + ", " + hitDist);
             float dy = 1.5f * Time.deltaTime;
             wheel.fallDelta += dy;
             wheel.obj.transform.position -= Vector3.up * dy;
