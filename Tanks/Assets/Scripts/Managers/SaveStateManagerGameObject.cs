@@ -52,31 +52,31 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
 
     // Character setting/getting/unlocking
-    public void unlockCharacter(SaveStateManager.CharacterOption c) {
-        if (stateManager.unlockCharacter(c)) {
+    public static void unlockCharacter(SaveStateManager.CharacterOption c) {
+        if (Instance.stateManager.unlockCharacter(c)) {
             saveState();
         }
     }
 
-    public void switchCharacter(SaveStateManager.CharacterOption c) {
-        stateManager.switchCharacter(findTank(), c);
+    public static void switchCharacter(SaveStateManager.CharacterOption c) {
+        Instance.stateManager.switchCharacter(findTank(), c);
     }
 
-    public HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
+    public static HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
         HashSet<SaveStateManager.CharacterOption> outSet = new();
         // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        foreach (SaveStateManager.CharacterOption c in stateManager.unlockedCharList) {
+        foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
             outSet.Add(c);
         }
         return outSet;
     }
 
     // SAVE AND LOAD
-    public void loadState() {
-        stateManager = SaveStateManager.loadInventory();
+    public static void loadState() {
+        Instance.stateManager = SaveStateManager.loadInventory();
     }
 
-    public void saveState() {
-        stateManager.saveGameState();
+    public static void saveState() {
+        Instance.stateManager.saveGameState();
     }
 }
