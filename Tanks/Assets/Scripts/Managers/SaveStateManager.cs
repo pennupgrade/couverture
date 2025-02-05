@@ -29,7 +29,7 @@ public class SaveStateManager
 
     public enum CharacterOption {
         NONE,
-        DEFAULT_CAT
+        ROCKET_CAT
     }
 
     // JSON representation for unlocked characters is an array of unlocked character id's
@@ -64,7 +64,7 @@ public class SaveStateManager
 
     private Character createNewChar(CharacterOption characterId) {
         switch (characterId) {
-            case CharacterOption.DEFAULT_CAT:
+            case CharacterOption.ROCKET_CAT:
                 return new RocketChar();
             default:
                 throw new ArgumentException();
