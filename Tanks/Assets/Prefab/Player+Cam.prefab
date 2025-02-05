@@ -2069,6 +2069,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4025333484801462817, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4025333484801462817, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_Center.y
       value: -0.05
       objectReference: {fileID: 0}
@@ -2125,6 +2129,10 @@ PrefabInstance:
       value: Tank prefab
       objectReference: {fileID: 0}
     - target: {fileID: 8699447814597592467, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8699447814597592467, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_ImplicitCom
       value: 0
       objectReference: {fileID: 0}
@@ -2138,6 +2146,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6522159303543715957}
+    - targetCorrespondingSourceObject: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1049075827820354353}
   m_SourcePrefab: {fileID: 100100000, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
 --- !u!114 &1155985348964352763 stripped
 MonoBehaviour:
@@ -2172,7 +2183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ecdf980eb1f49d46bfdb0943cc544d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 6522159303543715957}
 --- !u!114 &6522159303543715957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2187,6 +2198,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 0
   rocketPrefab: {fileID: 3570829452723641598, guid: 5f632e3e23ccf7947acecbb335bce7e7, type: 3}
+--- !u!135 &1049075827820354353
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3426904419071684464}
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.22
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1 &4961589744210178981 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2300565459145294251, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}

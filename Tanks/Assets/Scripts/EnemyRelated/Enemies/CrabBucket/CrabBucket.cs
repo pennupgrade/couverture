@@ -73,11 +73,15 @@ public class CrabBucket : MonoBehaviour
     {
         Debug.Log("One Attack");
         attackEffects.Play();
-        // Considering the collider is a sphere, you may be better off doing Vector3.Distance or smth
-        // but honestly your choice, I think this is fine - Anthony
+
         if (attackScript.isPlayerInRange()) 
         {
             GameObject player = attackScript.getPlayer().gameObject;
+
+            if (player.GetComponent<Tank>().health <= 0)
+            {
+                return;
+            }
 
             // Raycast
             Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
