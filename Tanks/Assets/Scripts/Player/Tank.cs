@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour, IDestroyable
 {
+    public Character character = null;
+
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
@@ -56,6 +58,7 @@ public class Tank : MonoBehaviour, IDestroyable
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
+
 
     private void Awake() {
         controls = new Controls();
@@ -160,5 +163,18 @@ public class Tank : MonoBehaviour, IDestroyable
         damageFlash.CallElectricity(this, time);
         yield return new WaitForSeconds(time);
         stunned = false;
+    }
+
+    // Character abilities
+    public void Ability() {
+        if (character != null) {
+            character.Ability(this);
+        }
+    }
+
+    public void AbilityUpdate() {
+        if (character != null) {
+            character.AbilityUpdate(this);
+        }
     }
 }
