@@ -2112,10 +2112,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8c8e74ec616c6480e85b05a5a365313f, type: 2}
-    - target: {fileID: 6922871839290126407, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-      propertyPath: layersToIgnore.m_Bits
-      value: 1143
-      objectReference: {fileID: 0}
     - target: {fileID: 7205137129310120829, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.17
@@ -2133,6 +2129,10 @@ PrefabInstance:
       value: Tank prefab
       objectReference: {fileID: 0}
     - target: {fileID: 8699447814597592467, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8699447814597592467, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_ImplicitCom
       value: 0
       objectReference: {fileID: 0}
@@ -2145,7 +2145,10 @@ PrefabInstance:
       addedObject: {fileID: 1488430660616141566}
     - targetCorrespondingSourceObject: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1164102838942139997}
+      addedObject: {fileID: 6522159303543715957}
+    - targetCorrespondingSourceObject: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1049075827820354353}
   m_SourcePrefab: {fileID: 100100000, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
 --- !u!114 &1155985348964352763 stripped
 MonoBehaviour:
@@ -2180,8 +2183,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ecdf980eb1f49d46bfdb0943cc544d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tank: {fileID: 1155985348964352763}
---- !u!135 &1164102838942139997
+  player: {fileID: 6522159303543715957}
+--- !u!114 &6522159303543715957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3426904419071684464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14df582496e12474fb75ef968de8d54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0
+  rocketPrefab: {fileID: 3570829452723641598, guid: 5f632e3e23ccf7947acecbb335bce7e7, type: 3}
+--- !u!135 &1049075827820354353
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2200,8 +2217,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.19
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.22
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1 &4961589744210178981 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2300565459145294251, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
