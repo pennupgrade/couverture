@@ -12,28 +12,28 @@ public class SaveStateManagerGameObject : MonoBehaviour
     [SerializeField]
     public SaveStateManager.CharacterOption defaultTestingCat;
 
-    private static Tank findTank() {
+    private static Tank FindTank() {
         return FindObjectOfType<Tank>();
     }
 
 
     // THIS IS MEANT FOR TESTING, WILL AUTOMATICALLY UNLOCK AND USE THE CAT SPECIFIED IN defaultTestingCat!!!!
     // TO HAVE THIS DO NOTHING, HAVE defaultCat set to NONE
-    void setDefaultCat() {
+    void SetDefaultCat() {
         if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
-            Instance.stateManager.unlockCharacter(defaultTestingCat);
-            Instance.stateManager.switchCharacter(findTank(), defaultTestingCat);
+            Instance.stateManager.UnlockCharacter(defaultTestingCat);
+            Instance.stateManager.SwitchCharacter(FindTank(), defaultTestingCat);
         }
     }
 
     void Awake() {
         if (Instance is null) {
             Instance = this;
-            loadState();
+            LoadState();
             DontDestroyOnLoad(gameObject);
-            setDefaultCat();
+            SetDefaultCat();
         } else {
-            setDefaultCat();
+            SetDefaultCat();
             Destroy(gameObject);
         }
     }
@@ -52,14 +52,14 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
 
     // Character setting/getting/unlocking
-    public static void unlockCharacter(SaveStateManager.CharacterOption c) {
-        if (Instance.stateManager.unlockCharacter(c)) {
-            saveState();
+    public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
+        if (Instance.stateManager.UnlockCharacter(c)) {
+            SaveState();
         }
     }
 
-    public static void switchCharacter(SaveStateManager.CharacterOption c) {
-        Instance.stateManager.switchCharacter(findTank(), c);
+    public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
+        Instance.stateManager.SwitchCharacter(FindTank(), c);
     }
 
     public static HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
@@ -72,11 +72,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     // SAVE AND LOAD
-    public static void loadState() {
-        Instance.stateManager = SaveStateManager.loadInventory();
+    public static void LoadState() {
+        Instance.stateManager = SaveStateManager.LoadInventory();
     }
 
-    public static void saveState() {
-        Instance.stateManager.saveGameState();
+    public static void SaveState() {
+        Instance.stateManager.SaveGameState();
     }
 }

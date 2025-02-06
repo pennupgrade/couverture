@@ -13,7 +13,7 @@ using System.Net.NetworkInformation;
 public class SaveStateManager
 {
     private const string SAVE_LOCATION = "save_data.json";
-    public static SaveStateManager loadInventory() {
+    public static SaveStateManager LoadInventory() {
         SaveStateManager outManager;
         try {
             using (StreamReader reader = new(SAVE_LOCATION)) {
@@ -51,18 +51,18 @@ public class SaveStateManager
     //          CHARACTER STUFF
 
     // unlock character, returns true if character wasn't unlocked before (successfully unlocked) and false otherwise
-    public bool unlockCharacter(CharacterOption character) {
+    public bool UnlockCharacter(CharacterOption character) {
         return unlockedChars.Add(character);
     }
 
     // Switch character
-    public void switchCharacter(Tank t, CharacterOption changeTo) {
+    public void SwitchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
-            t.character = createNewChar(changeTo);
+            t.character = CreateNewChar(changeTo);
         }
     }
 
-    private Character createNewChar(CharacterOption characterId) {
+    private Character CreateNewChar(CharacterOption characterId) {
         switch (characterId) {
             case CharacterOption.ROCKET_CAT:
                 return new RocketChar();
@@ -75,7 +75,7 @@ public class SaveStateManager
     //          SAVE GAME STATE
 
     // Save the inventory to a file so the state of a player can be loaded
-    public void saveGameState() {
+    public void SaveGameState() {
         // update unlockedCharList
         unlockedCharList.Clear();
         foreach (CharacterOption x in unlockedChars) {
