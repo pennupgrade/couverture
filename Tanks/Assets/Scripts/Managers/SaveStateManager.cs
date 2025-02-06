@@ -16,7 +16,7 @@ public class SaveStateManager
     public static SaveStateManager loadInventory() {
         SaveStateManager outManager;
         try {
-            using (StreamReader reader = new StreamReader(SAVE_LOCATION)) {
+            using (StreamReader reader = new(SAVE_LOCATION)) {
                 string jsonData = reader.ReadToEnd();
                 outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
             }
@@ -33,7 +33,7 @@ public class SaveStateManager
     }
 
     // JSON representation for unlocked characters is an array of unlocked character id's
-    public List<CharacterOption> unlockedCharList = new List<CharacterOption>();
+    public List<CharacterOption> unlockedCharList = new();
 
 
     private HashSet<CharacterOption> unlockedChars;
