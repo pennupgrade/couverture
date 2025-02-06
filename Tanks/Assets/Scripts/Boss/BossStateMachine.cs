@@ -18,9 +18,11 @@ public class BossStateMachine : MonoBehaviour
     private double timeUntilAttack = 5;
     private const double MELEE_DISTANCE = 4f;
     private const double TIME_BETWEEN_BULLETS = 0.5f;
+    private const int MAX_NUMBER_SUMMONS = 2;
 
     // Attack Specific Parameters
     private int numBulletsShot;
+    private List<List<GameObject>> enemies;
 
 
     private void Awake()
@@ -28,6 +30,7 @@ public class BossStateMachine : MonoBehaviour
         currentState = State.Idle;
         currentAttack = Attack.None;
         timer = 0;
+        enemies = new List<List<GameObject>>();
 
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
@@ -50,6 +53,24 @@ public class BossStateMachine : MonoBehaviour
         else if (currentState == State.Attacking)
         {
             doAttackState();
+        }
+
+        // Remove summon enemies if killed
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            for (int j = 0; j < enemies[i].Count; j++)
+            {
+                if (enemies[i][j] == null)
+                {
+                    enemies[i].RemoveAt(j);
+                    j--;
+                }
+            }
+            if (enemies[i].Count == 0)
+            {
+                enemies.RemoveAt(i);
+                    i--;
+            }
         }
     }
 
@@ -74,9 +95,16 @@ public class BossStateMachine : MonoBehaviour
             else
             {
                 // Choose between summon, shoot, and charge
-                currentAttack = Attack.Shoot;
-                timer = TIME_BETWEEN_BULLETS;
-                numBulletsShot = 0;
+                if (enemies.Count < MAX_NUMBER_SUMMONS && UnityEngine.Random.Range(0, 3) == 0)
+                {
+                    currentAttack = Attack.Summon;
+                }
+                else
+                {
+                    currentAttack = Attack.Shoot;
+                    timer = TIME_BETWEEN_BULLETS;
+                    numBulletsShot = 0;
+                }
             }
         }
     }
@@ -103,10 +131,15 @@ public class BossStateMachine : MonoBehaviour
                     }
                 }
                 break;
+            // Shots a spread of three bullets and then switches to idle
             case Attack.Shotgun:
                 boss.shootShotgun();
                 switchToState(State.Idle);
-                
+                break;
+            // Summons a wave of enemies and then switches to idle
+            case Attack.Summon:
+                enemies.Add(boss.Summon());
+                switchToState(State.Idle);
                 break;
         }
     }
