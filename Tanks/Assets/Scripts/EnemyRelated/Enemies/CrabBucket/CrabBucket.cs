@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class CrabBucket : MonoBehaviour
 {
-    private SphereCollider m_Collider;
-    private SphereCollider m_DealDamageCollider;
-
-    [SerializeField]
-    float SensingRange = 3; // I think this variable isn't used - Anthony
-    [SerializeField]
-    float AttackRange = 2;
     bool attacking = false;
     [SerializeField]
     float attackWaitTime = 1.5f;
@@ -20,28 +13,23 @@ public class CrabBucket : MonoBehaviour
 
     private CrabBucketAttack attackScript;
     private ParticleSystem attackEffects;
-    private AudioSource sound;
+    [SerializeField] private AudioSource sound;
+    [SerializeField] private AudioSource blockedSound;
+
+    [SerializeField] private GameObject sphere_indicator;
+    [SerializeField] private LayerMask obstacleLayer;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_Collider = gameObject.GetComponent<SphereCollider>();
-        m_Collider.radius = SensingRange;
-        m_DealDamageCollider = gameObject.GetComponentInChildren<SphereCollider>();
-        m_DealDamageCollider.radius = AttackRange;
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
-        sound = gameObject.GetComponentInChildren<AudioSource>();
         attackWaitTimeCounter = attackWaitTime;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //For Serialize Field to Work During RunTime
-        m_Collider.radius = SensingRange; 
-        m_DealDamageCollider.radius = AttackRange; // is this line and above necessary if you assign their values on 29 and 31 - Anthony
-
         if (attacking)
         {
             if(attackWaitTimeCounter >= attackWaitTime) 
@@ -55,6 +43,8 @@ public class CrabBucket : MonoBehaviour
                 attackWaitTimeCounter += Time.fixedDeltaTime;
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
+            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
+            1, attackWaitTimeCounter * 4);
         }
     }
 
@@ -74,6 +64,8 @@ public class CrabBucket : MonoBehaviour
             attackWaitTimeCounter = attackWaitTime; 
             // if you go in and out of the trigger, the crab will immediately attack
             // I fee like attackWaitTimeCounter should start at 0 - Anthony
+            sphere_indicator.transform.localScale = new Vector3(0.1f,
+            1, 0.1f);
         }
     }
 
@@ -81,13 +73,30 @@ public class CrabBucket : MonoBehaviour
     {
         Debug.Log("One Attack");
         attackEffects.Play();
-        // Considering the collider is a sphere, you may be better off doing Vector3.Distance or smth
-        // but honestly your choice, I think this is fine - Anthony
+
         if (attackScript.isPlayerInRange()) 
         {
-            Debug.Log("Deals Damage");
-            attackScript.getPlayer().gameObject.GetComponent<Tank>().takeDamage(damage);
-            sound.Play();
+            GameObject player = attackScript.getPlayer().gameObject;
+
+            if (player.GetComponent<Tank>().health <= 0)
+            {
+                return;
+            }
+
+            // Raycast
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (!Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer))
+            {
+                Debug.Log("Deals Damage");
+                player.GetComponent<Tank>().takeDamage(damage);
+                sound.Play();
+            }
+            else
+            {
+                Debug.Log("Attack Blocked by Obstacle");
+                blockedSound.Play();
+            }
         }
         else
         {
