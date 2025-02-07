@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class TankState
@@ -46,10 +47,12 @@ public abstract class TankState
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
-    public virtual TankState HandleShoot()
+    public virtual TankState HandleShoot(bool accountForOffsetVelocity, Vector3 offsetVelocity)
     {
-        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
+        //offset velocity is helpful when the object firing the bullet is moving
+        if (!accountForOffsetVelocity) { offsetVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
 
+        if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
@@ -59,6 +62,7 @@ public abstract class TankState
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.GetComponent<Bullet_Default>().parent = tank.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+        bullet.GetComponent<Rigidbody>().velocity += offsetVelocity;
 
         // Reload bullets if we're not already doing so
         if (tank.reloadCoroutine == null) tank.reloadCoroutine = tank.StartCoroutine(Reload());

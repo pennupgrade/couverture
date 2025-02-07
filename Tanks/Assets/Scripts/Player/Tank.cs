@@ -50,6 +50,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public float cooldownProgress;
     public float animationProgress;
 
+    private Vector3 currentPos = Vector3.zero;
+    private Vector3 previousPos = Vector3.zero;
+
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
@@ -69,7 +72,12 @@ public class Tank : MonoBehaviour, IDestroyable
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
 
-        controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
+        controls.TankControls.Shoot.performed += _ => {
+            //If player is moving, bullet speed can be affected
+            Vector3 deltaPos = currentPos - previousPos;
+            // tankState = tankState.HandleShoot(false, Vector3.zero);
+            tankState = tankState.HandleShoot(true, deltaPos*1.1f/Time.deltaTime);
+        };
 
         numBullets = 5;
 
@@ -115,6 +123,9 @@ public class Tank : MonoBehaviour, IDestroyable
                 effects.RemoveAt(i);
             }
         }
+
+        previousPos = currentPos;//this gives them a single-tick of delta difference
+        currentPos = transform.position;
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());

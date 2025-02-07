@@ -15,8 +15,13 @@ public class MovingPlatformLinear : MonoBehaviour
     {
         Vector3 oldPos = transform.position;
         Vector3 oldRot = transform.rotation.eulerAngles;
+
         transform.position = vertexPath.MoveConstantVelocity(speed, advanceForward: true);
         transform.forward = vertexPath.GetTangent();
+
+        Vector3 deltaPos = transform.position - oldPos;
+        float deltaAngY = transform.rotation.eulerAngles.y - oldRot.y;
+
         for (int i = 0; i < passengerList.Count; i++)
         {
             if (passengerList[i] == null)
@@ -25,8 +30,9 @@ public class MovingPlatformLinear : MonoBehaviour
                 i -= 1;
                 continue;
             }
-            passengerList[i].position += transform.position - oldPos;
-            passengerList[i].RotateAround(transform.position, Vector3.up, transform.rotation.eulerAngles.y - oldRot.y);
+            passengerList[i].position += deltaPos;
+            // passengerList[i].RotateAround(transform.position, Vector3.up, transform.rotation.eulerAngles.y - oldRot.y);
+            passengerList[i].RotateAround(transform.position, Vector3.up, deltaAngY);
         }
     }
 
