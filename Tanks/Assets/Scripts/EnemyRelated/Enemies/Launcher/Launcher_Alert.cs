@@ -29,7 +29,7 @@ public class Launcher_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = getDist() > 12;
+            playerGone = getDist() > 16;
             yield return new WaitForSeconds(6);
         }
     }
