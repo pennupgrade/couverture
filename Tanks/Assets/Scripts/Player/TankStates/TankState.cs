@@ -47,11 +47,8 @@ public abstract class TankState
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
-    public virtual TankState HandleShoot(bool accountForOffsetVelocity, Vector3 offsetVelocity)
+    public virtual TankState HandleShoot(Vector3 offsetVelocity)
     {
-        //offset velocity is helpful when the object firing the bullet is moving
-        if (!accountForOffsetVelocity) { offsetVelocity = new Vector3(0.0f, 0.0f, 0.0f); }
-
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
@@ -62,6 +59,8 @@ public abstract class TankState
         bullet.GetComponent<Bullet_Default>().addBounceChange();
         bullet.GetComponent<Bullet_Default>().parent = tank.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+
+        //offset velocity is helpful when the object firing the bullet is moving
         bullet.GetComponent<Rigidbody>().velocity += offsetVelocity;
 
         // Reload bullets if we're not already doing so

@@ -30,6 +30,7 @@ public class MovingPlatformLinear : MonoBehaviour
                 i -= 1;
                 continue;
             }
+
             passengerList[i].position += deltaPos;
             // passengerList[i].RotateAround(transform.position, Vector3.up, transform.rotation.eulerAngles.y - oldRot.y);
             passengerList[i].RotateAround(transform.position, Vector3.up, deltaAngY);
@@ -45,6 +46,7 @@ public class MovingPlatformLinear : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Tank t)) 
         {
             passengerList.Add(t.transform);
+            t.SetPlatformSpeed(speed);
         }
         if (other.gameObject.TryGetComponent(out Enemy e)) 
         {
@@ -59,6 +61,12 @@ public class MovingPlatformLinear : MonoBehaviour
         {
             return;
         }
+
+        if (other.gameObject.TryGetComponent(out Tank t))
+        {
+            t.SetPlatformSpeed(-speed);
+        }
+
         passengerList.Remove(other.transform);
     }
 }
