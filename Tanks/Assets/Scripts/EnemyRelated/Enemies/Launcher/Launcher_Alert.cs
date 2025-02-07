@@ -46,7 +46,7 @@ public class Launcher_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {            
-            fire(5);
+            fire(3);
             yield return new WaitForSeconds(enemy.reload);
         }
     }
