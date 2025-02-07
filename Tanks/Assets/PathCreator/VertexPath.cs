@@ -13,13 +13,23 @@ namespace PathCreation
     {
         [SerializeField]
         private List<Vertex> vertices;
+        private List<(Vector3, Vector3)> tangentList;
 
         [HideInInspector()]
         public bool isLinear;
         [HideInInspector()]
         public bool isLooping;
 
-        public void Reset()
+        private void OnEnable()
+        {
+            if (vertices == null)
+            {
+                vertices = new List<Vertex>();
+                tangentList = new();
+            }
+        }
+
+        public void ResetPath()
         {
             Undo.RecordObject(this, "Reset Path");
             vertices.Clear();
@@ -40,6 +50,10 @@ namespace PathCreation
 
         public int VertexCount()
         {
+            if (vertices == null)
+            {
+                vertices = new List<Vertex>();
+            }
             return vertices.Count;
         }
 
@@ -57,8 +71,6 @@ namespace PathCreation
             Vector3 change = pos - vertices[index].mainPos;
             vertices[index].controlPoint1 += change;
             vertices[index].controlPoint2 += change;
-
-            //Vector3 toThisTransform = pos - this.transform.position;
 
             vertices[index].mainPos = pos;
         }
@@ -213,8 +225,6 @@ namespace PathCreation
 
 #region Movement and Lerping and BLerping
 
-        float currT = 0f;
-
         // get the next position based on the current index you are on
         public Vector3 Lerp(int startIndex, float t)
         {
@@ -249,24 +259,10 @@ namespace PathCreation
             return pt;
         }
 
-        // this function is shit
-        //public Vector3 MoveLerp(float t)
-        //{
-        //    // find start index based on t
-        //    int startIndex = (int)t;
-
-        //    if (isLooping)
-        //    {
-        //        startIndex %= VertexCount();
-        //    }
-
-        //    return Lerp(startIndex, , t - startIndex);
-        //}
-
-        public Vector3 MoveConstantVelocity(float vel, bool advanceForward)
+        public Vector3 MoveConstantVelocity(float vel, bool advanceForward, ref float t)
         {
             // find start index based on t
-            int startIndex = (int) currT;
+            int startIndex = (int) t;
 
             int nextIndex = GetNextIndex(startIndex);
 
@@ -281,18 +277,18 @@ namespace PathCreation
             Vector3 p2 = GetControlPos(nextIndex, 2);
             Vector3 p3 = GetMainPos(nextIndex);
 
-            float localT = (currT - startIndex);
+            float localT = (t - startIndex);
 
             if (advanceForward)
             {
                 float distance = isLinear ? Vector3.Distance(GetMainPos(startIndex), GetMainPos(nextIndex))
                     : GetBezierArcLength(p0, p1, p2, p3);
 
-                currT += Time.deltaTime * vel / distance;
+                t += Time.deltaTime * vel / distance;
 
-                if (isLooping && currT >= VertexCount())
+                if (isLooping && t >= VertexCount())
                 {
-                    currT = 0f;
+                    t = 0f;
                 }
             }
 
@@ -318,10 +314,30 @@ namespace PathCreation
             return dpdt;
         }
 
-        public Vector3 GetTangent()
+        public void GenerateTangentList(int gap)
+        {
+            if (gap < 1) return;
+            for (int i = 0; i < VertexCount(); i += gap)
+            {
+                Debug.Log(tangentList);
+                tangentList.Add((GetMainPos(i), GetTangent(i)));
+            }
+        }
+
+        public void DebugRenderTracks()
+        {
+            for (int i = 0; i < tangentList.Count; i++)
+            {
+                GameObject go  = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                go.transform.LookAt(tangentList[i].Item2);
+                go.transform.position = tangentList[i].Item1;
+            }
+        }
+
+        public Vector3 GetTangent(float t)
         {
             // find start index based on t
-            int startIndex = (int)currT;
+            int startIndex = (int)t;
 
             int nextIndex = GetNextIndex(startIndex);
 
@@ -332,7 +348,7 @@ namespace PathCreation
                 return p0;
             }
 
-            float localT = (currT - startIndex);
+            float localT = (t - startIndex);
 
             Vector3 p1 = GetControlPos(startIndex, 1);
             Vector3 p2 = GetControlPos(nextIndex, 2);
@@ -371,23 +387,6 @@ namespace PathCreation
 
 #endregion
 
-        //public float GetDistanceBetweenPoints(int index1, int index2)
-        //{
-        //    if (index1 == -1 || index2 == -1)
-        //    {
-        //        return 0f;
-        //    }
-
-        //    if (isLinear)
-        //    {
-        //        return Vector3.Distance(GetMainPos(index1), GetMainPos(index2));
-        //    }
-        //    else
-        //    {
-        //        return 1f;  // how do you calculate arc length??? :(((
-        //    }
-        //}
-
     }
 
     [System.Serializable]
@@ -416,3 +415,4 @@ namespace PathCreation
     }
 
 }
+

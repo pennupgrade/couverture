@@ -17,7 +17,7 @@ public class TestMoveAlongPath : MonoBehaviour
     void Update() 
     {
         Vector3 oldPos = transform.position;
-        transform.position = vertexPath.MoveConstantVelocity(speed, advanceForward: true);
+        transform.position = vertexPath.MoveConstantVelocity(speed, advanceForward: true, ref time);
         for (int i = 0; i < passengerList.Count; i++)
         {
             passengerList[i].position += transform.position - oldPos;
