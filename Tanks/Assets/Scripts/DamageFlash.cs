@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageFlash // DamageFlash is a terrible name
+public class DamageFlash
 {
     // Used this tutorial: https://www.youtube.com/watch?v=rq6yGh-piIU
     // Someone please refactor this later so that it's actually good

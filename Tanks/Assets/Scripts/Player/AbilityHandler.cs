@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AbilityHandler : MonoBehaviour
 {
-    public Character player;
+    public Tank tank;
 
     // Start is called before the first frame update
     void Start()
@@ -15,10 +15,10 @@ public class AbilityHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player.AbilityUpdate();
+        tank.AbilityUpdate();
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            player.Ability();
+            tank.Ability();
         }
     }
 }
