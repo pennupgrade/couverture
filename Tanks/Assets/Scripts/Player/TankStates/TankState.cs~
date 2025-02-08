@@ -52,15 +52,11 @@ public abstract class TankState
 
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
-
-        GameObject bullet = null;
+        
+        var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         if (tank.isDamageBoosting)
         {
             bullet = Object.Instantiate(tank.bulletDamageBoostPrefab, tank.gunShotPos.position, Quaternion.identity);
-        }
-        else
-        {
-            bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
         }
 
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)

@@ -31,6 +31,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     // Object References
     public GameObject bulletPrefab;
+    public GameObject bulletDamageBoostPrefab;
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
@@ -56,6 +57,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     //effects
     private List<TimedEffect> effects = new();
+    public bool isDamageBoosting = false;
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 

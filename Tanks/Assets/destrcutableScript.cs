@@ -65,8 +65,12 @@ public class destrcutableScript : MonoBehaviour
             case EffectsOnDestroy.DamageBoost:
                 effectActions =
                     new TimedEffect(damageBoostCoolDown,
-                    (tank) => { Debug.Log("Damage Boost Start"); },
-                    (tank) => { Debug.Log("Damage Boost End"); }); //don't have access to damage yet 
+                    (tank) => {
+                        tank.isDamageBoosting = true;
+                        Debug.Log("Damage Boost Start"); },
+                    (tank) => {
+                        tank.isDamageBoosting = false;
+                        Debug.Log("Damage Boost End"); }); //don't have access to damage yet 
                 break;
             case EffectsOnDestroy.ReloadSpeed:
                 effectActions =
