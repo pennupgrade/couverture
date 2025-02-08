@@ -57,7 +57,7 @@ public abstract class TankState
                                                     * (tank.gun.transform.forward *
                                                        bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
-        bullet.GetComponent<Bullet_Default>().parent = tank.gameObject;
+        bullet.GetComponent<Projectile>().parent = tank.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
 
         //offset velocity is helpful when the object firing the bullet is moving

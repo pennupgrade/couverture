@@ -32,6 +32,7 @@ public class DamageFlash // DamageFlash is a terrible name
 
     public void CallDamageFlash(MonoBehaviour mono)
     {
+        Debug.Log("hello");
         _damageFlashCorountine = mono.StartCoroutine(DamageFlasher());
     }
 
