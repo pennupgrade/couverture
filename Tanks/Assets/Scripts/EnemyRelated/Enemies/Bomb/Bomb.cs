@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Bomb : Enemy
 {
-    public float explosionRadius;
+    [HideInInspector] public float explosionRadius;
     public LayerMask explosionLM;
     void Awake() {
         enemyState = new Bomb_Start(this);
