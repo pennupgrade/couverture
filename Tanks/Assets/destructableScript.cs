@@ -12,7 +12,7 @@ public enum EffectsOnDestroy
     None
 };
 
-public class destrcutableScript : MonoBehaviour
+public class destructableScript : MonoBehaviour
 {
     public Material red;
     public Material green;
@@ -93,8 +93,6 @@ public class destrcutableScript : MonoBehaviour
                                    }); // not deducting the added health back
                 break;
             case EffectsOnDestroy.None:
-                break;
-            default:
                 break;
         }
         if(effectsOnDestroy != EffectsOnDestroy.None && effectActions != null)
