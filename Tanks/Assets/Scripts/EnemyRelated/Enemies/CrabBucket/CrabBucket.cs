@@ -43,8 +43,8 @@ public class CrabBucket : MonoBehaviour
                 attackWaitTimeCounter += Time.fixedDeltaTime;
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
-            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
-            1, attackWaitTimeCounter * 4);
+            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 2.666f,
+            1, attackWaitTimeCounter * 2.666f);
         }
     }
 
