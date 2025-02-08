@@ -6,7 +6,8 @@ using UnityEngine;
 public class BubbleChar : Character
 {
     public float cooldown;
-    public GameObject bubblePrefab;
+    private float currCD = 0;
+    public GameObject bubblePrefab = Resources.Load<GameObject>("BubbleShield");
 
     [HideInInspector]
     public bool active;
@@ -14,24 +15,17 @@ public class BubbleChar : Character
     [HideInInspector]
     public GameObject obj;
 
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-        active = false;
-    }
-
-    public override void Ability()
+    public override void Ability(Tank tank)
     {
         if (!active)
         {   
             active = true;
-            obj = Instantiate(bubblePrefab);
-            obj.GetComponent<Bubble>().targetTransform = transform;
+            obj = Object.Instantiate(bubblePrefab);
+            obj.GetComponent<Bubble>().targetTransform = tank.transform;
         }
     }
 
-    public override void AbilityUpdate()
+    public override void AbilityUpdate(Tank tank)
     {
         if (obj == null) {
             active = false;
