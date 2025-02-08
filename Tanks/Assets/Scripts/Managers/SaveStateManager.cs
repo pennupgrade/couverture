@@ -35,6 +35,8 @@ public class SaveStateManager
     // JSON representation for unlocked characters is an array of unlocked character id's
     public List<CharacterOption> unlockedCharList = new();
 
+    public string currCheckpointLevelName = null;
+    public int currCheckpoint = -1;
 
     private HashSet<CharacterOption> unlockedChars;
 
