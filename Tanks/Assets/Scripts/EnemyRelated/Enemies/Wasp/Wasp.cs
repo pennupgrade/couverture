@@ -21,7 +21,7 @@ public class Wasp : PatrollingEnemyOmni
         bulletSpeed = 3.1f;
         leadChance = 0.25f;
         speed = 2f;
-        turnSpeed = 180;
+        turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();

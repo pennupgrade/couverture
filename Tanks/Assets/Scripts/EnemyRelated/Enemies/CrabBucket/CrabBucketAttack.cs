@@ -6,6 +6,7 @@ public class CrabBucketAttack : MonoBehaviour
 {
     private bool playerInRange = false;
     private Collider player;
+
     public bool isPlayerInRange()
     {
         return playerInRange;

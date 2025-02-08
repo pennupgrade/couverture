@@ -16,7 +16,6 @@ public class Wasp_Alert : EnemyAlertState
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
             enemy.destination = getRandomPoint(6);
-            Debug.Log(checkDestinationReachable(enemy.destination));
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
@@ -26,11 +25,10 @@ public class Wasp_Alert : EnemyAlertState
         while (true) {
             for (int i = 0; i < 4; i++) {
                 if (i == 0) {
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2f);
-                    Debug.Log(checkDestinationReachable(enemy.destination));
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(3);
             }
         }
     }

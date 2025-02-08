@@ -58,7 +58,7 @@ public class TankController
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
 
-        if (hit.collider != null && hit.transform.gameObject.layer < 7)
+        if (hit.collider != null)
         {
             wheel.hit = hit;
             wheel.isHit = true;
@@ -99,9 +99,7 @@ public class TankController
 
         if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
         {
-#if false
-            Debug.Log(wheel.fallDelta + ", " + hitDist + ": "  + wheel.hit.transform.name);
-#endif
+            Debug.Log(wheel.fallDelta + ", " + hitDist);
             float dy = 1.5f * Time.deltaTime;
             wheel.fallDelta += dy;
             wheel.obj.transform.position -= Vector3.up * dy;

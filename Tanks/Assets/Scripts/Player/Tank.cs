@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour, IDestroyable
 {
-    public Character character = null;
-
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
@@ -50,11 +48,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public float cooldownProgress;
     public float animationProgress;
 
-    private Vector3 currentPos = Vector3.zero;
-    private Vector3 previousPos = Vector3.zero;
-
-    public float platformSpeed;
-
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
@@ -63,7 +56,6 @@ public class Tank : MonoBehaviour, IDestroyable
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-
 
     private void Awake() {
         controls = new Controls();
@@ -74,16 +66,11 @@ public class Tank : MonoBehaviour, IDestroyable
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
 
-        controls.TankControls.Shoot.performed += _ => {
-            //If player is moving, bullet speed can be affected
-            Vector3 deltaPos = currentPos - previousPos;
-
-            Debug.Log(platformSpeed);
-
-            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
-        };
+        controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
 
         numBullets = 5;
+
+
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -100,7 +87,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
 
-    // Effects
+
     ~Tank() {
         effects.ForEach(x => x.Kill(this));
     }
@@ -109,13 +96,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public void addEffect(TimedEffect timedEffect) {
         effects.Add(timedEffect);
         timedEffect.Start(this);
-    }
-
-    // Platform Velocity Funcs
-    public void SetPlatformSpeed(float delta)
-    {
-        platformSpeed = Mathf.Clamp(platformSpeed + delta, 0.0f, 1.1f); // temp clamp
-        Debug.Log("Change: platformSpeed: " + (platformSpeed));
     }
 
 
@@ -132,9 +112,6 @@ public class Tank : MonoBehaviour, IDestroyable
                 effects.RemoveAt(i);
             }
         }
-
-        previousPos = currentPos;//this gives them a single-tick of delta difference
-        currentPos = transform.position;
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
@@ -183,18 +160,5 @@ public class Tank : MonoBehaviour, IDestroyable
         damageFlash.CallElectricity(this, time);
         yield return new WaitForSeconds(time);
         stunned = false;
-    }
-
-    // Character abilities
-    public void Ability() {
-        if (character != null) {
-            character.Ability(this);
-        }
-    }
-
-    public void AbilityUpdate() {
-        if (character != null) {
-            character.AbilityUpdate(this);
-        }
     }
 }

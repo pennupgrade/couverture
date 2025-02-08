@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Defender : ShieldedEnemy
 {
-    [HideInInspector] public bool pauseRot;
+    public bool pauseRot;
     void Awake() {
         enemyState = new Defend_Start(this);
     }

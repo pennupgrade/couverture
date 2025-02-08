@@ -5,7 +5,7 @@ using UnityEngine;
 public class PatrollingEnemy : Enemy
 {
     public bool followWaypoints;
-    public Transform[] waypoints;
+    public Vector3[] waypoints;
     public int increment(int ind) {
         ind++;
         if (ind >= waypoints.Length) {
@@ -18,7 +18,7 @@ public class PatrollingEnemy : Enemy
 public class PatrollingEnemyOmni : EnemyOmniMove
 {
     public bool followWaypoints;
-    public Transform[] waypoints;
+    public Vector3[] waypoints;
     public int increment(int ind) {
         ind++;
         if (ind >= waypoints.Length) {
