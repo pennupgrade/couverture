@@ -58,7 +58,7 @@ public class TankController
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
 
-        if (hit.collider != null)
+        if (hit.collider != null && hit.transform.gameObject.layer < 7)
         {
             wheel.hit = hit;
             wheel.isHit = true;
@@ -99,7 +99,9 @@ public class TankController
 
         if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
         {
-            Debug.Log(wheel.fallDelta + ", " + hitDist);
+#if false
+            Debug.Log(wheel.fallDelta + ", " + hitDist + ": "  + wheel.hit.transform.name);
+#endif
             float dy = 1.5f * Time.deltaTime;
             wheel.fallDelta += dy;
             wheel.obj.transform.position -= Vector3.up * dy;
@@ -182,7 +184,7 @@ public class TankController
         Vector3 direction = Vector3.Normalize(playerInput);
 
         float thetaFallOff = 1.0f;
-        //RotateWheels(direction, playerInput.magnitude);
+        RotateWheels(direction, playerInput.magnitude);
 
         // Move as a function of e^-theta, where theta is the positive dot product between the player and target direction
         // This means the tank will start moving when it's finished rotating
