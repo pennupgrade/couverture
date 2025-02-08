@@ -47,7 +47,6 @@ public abstract class Enemy_State
                     enemy.cTurretTurn = 0;
                 }
             }
-
         }
     }
     protected virtual IEnumerator idleTurretTurnOmni() {
