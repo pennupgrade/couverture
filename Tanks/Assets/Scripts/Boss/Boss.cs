@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : MonoBehaviour
+public class Boss : MonoBehaviour, IDestroyable
 {
+    [HideInInspector] public float health = 5000f;
+
     public GameObject bulletPrefab;
     private GameObject player;
     [SerializeField] private GameObject gun;
@@ -106,4 +108,23 @@ public class Boss : MonoBehaviour
         }
     }
 
+    public void takeDamage(int dmg)
+    {
+        health -= dmg;
+
+        if (health < 0)
+        {
+            Die();
+        }
+    }
+
+    public void incapacitate(float time)
+    {
+        // Not Implemented
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 }
