@@ -45,6 +45,7 @@ public class MovingPlatformLinear : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Tank t)) 
         {
             passengerList.Add(t.transform);
+            t.SetPlatformSpeed(speed);
         }
         if (other.gameObject.TryGetComponent(out Enemy e)) 
         {
@@ -59,6 +60,12 @@ public class MovingPlatformLinear : MonoBehaviour
         {
             return;
         }
+
+        if (other.gameObject.TryGetComponent(out Tank t))
+        {
+            t.SetPlatformSpeed(-speed);
+        }
+
         passengerList.Remove(other.transform);
     }
 }

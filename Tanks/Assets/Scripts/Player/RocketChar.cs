@@ -5,23 +5,10 @@ using UnityEngine;
 public class RocketChar : Character
 {
     public float cooldown;
-    private float currCD;
-    public GameObject rocketPrefab;
+    private float currCD = 0;
+    public GameObject rocketPrefab = Resources.Load<GameObject>("Rocket");
 
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-        currCD = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public override void Ability()
+    public override void Ability(Tank tank)
     {
         if (currCD <= 0)
         {
@@ -35,7 +22,7 @@ public class RocketChar : Character
         }
     }
 
-    public override void AbilityUpdate()
+    public override void AbilityUpdate(Tank tank)
     {
         currCD -= Time.deltaTime;
     }
