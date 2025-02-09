@@ -46,7 +46,7 @@ namespace PathCreation
 
             if (GUILayout.Button("Reset Path"))
             {
-                vertexPath.Reset();
+                vertexPath.ResetPath();
                 SceneView.RepaintAll();
             }
 

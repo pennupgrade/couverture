@@ -50,6 +50,11 @@ public class Tank : MonoBehaviour, IDestroyable
     public float cooldownProgress;
     public float animationProgress;
 
+    private Vector3 currentPos = Vector3.zero;
+    private Vector3 previousPos = Vector3.zero;
+
+    public float platformSpeed;
+
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
@@ -69,11 +74,16 @@ public class Tank : MonoBehaviour, IDestroyable
         rb = GetComponent<Rigidbody>();
         // tankCollider = GetComponent<BoxCollider>();
 
-        controls.TankControls.Shoot.performed += _ => { tankState = tankState.HandleShoot(); };
+        controls.TankControls.Shoot.performed += _ => {
+            //If player is moving, bullet speed can be affected
+            Vector3 deltaPos = currentPos - previousPos;
+
+            Debug.Log(platformSpeed);
+
+            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
+        };
 
         numBullets = 5;
-
-
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -90,7 +100,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
 
 
-
+    // Effects
     ~Tank() {
         effects.ForEach(x => x.Kill(this));
     }
@@ -99,6 +109,13 @@ public class Tank : MonoBehaviour, IDestroyable
     public void addEffect(TimedEffect timedEffect) {
         effects.Add(timedEffect);
         timedEffect.Start(this);
+    }
+
+    // Platform Velocity Funcs
+    public void SetPlatformSpeed(float delta)
+    {
+        platformSpeed = Mathf.Clamp(platformSpeed + delta, 0.0f, 1.1f); // temp clamp
+        Debug.Log("Change: platformSpeed: " + (platformSpeed));
     }
 
 
@@ -114,6 +131,26 @@ public class Tank : MonoBehaviour, IDestroyable
             if (!effects[i].enabled) {
                 effects.RemoveAt(i);
             }
+        }
+
+        previousPos = currentPos;//this gives them a single-tick of delta difference
+        currentPos = transform.position;
+        
+        // FOR TESTING PURPOSES, SHOULD BE REMOVED
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            Debug.Log("Adding Speed");
+
+            //Temporary TimedEffect
+            TimedEffect effect = new(15.0f, 
+                (tank) => {
+                    tank.moveSpeed *= 2.0f;
+                },
+                (tank) => {
+                    tank.moveSpeed /= 2.0f;
+                }
+            );
+
+            addEffect(effect);
         }
 
         // if (!isReloading && numBullets < 4) {
