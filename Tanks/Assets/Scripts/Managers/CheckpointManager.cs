@@ -10,19 +10,15 @@ public class CheckpointManager : MonoBehaviour
 
     private readonly Dictionary<Checkpoint, int> checkpointDict = new();
 
-    private Checkpoint[] checkpointArr;
-
     private Checkpoint currCheckpoint;
 
     private void GetCheckpointList() {
         for (int i = 0; i < transform.childCount; i++) {
-            checkpointArr = new Checkpoint[transform.childCount];
             Checkpoint nextCheckpoint = transform.GetChild(i).gameObject.GetComponent<Checkpoint>();
             if (nextCheckpoint is null) { // null check
                 throw new InvalidOperationException();
             }
             checkpointDict[nextCheckpoint] = i;
-            checkpointArr[i] = nextCheckpoint;
         }
     }
 
@@ -40,11 +36,7 @@ public class CheckpointManager : MonoBehaviour
     }
 
     public static void ForceSetCurrentCheckpoint(int newCheckpoint) {
-        Instance.currCheckpoint = Instance.checkpointArr[newCheckpoint];
-    }
-
-    public static void SetCurrentCheckpoint(int newCheckpoint) {
-        
+        Instance.currCheckpoint = Instance.transform.GetChild(newCheckpoint).GetComponent<Checkpoint>();
     }
 
     public static void CheckpointActivated(Checkpoint checkpoint) {
