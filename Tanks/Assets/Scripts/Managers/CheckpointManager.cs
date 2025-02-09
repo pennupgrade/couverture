@@ -46,8 +46,8 @@ public class CheckpointManager : MonoBehaviour
         int checkpointNum = Instance.checkpointDict[checkpoint];
         if (Instance.currCheckpoint is null || checkpointNum > Instance.checkpointDict[Instance.currCheckpoint]) {
             Instance.currCheckpoint = checkpoint;
+            SaveStateManagerGameObject.SetCurrentCheckpoint(SceneManager.GetActiveScene().name, checkpointNum);
         }
-        SaveStateManagerGameObject.SetCurrentCheckpoint(SceneManager.GetActiveScene().name, checkpointNum);
     }
 
     public static void Respawn() {
