@@ -21,7 +21,5 @@ public class Checkpoint : MonoBehaviour
         if (t is not null) {
             CheckpointManager.CheckpointActivated(this);
         }
-        print("CHECKPOINT ENTERED");
-
     }
 }
