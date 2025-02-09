@@ -86,16 +86,7 @@ public class PlayerCamera : MonoBehaviour
         Debug.Log("Player died, initiate camera death sequence");
         Checkpoint newSpawn = CheckpointManager.GetCurrCheckpoint();
         if (newSpawn != null) {
-            float deltaYCamera = transform.position.y - GameObject.FindWithTag("Player+Camera").transform.position.y;
-            float deltaXCamera = transform.position.x - GameObject.FindWithTag("Player+Camera").transform.position.x;
-            float deltaZCamera = transform.position.z - GameObject.FindWithTag("Player+Camera").transform.position.z; 
- 
-
-            ogCamPos = newSpawn.gameObject.transform.position;
-            ogCamPos.y += deltaYCamera;
-            ogCamPos.x += deltaXCamera;
-            ogCamPos.z += deltaZCamera;
-            print(ogCamPos);
+            ogCamPos = newSpawn.gameObject.transform.position + transform.position - GameObject.FindWithTag("Player").transform.position;
         }
         StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
         isDead = true;
