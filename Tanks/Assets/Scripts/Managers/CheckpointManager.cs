@@ -12,7 +12,7 @@ public class CheckpointManager : MonoBehaviour
 
     private Checkpoint currCheckpoint;
 
-    private void GetCheckpointList() {
+    private void SetUpCheckpoints() {
         for (int i = 0; i < transform.childCount; i++) {
             Checkpoint nextCheckpoint = transform.GetChild(i).gameObject.GetComponent<Checkpoint>();
             if (nextCheckpoint is null) { // null check
@@ -24,13 +24,13 @@ public class CheckpointManager : MonoBehaviour
 
     void Awake() {
         Instance = this;
-        // is this the right place to put this?
-        GetCheckpointList();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        // is this the right place to put this?
+        SetUpCheckpoints();
         SaveStateManagerGameObject.SetupCheckpointManager();
         Respawn();
     }
