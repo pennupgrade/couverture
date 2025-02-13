@@ -21,6 +21,8 @@ public class Boss : MonoBehaviour, IDestroyable
     private int ind; 
     [SerializeField] private GameObject wirePlug;
     private List<Rigidbody> enemySpawned;
+    [SerializeField] private SlidingWall exitWall;
+
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
     [SerializeField] private float chargeSpeed;
@@ -144,6 +146,7 @@ public class Boss : MonoBehaviour, IDestroyable
 
     public void Die()
     {
+        exitWall.activate();
         Destroy(gameObject);
     }
     public void Charge(float chargeStartTime) {
