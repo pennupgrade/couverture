@@ -19,10 +19,18 @@ public class BossStateMachine : MonoBehaviour
     private const double MELEE_DISTANCE = 4f;
     private const double TIME_BETWEEN_BULLETS = 0.5f;
     private const int MAX_NUMBER_SUMMONS = 2;
-
+    private float chargeStartTime = 0f;
     // Attack Specific Parameters
     private int numBulletsShot;
     private List<List<GameObject>> enemies;
+    
+
+    [SerializeField] private float chargeCD;
+    [SerializeField] private float chargeRange;
+
+    [SerializeField] private GameObject indicatorObject;
+    [SerializeField] private BossMovement bm;
+    private Vector3 chargeStart;
 
 
     private void Awake()
@@ -95,12 +103,27 @@ public class BossStateMachine : MonoBehaviour
             else
             {
                 // Choose between summon, shoot, and charge
-                if (enemies.Count < MAX_NUMBER_SUMMONS && UnityEngine.Random.Range(0, 3) == 0)
+                int rand = UnityEngine.Random.Range(0, 4);
+                if (enemies.Count < MAX_NUMBER_SUMMONS && rand == 0) 
                 {
                     currentAttack = Attack.Summon;
-                }
-                else
+                } else if (Time.time > chargeStartTime + chargeCD && rand == 1)
                 {
+                    currentAttack = Attack.Charge;
+                    if (Time.time > chargeStartTime + chargeCD) {
+                        chargeStart = this.transform.position;
+                        chargeStartTime = Time.time;
+
+                        Vector3 chargeDir = player.transform.position - transform.position;
+                        chargeDir.Normalize();
+                        chargeDir.y = 0;
+                        Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange/2;
+                        Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
+                        rot.x = -90;
+                        Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
+                    }
+                
+                } else {
                     currentAttack = Attack.Shoot;
                     timer = TIME_BETWEEN_BULLETS;
                     numBulletsShot = 0;
@@ -140,6 +163,12 @@ public class BossStateMachine : MonoBehaviour
             case Attack.Summon:
                 enemies.Add(boss.Summon());
                 switchToState(State.Idle);
+                break;
+            case Attack.Charge:
+                boss.Charge(chargeStartTime); 
+                if (Time.time > chargeStartTime + 2f) {
+                    switchToState(State.Idle);
+                }
                 break;
         }
     }

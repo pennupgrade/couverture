@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
@@ -15,10 +16,18 @@ public class Boss : MonoBehaviour, IDestroyable
     private float bulletSpeed;
     public GameObject[] enemyPrefabs;
     public Transform[] summonLocations;
+    public WireDeath[] wires;
+    private bool unplugged;
+    private int ind; 
+    [SerializeField] private GameObject wirePlug;
     private List<Rigidbody> enemySpawned;
-
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
+    [SerializeField] private float chargeSpeed;
+    [SerializeField] private float chargeRange;
+    private Vector3 chargeDir;
+
+    [SerializeField] private Rigidbody rb;
 
     private void Awake()
     {
@@ -84,6 +93,16 @@ public class Boss : MonoBehaviour, IDestroyable
         Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
         gun.transform.position = transform.position + movePos;
         gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
+        
+        if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
+        } else {
+            unplugged = true;
+        }
+
+        if (unplugged && ind < wires.Length) {
+            wires[ind].Kill();
+            ind++;
+        }
 
         // Moves enemies forwards if just spawned
         const float ENEMY_MOVE_SPEED = 1f;
@@ -126,5 +145,14 @@ public class Boss : MonoBehaviour, IDestroyable
     public void Die()
     {
         Destroy(gameObject);
+    }
+    public void Charge(float chargeStartTime) {
+        if (Time.time > chargeStartTime + 1f) {
+            rb.velocity = chargeSpeed * transform.forward; 
+        }
+        //
+        // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
+        //     this.moveState = bmState.Idle;
+        // }
     }
 }

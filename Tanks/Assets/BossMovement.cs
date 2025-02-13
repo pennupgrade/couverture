@@ -10,24 +10,17 @@ public class BossMovement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     private GameObject player;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float chargeCD;
-    [SerializeField] private float chargeSpeed;
-    [SerializeField] private float chargeRange;
-    private Vector3 chargeDir;
-    private Vector3 chargeStart;
-    private float chargeStartTime;
-
-    private float stateTimer;
-    [SerializeField] private GameObject indicatorObject;
+    private float stateStart;
+    private float stateDur;
     [SerializeField] private Transform plugBase;
     [SerializeField] private float guardRange;
     [SerializeField] private float turnSpeed;
 
     public enum bmState {
         Idle,
-        Charging, 
-        Chasing, 
-        Stopped,
+        Guarding,
+        Chasing,
+        Attacking,  
         Rage
     }
     private float dt;  
@@ -55,41 +48,47 @@ public class BossMovement : MonoBehaviour
         // float angle = Mathf.Acos(Vector3.Dot(dir, new Vector3(0, 0, 1)));
         // Debug.Log(angle);
         // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, angle, 0), 1.0f);
-
-        if (moveState == bmState.Charging) {
-            Charge();
-        } else {
-            if (playerToPlug.magnitude > guardRange) { //if Player is outside of GuardRange
-                // if (bossToPlug.magnitude >= guardRange) {
-                //     Debug.Log("Guarding");
-                //     Chase();
-                // } else {
-                //     Debug.Log("Chasing");
-                //     Chase();
-                // }
-                Guard();
+        
+        if (Time.time > stateStart + stateDur) {
+            int r = UnityEngine.Random.Range(0,2);
+            print("Switch to" + r);
+            if (r == 0) {
+                moveState = bmState.Guarding;
+            } else if (r == 1) { 
+                moveState = bmState.Chasing;
             } else {
-                Debug.Log("Chasing");
-                Chase();
+                moveState = bmState.Idle;
+                rb.velocity = new Vector3();
             }
+            stateStart = Time.time;
+            stateDur = UnityEngine.Random.Range(2,10);
         }
+
+        if (moveState == bmState.Guarding) {
+            Guard();
+        } else if (moveState == bmState.Chasing) {
+            Chase();
+        } 
+    
+            // if (playerToPlug.magnitude > guardRange) { //if Player is outside of GuardRange
+            //     // if (bossToPlug.magnitude >= guardRange) {
+            //     //     Debug.Log("Guarding");
+            //     //     Chase();
+            //     // } else {
+            //     //     Debug.Log("Chasing");
+            //     //     Chase();
+            //     // }
+            //     Guard();
+            // } else {
+            //     Debug.Log("Chasing");
+            //     Chase();
+            // }
+        
         //terms for acceleration
         
         
         //rb.velocity = dir * moveSpeed; 
-        if (Time.time > chargeStartTime + chargeCD) {
-            chargeStart = this.transform.position;
-            chargeStartTime = Time.time;
 
-            Vector3 chargeDir = player.transform.position - transform.position;
-            chargeDir.Normalize();
-            chargeDir.y = 0;
-            Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange/2;
-            Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
-            rot.x = -90;
-            Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-            moveState = bmState.Charging;
-        }
     }
 
     public void Guard() {
@@ -108,9 +107,6 @@ public class BossMovement : MonoBehaviour
             rb.velocity = dir * moveSpeed;
         }
     }
-    public void Idle(){ 
-        rb.velocity = new Vector3();
-    }
     public void Chase() {
         Vector3 newtarget = player.transform.position;
         newtarget.y = transform.position.y;
@@ -128,14 +124,14 @@ public class BossMovement : MonoBehaviour
         }
     }
 
-    public void Charge() {
-        if (Time.time > chargeStartTime + 1f) {
-            print(chargeDir);
-            rb.velocity = chargeSpeed * transform.forward; 
-        }
-        //
-        if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-            this.moveState = bmState.Idle;
-        }
-    }
+    // public void Charge() {
+    //     if (Time.time > chargeStartTime + 1f) {
+    //         print(chargeDir);
+    //         rb.velocity = chargeSpeed * transform.forward; 
+    //     }
+    //     //
+    //     if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
+    //         this.moveState = bmState.Idle;
+    //     }
+    // }
 }
