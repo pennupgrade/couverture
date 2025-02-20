@@ -84,6 +84,10 @@ public class PlayerCamera : MonoBehaviour
 
     public void Kill(float duration) {
         Debug.Log("Player died, initiate camera death sequence");
+        Checkpoint newSpawn = CheckpointManager.GetCurrCheckpoint();
+        if (newSpawn != null) {
+            ogCamPos = newSpawn.gameObject.transform.position + transform.position - GameObject.FindWithTag("Player").transform.position;
+        }
         StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
         isDead = true;
     }

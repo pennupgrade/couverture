@@ -135,6 +135,23 @@ public class Tank : MonoBehaviour, IDestroyable
 
         previousPos = currentPos;//this gives them a single-tick of delta difference
         currentPos = transform.position;
+        
+        // FOR TESTING PURPOSES, SHOULD BE REMOVED
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            Debug.Log("Adding Speed");
+
+            //Temporary TimedEffect
+            TimedEffect effect = new(15.0f, 
+                (tank) => {
+                    tank.moveSpeed *= 2.0f;
+                },
+                (tank) => {
+                    tank.moveSpeed /= 2.0f;
+                }
+            );
+
+            addEffect(effect);
+        }
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
