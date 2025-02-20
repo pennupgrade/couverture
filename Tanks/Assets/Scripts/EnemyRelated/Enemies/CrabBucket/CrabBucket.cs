@@ -92,11 +92,11 @@ public class CrabBucket : MonoBehaviour
                 if (player.GetComponent<Tank>().character is BubbleChar)
                 {
                     BubbleChar bc = (BubbleChar)(player.GetComponent<Tank>().character);
-                    if(bc!= null)
+                    if(bc!= null && bc.active)
                     {
                         bc.obj.GetComponent<Bubble>().takeDamage(1);
+                        return;
                     }
-                    return;
                 }
 
                     player.GetComponent<Tank>().takeDamage(damage);
