@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 7615726474613048892}
   m_Layer: 0
   m_Name: Player+Cam
-  m_TagString: Untagged
+  m_TagString: Player+Camera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2100,10 +2100,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tank prefab
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6922871839290126407, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3878171580942705607, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 4945313595724156551}
   m_SourcePrefab: {fileID: 100100000, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
 --- !u!114 &1155985348964352763 stripped
 MonoBehaviour:
@@ -2116,6 +2120,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2109437136306836550 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5075664992278931016, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+  m_PrefabInstance: {fileID: 6572541368118145550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7990602951110889929 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3878171580942705607, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+  m_PrefabInstance: {fileID: 6572541368118145550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4945313595724156551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990602951110889929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff120628fa5e9348a8484252f102212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 10.1
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 2678
+  endTransform: {fileID: 2109437136306836550}
 --- !u!4 &8462826704907206445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3333890237990636835, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}

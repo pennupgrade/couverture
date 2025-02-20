@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveStateManagerGameObject : MonoBehaviour
 {
@@ -41,7 +43,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.SwitchCharacter(FindTank(), c);
     }
 
-    public static HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
+    public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
         HashSet<SaveStateManager.CharacterOption> outSet = new();
         // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
         foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
@@ -79,4 +81,17 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static void SaveState() {
         Instance.stateManager.SaveGameState();
     }
+
+    public static void SetCurrentCheckpoint(string levelName, int checkpointNum) {
+        Instance.stateManager.currCheckpointLevelName = levelName;
+        Instance.stateManager.currCheckpoint = checkpointNum;
+    }
+
+    public static void SetupCheckpointManager() {
+        // load checkpoint if correct scene and checkpoint exists
+        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
+            CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
+        }
+    }
+
 }
