@@ -73,7 +73,7 @@ public class CrabBucket : MonoBehaviour
     {
         Debug.Log("One Attack");
         attackEffects.Play();
-
+                        
         if (attackScript.isPlayerInRange()) 
         {
             GameObject player = attackScript.getPlayer().gameObject;
@@ -89,7 +89,17 @@ public class CrabBucket : MonoBehaviour
             if (!Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer))
             {
                 Debug.Log("Deals Damage");
-                player.GetComponent<Tank>().takeDamage(damage);
+                if (player.GetComponent<Tank>().character is BubbleChar)
+                {
+                    BubbleChar bc = (BubbleChar)(player.GetComponent<Tank>().character);
+                    if(bc!= null)
+                    {
+                        bc.obj.GetComponent<Bubble>().takeDamage(1);
+                    }
+                    return;
+                }
+
+                    player.GetComponent<Tank>().takeDamage(damage);
                 sound.Play();
             }
             else
