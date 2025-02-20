@@ -95,6 +95,8 @@ public class CrabBucket : MonoBehaviour
                     if(bc!= null && bc.active)
                     {
                         bc.obj.GetComponent<Bubble>().takeDamage(1);
+                        Debug.Log("Attack Blocked by Shield");
+                        blockedSound.Play();
                         return;
                     }
                 }
