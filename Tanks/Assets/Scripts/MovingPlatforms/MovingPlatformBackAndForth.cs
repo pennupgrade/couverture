@@ -21,7 +21,7 @@ public class MovingPlatformBackAndForth : MonoBehaviour
     void Update() 
     {
         Vector3 oldPos = transform.position;
-        transform.position = param(Time.time) * vertexPath.GetMainPos(0) + (1-param(Time.time)) * vertexPath.GetMainPos(1);
+        Vector3 newPos = param(Time.time) * vertexPath.GetMainPos(0) + (1-param(Time.time)) * vertexPath.GetMainPos(1);
 
         //transform.forward = vertexPath.GetTangent(time);
         for (int i = 0; i < passengerList.Count; i++)
@@ -32,8 +32,9 @@ public class MovingPlatformBackAndForth : MonoBehaviour
                 i -= 1;
                 continue;
             }
-            passengerList[i].position += transform.position - oldPos;
+            passengerList[i].position += newPos - oldPos;
         }
+        transform.position = newPos;
     }
 
     private float param(float t)
