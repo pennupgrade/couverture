@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 5000f;
+    [HideInInspector] public float health = 3500f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -22,21 +22,23 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject wirePlug;
     private List<Rigidbody> enemySpawned;
     [SerializeField] private SlidingWall exitWall;
-
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
     [SerializeField] private float chargeSpeed;
     [SerializeField] private float chargeRange;
     private Vector3 chargeDir;
-
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject shield;
+    [SerializeField] private BossMovement bm;
+    protected DamageFlash df;
+    
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         shotgunBarrel1 = gun.transform.GetChild(0);
         shotgunBarrel2 = gun.transform.GetChild(1);
         enemySpawned = null;
+        df = new DamageFlash(this.gameObject);
     }
 
     public void shootBullet(int barrel = 0)
@@ -134,10 +136,14 @@ public class Boss : MonoBehaviour, IDestroyable
         shield.SetActive(false);
     }
 
+    public bool isUnplugged() {
+        return unplugged;
+    }
+
     public void takeDamage(int dmg)
     {
         health -= dmg;
-
+        df.CallDamageFlash(this);
         if (health < 0)
         {
             Die();

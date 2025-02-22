@@ -15,7 +15,7 @@ public class BossStateMachine : MonoBehaviour
     [SerializeField] private Boss boss;
 
     // Constants
-    private double timeUntilAttack = 5;
+    private double timeUntilAttack;
     private const double MELEE_DISTANCE = 4f;
     private const double TIME_BETWEEN_BULLETS = 0.5f;
     private const int MAX_NUMBER_SUMMONS = 2;
@@ -39,6 +39,7 @@ public class BossStateMachine : MonoBehaviour
         currentAttack = Attack.None;
         timer = 0;
         enemies = new List<List<GameObject>>();
+        
 
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
@@ -94,11 +95,35 @@ public class BossStateMachine : MonoBehaviour
         }
         if (newState == State.Attacking)
         {
+            if (!boss.isUnplugged()) {
+                timeUntilAttack = UnityEngine.Random.Range(4, 6);
+            } else {
+                timeUntilAttack = UnityEngine.Random.Range(3, 4);
+            }
+            
             Debug.Log("Switching To Attack State");
             if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE)
             {
                 // Chose between shotgun and melee
-                currentAttack = Attack.Shotgun;
+                int rand = UnityEngine.Random.Range(0, 2);
+                if (rand == 0 && Time.time > chargeStartTime + chargeCD) {
+                    currentAttack = Attack.Charge;
+                    if (Time.time > chargeStartTime + chargeCD) {
+                        chargeStart = this.transform.position;
+                        chargeStartTime = Time.time;
+
+                        Vector3 chargeDir = player.transform.position - transform.position;
+                        chargeDir.Normalize();
+                        chargeDir.y = 0;
+                        Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange/2;
+                        Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
+                        rot.x = -90;
+                        Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
+                    }
+                } else {
+                    currentAttack = Attack.Shotgun;
+                }
+                
             }
             else
             {
@@ -189,4 +214,16 @@ public class BossStateMachine : MonoBehaviour
         Melee,
         None
     }
+
+    void OnCollisionEnter(Collision col) {
+        Debug.Log("collided");
+        if (currentAttack == Attack.Charge && col.gameObject.tag == "Player") {
+            Tank tank = col.gameObject.GetComponent<Tank>();
+            tank.takeDamage(50);
+            Vector3 diff = player.transform.position - this.transform.position;
+            Vector3 knock = new Vector3(diff.x, 2f, diff.z) * 30000;
+            col.gameObject.GetComponent<Rigidbody>().AddForce(knock, ForceMode.Impulse);
+        }
+    }
+
 }

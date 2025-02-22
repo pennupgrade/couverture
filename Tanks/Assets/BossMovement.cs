@@ -25,6 +25,7 @@ public class BossMovement : MonoBehaviour
     }
     private float dt;  
     public bmState moveState;
+    public Boss boss;
 
 
     // Start is called before the first frame update
@@ -36,6 +37,9 @@ public class BossMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (boss.isUnplugged()) {
+            moveSpeed = 1f;
+        }
         Vector3 bossToPlayer = new Vector3(player.transform.position.x - this.transform.position.x, 
                             0, player.transform.position.z - this.transform.position.z);
 
