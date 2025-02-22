@@ -10,7 +10,7 @@ public class plug : MonoBehaviour, IDestroyable
     protected DamageFlash df;
     void Start()
     {
-        df = new DamageFlash();
+        df = new DamageFlash(this.gameObject);
     }
 
     // Update is called once per frame
