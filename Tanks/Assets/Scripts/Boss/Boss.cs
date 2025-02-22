@@ -30,7 +30,7 @@ public class Boss : MonoBehaviour, IDestroyable
     private Vector3 chargeDir;
 
     [SerializeField] private Rigidbody rb;
-
+    [SerializeField] private GameObject shield;
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -98,7 +98,7 @@ public class Boss : MonoBehaviour, IDestroyable
         
         if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
         } else {
-            unplugged = true;
+            unplug();
         }
 
         if (unplugged && ind < wires.Length) {
@@ -127,6 +127,11 @@ public class Boss : MonoBehaviour, IDestroyable
                 }
             }
         }
+    }
+
+    public void unplug() {
+        unplugged = true;
+        shield.SetActive(false);
     }
 
     public void takeDamage(int dmg)

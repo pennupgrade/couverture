@@ -600,6 +600,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1037658146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &203885426 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7576628523121825346, guid: 95f0cc8df8eb40345927ad9404a2e544, type: 3}
+  m_PrefabInstance: {fileID: 1990708725}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b21d5f4a42a3f48aa17b48362bec79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &245878244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,9 +3507,10 @@ GameObject:
   - component: {fileID: 861788057}
   - component: {fileID: 861788058}
   - component: {fileID: 861788063}
-  m_Layer: 3
+  - component: {fileID: 861788064}
+  m_Layer: 8
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Tank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3595,8 +3607,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 2.04, z: 1.5}
+  m_Center: {x: 0, y: -0.52, z: 0}
 --- !u!23 &861788060
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3656,7 +3668,7 @@ Transform:
   m_GameObject: {fileID: 861788056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3675,6 +3687,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
+--- !u!114 &861788064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861788056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73d22583d2088784d864fd6811736162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 400
+  b: {fileID: 918944176}
 --- !u!1001 &864494609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3935,10 +3961,11 @@ MonoBehaviour:
   - {fileID: 418549868}
   - {fileID: 1168229838}
   wirePlug: {fileID: 861788056}
-  exitWall: {fileID: 0}
+  exitWall: {fileID: 203885426}
   chargeSpeed: 5
   chargeRange: 2
-  rb: {fileID: 0}
+  rb: {fileID: 918944185}
+  shield: {fileID: 1430161372}
 --- !u!114 &918944177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7730,7 +7757,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -9351,7 +9378,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
