@@ -29,12 +29,15 @@ public class SaveStateManager
 
     public enum CharacterOption {
         NONE,
-        ROCKET_CAT
+        ROCKET_CAT,
+        BUBBLE_CAT
     }
 
     // JSON representation for unlocked characters is an array of unlocked character id's
     public List<CharacterOption> unlockedCharList = new();
 
+    public string currCheckpointLevelName = null;
+    public int currCheckpoint = -1;
 
     private HashSet<CharacterOption> unlockedChars;
 
@@ -66,6 +69,8 @@ public class SaveStateManager
         switch (characterId) {
             case CharacterOption.ROCKET_CAT:
                 return new RocketChar();
+            case CharacterOption.BUBBLE_CAT:
+                return new BubbleChar();
             default:
                 throw new ArgumentException();
         };
