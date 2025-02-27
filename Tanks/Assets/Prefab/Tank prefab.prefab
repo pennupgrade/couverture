@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 259834041627840154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 6.6174433e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0021300325}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0021300327}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 6539573252726545366}
   - component: {fileID: 8956190215636415522}
   - component: {fileID: 4908234280192694700}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -422,7 +422,7 @@ Transform:
   m_GameObject: {fileID: 3328427203571100217}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15799965, y: 0, z: 0}
+  m_LocalPosition: {x: 0.15799965, y: 0, z: -0.1579996}
   m_LocalScale: {x: 0.21628998, y: 0.12388226, z: 0.21628998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -495,7 +495,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -868,6 +868,8 @@ GameObject:
   - component: {fileID: 5421411469498413301}
   - component: {fileID: 8699447814597592467}
   - component: {fileID: 4025333484801462817}
+  - component: {fileID: 5733553198223771888}
+  - component: {fileID: 6177051261441124671}
   m_Layer: 2
   m_Name: Tank prefab
   m_TagString: Player
@@ -909,14 +911,17 @@ MonoBehaviour:
   tankCollider: {fileID: 0}
   moveSpeed: 1.5
   rotSpeed: 360
-  groundMargin: 0.2
+  groundMargin: 0.3
   wheelMaxDist: 3
   enableGod: 0
   bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gun: {fileID: 259834041627840154}
   gunShotPos: {fileID: 2603477584315941685}
-  Wheels: []
+  WheelsRef: {fileID: 8603297638241225263}
+  Wheels:
+  - {fileID: 2300565459145294251}
+  - {fileID: 3328427203571100217}
   Body: {fileID: 953294478648327036}
   cannonAnimator: {fileID: 4885353482959154726}
   health: 300
@@ -946,7 +951,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -970,10 +975,44 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.35, y: 0.2, z: 0.35}
-  m_Center: {x: 0, y: 0.16, z: 0}
+  m_Center: {x: 0, y: -0.05, z: 0}
+--- !u!114 &5733553198223771888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410636013499981182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ecdf980eb1f49d46bfdb0943cc544d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tank: {fileID: 5421411469498413301}
+--- !u!135 &6177051261441124671
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410636013499981182}
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.22
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1 &8603297638241225263
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,6 +1057,10 @@ PrefabInstance:
     - target: {fileID: 76355009602472627, guid: 7c22eed39b2fce94f8f5d06332a7ed12, type: 3}
       propertyPath: m_Name
       value: LaserPointerPos
+      objectReference: {fileID: 0}
+    - target: {fileID: 76355009602472627, guid: 7c22eed39b2fce94f8f5d06332a7ed12, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2303015615165971624, guid: 7c22eed39b2fce94f8f5d06332a7ed12, type: 3}
       propertyPath: m_LocalPosition.x
