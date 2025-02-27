@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 public class PoolManager
 {
     private static readonly int maxSizeTrailPool = 50;
-    private static readonly int defaultSizeTrailPool = 10;
+    private static readonly int defaultSizeTrailPool = 20;
 
     private static GameObject bulletTrailPrefab = Resources.Load<GameObject>("BulletTrail");
     public static IObjectPool<BulletTrail> bulletTrailPool = new ObjectPool<BulletTrail>(CreateTrail, ActionOnGetTrail, ActionOnReleaseTrail, ActionOnDestroyTrail, true, defaultSizeTrailPool, maxSizeTrailPool);
