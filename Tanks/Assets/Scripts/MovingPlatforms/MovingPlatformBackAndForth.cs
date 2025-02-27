@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatformBackAndForth : MonoBehaviour
+public class MovingPlatformBackAndForth : MovingPlatform
 {
     public VertexPath vertexPath;
     public float period = 4f;
@@ -13,15 +13,25 @@ public class MovingPlatformBackAndForth : MonoBehaviour
 
     void Start()
     {
+        transform.position = param(currTime) * vertexPath.GetMainPos(0) + (1 - param(currTime)) * vertexPath.GetMainPos(1);
         vertexPath.GenerateTangentList(1);
         vertexPath.DebugRenderTracks();
     }
 
+    private float currTime = 0f;
+
     // Update is called once per frame
     void Update() 
     {
+        if (!isMoving)
+        {
+            return;
+        }
+
+        currTime += Time.deltaTime;
+
         Vector3 oldPos = transform.position;
-        Vector3 newPos = param(Time.time) * vertexPath.GetMainPos(0) + (1-param(Time.time)) * vertexPath.GetMainPos(1);
+        Vector3 newPos = param(currTime) * vertexPath.GetMainPos(0) + (1-param(currTime)) * vertexPath.GetMainPos(1);
 
         //transform.forward = vertexPath.GetTangent(time);
         for (int i = 0; i < passengerList.Count; i++)
@@ -35,6 +45,8 @@ public class MovingPlatformBackAndForth : MonoBehaviour
             passengerList[i].position += newPos - oldPos;
         }
         transform.position = newPos;
+
+        nextIndex = (int)currTime % vertexPath.VertexCount();
     }
 
     private float param(float t)

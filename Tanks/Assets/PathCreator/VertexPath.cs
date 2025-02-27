@@ -25,7 +25,7 @@ namespace PathCreation
             if (vertices == null)
             {
                 vertices = new List<Vertex>();
-                tangentList = new();
+                tangentList = new List<(Vector3, Vector3)>();
             }
         }
 
@@ -320,18 +320,18 @@ namespace PathCreation
             for (int i = 0; i < VertexCount(); i += gap)
             {
                 Debug.Log(tangentList);
-                tangentList.Add((GetMainPos(i), GetTangent(i)));
+                //tangentList.Add((GetMainPos(i), GetTangent(i)));
             }
         }
 
         public void DebugRenderTracks()
         {
-            for (int i = 0; i < tangentList.Count; i++)
-            {
-                GameObject go  = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                go.transform.LookAt(tangentList[i].Item2);
-                go.transform.position = tangentList[i].Item1;
-            }
+            //for (int i = 0; i < tangentList.Count; i++)
+            //{
+            //    GameObject go  = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            //    go.transform.LookAt(tangentList[i].Item2);
+            //    go.transform.position = tangentList[i].Item1;
+            //}
         }
 
         public Vector3 GetTangent(float t)
