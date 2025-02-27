@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2529127233715620801}
   - component: {fileID: 5960239554295810055}
   - component: {fileID: 3163246972026611234}
+  - component: {fileID: 840060209735503032}
+  - component: {fileID: 5369334633527166710}
   m_Layer: 8
   m_Name: DamageRange
   m_TagString: Untagged
@@ -66,6 +68,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e474980d7746043e89e5dad55d9e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &840060209735503032
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269250396301583345}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -876546973899608171, guid: efdbbb08b3ac09a45a2cd39650f421ce, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &5369334633527166710
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269250396301583345}
+  m_Mesh: {fileID: 0}
 --- !u!1 &805805759043016077
 GameObject:
   m_ObjectHideFlags: 0
@@ -5657,7 +5709,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da2c47a5fe2b646408a250bc35ab2b59, type: 2}
+  - {fileID: 2100000, guid: 6823d2b57cde74450aca9ea4db224906, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5898,6 +5950,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 990dd9880b4844a68b2f0605c0662568, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3174eab0e4b1e4d78b9c4913caf89742, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 47ad4580e04804377ac28f958ae6c37f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6718964c00ea1410dac25afa6357e9a7, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 990dd9880b4844a68b2f0605c0662568, type: 2}
     - target: {fileID: 919132149155446097, guid: 2f36d7f37249d4fed8b857b077422d62, type: 3}
       propertyPath: m_Name
       value: test
@@ -5972,6 +6044,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 421f9baaa4be1ec45b760fe7c8ca4d75, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6823d2b57cde74450aca9ea4db224906, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 421f9baaa4be1ec45b760fe7c8ca4d75, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8da8453ede51f4c81b07e4a6f412fb16, type: 2}
     - target: {fileID: 919132149155446097, guid: 421f9baaa4be1ec45b760fe7c8ca4d75, type: 3}
       propertyPath: m_Name
       value: BucketFilled_V1
