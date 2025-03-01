@@ -208,7 +208,6 @@ public class Tank : MonoBehaviour, IDestroyable
             character.Ability(this);
         }
     }
-
     public void AbilityUpdate() {
         if (character != null) {
             character.AbilityUpdate(this);
