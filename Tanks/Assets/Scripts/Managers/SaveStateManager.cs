@@ -39,7 +39,7 @@ public class SaveStateManager
     public string currCheckpointLevelName = null;
     public int currCheckpoint = -1;
 
-    public int numLives;
+    public int numLives = -1;
 
     private HashSet<CharacterOption> unlockedChars;
 

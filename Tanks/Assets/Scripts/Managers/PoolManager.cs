@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 
 public class PoolManager
 {
@@ -26,14 +27,19 @@ public class PoolManager
 
     private static void ActionOnGetBullet(Bullet_Default bullet) {
         bullet.gameObject.SetActive(true);
+        SceneManager.sceneLoaded += bullet.OnSceneLoaded;
         bullet.StartBullet();
     }
 
     private static void ActionOnReleaseBullet(Bullet_Default bullet) {
+        SceneManager.sceneLoaded -= bullet.OnSceneLoaded;
+        bullet.meshTrail.kill();
         bullet.gameObject.SetActive(false);
     }
 
     private static void ActionOnDestroyBullet(Bullet_Default bullet) {
+        SceneManager.sceneLoaded -= bullet.OnSceneLoaded;
+        bullet.meshTrail.kill();
         Object.Destroy(bullet.gameObject);
     }
 

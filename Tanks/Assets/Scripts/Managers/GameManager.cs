@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start() {
+        SaveStateManagerGameObject.SetupGameManager();
+    }
+
     public void GoToSubLevel(float transitionTime, string sceneName)
     {
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
