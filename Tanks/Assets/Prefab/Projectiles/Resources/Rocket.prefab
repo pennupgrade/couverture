@@ -152,6 +152,7 @@ MonoBehaviour:
   lifetime: 8
   explosionPrefab: {fileID: 6950485930908214961, guid: 10a4834eb912ee142af466050a55bed3, type: 3}
   bulletSpeed: 0
+  parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
   spinSpeed: 360
 --- !u!95 &2811738741731375422
@@ -462,8 +463,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.8
-      minScalar: 1.2
+      scalar: 0.7
+      minScalar: 0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -781,7 +782,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 0
+    size3D: 1
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
@@ -1155,8 +1156,8 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 3
-        scalar: 3
-        minScalar: 2
+        scalar: 4
+        minScalar: 3
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -5038,7 +5039,7 @@ ParticleSystemRenderer:
   m_MaxParticleSize: 0.5
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
-  m_LengthScale: 2
+  m_LengthScale: 1.5
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
