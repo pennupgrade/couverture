@@ -49,8 +49,8 @@ public abstract class TankState
             }
         }
         return
-            Physics.Raycast(tank.gameObject.transform.position,
-                            tank.gunShotPos.position - tank.gameObject.transform.position,
+            Physics.Raycast(tank.gunShotPos.position - 0.2f * tank.gunShotPos.forward,
+                            tank.gunShotPos.forward,
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
