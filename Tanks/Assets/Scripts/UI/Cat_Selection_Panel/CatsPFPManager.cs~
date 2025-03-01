@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CatsPFPManager : MonoBehaviour
+{
+    public static CatsPFPManager instance;
+
+    public GameObject CatPFP_obj;
+    public Button btn_Confirm;
+
+    public Sprite sprite_OrangeCat;
+    public Sprite sprite_BubbleCat;
+    public Sprite sprite_RocketCat;
+    public Sprite sprite_UnknownCat;
+
+    private List<CatPFP> pfps = new List<CatPFP>();
+
+    private CatPFP currentPFP = null;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        HashSet<SaveStateManager.CharacterOption> characters =
+            SaveStateManagerGameObject.GetUnlockedCharacters();
+        foreach(SaveStateManager.CharacterOption character in characters)
+        {
+            GameObject catPFP = GameObject.Instantiate(CatPFP_obj, transform);
+            CatPFP pfp = catPFP.GetComponent<CatPFP>();
+            setPFP(character, pfp);
+            pfps.Add(pfp);
+        }
+    }
+
+    private void setPFP(SaveStateManager.CharacterOption character, CatPFP catPFP)
+    {
+        if(character == SaveStateManager.CharacterOption.NONE)
+        {
+            catPFP.init("Orange Cat", sprite_OrangeCat);
+        }else if (character == SaveStateManager.CharacterOption.BUBBLE_CAT)
+        {
+            catPFP.init("Bubble Cat", sprite_BubbleCat);
+        }
+        else if (character == SaveStateManager.CharacterOption.ROCKET_CAT)
+        {
+            catPFP.init("Rocket Cat", sprite_RocketCat);
+        }
+        else
+        {
+            catPFP.init("Orange Cat", sprite_OrangeCat);
+        }
+    }
+
+    public void OnSelectionMade()
+    {
+        foreach(CatPFP pfp in pfps){
+            pfp.
+        }
+    }
+
+}
