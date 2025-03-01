@@ -149,6 +149,13 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.1f, (1 << 2) | (1 << 8));
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.tag == "Tank" || hit.gameObject.tag == "Player") {
+                return;
+            }
+        }
+
         GameObject bullet = enemy.SpawnBullet();
         bullet.transform.position = enemy.gunShotPos.position;
         bullet.transform.rotation = Quaternion.identity;
