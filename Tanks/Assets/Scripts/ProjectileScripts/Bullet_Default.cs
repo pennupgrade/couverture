@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class Bullet_Default : Projectile
 {
+    private int originalDamage;
+    private int startBounces;
     private bool changeWhenBounce;
     [SerializeField] private int bounces;
     private Rigidbody rb;
     private Vector3 lastVelocity;
     private Material material;
+    private Animator animator;
+    private Collider collider;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 3;
+        animator = GetComponent<Animator>();
+        collider = GetComponent<Collider>();
+        material = GetComponent<MeshRenderer>().material;
+        startBounces = bounces;
+        originalDamage = damage;
+        StartBullet();
     }
     void Start()
     {
@@ -23,6 +32,20 @@ public class Bullet_Default : Projectile
     void FixedUpdate () {
         lastVelocity = rb.velocity;
     }
+
+    public void StartBullet() {
+        collider.enabled = true;
+        this.enabled = true;
+        changeWhenBounce = false;
+        material.SetFloat("_Glowy", 0);
+        bulletSpeed = 3;
+        damage = originalDamage;
+        bounces = startBounces;
+        lifetime = startLifetime;
+        destroyed = false;
+        animator.Play("DefaultBulletFadeIn");
+    }
+
 
     private void ReflectBullet(Vector3 bulletDir, Vector3 wallNormal)
     {
@@ -68,16 +91,20 @@ public class Bullet_Default : Projectile
     }
     public void addBounceChange() {
         changeWhenBounce = true;
-        material = GetComponent<MeshRenderer>().material;
     }
 
     protected override void removeObjectFromGame()
     {
-        GetComponent<Animator>().Play("DefaultBulletFadeOut");
+        animator.Play("DefaultBulletFadeOut");
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
 
-        Destroy(gameObject, 0.25f);
+        StartCoroutine(RemoveCoroutine());
+    }
+
+    private IEnumerator RemoveCoroutine() {
+        yield return new WaitForSeconds(0.25f);
+        PoolManager.bulletPool.Release(this);
     }
 }

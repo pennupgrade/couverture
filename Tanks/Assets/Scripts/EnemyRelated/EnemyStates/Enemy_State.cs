@@ -150,7 +150,9 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
+        GameObject bullet = enemy.SpawnBullet();
+        bullet.transform.position = enemy.gunShotPos.position;
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * (enemy.gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
 
@@ -312,4 +314,5 @@ public abstract class Enemy_State
             }
         }
     }
+    
 }

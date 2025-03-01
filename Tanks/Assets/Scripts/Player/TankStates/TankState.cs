@@ -52,7 +52,10 @@ public abstract class TankState
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
-        var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        var bullet = tank.SpawnBullet();
+        bullet.transform.position = tank.gunShotPos.position;
+        MonoBehaviour.print(bullet.transform.position);
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
                                                        bullet.GetComponent<Projectile>().bulletSpeed);
