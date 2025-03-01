@@ -16,14 +16,14 @@ public class Wasp_Idle : EnemyIdleState
     {
         if (((PatrollingEnemyOmni)enemy).followWaypoints && wpIndex == -1) {
             wpIndex = 0;
-            enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex], 1);
+            enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex].position, 1);
             wpIndex = ((PatrollingEnemyOmni)enemy).increment(wpIndex);
             enemy.agent.SetDestination(enemy.destination);
         } else if (!((PatrollingEnemyOmni)enemy).followWaypoints && enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
             if (((PatrollingEnemyOmni)enemy).followWaypoints) {
-                enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex], 1);
+                enemy.destination = getRandomNavPoint(((PatrollingEnemyOmni)enemy).waypoints[wpIndex].position, 1);
                 wpIndex = ((PatrollingEnemyOmni)enemy).increment(wpIndex);
             } else {
                 enemy.destination = getRandomPoint(8);
