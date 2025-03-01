@@ -10,7 +10,7 @@ public class Rocket : Projectile
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 5.5f;
+        bulletSpeed = 5f;
     }
     void Start()
     {

@@ -41,6 +41,13 @@ public abstract class TankState
 
     protected bool spawnInsideWallCheck()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(tank.gunShotPos.position, 0.1f, 1 << 8);
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.TryGetComponent<Enemy>(out Enemy e)) {
+                e.takeDamage(100);
+                return true;
+            }
+        }
         return
             Physics.Raycast(tank.gameObject.transform.position,
                             tank.gunShotPos.position - tank.gameObject.transform.position,

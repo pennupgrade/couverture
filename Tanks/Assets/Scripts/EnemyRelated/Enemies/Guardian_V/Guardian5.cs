@@ -21,7 +21,7 @@ public class Guardian5 : EnemyOmniMove
         reload = 4;
         magSize = 3;
         numBullets = magSize;
-        bulletSpeed = 5.8f;
+        bulletSpeed = 5.1f;
         leadChance = 0.5f;
         speed = 1.7f;
         turnSpeed = 180;
