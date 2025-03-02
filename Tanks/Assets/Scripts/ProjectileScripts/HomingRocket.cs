@@ -28,6 +28,8 @@ public class HomingRocket : Projectile
         lifetime -= Time.deltaTime;
         //if (lifetime < 0) Destroy(gameObject);
 
+        if (player == null) return;
+
         if (disabled) {
             bulletSpeed += Time.deltaTime * 2;
         } else {
