@@ -49,8 +49,8 @@ public abstract class TankState
             }
         }
         return
-            Physics.Raycast(tank.gameObject.transform.position,
-                            tank.gunShotPos.position - tank.gameObject.transform.position,
+            Physics.Raycast(tank.gunShotPos.position - 0.2f * tank.gunShotPos.forward,
+                            tank.gunShotPos.forward,
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
@@ -61,7 +61,6 @@ public abstract class TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = tank.SpawnBullet();
         bullet.transform.position = tank.gunShotPos.position;
-        MonoBehaviour.print(bullet.transform.position);
         bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
