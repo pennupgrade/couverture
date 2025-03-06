@@ -73,8 +73,8 @@ public class Phantom_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(9);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 
