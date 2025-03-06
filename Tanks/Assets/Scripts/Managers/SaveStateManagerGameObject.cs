@@ -43,6 +43,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -73,7 +74,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     // SAVE AND LOAD
-    private static void LoadState() {
+    public static void LoadState() {
         Instance.stateManager = SaveStateManager.LoadInventory();
     }
 
@@ -90,12 +91,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
         // load checkpoint if correct scene and checkpoint exists
         if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
             CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
-        }
-    }
-
-    public static void SetupGameManager() {
-        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.numLives != -1) {
-            GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
     }
 
