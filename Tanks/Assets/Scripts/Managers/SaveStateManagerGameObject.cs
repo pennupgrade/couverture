@@ -65,12 +65,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
-        HashSet<SaveStateManager.CharacterOption> outSet = new();
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
-            outSet.Add(c);
-        }
-        return outSet;
+        return Instance.stateManager.GetUnlockedCharacters();
     }
 
     // SAVE AND LOAD

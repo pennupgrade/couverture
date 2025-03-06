@@ -90,4 +90,9 @@ public class SaveStateManager
         // write JSON to file
         File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
     }
+
+    public HashSet<CharacterOption> GetUnlockedCharacters() {
+        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        return new HashSet<CharacterOption>(unlockedChars);
+    }
 }
