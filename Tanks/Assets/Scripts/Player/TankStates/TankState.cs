@@ -61,7 +61,6 @@ public abstract class TankState
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = tank.SpawnBullet();
         bullet.transform.position = tank.gunShotPos.position;
-        MonoBehaviour.print(bullet.transform.position);
         bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
