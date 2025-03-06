@@ -214,4 +214,9 @@ public class Tank : MonoBehaviour, IDestroyable
             character.AbilityUpdate(this);
         }
     }
+
+    // spawn a base bullet, override if different base bullet
+    public GameObject SpawnBullet() {
+        return PoolManager.bulletPool.Get().gameObject;
+    }
 }

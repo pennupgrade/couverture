@@ -1,19 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bullet_Default : Projectile
 {
+    private int originalDamage;
+    private int startBounces;
     private bool changeWhenBounce;
     [SerializeField] private int bounces;
     private Rigidbody rb;
     private Vector3 lastVelocity;
     private Material material;
+    private Animator animator;
+    private Collider collider;
+    public MeshTrail meshTrail;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 3;
+        animator = GetComponent<Animator>();
+        collider = GetComponent<Collider>();
+        material = GetComponent<MeshRenderer>().material;
+        startBounces = bounces;
+        originalDamage = damage;
     }
     void Start()
     {
@@ -23,6 +33,28 @@ public class Bullet_Default : Projectile
     void FixedUpdate () {
         lastVelocity = rb.velocity;
     }
+
+    public void StartBullet() {
+        collider.enabled = true;
+        this.enabled = true;
+        changeWhenBounce = false;
+        material.SetFloat("_Glowy", 0);
+        bulletSpeed = 3;
+        damage = originalDamage;
+        bounces = startBounces;
+        lifetime = startLifetime;
+        destroyed = false;
+        meshTrail.StartTrail();
+        animator.Play("DefaultBulletFadeIn");
+        
+    }
+
+    public void OnSceneLoaded(Scene s, LoadSceneMode m) {
+        if (m == LoadSceneMode.Single) {
+            PoolManager.bulletPool.Release(this);
+        }
+    }
+
 
     private void ReflectBullet(Vector3 bulletDir, Vector3 wallNormal)
     {
@@ -68,16 +100,20 @@ public class Bullet_Default : Projectile
     }
     public void addBounceChange() {
         changeWhenBounce = true;
-        material = GetComponent<MeshRenderer>().material;
     }
 
     protected override void removeObjectFromGame()
     {
-        GetComponent<Animator>().Play("DefaultBulletFadeOut");
+        animator.Play("DefaultBulletFadeOut");
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
 
-        Destroy(gameObject, 0.25f);
+        StartCoroutine(RemoveCoroutine());
+    }
+
+    private IEnumerator RemoveCoroutine() {
+        yield return new WaitForSeconds(0.25f);
+        PoolManager.bulletPool.Release(this);
     }
 }

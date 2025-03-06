@@ -41,9 +41,16 @@ public abstract class TankState
 
     protected bool spawnInsideWallCheck()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(tank.gunShotPos.position, 0.1f, 1 << 8);
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.TryGetComponent<Enemy>(out Enemy e)) {
+                e.takeDamage(100);
+                return true;
+            }
+        }
         return
-            Physics.Raycast(tank.gameObject.transform.position,
-                            tank.gunShotPos.position - tank.gameObject.transform.position,
+            Physics.Raycast(tank.gunShotPos.position - 0.2f * tank.gunShotPos.forward,
+                            tank.gunShotPos.forward,
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
@@ -52,7 +59,9 @@ public abstract class TankState
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
-        var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        var bullet = tank.SpawnBullet();
+        bullet.transform.position = tank.gunShotPos.position;
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
                                                        bullet.GetComponent<Projectile>().bulletSpeed);

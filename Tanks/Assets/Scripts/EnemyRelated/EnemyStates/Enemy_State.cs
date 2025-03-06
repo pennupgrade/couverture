@@ -47,7 +47,6 @@ public abstract class Enemy_State
                     enemy.cTurretTurn = 0;
                 }
             }
-
         }
     }
     protected virtual IEnumerator idleTurretTurnOmni() {
@@ -150,7 +149,16 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.1f, (1 << 2) | (1 << 8));
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.tag == "Tank" || hit.gameObject.tag == "Player") {
+                return;
+            }
+        }
+
+        GameObject bullet = enemy.SpawnBullet();
+        bullet.transform.position = enemy.gunShotPos.position;
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * (enemy.gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
 
@@ -312,4 +320,5 @@ public abstract class Enemy_State
             }
         }
     }
+    
 }

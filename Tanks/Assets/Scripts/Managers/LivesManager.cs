@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -38,5 +39,12 @@ public class LivesManager
     public void ResetLives()
     {
         lives = totalLives;
+    }
+
+    public void SetLives(int numLives) {
+        if (numLives > totalLives || numLives <= 0) {
+            throw new ArgumentException();
+        }
+        lives = numLives;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatformLinear : MonoBehaviour
+public class MovingPlatformLinear : MovingPlatform
 {
     public VertexPath vertexPath;
     public float speed = 4f;
@@ -34,6 +34,8 @@ public class MovingPlatformLinear : MonoBehaviour
             }
             passengerList[i].position += transform.position - oldPos;
         }
+
+        nextIndex = vertexPath.GetNextIndex((int) time);
     }
 
     void OnTriggerEnter(Collider other)
