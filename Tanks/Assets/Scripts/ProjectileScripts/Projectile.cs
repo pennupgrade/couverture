@@ -37,11 +37,6 @@ public abstract class Projectile : MonoBehaviour
     }
 
     protected virtual void CheckWallCollision() {
-        if (parent == null)
-        {
-            Debug.LogWarning("Projectile has no parent assigned!");
-            return;
-        }
 
         // Get the player's position
         Vector3 playerPos = parent.transform.position;
@@ -52,7 +47,7 @@ public abstract class Projectile : MonoBehaviour
 
         // Raycast to check if a wall is in between
         RaycastHit hit;
-        int layerMask = ~((1 << 9) | (1 << 11)); // Ignore layers 9 and 11
+        int layerMask = ~((1 << 7) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
 
         if (Physics.Raycast(playerPos, direction, out hit, Vector3.Distance(playerPos, bulletPos), layerMask))
         {
@@ -86,6 +81,7 @@ public abstract class Projectile : MonoBehaviour
                 }
             } else {
                 Debug.Log("Bullet spawned on the wrong side of a wall. Destroying...");
+                Debug.Log(hit.collider.gameObject.name);
                 Destroy(gameObject);
                 return;
             }
