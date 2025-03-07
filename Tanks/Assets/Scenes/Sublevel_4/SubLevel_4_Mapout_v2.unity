@@ -387,7 +387,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
       propertyPath: enableGod
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: wheelMaxDist
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1280501726978062346, guid: 59083ec85392f114a8d75ab290183618, type: 3}
       propertyPath: m_AnchorMax.y
@@ -573,12 +577,20 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8432613603683063863, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8462826704907206445, guid: 59083ec85392f114a8d75ab290183618, type: 3}
       propertyPath: m_LocalPosition.z
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8741484959970939062, guid: 59083ec85392f114a8d75ab290183618, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8741484959970939062, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8857870588652832852, guid: 59083ec85392f114a8d75ab290183618, type: 3}
@@ -7708,7 +7720,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.22
   m_Center: {x: 0, y: 0.1, z: 0}
@@ -7729,7 +7741,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.06
   m_Height: 0.5

@@ -19,8 +19,8 @@ public class Tank : MonoBehaviour, IDestroyable
     public TankController tankController;
 
     // Necessary Components
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public Collider tankCollider;
+    public Rigidbody rb;
+    public Collider tankCollider;
 
     // Config Variables
     public float moveSpeed;
@@ -72,7 +72,7 @@ public class Tank : MonoBehaviour, IDestroyable
         damageFlash = new DamageFlash(Body);
 
         rb = GetComponent<Rigidbody>();
-        // tankCollider = GetComponent<BoxCollider>();
+        tankCollider = GetComponent<SphereCollider>();
 
         controls.TankControls.Shoot.performed += _ => {
             //If player is moving, bullet speed can be affected

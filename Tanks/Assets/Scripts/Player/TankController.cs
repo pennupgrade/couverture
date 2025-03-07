@@ -44,7 +44,9 @@ public class TankController
         bodyForward = Vector3.Normalize(FrontWheelPos);
 
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
-        bodyOrigin = 0.50f * wheelDistances * bodyForward + BackWheelPos;
+        //bodyOrigin = 0.50f * wheelDistances * bodyForward + BackWheelPos;
+        bodyOrigin = tank.tankCollider.transform.position;
+        bodyOrigin.y += 0.11f;
 
         bodyNormal = Vector3.Cross(bodyForward, tank.transform.up);
         bodyNormal = Vector3.Normalize(Vector3.Cross(bodyNormal, bodyForward));
@@ -54,9 +56,11 @@ public class TankController
     {
         RaycastHit hit;
         Vector3 origin = wheel.obj.transform.position;
+        //origin.y += 0.23f;
         Vector3 direction = -tank.transform.up;
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
+        //Physics.SphereCast(origin, 0.22f, direction, out hit, tank.wheelMaxDist);
 
         if (hit.collider != null && hit.transform.gameObject.layer < 7)
         {
@@ -102,7 +106,8 @@ public class TankController
 #if false
             Debug.Log(wheel.fallDelta + ", " + hitDist + ": "  + wheel.hit.transform.name);
 #endif
-            float dy = 1.5f * Time.deltaTime;
+            //float dy = 1.5f * Time.deltaTime;
+            float dy = 0.5f * Time.deltaTime;
             wheel.fallDelta += dy;
             wheel.obj.transform.position -= Vector3.up * dy;
         }
@@ -141,6 +146,8 @@ public class TankController
         {
             hitNormal = Vector3.Normalize(wheels[front].hit.normal + wheels[back].hit.normal);
         }
+        //Vector3 storeLocation = tank.Body.transform.position;
+        //Vector3 storeOffset = tank.transform.position - storeLocation;
 
         Vector3 axis = Vector3.Cross(Vector3.up, hitNormal);
         Quaternion targetRotation = Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
@@ -150,6 +157,10 @@ public class TankController
         Vector3 bodyPosition = bodyOrigin;
         bodyPosition += bodyNormal * 0.045f;
         tank.Body.transform.position = bodyPosition;
+        tank.tankCollider.transform.position = tank.rb.transform.position;
+        //tank.rb.transform.position = bodyPosition;
+        //tank.tankCollider.transform.position = bodyPosition + storeOffset;
+        //tank.transform.position = bodyPosition + storeOffset;
     }
 
     public void DebugSomeStuff()
@@ -219,4 +230,12 @@ public class TankController
         //RayCastTank();
         DebugSomeStuff();
     }
+
+    // public void OnTriggerEnter(Collider c) {
+    //     Debug.Log("Hit");
+    //     Debug.Log(c.gameObject.name);
+    //     if (c.gameObject.layer != 2) {
+    //         wheels[0].obj.transform.position = tank.transform.position;
+    //     }
+    // }
 }
