@@ -144,9 +144,12 @@ public class TankController
 
         Vector3 axis = Vector3.Cross(Vector3.up, hitNormal);
 
-        Quaternion targetRotation = axis == Vector3.zero
-            ? tank.Body.transform.rotation 
-            : Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
+        if (axis == Vector3.zero)
+        {
+            axis = tank.Body.transform.forward;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
 
         tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
