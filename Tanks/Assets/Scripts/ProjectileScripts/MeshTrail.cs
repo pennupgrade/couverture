@@ -10,10 +10,6 @@ public class MeshTrail : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
-    }
-
-    public void StartTrail() {
         InvokeRepeating("SpawnMesh", 0.2f, spawnRate);
     }
 
@@ -25,6 +21,6 @@ public class MeshTrail : MonoBehaviour
     
     public void kill() {
         CancelInvoke();
-        // Destroy(gameObject, 1.5f);
+        Destroy(gameObject, 1.5f);
     }
 }
