@@ -143,7 +143,11 @@ public class TankController
         }
 
         Vector3 axis = Vector3.Cross(Vector3.up, hitNormal);
-        Quaternion targetRotation = Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
+
+        Quaternion targetRotation = axis == Vector3.zero
+            ? tank.Body.transform.rotation 
+            : Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
+
         tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
         // Use this to translate based on normal
