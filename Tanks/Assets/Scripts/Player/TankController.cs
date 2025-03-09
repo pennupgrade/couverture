@@ -43,7 +43,7 @@ public class TankController
     {
         bodyForward = Vector3.Normalize(FrontWheelPos);
 
-        float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
+        //float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
         //bodyOrigin = 0.50f * wheelDistances * bodyForward + BackWheelPos;
         bodyOrigin = tank.tankCollider.transform.position;
         bodyOrigin.y += 0.11f;
@@ -75,10 +75,43 @@ public class TankController
     public void RaycastWheels()
     {
         RaycastWheel(ref wheels[front]);
-        RaycastWheel(ref wheels[back]);
+        //RaycastWheel(ref wheels[back]);
     }
 
 
+//     private void PositionWheelByHit(ref Wheel wheel, bool isAirborne)
+//     {
+//         Vector3 origin = wheel.obj.transform.position;
+//         Vector3 hitPoint = wheel.hit.point;
+
+//         float hitDist = Vector3.Distance(hitPoint, origin);
+
+//         // project wheels onto ground, then lift up by gMargin
+//         if (hitDist <= tank.groundMargin + 0.025f)
+//         {
+//             hitPoint += tank.transform.up * tank.groundMargin;
+//             wheel.obj.transform.position = hitPoint;
+//             wheel.fallDelta = 0.0f;
+//             return;
+//         }
+
+//         if (isAirborne)
+//         {
+//             // both wheels are not airborne
+//             wheel.fallDelta = 0;
+//         }
+
+//         if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
+//         {
+// #if false
+//             Debug.Log(wheel.fallDelta + ", " + hitDist + ": "  + wheel.hit.transform.name);
+// #endif
+//             //float dy = 1.5f * Time.deltaTime;
+//             float dy = 0.5f * Time.deltaTime;
+//             wheel.fallDelta += dy;
+//             wheel.obj.transform.position -= Vector3.up * dy;
+//         }
+//     }
     private void PositionWheelByHit(ref Wheel wheel, bool isAirborne)
     {
         Vector3 origin = wheel.obj.transform.position;
@@ -86,32 +119,44 @@ public class TankController
 
         float hitDist = Vector3.Distance(hitPoint, origin);
 
-        // project wheels onto ground, then lift up by gMargin
-        if (hitDist <= tank.groundMargin + 0.025f)
+        Debug.DrawRay(wheel.obj.transform.position, -tank.transform.up * tank.wheelMaxDist, Color.red, 0.1f);
+        Debug.Log($"Wheel: {wheel.obj.name}, Hit: {wheel.isHit}, Hit Point: {wheel.hit.point}");
+
+
+        // Check if the wheel has a valid surface hit
+        if (wheel.isHit)
         {
-            hitPoint += tank.transform.up * tank.groundMargin;
-            wheel.obj.transform.position = hitPoint;
-            wheel.fallDelta = 0.0f;
+            // Calculate the desired wheel position (adjusted by ground margin)
+            Vector3 adjustedPosition = hitPoint + tank.transform.up * tank.groundMargin;
+
+            if (adjustedPosition.y > origin.y)
+            {
+                // If the new surface is higher, snap to it instantly
+                wheel.obj.transform.position = adjustedPosition;
+                wheel.fallDelta = 0.0f;
+            }
+            else
+            {
+                // Otherwise, fall gradually as usual
+                if (wheel.fallDelta < wheel.maxFall)
+                {
+                    float dy = 0.5f * Time.deltaTime;
+                    wheel.fallDelta += dy;
+                    wheel.obj.transform.position -= Vector3.up * dy;
+                }
+            }
             return;
         }
 
+        // Handle airborne logic
         if (isAirborne)
         {
-            // both wheels are not airborne
             wheel.fallDelta = 0;
         }
-
-        if (wheel.fallDelta < wheel.maxFall) // either airborne, or 1 wheel is exactly not
-        {
-#if false
-            Debug.Log(wheel.fallDelta + ", " + hitDist + ": "  + wheel.hit.transform.name);
-#endif
-            //float dy = 1.5f * Time.deltaTime;
-            float dy = 0.5f * Time.deltaTime;
-            wheel.fallDelta += dy;
-            wheel.obj.transform.position -= Vector3.up * dy;
-        }
     }
+
+
+
     public bool IsAirborne()
     {
         for (int i = 0; i < wheels.Length; i++)
