@@ -45,9 +45,13 @@ public abstract class Projectile : MonoBehaviour
         // Define the direction from the player to the bullet's spawn point
         Vector3 direction = (bulletPos - playerPos).normalized;
 
+        transform.position += direction * 0.1f; // Moves the bullet forward slightly
+
         // Raycast to check if a wall is in between
         RaycastHit hit;
         int layerMask = ~((1 << 7) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
+
+        Debug.DrawRay(playerPos, direction * Vector3.Distance(playerPos, bulletPos), Color.red, 2.0f);
 
         if (Physics.Raycast(playerPos, direction, out hit, Vector3.Distance(playerPos, bulletPos), layerMask))
         {
@@ -55,36 +59,55 @@ public abstract class Projectile : MonoBehaviour
             // Special check for OneWayWall
             if (hit.collider.CompareTag("OneWay"))
             {
-                Transform wallTransform = hit.collider.transform;
-                float rotationY = wallTransform.rotation.eulerAngles.y;
-                bool shouldPassThrough = false;
+                Vector3 wallNormal = hit.normal; // Get wall's normal
+                float dotProduct = Vector3.Dot(direction, wallNormal);
 
-                // Check if the wall is aligned along the Z-axis
-                if (Mathf.Approximately(rotationY, 0f) || Mathf.Approximately(rotationY, 180f))
-                {
-                    // One-way walls allow shooting in the negative X direction
-                    if (direction.x < 0) 
-                        shouldPassThrough = true;
-                }
-                // Check if the wall is aligned along the X-axis
-                else if (Mathf.Approximately(rotationY, 90f) || Mathf.Approximately(rotationY, 270f))
-                {
-                    // One-way walls allow shooting in the negative Z direction
-                    if (direction.z < 0)
-                        shouldPassThrough = true;
-                }
-
-                if (!shouldPassThrough)
+                if (dotProduct < 0) 
                 {
                     Debug.Log("Bullet blocked by a One-Way Wall.");
                     Destroy(gameObject);
+                } else 
+                {
+                    Debug.Log("One-Way Wall allows bullet to go through.");
                 }
+                // Transform wallTransform = hit.collider.transform;
+                // float rotationY = wallTransform.rotation.eulerAngles.y;
+                // bool shouldPassThrough = false;
+
+                // // Check if the wall is aligned along the Z-axis
+                // if (Mathf.Approximately(rotationY, 0f) || Mathf.Approximately(rotationY, 180f))
+                // {
+                //     // One-way walls allow shooting in the negative X direction
+                //     if (direction.x < 0) 
+                //         shouldPassThrough = true;
+                // }
+                // // Check if the wall is aligned along the X-axis
+                // else if (Mathf.Approximately(rotationY, 90f) || Mathf.Approximately(rotationY, 270f))
+                // {
+                //     // One-way walls allow shooting in the negative Z direction
+                //     if (direction.z < 0)
+                //         shouldPassThrough = true;
+                // } else if (false) {
+                //     Debug.Log("rotationY - 180/Mathf.PI * Mathf.Atan(direction.x / direction.z)");
+                //     Debug.Log(rotationY - 180/Mathf.PI * Mathf.Atan(direction.x / direction.z));
+                //     shouldPassThrough = true;
+                // }
+
+                // if (!shouldPassThrough)
+                // {
+                //     Debug.Log("Bullet blocked by a One-Way Wall.");
+                //     Destroy(gameObject);
+                // } else {
+                //     Debug.Log("One-Way Wall allows bullet to go through.");
+                // }
             } else {
                 Debug.Log("Bullet spawned on the wrong side of a wall. Destroying...");
                 Debug.Log(hit.collider.gameObject.name);
                 Destroy(gameObject);
                 return;
             }
+        } else {
+            Debug.Log("no wall glitch detected.");
         }
     }
 
