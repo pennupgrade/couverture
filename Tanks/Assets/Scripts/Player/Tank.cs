@@ -42,6 +42,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Character charType;
 
     // Misc
+    [HideInInspector] public int maxHealth;
     public int health;
     public int numBullets;
     public bool stunned;
@@ -85,6 +86,7 @@ public class Tank : MonoBehaviour, IDestroyable
         };
 
         numBullets = 5;
+        maxHealth = health;
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 

@@ -25,7 +25,7 @@ public class HealthBar : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
         startPosition = rect.anchoredPosition;
-        maxHealth = tank.health;
+        maxHealth = tank.maxHealth;
     }
     
     private void Update()
