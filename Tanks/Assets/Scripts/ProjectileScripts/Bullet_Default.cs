@@ -76,6 +76,10 @@ public class Bullet_Default : Projectile
     }
 
     void OnCollisionEnter(Collision collision) {
+        Debug.Log(collision.gameObject.tag);
+        // if (collision.gameObject.tag == "NotARealCollider") {
+        //     return;
+        // }
         // Refactored this a bit -- Kevin 8/11
         if (defaultCollisionChecks(collision)) return;
         

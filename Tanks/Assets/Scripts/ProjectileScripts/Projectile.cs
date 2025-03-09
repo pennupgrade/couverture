@@ -18,7 +18,7 @@ public abstract class Projectile : MonoBehaviour
     protected virtual void Awake()
     {
         startLifetime = lifetime;
-        StartCoroutine(WaitForParentAndCheckWall());
+        //StartCoroutine(WaitForParentAndCheckWall());
         
     }
 
@@ -150,6 +150,10 @@ public abstract class Projectile : MonoBehaviour
     }
 
     protected bool defaultCollisionChecks(Collision collision) {
+        if ((startLifetime-lifetime)<dontDamageOnSpawnDelay) {
+            Debug.Log("(startLifetime-lifetime)<dontDamageOnSpawnDelay");
+            return true;
+        }
         if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d) && (startLifetime-lifetime)>dontDamageOnSpawnDelay) // hit a player
         {
             d.takeDamage(damage);
