@@ -40,20 +40,22 @@ public abstract class Projectile : MonoBehaviour
 
         // Get the player's position
         Vector3 playerPos = parent.transform.position;
-        playerPos.y += 0.1166667f;
+        playerPos.y += 0.1666667f;
         Vector3 bulletPos = transform.position;
 
         // Define the direction from the player to the bullet's spawn point
         Vector3 direction = (bulletPos - playerPos).normalized;
 
-        transform.position += direction; // Moves the bullet forward slightly
-        playerPos -= direction;
+        transform.position += 12f * direction; // Moves the bullet forward slightly
+        //playerPos -= direction;
 
         // Raycast to check if a wall is in between
         RaycastHit hit;
         int layerMask = ~((1 << 2) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
 
         Debug.DrawRay(playerPos, 3f * direction * Vector3.Distance(playerPos, bulletPos), Color.red, 2.0f);
+        Debug.DrawRay(playerPos, new Vector3(0, 1, 0), Color.red, 1.0f);
+        Debug.DrawRay(bulletPos, new Vector3(0, 1, 0), Color.blue, 1.0f);
 
         if (Physics.Raycast(playerPos, direction, out hit, Vector3.Distance(playerPos, bulletPos), layerMask))
         {
@@ -72,7 +74,7 @@ public abstract class Projectile : MonoBehaviour
                 } else 
                 {
                     Debug.Log("One-Way Wall allows bullet to go through.");
-                    transform.position -= direction;
+                    transform.position -= 12f * direction;
                 }
                 // Transform wallTransform = hit.collider.transform;
                 // float rotationY = wallTransform.rotation.eulerAngles.y;
@@ -111,7 +113,7 @@ public abstract class Projectile : MonoBehaviour
             }
         } else {
             Debug.Log("no wall glitch detected.");
-            transform.position -= direction;
+            transform.position -= 12f * direction;
         }
     }
 
