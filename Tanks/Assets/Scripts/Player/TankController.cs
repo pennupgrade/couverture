@@ -140,7 +140,7 @@ public class TankController
                 // Otherwise, fall gradually as usual
                 if (wheel.fallDelta < wheel.maxFall)
                 {
-                    float dy = 5.5f * Time.deltaTime;
+                    float dy = 0.5f * Time.deltaTime;
                     wheel.fallDelta += dy;
                     wheel.obj.transform.position -= Vector3.up * dy;
                 }
