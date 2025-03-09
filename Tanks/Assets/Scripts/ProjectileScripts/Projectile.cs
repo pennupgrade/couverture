@@ -45,7 +45,8 @@ public abstract class Projectile : MonoBehaviour
         // Define the direction from the player to the bullet's spawn point
         Vector3 direction = (bulletPos - playerPos).normalized;
 
-        transform.position += direction * 0.1f; // Moves the bullet forward slightly
+        transform.position += direction * 0.2f; // Moves the bullet forward slightly
+        playerPos -= direction * 0.2f;
 
         // Raycast to check if a wall is in between
         RaycastHit hit;
