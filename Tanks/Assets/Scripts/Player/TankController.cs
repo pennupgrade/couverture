@@ -120,7 +120,7 @@ public class TankController
         float hitDist = Vector3.Distance(hitPoint, origin);
 
         Debug.DrawRay(wheel.obj.transform.position, -tank.transform.up * tank.wheelMaxDist, Color.red, 0.1f);
-        Debug.Log($"Wheel: {wheel.obj.name}, Hit: {wheel.isHit}, Hit Point: {wheel.hit.point}");
+        //Debug.Log($"Wheel: {wheel.obj.name}, Hit: {wheel.isHit}, Hit Point: {wheel.hit.point}");
 
 
         // Check if the wheel has a valid surface hit
@@ -140,7 +140,7 @@ public class TankController
                 // Otherwise, fall gradually as usual
                 if (wheel.fallDelta < wheel.maxFall)
                 {
-                    float dy = 0.5f * Time.deltaTime;
+                    float dy = 5.5f * Time.deltaTime;
                     wheel.fallDelta += dy;
                     wheel.obj.transform.position -= Vector3.up * dy;
                 }

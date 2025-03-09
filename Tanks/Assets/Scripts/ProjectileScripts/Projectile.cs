@@ -49,7 +49,7 @@ public abstract class Projectile : MonoBehaviour
 
         // Raycast to check if a wall is in between
         RaycastHit hit;
-        int layerMask = ~((1 << 7) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
+        int layerMask = ~((1 << 7) | (1 << 8) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
 
         Debug.DrawRay(playerPos, direction * Vector3.Distance(playerPos, bulletPos), Color.red, 2.0f);
 
