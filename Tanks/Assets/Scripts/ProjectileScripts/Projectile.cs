@@ -40,28 +40,30 @@ public abstract class Projectile : MonoBehaviour
 
         // Get the player's position
         Vector3 playerPos = parent.transform.position;
+        playerPos.y += 0.1166667f;
         Vector3 bulletPos = transform.position;
 
         // Define the direction from the player to the bullet's spawn point
         Vector3 direction = (bulletPos - playerPos).normalized;
 
-        transform.position += direction * 0.2f; // Moves the bullet forward slightly
-        playerPos -= direction * 0.2f;
+        transform.position += direction; // Moves the bullet forward slightly
+        playerPos -= direction;
 
         // Raycast to check if a wall is in between
         RaycastHit hit;
-        int layerMask = ~((1 << 7) | (1 << 8) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
+        int layerMask = ~((1 << 2) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 11)); // Ignore layers 7, 9 and 11
 
-        Debug.DrawRay(playerPos, direction * Vector3.Distance(playerPos, bulletPos), Color.red, 2.0f);
+        Debug.DrawRay(playerPos, 3f * direction * Vector3.Distance(playerPos, bulletPos), Color.red, 2.0f);
 
         if (Physics.Raycast(playerPos, direction, out hit, Vector3.Distance(playerPos, bulletPos), layerMask))
         {
-            
+            Debug.Log(hit.collider.gameObject.name);
             // Special check for OneWayWall
             if (hit.collider.CompareTag("OneWay"))
             {
                 Vector3 wallNormal = hit.normal; // Get wall's normal
                 float dotProduct = Vector3.Dot(direction, wallNormal);
+                Debug.Log(dotProduct);
 
                 if (dotProduct < 0) 
                 {
@@ -70,6 +72,7 @@ public abstract class Projectile : MonoBehaviour
                 } else 
                 {
                     Debug.Log("One-Way Wall allows bullet to go through.");
+                    transform.position -= direction;
                 }
                 // Transform wallTransform = hit.collider.transform;
                 // float rotationY = wallTransform.rotation.eulerAngles.y;
@@ -103,12 +106,12 @@ public abstract class Projectile : MonoBehaviour
                 // }
             } else {
                 Debug.Log("Bullet spawned on the wrong side of a wall. Destroying...");
-                Debug.Log(hit.collider.gameObject.name);
                 Destroy(gameObject);
                 return;
             }
         } else {
             Debug.Log("no wall glitch detected.");
+            transform.position -= direction;
         }
     }
 
