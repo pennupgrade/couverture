@@ -39,6 +39,8 @@ public class Tank : MonoBehaviour, IDestroyable
     public Animator cannonAnimator;
     public Character charType;
 
+    public const int MAX_BULLETS = 5;
+
     // Misc
     [HideInInspector] public int maxHealth;
     public int health;
@@ -81,9 +83,12 @@ public class Tank : MonoBehaviour, IDestroyable
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
 
-        numBullets = 5;
+        numBullets = MAX_BULLETS;
         maxHealth = health;
 
+
+        // Get Player Stats
+        GameManager.TransferStats(this);
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
         //     (tank) => {
@@ -184,7 +189,8 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            GameManager.Instance.livesManager.LoseLife();
+            Freeze();
+            GameManager.LoseLife();
 
             var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);

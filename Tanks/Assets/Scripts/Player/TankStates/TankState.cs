@@ -116,7 +116,7 @@ public abstract class TankState
 
     public virtual IEnumerator Reload()
     {
-        while (tank.numBullets < 5)
+        while (tank.numBullets < Tank.MAX_BULLETS)
         {
             tank.reloadProgress = 0f;
 

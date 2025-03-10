@@ -25,13 +25,6 @@ public class LivesManager
     public void LoseLife() {
         lives -= 1;
         Debug.Log("Lives: " + lives);
-
-        if (lives <= 0) {
-            GameManager.Instance.RestartLevel();
-            return;
-        }
-
-        GameManager.Instance.RestartSublevel();
     }
 
     public void ResetLives()
