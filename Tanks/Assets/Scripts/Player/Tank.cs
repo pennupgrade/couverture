@@ -11,8 +11,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
-    public int LIVES = 5;
-
     // Base Items
     public Controls controls;
     public TankState tankState;
