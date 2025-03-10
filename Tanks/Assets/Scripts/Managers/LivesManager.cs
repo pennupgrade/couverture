@@ -14,7 +14,6 @@ public class LivesManager
         lives = totalLives;
     }
 
-
     public int GetLives() {
         return lives;
     }

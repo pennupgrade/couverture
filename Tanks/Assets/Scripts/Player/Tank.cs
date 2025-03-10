@@ -58,12 +58,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
-
     //effects
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-
 
     private void Awake() {
         controls = new Controls();
