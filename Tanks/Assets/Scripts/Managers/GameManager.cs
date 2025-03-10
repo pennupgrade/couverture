@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,10 +30,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start() {
-        SaveStateManagerGameObject.SetupGameManager();
-    }
-
     public void GoToSubLevel(float transitionTime, string sceneName)
     {
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
@@ -47,7 +42,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        // TODO: TOTAL REWORK OF THIS PART, A STRUCTURE FOR LEVELS, AND OVERWRITE CHECKPOINTS
         livesManager.ResetLives();
         GoToSubLevel(livesManager.GetRespawnTime(), CurrentLevel);
     }
@@ -69,13 +63,4 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
     }
-    
-    public int GetLives() {
-        return livesManager.GetLives();
-    }
-
-    public void SetLives(int numLives) {
-        livesManager.SetLives(numLives);
-    }
-    
 }

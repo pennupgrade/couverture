@@ -24,6 +24,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Collider tankCollider;
 
     // Config Variables
+    private bool invincible;
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -42,6 +43,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Character charType;
 
     // Misc
+    [HideInInspector] public int maxHealth;
     public int health;
     public int numBullets;
     public bool stunned;
@@ -85,6 +87,7 @@ public class Tank : MonoBehaviour, IDestroyable
         };
 
         numBullets = 5;
+        maxHealth = health;
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -99,7 +102,15 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
+    public void Freeze() {
+        controls.Disable();
+        invincible = true;
+    }
 
+    public void Unfreeze() {
+        invincible = false;
+        controls.Enable();
+    }
 
     // Effects
     ~Tank() {
@@ -168,7 +179,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
-        if (enableGod) return;
+        if (enableGod || invincible) return;
 
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);

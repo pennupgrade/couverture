@@ -7,8 +7,8 @@ public class DamageFlash
     // Used this tutorial: https://www.youtube.com/watch?v=rq6yGh-piIU
     // Someone please refactor this later so that it's actually good
 
-    [SerializeField] private float _flashTime = 0.5f;
-    [SerializeField] private Color _flashColor;
+    [SerializeField] public float _flashTime = 0.5f;
+    [SerializeField] public Color _flashColor;
 
     private Material[] materials;
     private Coroutine _damageFlashCorountine;

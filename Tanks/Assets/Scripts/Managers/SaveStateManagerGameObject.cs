@@ -43,6 +43,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -64,16 +65,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
-        HashSet<SaveStateManager.CharacterOption> outSet = new();
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
-            outSet.Add(c);
-        }
-        return outSet;
+        return Instance.stateManager.GetUnlockedCharacters();
     }
 
     // SAVE AND LOAD
-    private static void LoadState() {
+    public static void LoadState() {
         Instance.stateManager = SaveStateManager.LoadInventory();
     }
 
@@ -90,12 +86,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
         // load checkpoint if correct scene and checkpoint exists
         if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
             CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
-        }
-    }
-
-    public static void SetupGameManager() {
-        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.numLives != -1) {
-            GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
     }
 
