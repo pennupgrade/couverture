@@ -87,8 +87,6 @@ public class Tank : MonoBehaviour, IDestroyable
         maxHealth = health;
 
 
-        // Get Player Stats
-        GameManager.TransferStats(this);
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
         //     (tank) => {
@@ -100,6 +98,11 @@ public class Tank : MonoBehaviour, IDestroyable
         // );
 
         // addEffect(effect);
+    }
+
+    void Start() {
+        // Get Player Stats
+        GameManager.TransferStats(this);
     }
 
     public void Freeze() {
