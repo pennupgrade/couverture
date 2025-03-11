@@ -38,6 +38,7 @@ public class SaveStateManager
 
     public string currCheckpointLevelName = null;
     public int currCheckpoint = -1;
+    public CharacterOption currCharacter = CharacterOption.NONE;
 
     private HashSet<CharacterOption> unlockedChars;
 
@@ -62,6 +63,7 @@ public class SaveStateManager
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = CreateNewChar(changeTo);
+            currCharacter = changeTo;
         }
     }
 

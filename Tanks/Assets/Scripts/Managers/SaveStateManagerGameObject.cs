@@ -24,7 +24,13 @@ public class SaveStateManagerGameObject : MonoBehaviour
     void SetDefaultCat() {
         if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
             Instance.stateManager.UnlockCharacter(defaultTestingCat);
-            Instance.stateManager.SwitchCharacter(FindTank(), defaultTestingCat);
+            SwitchCharacter(defaultTestingCat);
+        }
+    }
+
+    private static void SetCurrCat() {
+        if (Instance.stateManager.currCharacter != SaveStateManager.CharacterOption.NONE) {
+            SwitchCharacter(Instance.stateManager.currCharacter);
         }
     }
 
@@ -33,9 +39,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
             Instance = this;
             LoadState();
             DontDestroyOnLoad(gameObject);
+            SetCurrCat();
             SetDefaultCat();
         } else {
             SetDefaultCat();
+            SetCurrCat();
             Destroy(gameObject);
         }
     }
