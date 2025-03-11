@@ -236,7 +236,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         if (usesDefaultBullet) {
             return PoolManager.bulletPool.Get().gameObject;
         } else {
-            return Object.Instantiate(bulletPrefab);
+            return Instantiate(bulletPrefab);
         }
     }
 }

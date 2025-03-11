@@ -32,6 +32,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start() {
+        SaveStateManagerGameObject.SetupGameManager();
+    }
+
     public void SwitchSublevel(float transitionTime, string sceneName)
     {
         StartCoroutine(TimerToRestart(transitionTime, sceneName, StoreTankStats));
@@ -90,5 +94,13 @@ public class GameManager : MonoBehaviour
         }
 
         Instance.Respawn();
+    }
+
+    public int GetLives() {
+        return livesManager.GetLives();
+    }
+
+    public void SetLives(int numLives) {
+        livesManager.SetLives(numLives);
     }
 }

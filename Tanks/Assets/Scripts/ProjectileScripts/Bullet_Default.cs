@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bullet_Default : Projectile
 {
@@ -13,6 +14,7 @@ public class Bullet_Default : Projectile
     private Material material;
     private Animator animator;
     private Collider collider;
+    public MeshTrail meshTrail;
     
     // Start is called before the first frame update
     protected override void Awake() {
@@ -22,7 +24,6 @@ public class Bullet_Default : Projectile
         material = GetComponent<MeshRenderer>().material;
         startBounces = bounces;
         originalDamage = damage;
-        StartBullet();
     }
     void Start()
     {
@@ -43,7 +44,15 @@ public class Bullet_Default : Projectile
         bounces = startBounces;
         lifetime = startLifetime;
         destroyed = false;
+        meshTrail.StartTrail();
         animator.Play("DefaultBulletFadeIn");
+        
+    }
+
+    public void OnSceneLoaded(Scene s, LoadSceneMode m) {
+        if (m == LoadSceneMode.Single) {
+            PoolManager.bulletPool.Release(this);
+        }
     }
 
 
