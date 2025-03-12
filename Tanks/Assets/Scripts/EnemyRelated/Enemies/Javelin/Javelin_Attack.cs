@@ -70,8 +70,8 @@ public class Javelin_Attack : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(8);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 

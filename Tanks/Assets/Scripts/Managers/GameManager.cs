@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public float respawnTime;
     public int totalLives;
 
+    private TankStats tankStats = null;
 
     void Awake()
     {
@@ -30,24 +32,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GoToSubLevel(float transitionTime, string sceneName)
-    {
-        StartCoroutine(TimerToRestart(transitionTime, sceneName));
+    void Start() {
+        SaveStateManagerGameObject.SetupGameManager();
     }
 
-    public void RestartSublevel() // me when I dedicate a whole function to call a coroutine
+    public void SwitchSublevel(float transitionTime, string sceneName)
     {
-        GoToSubLevel(livesManager.GetRespawnTime(), SceneManager.GetActiveScene().name);
+        StartCoroutine(TimerToRestart(transitionTime, sceneName, StoreTankStats));
+    }
+
+    public void Respawn() // me when I dedicate a whole function to call a coroutine
+    {
+        StartCoroutine(TimerToRestart(livesManager.GetRespawnTime(), SceneManager.GetActiveScene().name, () => {}));
+        tankStats = null;
     }
 
     public void RestartLevel()
     {
         livesManager.ResetLives();
-        GoToSubLevel(livesManager.GetRespawnTime(), CurrentLevel);
+        StartCoroutine(TimerToRestart(livesManager.GetRespawnTime(), CurrentLevel, () => {}));
+        tankStats = null;
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
-    private IEnumerator TimerToRestart(float duration, string sceneName)
+    private IEnumerator TimerToRestart(float duration, string sceneName, Action func)
     {
         var elapsedTime = 0f;
 
@@ -60,7 +68,39 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        func();
         Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
+    }
+
+    private void StoreTankStats() {
+        Tank t = GameObject.FindWithTag("Player").GetComponent<Tank>();
+        tankStats = new TankStats(t);
+    }
+
+    public static void TransferStats(Tank t) {
+        if (Instance.tankStats != null) {
+            Instance.tankStats.TransferStats(t);
+        }
+        Instance.tankStats = null;
+    }
+
+    public static void LoseLife() {
+        Instance.livesManager.LoseLife();
+        
+        if (Instance.livesManager.GetLives() <= 0) {
+            Instance.RestartLevel();
+            return;
+        }
+
+        Instance.Respawn();
+    }
+
+    public int GetLives() {
+        return livesManager.GetLives();
+    }
+
+    public void SetLives(int numLives) {
+        livesManager.SetLives(numLives);
     }
 }

@@ -76,8 +76,8 @@ public class Aegis_Alert : EnemyAlertState
 
     protected IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(14);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 

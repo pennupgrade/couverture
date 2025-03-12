@@ -12,12 +12,6 @@ public class FanColliderScript : MonoBehaviour
         fanScript = transform.parent.GetComponent<FanScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerStay(Collider collider)
     {
         if (collider.tag == "Player")

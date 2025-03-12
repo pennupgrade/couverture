@@ -14,6 +14,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     // Object References
     public GameObject gun;
     public GameObject bulletPrefab;
+    private bool usesDefaultBullet;
+    private bool hasSetupUsesDefaultBullet;
     public GameObject explosionPrefab;
     public GameObject bulletExplosionPrefab;
     public Transform gunShotPos;
@@ -57,7 +59,6 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public int numBullets, magSize;
     [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
-
 
     protected void findPlayer() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -225,4 +226,17 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         Destroy(gameObject);
     }
 
+    //---Helper Function for creating a bullet---
+    public GameObject SpawnBullet() {
+        // Dumb solution because subclasses dont call Enemy Awake method
+        if (!hasSetupUsesDefaultBullet) {
+            usesDefaultBullet = (bulletPrefab.name == "Bullet");
+            hasSetupUsesDefaultBullet = true;
+        }
+        if (usesDefaultBullet) {
+            return PoolManager.bulletPool.Get().gameObject;
+        } else {
+            return Instantiate(bulletPrefab);
+        }
+    }
 }

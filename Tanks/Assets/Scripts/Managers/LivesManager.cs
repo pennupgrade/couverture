@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ public class LivesManager
         lives = totalLives;
     }
 
-
     public int GetLives() {
         return lives;
     }
@@ -26,17 +26,17 @@ public class LivesManager
     public void LoseLife() {
         lives -= 1;
         Debug.Log("Lives: " + lives);
-
-        if (lives <= 0) {
-            GameManager.Instance.RestartLevel();
-            return;
-        }
-
-        GameManager.Instance.RestartSublevel();
     }
 
     public void ResetLives()
     {
         lives = totalLives;
+    }
+
+    public void SetLives(int numLives) {
+        if (numLives > totalLives || numLives <= 0) {
+            throw new ArgumentException();
+        }
+        lives = numLives;
     }
 }

@@ -29,12 +29,18 @@ public class SaveStateManager
 
     public enum CharacterOption {
         NONE,
-        ROCKET_CAT
+        ROCKET_CAT,
+        BUBBLE_CAT
     }
 
     // JSON representation for unlocked characters is an array of unlocked character id's
     public List<CharacterOption> unlockedCharList = new();
 
+    public string currCheckpointLevelName = null;
+    public int currCheckpoint = -1;
+    public CharacterOption currCharacter = CharacterOption.NONE;
+
+    public int numLives = -1;
 
     private HashSet<CharacterOption> unlockedChars;
 
@@ -59,6 +65,7 @@ public class SaveStateManager
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = CreateNewChar(changeTo);
+            currCharacter = changeTo;
         }
     }
 
@@ -66,6 +73,8 @@ public class SaveStateManager
         switch (characterId) {
             case CharacterOption.ROCKET_CAT:
                 return new RocketChar();
+            case CharacterOption.BUBBLE_CAT:
+                return new BubbleChar();
             default:
                 throw new ArgumentException();
         };
@@ -78,11 +87,20 @@ public class SaveStateManager
     public void SaveGameState() {
         // update unlockedCharList
         unlockedCharList.Clear();
+        if (GameManager.Instance is null) {
+            throw new InvalidOperationException("GameManager Instance is Null!");
+        }
+        numLives = GameManager.Instance.GetLives();
         foreach (CharacterOption x in unlockedChars) {
             unlockedCharList.Add(x);
         }
 
         // write JSON to file
         File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
+    }
+
+    public HashSet<CharacterOption> GetUnlockedCharacters() {
+        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        return new HashSet<CharacterOption>(unlockedChars);
     }
 }

@@ -22,7 +22,7 @@ public class TankController
     private Vector3 hitNormal;
 
     int front = 0; // someone better than me at coding can refactor this :)
-    int back = 1;
+    int back = 0;
 
     Wheel[] wheels;
 
@@ -41,7 +41,7 @@ public class TankController
 
     public void CalculateBodyVectors(Vector3 FrontWheelPos, Vector3 BackWheelPos)
     {
-        bodyForward = Vector3.Normalize(FrontWheelPos - BackWheelPos);
+        bodyForward = Vector3.Normalize(FrontWheelPos);
 
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
         bodyOrigin = 0.50f * wheelDistances * bodyForward + BackWheelPos;
@@ -142,7 +142,15 @@ public class TankController
             hitNormal = Vector3.Normalize(wheels[front].hit.normal + wheels[back].hit.normal);
         }
 
-        Quaternion targetRotation = Quaternion.LookRotation(bodyForward, hitNormal);
+        Vector3 axis = Vector3.Cross(Vector3.up, hitNormal);
+
+        if (axis == Vector3.zero)
+        {
+            axis = tank.Body.transform.forward;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
+
         tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
         // Use this to translate based on normal

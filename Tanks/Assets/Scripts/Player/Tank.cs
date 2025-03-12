@@ -11,8 +11,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
-    public int LIVES = 5;
-
     // Base Items
     public Controls controls;
     public TankState tankState;
@@ -23,6 +21,7 @@ public class Tank : MonoBehaviour, IDestroyable
     [HideInInspector] public Collider tankCollider;
 
     // Config Variables
+    private bool invincible;
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -40,7 +39,10 @@ public class Tank : MonoBehaviour, IDestroyable
     public Animator cannonAnimator;
     public Character charType;
 
+    public const int MAX_BULLETS = 5;
+
     // Misc
+    [HideInInspector] public int maxHealth;
     public int health;
     public int numBullets;
     public bool stunned;
@@ -58,12 +60,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
-
     //effects
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-
 
     private void Awake() {
         controls = new Controls();
@@ -83,7 +83,9 @@ public class Tank : MonoBehaviour, IDestroyable
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
 
-        numBullets = 5;
+        numBullets = MAX_BULLETS;
+        maxHealth = health;
+
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -98,7 +100,20 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
+    void Start() {
+        // Get Player Stats
+        GameManager.TransferStats(this);
+    }
 
+    public void Freeze() {
+        controls.Disable();
+        invincible = true;
+    }
+
+    public void Unfreeze() {
+        invincible = false;
+        controls.Enable();
+    }
 
     // Effects
     ~Tank() {
@@ -135,6 +150,23 @@ public class Tank : MonoBehaviour, IDestroyable
 
         previousPos = currentPos;//this gives them a single-tick of delta difference
         currentPos = transform.position;
+        
+        // FOR TESTING PURPOSES, SHOULD BE REMOVED
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            Debug.Log("Adding Speed");
+
+            //Temporary TimedEffect
+            TimedEffect effect = new(15.0f, 
+                (tank) => {
+                    tank.moveSpeed *= 2.0f;
+                },
+                (tank) => {
+                    tank.moveSpeed /= 2.0f;
+                }
+            );
+
+            addEffect(effect);
+        }
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
@@ -150,7 +182,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
-        if (enableGod) return;
+        if (enableGod || invincible) return;
 
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
@@ -160,7 +192,8 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            GameManager.Instance.livesManager.LoseLife();
+            Freeze();
+            GameManager.LoseLife();
 
             var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
@@ -196,5 +229,10 @@ public class Tank : MonoBehaviour, IDestroyable
         if (character != null) {
             character.AbilityUpdate(this);
         }
+    }
+
+    // spawn a base bullet, override if different base bullet
+    public GameObject SpawnBullet() {
+        return PoolManager.bulletPool.Get().gameObject;
     }
 }

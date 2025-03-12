@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatformRotating : MonoBehaviour
+public class MovingPlatformRotating : MovingPlatform
 {
     public VertexPath vertexPath;
     public float speed = 4f;
@@ -22,6 +22,9 @@ public class MovingPlatformRotating : MonoBehaviour
     {
         Vector3 oldPos = transform.position;
         Vector3 oldRot = transform.rotation.eulerAngles;
+
+        if (vertexPath == null) return;
+
         transform.position = vertexPath.MoveConstantVelocity(speed, advanceForward: true, ref time);
 
         transform.forward = vertexPath.GetTangent(time);
@@ -36,6 +39,8 @@ public class MovingPlatformRotating : MonoBehaviour
             passengerList[i].position += transform.position - oldPos;
             passengerList[i].RotateAround(transform.position, Vector3.up, transform.rotation.eulerAngles.y - oldRot.y);
         }
+
+        nextIndex = vertexPath.GetNextIndex((int)time);
     }
 
     void OnTriggerEnter(Collider other)

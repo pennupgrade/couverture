@@ -13,12 +13,12 @@ public class Lance : ShieldedEnemy
     {
         //set enemy values
         health = 300;
-        gunRange = 10;
+        gunRange = 9;
         sightRange = 11;
         FOV = 0.8f;
         rotSpeed = 72;
         reload = 4;
-        bulletSpeed = 5.75f;
+        bulletSpeed = 5.2f;
         leadChance = 0.5f;
         speed = 1.2f;
         turnSpeed = 180;

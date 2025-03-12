@@ -10,12 +10,12 @@ public class Rocket : Projectile
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 5.5f;
+        bulletSpeed = 5f;
     }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
+        //GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
     }
 
     // Update is called once per frame

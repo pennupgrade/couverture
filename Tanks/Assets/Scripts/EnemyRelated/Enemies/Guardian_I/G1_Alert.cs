@@ -67,8 +67,8 @@ public class G1_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(12);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 

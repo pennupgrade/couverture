@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveStateManagerGameObject : MonoBehaviour
 {
@@ -22,7 +24,13 @@ public class SaveStateManagerGameObject : MonoBehaviour
     void SetDefaultCat() {
         if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
             Instance.stateManager.UnlockCharacter(defaultTestingCat);
-            Instance.stateManager.SwitchCharacter(FindTank(), defaultTestingCat);
+            SwitchCharacter(defaultTestingCat);
+        }
+    }
+
+    private static void SetCurrCat() {
+        if (Instance.stateManager.currCharacter != SaveStateManager.CharacterOption.NONE) {
+            SwitchCharacter(Instance.stateManager.currCharacter);
         }
     }
 
@@ -31,9 +39,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
             Instance = this;
             LoadState();
             DontDestroyOnLoad(gameObject);
+            SetCurrCat();
             SetDefaultCat();
         } else {
             SetDefaultCat();
+            SetCurrCat();
             Destroy(gameObject);
         }
     }
@@ -41,7 +51,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -62,21 +71,35 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.SwitchCharacter(FindTank(), c);
     }
 
-    public static HashSet<SaveStateManager.CharacterOption> getUnlockedCharacters() {
-        HashSet<SaveStateManager.CharacterOption> outSet = new();
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
-            outSet.Add(c);
-        }
-        return outSet;
+    public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
+        return Instance.stateManager.GetUnlockedCharacters();
     }
 
     // SAVE AND LOAD
-    public static void LoadState() {
+    private static void LoadState() {
         Instance.stateManager = SaveStateManager.LoadInventory();
     }
 
     public static void SaveState() {
         Instance.stateManager.SaveGameState();
     }
+
+    public static void SetCurrentCheckpoint(string levelName, int checkpointNum) {
+        Instance.stateManager.currCheckpointLevelName = levelName;
+        Instance.stateManager.currCheckpoint = checkpointNum;
+    }
+
+    public static void SetupCheckpointManager() {
+        // load checkpoint if correct scene and checkpoint exists
+        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
+            CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
+        }
+    }
+
+    public static void SetupGameManager() {
+        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.numLives != -1) {
+            GameManager.Instance.SetLives(Instance.stateManager.numLives);
+        }
+    }
+
 }
