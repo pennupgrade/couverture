@@ -132,9 +132,7 @@ public abstract class Projectile : MonoBehaviour
         }
         //first child should be a trail
         if (transform.childCount != 0) {
-            if (transform.GetChild(0).gameObject.TryGetComponent<MeshTrail>(out MeshTrail mt)) {
-                mt.kill();
-            } else if (transform.GetChild(0).gameObject.TryGetComponent<ParticleSystem>(out ParticleSystem ps)){
+            if (transform.GetChild(0).gameObject.TryGetComponent<ParticleSystem>(out ParticleSystem ps)){
                 ps.Stop();
                 //for rocket
                 transform.GetChild(0).localScale = 1 / transform.localScale.x * transform.GetChild(0).localScale;

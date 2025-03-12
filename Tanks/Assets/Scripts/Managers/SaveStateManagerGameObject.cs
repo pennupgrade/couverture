@@ -24,7 +24,13 @@ public class SaveStateManagerGameObject : MonoBehaviour
     void SetDefaultCat() {
         if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
             Instance.stateManager.UnlockCharacter(defaultTestingCat);
-            Instance.stateManager.SwitchCharacter(FindTank(), defaultTestingCat);
+            SwitchCharacter(defaultTestingCat);
+        }
+    }
+
+    private static void SetCurrCat() {
+        if (Instance.stateManager.currCharacter != SaveStateManager.CharacterOption.NONE) {
+            SwitchCharacter(Instance.stateManager.currCharacter);
         }
     }
 
@@ -33,9 +39,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
             Instance = this;
             LoadState();
             DontDestroyOnLoad(gameObject);
+            SetCurrCat();
             SetDefaultCat();
         } else {
             SetDefaultCat();
+            SetCurrCat();
             Destroy(gameObject);
         }
     }
@@ -43,7 +51,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -69,7 +76,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     // SAVE AND LOAD
-    public static void LoadState() {
+    private static void LoadState() {
         Instance.stateManager = SaveStateManager.LoadInventory();
     }
 
@@ -86,6 +93,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
         // load checkpoint if correct scene and checkpoint exists
         if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
             CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
+        }
+    }
+
+    public static void SetupGameManager() {
+        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.numLives != -1) {
+            GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
     }
 

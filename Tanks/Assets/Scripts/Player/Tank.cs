@@ -12,8 +12,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 0.1f;
     public const float COOLDOWN_TIME = 0.18f;
 
-    public int LIVES = 5;
-
     // Base Items
     public Controls controls;
     public TankState tankState;
@@ -42,6 +40,8 @@ public class Tank : MonoBehaviour, IDestroyable
     public Animator cannonAnimator;
     public Character charType;
 
+    public const int MAX_BULLETS = 5;
+
     // Misc
     [HideInInspector] public int maxHealth;
     public int health;
@@ -61,12 +61,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
-
     //effects
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
-
 
     private void Awake() {
         controls = new Controls();
@@ -86,8 +84,9 @@ public class Tank : MonoBehaviour, IDestroyable
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
 
-        numBullets = 5;
+        numBullets = MAX_BULLETS;
         maxHealth = health;
+
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -100,6 +99,11 @@ public class Tank : MonoBehaviour, IDestroyable
         // );
 
         // addEffect(effect);
+    }
+
+    void Start() {
+        // Get Player Stats
+        GameManager.TransferStats(this);
     }
 
     public void Freeze() {
@@ -189,7 +193,8 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            GameManager.Instance.livesManager.LoseLife();
+            Freeze();
+            GameManager.LoseLife();
 
             var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);

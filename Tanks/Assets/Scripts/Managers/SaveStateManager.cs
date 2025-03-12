@@ -38,6 +38,9 @@ public class SaveStateManager
 
     public string currCheckpointLevelName = null;
     public int currCheckpoint = -1;
+    public CharacterOption currCharacter = CharacterOption.NONE;
+
+    public int numLives = -1;
 
     private HashSet<CharacterOption> unlockedChars;
 
@@ -62,6 +65,7 @@ public class SaveStateManager
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = CreateNewChar(changeTo);
+            currCharacter = changeTo;
         }
     }
 
@@ -83,6 +87,10 @@ public class SaveStateManager
     public void SaveGameState() {
         // update unlockedCharList
         unlockedCharList.Clear();
+        if (GameManager.Instance is null) {
+            throw new InvalidOperationException("GameManager Instance is Null!");
+        }
+        numLives = GameManager.Instance.GetLives();
         foreach (CharacterOption x in unlockedChars) {
             unlockedCharList.Add(x);
         }
