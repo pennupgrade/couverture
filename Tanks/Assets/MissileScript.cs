@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MissileScript : MonoBehaviour
 {
-    private float g = -9.81f;
+    private float g = -20f;
 
     public int damage;
     public Vector3 startLocation;
@@ -21,10 +21,9 @@ public class MissileScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damage = 100;
         startLocation = gameObject.transform.position;
         endLocation = targetZone.transform.position;
-        secondsInAir = 2f;
+        secondsInAir = Mathf.Abs(secondsInAir); //avoid negative time
 
         hitTarget = false;
         acceleration = new Vector3(0, g, 0);
