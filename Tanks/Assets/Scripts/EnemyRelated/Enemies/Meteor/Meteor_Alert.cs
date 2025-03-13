@@ -48,7 +48,7 @@ public class Meteor_Alert : EnemyAlertState
         yield return new WaitForSeconds(0.16f);
         while (true) {            
             if (getDist() < enemy.gunRange && getDist() > 4 && isAimed()) {
-                Vector3 point = enemy.player.transform.position + enemy.pTank.Velocity + Random.insideUnitSphere * 4;
+                Vector3 point = enemy.player.transform.position + enemy.pTank.Velocity + Random.insideUnitSphere * 3.6f;
                 point.y = enemy.player.transform.position.y;
                 if (Vector3.Distance(point, enemy.rb.position) < 4) {
                     yield return new WaitForSeconds(1);
