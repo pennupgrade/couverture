@@ -98,6 +98,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void SetupCheckpointManager() {
+        if (CheckpointManager.Instance is null) {
+            return;
+        }
         // load checkpoint if correct scene and checkpoint exists
         if (IsCorrectScene() && Instance.stateManager.currCheckpoint != -1) {
             CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
@@ -105,6 +108,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void SetupGameManager() {
+        if (GameManager.Instance is null) {
+            return;
+        }
         if (IsCorrectScene() && Instance.stateManager.numLives != -1) {
             GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
