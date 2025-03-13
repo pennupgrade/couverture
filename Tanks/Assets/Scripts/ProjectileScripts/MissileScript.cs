@@ -160,6 +160,13 @@ public class MissileScript : MonoBehaviour
 
     IEnumerator DestroyObjects()
     {
+        if (missileBody.transform.childCount != 0) {
+            if (missileBody.transform.GetChild(0).gameObject.TryGetComponent<ParticleSystem>(out ParticleSystem ps)){
+                ps.Stop();
+                Destroy(missileBody.transform.GetChild(0).gameObject, 2);
+            }
+            missileBody.transform.GetChild(0).parent = null;
+        }
         Destroy(missileBody);
         Destroy(targetZone);
         yield return new WaitForSeconds(explosionTime);
