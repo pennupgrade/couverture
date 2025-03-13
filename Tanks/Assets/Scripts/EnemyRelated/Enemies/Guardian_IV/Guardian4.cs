@@ -6,7 +6,6 @@ public class Guardian4 : EnemyOmniMove
 {
     public bool defensive;
     [HideInInspector] public Vector3 homePoint;
-    public GameObject minePrefab;
     void Awake() {
         enemyState = new G4_Start(this);
     }
@@ -76,12 +75,5 @@ public class Guardian4 : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
-    }
-    public IEnumerator deployMines() {
-        yield return new WaitForSeconds(4);
-        while (true) {
-            Object.Instantiate(minePrefab, transform.position - 0.15f * Vector3.up, Quaternion.identity);
-            yield return new WaitForSeconds(16);
-        }
     }
 }

@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Defender : ShieldedEnemy
+public class RocketSentry : ShieldedEnemy
 {
-    [HideInInspector] public bool pauseRot;
     void Awake() {
-        enemyState = new Defend_Start(this);
+        enemyState = new RocketSentry_Idle(this);
     }
     // Start is called before the first frame update
     void Start()
     {
         //set enemy values
         health = 400;
-        sightRange = 15;
+        gunRange = 9;
+        sightRange = 10;
         FOV = 1.2f;
-        rotSpeed = 45;
-        reload = 3;
+        rotSpeed = 108;
+        reload = 4f;
+        bulletSpeed = 5.2f;
+        leadChance = 0.2f;
         
-        damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
+        damageFlash = new DamageFlash(transform.Find("Body").gameObject);
         findPlayer();
         if (shieldEnabled) {
             shieldSetup();
@@ -37,8 +39,6 @@ public class Defender : ShieldedEnemy
         enemyState = enemyState.RotateTurret(playerPos);
         enemyState = enemyState.Shoot(playerPos);
 
-        if (!pauseRot) {
-            gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
-        }
+        gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }
 }
