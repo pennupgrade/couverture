@@ -23,5 +23,10 @@ public class Death_Zone : MonoBehaviour
             other.GetComponent<Tank>().takeDamage(300000);
             Debug.Log("taking damage");
         }
+        if (other.gameObject.tag == "Tank")
+        {
+            other.GetComponent<Enemy>().takeDamage(300000);
+            Debug.Log("tank taking damage");
+        }
     }
 }
