@@ -162,6 +162,7 @@ public class MissileScript : MonoBehaviour
     {
         Destroy(missileBody);
         Destroy(targetZone);
+        Destroy(damageZone);
         yield return new WaitForSeconds(explosionTime);
         Destroy(gameObject);
     }
