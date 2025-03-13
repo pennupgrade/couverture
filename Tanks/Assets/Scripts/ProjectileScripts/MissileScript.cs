@@ -143,7 +143,16 @@ public class MissileScript : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            collider.gameObject.GetComponent<Tank>().takeDamage(damage);
+            Tank player = collider.gameObject.GetComponent<Tank>();
+            player.takeDamage(damage);
+            player.incapacitate(1);
+
+            damageZone.GetComponent<MeshRenderer>().enabled = false;
+            damageZone.GetComponent<SphereCollider>().enabled = false;
+        } else if (collider.tag == "Enemy") {
+            Enemy e = collider.gameObject.GetComponent<Enemy>();
+            e.takeDamage(damage);
+
             damageZone.GetComponent<MeshRenderer>().enabled = false;
             damageZone.GetComponent<SphereCollider>().enabled = false;
         }

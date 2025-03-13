@@ -13,7 +13,7 @@ public class MissileAttackScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("damage zone collided with " + collider.tag);
+        //Debug.Log("damage zone collided with " + collider.tag);
         missileScript.handleAttack(collider);
     }
 }

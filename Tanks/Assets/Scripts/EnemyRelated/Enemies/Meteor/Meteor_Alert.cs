@@ -48,9 +48,11 @@ public class Meteor_Alert : EnemyAlertState
         yield return new WaitForSeconds(0.16f);
         while (true) {            
             if (getDist() < enemy.gunRange && getDist() > 4 && isAimed()) {
-                Vector3 point = enemy.player.transform.position + 2 * enemy.pTank.Velocity + Random.insideUnitSphere * 4;
+                Vector3 point = enemy.player.transform.position + enemy.pTank.Velocity + Random.insideUnitSphere * 4;
                 point.y = enemy.player.transform.position.y;
-                if (Physics.Raycast(point + 5 * Vector3.up, -Vector3.up, out RaycastHit hit, 7, 1 << 3)){ 
+                if (Vector3.Distance(point, enemy.rb.position) < 4) {
+                    yield return new WaitForSeconds(1);
+                } else if (Physics.Raycast(point + 5 * Vector3.up, -Vector3.up, out RaycastHit hit, 7, 1 << 3)){ 
                     ((Meteor)enemy).fireMissile(hit.point);
                     yield return new WaitForSeconds(enemy.reload + Random.value * 2);
                 } else {

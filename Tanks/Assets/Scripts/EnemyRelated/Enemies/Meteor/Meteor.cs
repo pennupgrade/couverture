@@ -16,7 +16,7 @@ public class Meteor : Enemy
         sightRange = 20;
         FOV = 1.7f;
         rotSpeed = 60;
-        reload = 10;
+        reload = 8;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject);
         findPlayer();
