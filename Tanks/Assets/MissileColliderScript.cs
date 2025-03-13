@@ -13,11 +13,9 @@ public class MissileColliderScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("collided with");
-        Debug.Log(collider.tag);
         if (collider.tag == "MissileTargetZone")
         {
-            missileScript.setHitTarget();
+            missileScript.handleHitTarget();
         }
     }
 }

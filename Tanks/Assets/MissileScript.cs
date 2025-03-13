@@ -4,34 +4,35 @@ using UnityEngine;
 
 public class MissileScript : MonoBehaviour
 {
-    private float g = -10f;
+    public GameObject missileBody;
+    public GameObject targetZone;
+    public GameObject damageZone;
+
+    private float g = -20f;
 
     public int damage;
     public Vector3 startLocation;
     public Vector3 endLocation;
     public float secondsInAir; //must be positive
 
-    public GameObject missileBody;
-    public GameObject targetZone;
-    public GameObject damageZone;
-
-    private AudioSource explosionSound;
-    private ParticleSystem explosionParticles;
-
     private bool hitTarget;
     private Vector3 acceleration;
     private Vector3 velocity;
 
+
+    //visual and auditory effects
+    private AudioSource explosionSound;
+    private ParticleSystem explosionParticles;
     private Renderer targetZoneRenderer;
+
     private Color initialTargetZoneColor = new Color(1f, 0, 0, 0);
     private Color finalTargetZoneColor = new Color(1f, 0, 0, 1f);
     private Color flashTargetZoneColor = new Color(1f, 1f, 0, 1f);
+
     private float colorLerpTime;
     private float flashingTimer;
+    private float explosionTime = 1f;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         startLocation = gameObject.transform.position;
@@ -43,6 +44,9 @@ public class MissileScript : MonoBehaviour
         explosionSound = gameObject.GetComponent<AudioSource>();
         explosionParticles = damageZone.GetComponent<ParticleSystem>();
 
+        var particleSystemMain = explosionParticles.main;
+        particleSystemMain.startLifetime = explosionTime;
+
         targetZoneRenderer = targetZone.GetComponent<Renderer>();
         targetZoneRenderer.material.color = initialTargetZoneColor;
 
@@ -50,7 +54,6 @@ public class MissileScript : MonoBehaviour
         flashingTimer = 0;
          
         //calculate initial velocity
-
         float initialVelocityX = (endLocation.x - startLocation.x) / secondsInAir;
         float initialVelocityZ = (endLocation.z - startLocation.z) / secondsInAir;
 
@@ -61,14 +64,13 @@ public class MissileScript : MonoBehaviour
         missileBody.transform.rotation = Quaternion.LookRotation(new Vector3(0, 1, 0)); //initially facing upward
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!hitTarget)
         {
             missileBody.transform.position += velocity * Time.deltaTime;
-            velocity += acceleration * Time.deltaTime;
-            missileBody.transform.rotation = Quaternion.LookRotation(velocity);
+            velocity += acceleration * Time.deltaTime;                          //applies constant downward acceleration
+            missileBody.transform.rotation = Quaternion.LookRotation(velocity); //rotates the badminton
         } else
         {
             velocity = new Vector3(0, 0, 0);
@@ -76,7 +78,7 @@ public class MissileScript : MonoBehaviour
         }
 
 
-        //targetZone reaches full opacity after 0.8 * secondsInAir
+        //targetZone gradually reaches full opacity after 80% of secondsInAir
         if (colorLerpTime < 1)
         {
             colorLerpTime += Time.deltaTime / (0.8f * secondsInAir);
@@ -84,6 +86,7 @@ public class MissileScript : MonoBehaviour
                 Color.Lerp(initialTargetZoneColor, finalTargetZoneColor, colorLerpTime);
         } else if (flashingTimer < 1)
         {
+            //targetZone starts flashing for the last 20% of secondsInAir
             flashingTimer += Time.deltaTime / (0.2f * secondsInAir);
             if (
                 (flashingTimer > 0.1 && flashingTimer < 0.2)
@@ -102,13 +105,40 @@ public class MissileScript : MonoBehaviour
         }
     }
 
-    public void setHitTarget()
+    public void handleHitTarget()
     {
         hitTarget = true;
         damageZone.GetComponent<Renderer>().material.color = new Color(1f, 0, 0);
         damageZone.GetComponent<MeshRenderer>().enabled = true;
         explosionSound.Play();
         explosionParticles.Play();
+    }
+
+
+    /**
+     * Handles attack based on collider at secondsInAir seconds
+     * after Missile was spawned. Can be used to damage more than just the player.
+     * 
+     * collider     colliders inside damageZone at time of explosion. This value
+     *              is retreived using onTriggerEnter in MissileAttackScript.cs
+     */
+    public void handleAttack(Collider collider)
+    {
+        if (collider.tag == "Player")
+        {
+            collider.gameObject.GetComponent<Tank>().takeDamage(damage);
+            damageZone.GetComponent<MeshRenderer>().enabled = false;
+            damageZone.GetComponent<SphereCollider>().enabled = false;
+            StartCoroutine(DestroyObjects());
+        }
+    }
+
+    IEnumerator DestroyObjects()
+    {
+        Destroy(missileBody);
+        Destroy(targetZone);
+        yield return new WaitForSeconds(explosionTime);
+        Destroy(gameObject);
     }
 
 }
