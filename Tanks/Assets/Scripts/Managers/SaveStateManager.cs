@@ -34,7 +34,7 @@ public class SaveStateManager
     }
 
     // JSON representation for unlocked characters is an array of unlocked character id's
-    public List<CharacterOption> unlockedCharList = new();
+    public List<CharacterOption> currentUnlockedCharList = new();
 
     public string currCheckpointLevelName = null;
     public int currCheckpoint = -1;
@@ -42,13 +42,16 @@ public class SaveStateManager
 
     public int numLives = -1;
 
+    public List<CharacterOption> oldUnlockedCharList = new();
+
+
     private HashSet<CharacterOption> unlockedChars;
 
     // must be run after deserialization to correctly setup stuff
     public void Setup() {
         // clean up unused characters
         unlockedChars = new HashSet<CharacterOption>();
-        foreach (CharacterOption character in unlockedCharList) {
+        foreach (CharacterOption character in currentUnlockedCharList) {
             unlockedChars.Add(character);
         }
     }
@@ -86,9 +89,9 @@ public class SaveStateManager
     // Save the inventory to a file so the state of a player can be loaded
     public void SaveGameState() {
         // update unlockedCharList
-        unlockedCharList.Clear();
+        currentUnlockedCharList.Clear();
         foreach (CharacterOption x in unlockedChars) {
-            unlockedCharList.Add(x);
+            currentUnlockedCharList.Add(x);
         }
 
         // write JSON to file
@@ -98,5 +101,17 @@ public class SaveStateManager
     public HashSet<CharacterOption> GetUnlockedCharacters() {
         // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
         return new HashSet<CharacterOption>(unlockedChars);
+    }
+
+    public void FullUnlockCurrCharacters() {
+        oldUnlockedCharList = new(currentUnlockedCharList);
+    }
+    
+    public void ResetToOld() {
+        currCheckpointLevelName = null;
+        currCheckpoint = -1;
+        currCharacter = CharacterOption.NONE;
+        numLives = -1;
+        unlockedChars = new(oldUnlockedCharList);
     }
 }
