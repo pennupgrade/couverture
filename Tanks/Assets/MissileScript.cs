@@ -126,9 +126,9 @@ public class MissileScript : MonoBehaviour
     {
         hitTarget = true;
         damageZone.GetComponent<Renderer>().material.color = new Color(1f, 0, 0);
-        damageZone.GetComponent<MeshRenderer>().enabled = true;
         explosionSound.Play();
         explosionParticles.Play();
+        StartCoroutine(DestroyObjects());
     }
 
 
@@ -146,7 +146,6 @@ public class MissileScript : MonoBehaviour
             collider.gameObject.GetComponent<Tank>().takeDamage(damage);
             damageZone.GetComponent<MeshRenderer>().enabled = false;
             damageZone.GetComponent<SphereCollider>().enabled = false;
-            StartCoroutine(DestroyObjects());
         }
     }
 
