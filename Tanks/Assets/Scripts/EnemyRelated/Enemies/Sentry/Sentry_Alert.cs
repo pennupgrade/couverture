@@ -48,7 +48,7 @@ public class Sentry_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {            
-            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange) {
+            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(3)) {
                 fire(24);
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.reload);
