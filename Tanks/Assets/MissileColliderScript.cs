@@ -11,11 +11,13 @@ public class MissileColliderScript : MonoBehaviour
         missileScript = transform.parent.GetComponent<MissileScript>();
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Environment")
+        Debug.Log("collided with");
+        Debug.Log(collider.tag);
+        if (collider.tag == "MissileTargetZone")
         {
-            missileScript.setHitTarget(true);
+            missileScript.setHitTarget();
         }
     }
 }
