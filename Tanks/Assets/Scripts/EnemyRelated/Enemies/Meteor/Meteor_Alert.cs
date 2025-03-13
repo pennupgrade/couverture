@@ -29,7 +29,7 @@ public class Meteor_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
+            playerGone = enemy.player != null && getDist() > enemy.gunRange;
             yield return new WaitForSeconds(30);
         }
     }
@@ -47,7 +47,7 @@ public class Meteor_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {            
-            if (getDist() < enemy.gunRange && isAimed()) {
+            if (getDist() < enemy.gunRange && getDist() > 4 && isAimed()) {
                 Vector3 point = enemy.player.transform.position + 2 * enemy.pTank.Velocity + Random.insideUnitSphere * 4;
                 point.y = enemy.player.transform.position.y;
                 if (Physics.Raycast(point + 5 * Vector3.up, -Vector3.up, out RaycastHit hit, 7, 1 << 3)){ 

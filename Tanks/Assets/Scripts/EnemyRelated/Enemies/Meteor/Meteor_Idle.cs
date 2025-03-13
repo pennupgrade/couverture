@@ -17,7 +17,7 @@ public class Meteor_Idle : EnemyIdleState
         }
         frameTimer = 6;
 
-        if (checkIfPlayerDetected(true)) {
+        if (enemy.player != null && getDist() < enemy.gunRange) {
             if (enemy.idleTurretCor != null) {
                 enemy.StopCoroutine(enemy.idleTurretCor);
                 enemy.idleTurretCor = null;
