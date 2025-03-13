@@ -81,6 +81,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void SaveState() {
+        if (GameManager.Instance is null) {
+            throw new InvalidOperationException("GameManager Instance is Null!");
+        }
+        Instance.stateManager.numLives = GameManager.Instance.GetLives();
         Instance.stateManager.SaveGameState();
     }
 
@@ -89,15 +93,19 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.currCheckpoint = checkpointNum;
     }
 
+    private static bool IsCorrectScene() {
+        return string.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName);
+    }
+
     public static void SetupCheckpointManager() {
         // load checkpoint if correct scene and checkpoint exists
-        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
+        if (IsCorrectScene() && Instance.stateManager.currCheckpoint != -1) {
             CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
         }
     }
 
     public static void SetupGameManager() {
-        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.numLives != -1) {
+        if (IsCorrectScene() && Instance.stateManager.numLives != -1) {
             GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
     }

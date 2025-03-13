@@ -87,10 +87,6 @@ public class SaveStateManager
     public void SaveGameState() {
         // update unlockedCharList
         unlockedCharList.Clear();
-        if (GameManager.Instance is null) {
-            throw new InvalidOperationException("GameManager Instance is Null!");
-        }
-        numLives = GameManager.Instance.GetLives();
         foreach (CharacterOption x in unlockedChars) {
             unlockedCharList.Add(x);
         }
