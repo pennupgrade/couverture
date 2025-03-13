@@ -47,6 +47,7 @@ public class MissileScript : MonoBehaviour
 
         endLocation = endPosition;
         targetZone.transform.position = endPosition;
+
         secondsInAir = Mathf.Abs(secondsInAir); //avoid negative time
 
         hitTarget = false;
@@ -147,14 +148,9 @@ public class MissileScript : MonoBehaviour
             player.takeDamage(damage);
             player.incapacitate(1);
 
-            damageZone.GetComponent<MeshRenderer>().enabled = false;
-            damageZone.GetComponent<SphereCollider>().enabled = false;
         } else if (collider.tag == "Enemy") {
             Enemy e = collider.gameObject.GetComponent<Enemy>();
             e.takeDamage(damage);
-
-            damageZone.GetComponent<MeshRenderer>().enabled = false;
-            damageZone.GetComponent<SphereCollider>().enabled = false;
         }
     }
 
@@ -162,8 +158,12 @@ public class MissileScript : MonoBehaviour
     {
         Destroy(missileBody);
         Destroy(targetZone);
-        Destroy(damageZone);
+
+        damageZone.GetComponent<MeshRenderer>().enabled = false;
+        damageZone.GetComponent<SphereCollider>().enabled = false;
+
         yield return new WaitForSeconds(explosionTime);
+
         Destroy(gameObject);
     }
 
