@@ -7,11 +7,11 @@ public class FanScript : MonoBehaviour
     private float basePushPower;         //linear factor
     private float exponentialPushPower;  //base in the exponential decay
 
-
-
     private float maxEffectiveDistance;
     public GameObject fanCollider;
     public ParticleSystem effect;
+    public bool active;
+    public bool canEffectEnemy;
 
     // Start is called before the first frame update
     void Start()
