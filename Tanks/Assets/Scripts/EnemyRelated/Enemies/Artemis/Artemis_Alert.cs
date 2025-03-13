@@ -85,7 +85,7 @@ public class Artemis_Alert : EnemyAlertState
     }
     private IEnumerator shootCor() {
         ((Artemis)enemy).stopTurnA = true;
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.4f);
         ((Artemis)enemy).stopTurnA = false;
         while (true) {
             float playerDist = getDist();

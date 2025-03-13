@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Phantom_Alert : EnemyAlertState
+public class Hornet_Alert : EnemyAlertState
 {
     private bool playerGone, leadPlayer, wander;
-    public Phantom_Alert(Enemy enemy) : base(enemy) {
+    public Hornet_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = enemy.magSize;
+        enemy.reload = 4;
         leadPlayer = false;
         wander = false;
     }
@@ -20,28 +21,28 @@ public class Phantom_Alert : EnemyAlertState
             if (wander) {
                 enemy.destination = getRandomPoint(6);
             } else {
-                enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
+                enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 2f);
             }
             wander = Random.value < 0.4f;
             enemy.agent.SetDestination(enemy.destination);
         }
-        turnTowardsVector(enemy.agent.desiredVelocity, 300);
+        turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
         return this;
     }
     private IEnumerator recalcPath() {
         while (true) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; ++i) {
                 if (getDist() < 3.2f && lineOfSightCheck()) {
                     Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
                     dir.y = 0;
-                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
+                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 2);
                 } else if (i == 0 && lineOfSightCheck() && getDist() < 5.5f) {
                     enemy.destination = getRandomPoint(4);
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(2f);
             }
         }
     }
@@ -66,14 +67,14 @@ public class Phantom_Alert : EnemyAlertState
                     enemy.StopCoroutine(enemy.reloadCor);
                     enemy.reloadCor = null;
                 }
-                return new Phantom_Idle(enemy);
+                return new Hornet_Idle(enemy);
             }
         }
         return this;
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            yield return new WaitForSeconds(9);
+            yield return new WaitForSeconds(12);
             playerGone = !checkIfPlayerDetected(false);
         }
     }
@@ -96,13 +97,14 @@ public class Phantom_Alert : EnemyAlertState
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
+                enemy.reload = Mathf.Max(enemy.reload - 0.5f, 2);
                 if (Random.value < 0.82f) {
                     enemy.numBullets++;
                 } else {
                     enemy.numBullets = enemy.magSize;
                 }
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }
@@ -112,8 +114,8 @@ public class Phantom_Alert : EnemyAlertState
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.6f) {
                     int left = (Random.value) < 0.5f ? 1 : -1;
-                    for (int i = 0; i < 4; i++) {
-                        fire(left * (-24 + 18 * i), false);
+                    for (int i = 0; i < 3; i++) {
+                        fire(left * (-18 + 18 * i), false);
                         yield return new WaitForSeconds(enemy.cooldownTime / 2);
                     }
                     yield return new WaitForSeconds(enemy.cooldownTime / 2);
