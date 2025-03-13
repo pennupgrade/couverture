@@ -23,7 +23,7 @@ public class SaveStateManager
         } catch (IOException) {
             outManager = new SaveStateManager();
         }
-        outManager.setup();
+        outManager.Setup();
         return outManager;
     }
 
@@ -45,7 +45,7 @@ public class SaveStateManager
     private HashSet<CharacterOption> unlockedChars;
 
     // must be run after deserialization to correctly setup stuff
-    public void setup() {
+    public void Setup() {
         // clean up unused characters
         unlockedChars = new HashSet<CharacterOption>();
         foreach (CharacterOption character in unlockedCharList) {
