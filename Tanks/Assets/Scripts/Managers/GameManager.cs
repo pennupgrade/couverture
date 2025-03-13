@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         livesManager.ResetLives();
+        SaveStateManagerGameObject.RestartLevel();
         StartCoroutine(TimerToRestart(livesManager.GetRespawnTime(), CurrentLevel, () => {}));
         tankStats = null;
     }
