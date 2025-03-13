@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class G1_Alert : EnemyAlertState
+public class Viper_Alert : EnemyAlertState
 {
-    private bool playerGone, leadPlayer;
-    public G1_Alert(Enemy enemy) : base(enemy) {
-        enemy.numBullets = 3;
-        leadPlayer = false;
+    protected bool playerGone;
+    public Viper_Alert(Enemy enemy) : base(enemy) {
+        enemy.numBullets = enemy.magSize;
+        ((Viper)enemy).toggleLaser();
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -16,7 +16,11 @@ public class G1_Alert : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
+            if (Random.value < 0.5f) {
+                enemy.destination = getRandomNavPointAwayFromPlayer(enemy.transform.position, 7, 2.5f);
+            } else {
+                enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 2.5f);
+            }
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -24,15 +28,11 @@ public class G1_Alert : EnemyAlertState
     }
     private IEnumerator recalcPath() {
         while (true) {
-            for (int i = 0; i < 3; i++) {
-                if (getDist() < 3.2f && lineOfSightCheck()) {
-                    Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
-                    dir.y = 0;
-                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
-                } else if (i == 0 && lineOfSightCheck() && getDist() < 5) {
-                    enemy.destination = getRandomPoint(4);
-                } else if (i == 0){
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);
+            for (int i = 0; i < 3; ++i) {
+                if (i == 0 && Random.value < 0.5f) {
+                    enemy.destination = getRandomNavPointAwayFromPlayer(enemy.transform.position, 7, 2.5f);
+                } else if (i == 0) {
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 2.5f);
                 }
                 enemy.agent.SetDestination(enemy.destination);
                 yield return new WaitForSeconds(2.5f);
@@ -60,12 +60,13 @@ public class G1_Alert : EnemyAlertState
                     enemy.StopCoroutine(enemy.reloadCor);
                     enemy.reloadCor = null;
                 }
-                return new G1_Idle(enemy);
+                ((Viper)enemy).toggleLaser();
+                return new Viper_Idle(enemy);
             }
         }
         return this;
     }
-    private IEnumerator alertPatroller() {
+    protected IEnumerator alertPatroller() {
         while (true) {
             yield return new WaitForSeconds(12);
             playerGone = !checkIfPlayerDetected(false);
@@ -73,7 +74,7 @@ public class G1_Alert : EnemyAlertState
     }
 
     public override Enemy_State RotateTurret(Vector3 _) {
-        turnTurretTowardPlayer(leadPlayer);
+        turnTurretTowardPlayer(false);
         return this;
     }
     public override Enemy_State Shoot(Vector3 _) {
@@ -88,38 +89,20 @@ public class G1_Alert : EnemyAlertState
     private IEnumerator reloader() {
         yield return new WaitForSeconds(0.2f);
         while (true) {
-            if (enemy.numBullets < enemy.magSize) {
-                yield return new WaitForSeconds(enemy.reload);
-                if (enemy.numBullets == 1 || Random.value < 0.82f) {
-                    enemy.numBullets++;
-                } else {
-                    enemy.numBullets = enemy.magSize;
-                }
+            if (lineOfSightCheck() && isAimed()) {
+                enemy.numBullets--;
             } else {
-                yield return new WaitForSeconds(0.1f);
+                enemy.numBullets = enemy.magSize;
             }
+            yield return new WaitForSeconds(enemy.cooldownTime);
         }
     }
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {   
-            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
-                if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.6f) {
-                    int left = (Random.value) < 0.5f ? 1 : -1;
-                    for (int i = 0; i < enemy.magSize; i++) {
-                        fire(left * (-10 + 10 * i), false);
-                        yield return new WaitForSeconds(enemy.cooldownTime / 2);
-                    }
-                    yield return new WaitForSeconds(enemy.cooldownTime / 2);
-                    enemy.numBullets = 1;
-                } else if (enemy.numBullets == enemy.magSize || Random.value < 0.8f){
-                    fire(30);
-                    enemy.numBullets--;
-                    leadPlayer = Random.value < enemy.leadChance;
-                    yield return new WaitForSeconds(enemy.cooldownTime);
-                } else {
-                    yield return new WaitForSeconds(enemy.reload);
-                }
+            if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
+                ((Viper)enemy).fireRocket();
+                enemy.numBullets = enemy.magSize - 2;
             } else {
                 yield return new WaitForSeconds(0.16f);
             }

@@ -2,32 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Aegis : EnemyOmniMove
+public class Viper : ShieldedEnemy
 {
+    [SerializeField] GameObject laser;
     void Awake() {
-        enemyState = new Aegis_Start(this);
+        enemyState = new Viper_Start(this);
     }
     // Start is called before the first frame update
     void Start()
     {
         //set enemy values
-        health = 300;
-        gunRange = 8;
-        sightRange = 9;
-        FOV = 1;
-        rotSpeed = 75;
-        cooldownTime = 0.9f;
-        reload = 3;
-        magSize = 3;
+        health = 400;
+        gunRange = 12;
+        sightRange = 13;
+        FOV = 1f;
+        rotSpeed = 120;
+        cooldownTime = 0.25f;
+        reload = 0;
+        magSize = 12;
         numBullets = magSize;
-        bulletSpeed = 3.2f;
-        leadChance = 0.33f;
-        speed = 1.6f;
-        turnSpeed = 160;
+        bulletSpeed = 5f;
+        leadChance = 0f;
+        speed = 1.2f;
+        turnSpeed = 200;
+        dodgeChance = 0.7f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
+        if (shieldEnabled) {
+            shieldSetup();
+            StartCoroutine(activateShield());
+        }
         rb = GetComponent<Rigidbody>();
     }
 
@@ -44,30 +50,27 @@ public class Aegis : EnemyOmniMove
     void FixedUpdate() {
         agent.nextPosition = transform.position;
         if (isStunned) return;
-
-        //dodging
-        stopTurns = detectBullet(1.7f);
-        if (stopTurns) {
-            dodge();
-            transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            if (!accel) {
-                alert();
-            }
-        }
-
         //turning
         if (!stopTurns && moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
-
         //moving
-        if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 8 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
-        }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+    void OnCollisionEnter(Collision collision) {
+        if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
+             && cSpeed > 0.01f){
+            StartCoroutine(stopMove(1.3f));
+        }
+    }
+    public void fireRocket() {
+        GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(gun.transform.forward));
+        bulletPrefab.GetComponent<HomingRocket>().player = player;
+    }
+
+    public void toggleLaser() {
+        laser.SetActive(!laser.activeSelf);
     }
 }

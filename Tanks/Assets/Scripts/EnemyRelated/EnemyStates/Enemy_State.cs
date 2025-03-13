@@ -195,7 +195,7 @@ public abstract class Enemy_State
     }
     
     protected Vector3 getRandomHidePoint(float radius) {
-        for (int i = 0; i < 12; ++i)
+        for (int i = 0; i < 8; ++i)
         {
             Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
