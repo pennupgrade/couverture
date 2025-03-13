@@ -110,4 +110,21 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
     }
 
+    public static void OnEndLevel() {
+        Instance.stateManager.FullUnlockCurrCharacters();
+        // a bit of repetative code (recreating oldUnlockedCharList), but it is not much
+        Instance.stateManager.ResetToOld();
+        Instance.stateManager.SaveGameState();
+    }
+
+    public static void OnRestartLevel() {
+        Instance.stateManager.ResetToOld();
+        Instance.stateManager.SaveGameState();
+    }
+
+    public static void OnStartLevel(bool continueGame) {
+        if (!continueGame) {
+            OnRestartLevel();
+        }
+    }
 }

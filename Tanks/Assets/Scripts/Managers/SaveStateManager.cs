@@ -106,12 +106,13 @@ public class SaveStateManager
     public void FullUnlockCurrCharacters() {
         oldUnlockedCharList = new(currentUnlockedCharList);
     }
-    
+
     public void ResetToOld() {
         currCheckpointLevelName = null;
         currCheckpoint = -1;
-        currCharacter = CharacterOption.NONE;
         numLives = -1;
+        // should I save the current character?
+        currCharacter = CharacterOption.NONE;
         unlockedChars = new(oldUnlockedCharList);
     }
 }
