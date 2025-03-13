@@ -18,11 +18,8 @@ public class Viper : ShieldedEnemy
         FOV = 1f;
         rotSpeed = 120;
         cooldownTime = 0.25f;
-        reload = 0;
         magSize = 12;
         numBullets = magSize;
-        bulletSpeed = 5f;
-        leadChance = 0f;
         speed = 1.2f;
         turnSpeed = 200;
         dodgeChance = 0.7f;

@@ -18,7 +18,7 @@ public class RocketSentry : ShieldedEnemy
         rotSpeed = 108;
         reload = 4f;
         bulletSpeed = 5.2f;
-        leadChance = 0.2f;
+        leadChance = 0.25f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject);
         findPlayer();

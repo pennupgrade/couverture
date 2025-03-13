@@ -2,17 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileSentry_Idle : MonoBehaviour
+public class MissileSentry_Idle : EnemyIdleState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private int frameTimer;
+    public MissileSentry_Idle(Enemy enemy) : base(enemy) {
+        frameTimer = 1;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override Enemy_State Patrol(Vector3 playerPos)
     {
-        
+        frameTimer--;
+        if (frameTimer > 0) {
+            return this;
+        }
+        frameTimer = 6;
+
+        if (checkIfPlayerDetected(true)) {
+            if (enemy.idleTurretCor != null) {
+                enemy.StopCoroutine(enemy.idleTurretCor);
+                enemy.idleTurretCor = null;
+            }
+            return new MissileSentry_Alert(enemy);
+        }
+        return this;
+    }
+
+    public override Enemy_State RotateTurret(Vector3 playerPos) {
+        if (enemy.idleTurretCor == null) {
+            enemy.idleTurretCor = enemy.StartCoroutine(idleTurretTurn());
+        }
+        return this;
     }
 }
