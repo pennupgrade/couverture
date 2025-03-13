@@ -11,12 +11,6 @@ public class MissileAttackScript : MonoBehaviour
         missileScript = transform.parent.GetComponent<MissileScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider collider)
     {
         Debug.Log("damage zone collided with " + collider.tag);
