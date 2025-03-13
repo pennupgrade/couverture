@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Meteor : Enemy
 {
+    public GameObject missilePrefab;
     void Awake() {
         enemyState = new Meteor_Idle(this);
     }
@@ -37,8 +38,9 @@ public class Meteor : Enemy
     }
 
     public void fireMissile(Vector3 target) {
-        GameObject missile = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
-        //bulletPrefab.GetComponent<....>()
+        GameObject missile = Instantiate(missilePrefab, gunShotPos.position, Quaternion.identity);
+        MissileScript missileScript = missile.GetComponent<MissileScript>();
+        missileScript.initialize(gunShotPos.position, target);
     }
 
 }

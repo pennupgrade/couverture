@@ -40,7 +40,7 @@ public class MissileScript : MonoBehaviour
         
     }
 
-    void initialize(Vector3 startPosition, Vector3 endPosition)
+    public void initialize(Vector3 startPosition, Vector3 endPosition)
     {
         startLocation = startPosition;
         gameObject.transform.position = startPosition;
