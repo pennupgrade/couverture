@@ -33,7 +33,14 @@ public class MissileScript : MonoBehaviour
     private float flashingTimer;
     private float explosionTime = 1f;
 
+    private bool initialized = false;
+
     void Start()
+    {
+        
+    }
+
+    void initialize()
     {
         startLocation = gameObject.transform.position;
         endLocation = targetZone.transform.position;
@@ -52,20 +59,27 @@ public class MissileScript : MonoBehaviour
 
         colorLerpTime = 0;
         flashingTimer = 0;
-         
+
         //calculate initial velocity
         float initialVelocityX = (endLocation.x - startLocation.x) / secondsInAir;
         float initialVelocityZ = (endLocation.z - startLocation.z) / secondsInAir;
 
         float displacementY = endLocation.y - startLocation.y;
-        float initialVelocityY = (float) ((displacementY - 0.5 * g * Mathf.Pow(secondsInAir,2)) / secondsInAir);
+        float initialVelocityY = (float)((displacementY - 0.5 * g * Mathf.Pow(secondsInAir, 2)) / secondsInAir);
         velocity = new Vector3(initialVelocityX, initialVelocityY, initialVelocityZ);
 
         missileBody.transform.rotation = Quaternion.LookRotation(new Vector3(0, 1, 0)); //initially facing upward
+
+        initialized = true;
     }
 
     void Update()
     {
+        if (!initialized)
+        {
+            return;
+        }
+
         if (!hitTarget)
         {
             missileBody.transform.position += velocity * Time.deltaTime;
