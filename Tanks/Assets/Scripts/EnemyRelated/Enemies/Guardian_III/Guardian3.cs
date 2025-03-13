@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Guardian3 : EnemyOmniMove
 {
-    public GameObject minePrefab;
     void Awake() {
         enemyState = new G3_Start(this);
     }
@@ -74,12 +73,5 @@ public class Guardian3 : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
-    }
-    public IEnumerator deployMines() {
-        yield return new WaitForSeconds(4);
-        while (true) {
-            Object.Instantiate(minePrefab, transform.position - 0.15f * Vector3.up, Quaternion.identity);
-            yield return new WaitForSeconds(16);
-        }
     }
 }

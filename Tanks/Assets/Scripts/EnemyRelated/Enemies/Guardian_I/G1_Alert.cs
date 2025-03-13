@@ -96,7 +96,7 @@ public class G1_Alert : EnemyAlertState
                     enemy.numBullets = enemy.magSize;
                 }
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
