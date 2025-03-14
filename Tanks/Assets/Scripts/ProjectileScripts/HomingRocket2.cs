@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomingRocket : Projectile
+public class HomingRocket2 : Projectile
 {
     public GameObject player;
     private Rigidbody rb;
 
     private bool disabled;
 
-    private float homingStr, Cturn, turnTimer;
+    private float homingStr, Cturn;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 3f;
-        turnTimer = 0.1f;
-        homingStr = 160;
+        disabled = true;
+        bulletSpeed = 4f;
+        homingStr = 20;
         Cturn = 0;
     }
     void Start()
@@ -30,28 +30,23 @@ public class HomingRocket : Projectile
 
         if (player == null) return;
 
-        if (disabled) {
-            bulletSpeed += Time.deltaTime * 2;
-        } else {
-            bulletSpeed += Time.deltaTime * 0.33f;
-        }
-
-        if (!disabled && Vector3.Distance(player.transform.position, transform.position) < 1.5f) {
-            homingStr = 30;
-            disabled = true;
-            return;
+        if (disabled && Vector3.Distance(player.transform.position, transform.position) < 2.8f) {
+            homingStr = 200;
+            disabled = false;
+        } else if (!disabled) {
+            bulletSpeed = Mathf.Max(bulletSpeed - Time.deltaTime, 3);
         }
         
 
-        if (turnTimer < 0.01f){
-            Vector3 v = player.transform.position - transform.position;
-            if (Vector3.Dot(transform.right, (new Vector3(v.x, 0, v.z)).normalized) > 0){
-                Cturn = homingStr;
-            } else Cturn = -homingStr;
-            turnTimer = 0.3f;
+        Vector3 v = player.transform.position - transform.position;
+        float dot = Vector3.Dot(transform.right, (new Vector3(v.x, 0, v.z)).normalized);
+        if (dot > 0.04f) {
+            Cturn = homingStr;
+        } else if (dot < -0.04f) {
+            Cturn = -homingStr;
+        } else {
+            Cturn = 0;
         }
-
-        turnTimer = TimerF(turnTimer);
     }
 
     // Update is called once per frame
@@ -93,13 +88,4 @@ public class HomingRocket : Projectile
         Destroy(gameObject, 0.25f);
     }
 
-    private float TimerF(float val)
-    {
-        if (val > 0)
-        {
-            val -= Time.deltaTime;
-            if (val <= 0) val = 0;
-        }
-        return val;
-    }
 }

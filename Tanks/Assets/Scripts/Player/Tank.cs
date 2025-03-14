@@ -78,7 +78,7 @@ public class Tank : MonoBehaviour, IDestroyable
             //If player is moving, bullet speed can be affected
             Vector3 deltaPos = currentPos - previousPos;
 
-            Debug.Log(platformSpeed);
+            //Debug.Log(platformSpeed);
 
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
