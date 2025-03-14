@@ -14,11 +14,12 @@ public class Tank : MonoBehaviour, IDestroyable
     // Base Items
     public Controls controls;
     public TankState tankState;
-    public TankController tankController;
+    public TankCharacterController tankController;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Collider tankCollider;
+    [HideInInspector] public CharacterController characterController;
 
     // Config Variables
     private bool invincible;
@@ -33,8 +34,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
-    public GameObject WheelsRef;
-    public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
     public Character charType;
@@ -68,10 +67,11 @@ public class Tank : MonoBehaviour, IDestroyable
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
-        tankController = new TankController(this);
+        tankController = new TankCharacterController(this);
         damageFlash = new DamageFlash(Body);
 
         rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => {
@@ -96,7 +96,6 @@ public class Tank : MonoBehaviour, IDestroyable
         //         tank.moveSpeed /= 5.0f;
         //     }
         // );
-
         // addEffect(effect);
     }
 
@@ -121,7 +120,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
 
-    public void addEffect(TimedEffect timedEffect) {
+    public void addEffect(TimedEffect timedEffect) {    
         effects.Add(timedEffect);
         timedEffect.Start(this);
     }
@@ -139,6 +138,7 @@ public class Tank : MonoBehaviour, IDestroyable
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
         tankController.RayCastTank();
+        tankController.GravityFall();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
