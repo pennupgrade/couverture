@@ -124,8 +124,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3908698274466467449}
   - component: {fileID: 6631009471834770343}
-  - component: {fileID: 2589323094498148320}
   - component: {fileID: 6067398562026383498}
+  - component: {fileID: 6172906843728914113}
   m_Layer: 8
   m_Name: Sentry
   m_TagString: Tank
@@ -192,27 +192,6 @@ MonoBehaviour:
   magSize: 0
   bulletSpeed: 0
   cooldownTime: 0
---- !u!65 &2589323094498148320
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6184528509755761109}
-  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!54 &6067398562026383498
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -240,6 +219,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!135 &6172906843728914113
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6184528509755761109}
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.27
+  m_Center: {x: 0, y: 0.13, z: 0}
 --- !u!1 &6266495652320551901
 GameObject:
   m_ObjectHideFlags: 0

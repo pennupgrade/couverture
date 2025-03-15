@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8994224109053986089}
   - component: {fileID: 2077647458333801496}
-  - component: {fileID: 8206073076900565860}
   - component: {fileID: 7721164411710930207}
   - component: {fileID: 4858160644921465191}
+  - component: {fileID: 5600646369706033908}
   m_Layer: 8
   m_Name: Guardian I
   m_TagString: Tank
@@ -86,27 +86,6 @@ MonoBehaviour:
   cooldownTime: 0
   shield: {fileID: 7978932521699548178}
   shieldEnabled: 0
---- !u!65 &8206073076900565860
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1283230012749227790}
-  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.7, y: 0.5, z: 0.8}
-  m_Center: {x: 0, y: 0, z: -0.02}
 --- !u!54 &7721164411710930207
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,6 +135,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &5600646369706033908
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283230012749227790}
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.45
+  m_Center: {x: 0, y: 0.13, z: 0}
 --- !u!1 &1566082890499172197
 GameObject:
   m_ObjectHideFlags: 0
