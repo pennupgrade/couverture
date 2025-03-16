@@ -199,7 +199,7 @@ public class TankController
         //float theta = Vector3.Dot(direction, bodyForward);
         //thetaFallOff = Mathf.Exp(-Mathf.Abs(theta));
 
-        tank.Velocity = tank.moveSpeed * direction * thetaFallOff;
+        tank.Velocity = (tank.stunned ? 0.4f : 1) * tank.moveSpeed * direction * thetaFallOff;
 
         // ensure y is not weird af
         Vector3 tankPos = tank.transform.position;
