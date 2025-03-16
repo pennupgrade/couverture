@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 3500f;
+    [HideInInspector] public float health = 2500f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -26,7 +26,7 @@ public class Boss : MonoBehaviour, IDestroyable
     private const float MOVE_TIME = 1.25f;
     [SerializeField] private float chargeSpeed;
     [SerializeField] private float chargeRange;
-    private Vector3 chargeDir;
+    public Vector3 chargeDir;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
@@ -39,6 +39,7 @@ public class Boss : MonoBehaviour, IDestroyable
         shotgunBarrel2 = gun.transform.GetChild(1);
         enemySpawned = null;
         df = new DamageFlash(this.gameObject);
+        ind = 0;
     }
 
     public void shootBullet(int barrel = 0)
@@ -98,10 +99,19 @@ public class Boss : MonoBehaviour, IDestroyable
         gun.transform.position = transform.position + movePos;
         gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
         
-        if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
-        } else {
-            unplug();
+        if (!unplugged) {
+            foreach (WireDeath wd in wires) {
+                print(wd);
+                if (wd.gameObject.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
+                } else {
+                    unplug();
+                }
+            }
         }
+        // if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
+        // } else {
+        //     unplug();
+        // }
 
         if (unplugged && ind < wires.Length) {
             wires[ind].Kill();
@@ -146,6 +156,7 @@ public class Boss : MonoBehaviour, IDestroyable
         df.CallDamageFlash(this);
         if (health < 0)
         {
+            player.GetComponent<Tank>().enabled = true;
             Die();
         }
     }
@@ -160,9 +171,10 @@ public class Boss : MonoBehaviour, IDestroyable
         exitWall.activate();
         Destroy(gameObject);
     }
-    public void Charge(float chargeStartTime) {
-        if (Time.time > chargeStartTime + 1f) {
-            rb.velocity = chargeSpeed * transform.forward; 
+    public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
+        if (Time.time > chargeStartTime + 0.75f &&
+        (this.transform.position - chargeStart).magnitude < chargeRange) {
+            rb.velocity = chargeSpeed * chargeDir; 
         }
         //
         // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
