@@ -56,7 +56,8 @@ public class Boss : MonoBehaviour, IDestroyable
         // Shoot the bullet forwards
         bool random = true;
         float dispersion = 0.5f;
-        GameObject bullet = Object.Instantiate(bulletPrefab, startPos.position, Quaternion.identity);
+        GameObject bullet = PoolManager.bulletPool.Get().gameObject;
+        bullet.transform.position = startPos.position;
         bullet.GetComponent<Rigidbody>().velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * startPos.forward * bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
