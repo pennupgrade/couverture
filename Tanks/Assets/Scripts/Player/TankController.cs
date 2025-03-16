@@ -29,14 +29,7 @@ public class TankController
     public TankController(Tank tank)
     {
         this.tank = tank;
-        wheels = new Wheel[tank.Wheels.Length];
-
-        for (int i = 0; i < tank.Wheels.Length; i++)
-        {
-            wheels[i].obj = tank.Wheels[i];
-            wheels[i].fallDelta = 0.0f;
-            wheels[i].maxFall = 0.14f;
-        }
+        wheels = new Wheel[1];
     }
 
     public void CalculateBodyVectors(Vector3 FrontWheelPos, Vector3 BackWheelPos)
@@ -167,7 +160,7 @@ public class TankController
 
     public void RotateWheels(Vector3 direction, float magnitude)
     {
-        GameObject wheelsRef = tank.WheelsRef;
+        GameObject wheelsRef = null;
         Vector3 tankForward = wheelsRef.transform.forward;
         Quaternion targetQuat = Quaternion.LookRotation(direction);
 

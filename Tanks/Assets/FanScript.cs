@@ -41,7 +41,6 @@ public class FanScript : MonoBehaviour
             : Mathf.Pow(maxEffectiveDistance,1.5f);
 
         player.transform.position += displacement;
-        Debug.Log(distance);
     }
     
     float getDistanceFromPlayer(Collider player)
