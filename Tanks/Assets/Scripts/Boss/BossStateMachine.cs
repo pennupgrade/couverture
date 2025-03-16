@@ -40,7 +40,7 @@ public class BossStateMachine : MonoBehaviour
     private Vector3 chargeStart;
     private Vector3 chargeDest;
 
-    
+    private float startTime;
 
 
     private void Awake()
@@ -57,6 +57,11 @@ public class BossStateMachine : MonoBehaviour
             Debug.Log("Could not find player");
         }
         chargeStartTime = 0f;
+    }
+
+    private void Start()
+    {
+        startTime = Time.time;
     }
 
     private void Update()
@@ -117,7 +122,7 @@ public class BossStateMachine : MonoBehaviour
             }
             
             Debug.Log("Switching To Attack State");
-            if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE)
+            if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE && Time.time > startTime + 10f)
             {
                 // Chose between shotgun and melee
                 int rand = UnityEngine.Random.Range(0, 2);
@@ -150,7 +155,7 @@ public class BossStateMachine : MonoBehaviour
                 if (enemies.Count < MAX_NUMBER_SUMMONS && rand == 0) 
                 {
                     currentAttack = Attack.Summon;
-                } else if (Time.time > chargeStartTime + chargeCD && rand == 1)
+                } else if (Time.time > chargeStartTime + chargeCD && rand == 1 && Time.time > startTime + 10f)
                 {
                     currentAttack = Attack.Charge;
                     if (Time.time > chargeStartTime + chargeCD) {

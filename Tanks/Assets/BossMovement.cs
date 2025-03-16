@@ -43,8 +43,8 @@ public class BossMovement : MonoBehaviour
     void Update()
     {   
         if (boss.isUnplugged()) {
-            moveSpeed = 1f;
-            agent.speed = 1f;
+            moveSpeed = 0.85f;
+            agent.speed = 0.85f;
         }
 
         if (bossState.currentAttack != BossStateMachine.Attack.Charge) {
@@ -103,7 +103,12 @@ public class BossMovement : MonoBehaviour
         Vector3 dir = new Vector3(player.transform.position.x - this.transform.position.x, 
                             0, player.transform.position.z - this.transform.position.z);
         Vector3 plugDir = player.transform.position + plugBase.transform.position;
-        agent.destination = Vector3.ClampMagnitude(plugDir/2, 6f);  
+        if ((plugDir - plugBase.position).magnitude > guardRange) {
+            agent.destination = dir.normalized * guardRange + plugBase.position;
+        } else {
+            agent.destination = plugDir/2;
+        }
+        
         // Vector3 crossedWith = new Vector3(0, 1, 0);
         // Vector3 lr = Vector3.Cross(plugDir, crossedWith);
         // dir.Normalize();

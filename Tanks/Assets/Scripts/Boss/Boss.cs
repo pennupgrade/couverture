@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 3500f;
+    [HideInInspector] public float health = 2500f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -39,6 +39,7 @@ public class Boss : MonoBehaviour, IDestroyable
         shotgunBarrel2 = gun.transform.GetChild(1);
         enemySpawned = null;
         df = new DamageFlash(this.gameObject);
+        ind = 0;
     }
 
     public void shootBullet(int barrel = 0)
@@ -100,9 +101,9 @@ public class Boss : MonoBehaviour, IDestroyable
         
         if (!unplugged) {
             foreach (WireDeath wd in wires) {
+                print(wd);
                 if (wd.gameObject.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
                 } else {
-                    print(wd);
                     unplug();
                 }
             }
