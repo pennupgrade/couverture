@@ -46,7 +46,6 @@ public class Bullet_Default : Projectile
         destroyed = false;
         meshTrail.StartTrail();
         animator.Play("DefaultBulletFadeIn");
-        
     }
 
     public void OnSceneLoaded(Scene s, LoadSceneMode m) {
