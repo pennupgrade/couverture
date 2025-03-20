@@ -39,6 +39,9 @@ public class PoolManager
 
     private static void ActionOnDestroyBullet(Bullet_Default bullet) {
         SceneManager.sceneLoaded -= bullet.OnSceneLoaded;
+        if (bullet is null) {
+            Debug.Log("NULL ERROR HERE");
+        }
         bullet.meshTrail.kill();
         Object.Destroy(bullet.gameObject);
     }
