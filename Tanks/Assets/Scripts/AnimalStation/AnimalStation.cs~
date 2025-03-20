@@ -13,14 +13,14 @@ public class AnimalStation : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "player")
         {
             inRange = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "player")
         {
             inRange = false;
         }
@@ -28,12 +28,6 @@ public class AnimalStation : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("Clicked");
-            Debug.Log(inRange);
-        }
-        
         if(inRange && Input.GetKeyDown(KeyCode.E))
         {
             UIManager.instance.Open_CatSelectionPanel_DuringGame();

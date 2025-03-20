@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CatPFPManager : MonoBehaviour
 {
+    //if new cats are added, need to update the sprite, the list, the setPFP function
     public static CatPFPManager instance;
 
     public GameObject CatPFP_obj;
@@ -23,14 +24,16 @@ public class CatPFPManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
-        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
-        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.NONE);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
+        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
+        Debug.Log(SaveStateManagerGameObject.GetUnlockedCharacters().Count);
+        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.NONE);
+
         HashSet<SaveStateManager.CharacterOption> characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
         Debug.Log("# of characters: " + characters.Count);
@@ -74,9 +77,12 @@ public class CatPFPManager : MonoBehaviour
 
     public void ConfirmBtnOnClick()
     {
-        SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
-        Debug.Log("selected: " + currentPFP.character.ToString());
-        gameObject.SetActive(false);
+        if(currentPFP != null)
+        {
+            SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
+            Debug.Log("selected: " + currentPFP.character.ToString());
+        }
+        UIManager.instance.QuitFrom_CatSelectionPanel_DuringGame();
     }
 
 }
