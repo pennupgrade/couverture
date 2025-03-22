@@ -7,7 +7,7 @@ public class Phantom_Alert : EnemyAlertState
 {
     private bool playerGone, leadPlayer, wander;
     public Phantom_Alert(Enemy enemy) : base(enemy) {
-        enemy.numBullets = 4;
+        enemy.numBullets = enemy.magSize;
         leadPlayer = false;
         wander = false;
     }
@@ -73,8 +73,8 @@ public class Phantom_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(9);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 

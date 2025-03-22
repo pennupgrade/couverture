@@ -16,6 +16,7 @@ public class Wasp_Alert : EnemyAlertState
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
             enemy.destination = getRandomPoint(6);
+            Debug.Log(checkDestinationReachable(enemy.destination));
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);
@@ -25,10 +26,11 @@ public class Wasp_Alert : EnemyAlertState
         while (true) {
             for (int i = 0; i < 4; i++) {
                 if (i == 0) {
-                    enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
+                    enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2f);
+                    Debug.Log(checkDestinationReachable(enemy.destination));
                 }
                 enemy.agent.SetDestination(enemy.destination);
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(2.5f);
             }
         }
     }
@@ -57,8 +59,8 @@ public class Wasp_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(7);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 
@@ -75,7 +77,7 @@ public class Wasp_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {            
-            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange) {
+            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(3)) {
                 fire(20);
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.reload);

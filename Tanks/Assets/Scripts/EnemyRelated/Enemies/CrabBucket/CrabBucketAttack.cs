@@ -5,6 +5,7 @@ using UnityEngine;
 public class CrabBucketAttack : MonoBehaviour
 {
     private bool playerInRange = false;
+
     private Collider player;
     public bool isPlayerInRange()
     {
@@ -18,6 +19,7 @@ public class CrabBucketAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name);
         if(other.gameObject.tag == "Player")
         {
             playerInRange = true;

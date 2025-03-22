@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class TankState
@@ -40,25 +41,36 @@ public abstract class TankState
 
     protected bool spawnInsideWallCheck()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(tank.gunShotPos.position, 0.1f, 1 << 8);
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.TryGetComponent<Enemy>(out Enemy e)) {
+                e.takeDamage(100);
+                return true;
+            }
+        }
         return
-            Physics.Raycast(tank.gameObject.transform.position,
-                            tank.gunShotPos.position - tank.gameObject.transform.position,
+            Physics.Raycast(tank.gunShotPos.position - 0.2f * tank.gunShotPos.forward,
+                            tank.gunShotPos.forward,
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
-    public virtual TankState HandleShoot()
+    public virtual TankState HandleShoot(Vector3 offsetVelocity)
     {
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
-
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
-        var bullet = Object.Instantiate(tank.bulletPrefab, tank.gunShotPos.position, Quaternion.identity);
+        var bullet = tank.SpawnBullet();
+        bullet.transform.position = tank.gunShotPos.position;
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
                                                        bullet.GetComponent<Projectile>().bulletSpeed);
         bullet.GetComponent<Bullet_Default>().addBounceChange();
-        bullet.GetComponent<Bullet_Default>().parent = tank.gameObject;
+        bullet.GetComponent<Projectile>().parent = tank.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+
+        //offset velocity is helpful when the object firing the bullet is moving
+        bullet.GetComponent<Rigidbody>().velocity += offsetVelocity;
 
         // Reload bullets if we're not already doing so
         if (tank.reloadCoroutine == null) tank.reloadCoroutine = tank.StartCoroutine(Reload());
@@ -103,7 +115,7 @@ public abstract class TankState
 
     public virtual IEnumerator Reload()
     {
-        while (tank.numBullets < 5)
+        while (tank.numBullets < Tank.MAX_BULLETS)
         {
             tank.reloadProgress = 0f;
 

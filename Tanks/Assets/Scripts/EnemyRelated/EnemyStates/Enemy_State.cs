@@ -47,7 +47,6 @@ public abstract class Enemy_State
                     enemy.cTurretTurn = 0;
                 }
             }
-
         }
     }
     protected virtual IEnumerator idleTurretTurnOmni() {
@@ -150,33 +149,30 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        GameObject bullet = Object.Instantiate(enemy.bulletPrefab, enemy.gunShotPos.position, Quaternion.identity);
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.1f, (1 << 2) | (1 << 8));
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.tag == "Tank" || hit.gameObject.tag == "Player") {
+                return;
+            }
+        }
+
+        GameObject bullet = enemy.SpawnBullet();
+        bullet.transform.position = enemy.gunShotPos.position;
+        bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * (enemy.gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
 
-        bullet.GetComponent<Bullet_Default>().parent = enemy.gameObject;
+        bullet.GetComponent<Projectile>().parent = enemy.gameObject;
         bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
     }
 
     //------------------helper functions for movement--------------------------------
 
     protected Vector3 getRandomPoint(float radius) {
-        for (int i = 0; i < 18; i++)
-        {
-            Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
-            randomPoint.y = enemy.rb.position.y;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
-            {
-                if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f) {
-                    return hit.position;
-                }
-            }
-        }
-        return Vector3.zero;
+        return getRandomNavPoint(enemy.transform.position, radius);
     }
     protected Vector3 getLOSPoint(Vector3 pos, float radius, float avoidRadius) {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 20; ++i)
         {
             Vector3 randomPoint = pos + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
@@ -188,7 +184,8 @@ public abstract class Enemy_State
                 if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f &&
                     !Physics.Raycast(newPos, (enemy.playerRB.position + 0.2f * Vector3.up) - newPos, 
                     Vector3.Distance(newPos, (enemy.playerRB.position + 0.2f * Vector3.up)), 1 << 3) &&
-                    Vector3.Distance(enemy.player.transform.position, newPos) > avoidRadius) {
+                    Vector3.Distance(enemy.player.transform.position, newPos) > avoidRadius 
+                    && checkDestinationReachable(hit.position)) {
 
                     return hit.position;
                 }
@@ -198,7 +195,7 @@ public abstract class Enemy_State
     }
     
     protected Vector3 getRandomHidePoint(float radius) {
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 8; ++i)
         {
             Vector3 randomPoint = enemy.transform.position + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
@@ -208,7 +205,8 @@ public abstract class Enemy_State
                 Vector3 newPos = new Vector3(hit.position.x, enemy.rb.position.y, hit.position.z);
                 if (Mathf.Abs(hit.position.y - enemy.rb.position.y) < 1.2f && 
                     Physics.Raycast(newPos, (enemy.playerRB.position  + 0.2f * Vector3.up) - newPos, 
-                    Vector3.Distance(newPos, enemy.playerRB.position + 0.2f * Vector3.up), 1 << 3)) {
+                    Vector3.Distance(newPos, enemy.playerRB.position + 0.2f * Vector3.up), 1 << 3)
+                    && checkDestinationReachable(hit.position)) {
                     return hit.position;
                 }
             }
@@ -216,34 +214,37 @@ public abstract class Enemy_State
         return getRandomPoint(radius);
     }
     protected Vector3 getPlayerPoint(float radius) {
-        if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1.2f) {
+        if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1f) {
             return getRandomPoint(6);
         }
         for (int i = 0; i < 10; i++)
         {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(enemy.playerRB.position + radius * UnityEngine.Random.insideUnitSphere,
-                 out hit, 1.0f, NavMesh.AllAreas))
-            {
-                return hit.position;
+                 out hit, 1.0f, NavMesh.AllAreas)) {
+                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1f 
+                    && checkDestinationReachable(hit.position)) {
+                    return hit.position;
+                }
             }
         }
         return getRandomPoint(radius);
     }
     protected Vector3 getRandomNavPoint(Vector3 point, float radius) {
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 20; ++i)
         {
             Vector3 randomPoint = point + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1.2f) {
+                if (Mathf.Abs(hit.position.y - enemy.transform.position.y) < 1f 
+                    && checkDestinationReachable(hit.position)) {
                     return hit.position;
                 }
             }
         }
-        return getRandomPoint(radius);
+        return Vector3.zero;
     }
     protected Vector3 getRandomNavPointAwayFromPlayer(Vector3 point, float radius, float avoidRadius) {
         Vector3 p;
@@ -254,6 +255,19 @@ public abstract class Enemy_State
         } while (Vector2.Distance(new Vector2(enemy.playerRB.position.x, enemy.playerRB.position.z),
         new Vector2(p.x, p.z)) < avoidRadius && i < 8);
         return p;
+    }
+    protected bool checkDestinationReachable(Vector3 destination) {
+        var path = new NavMeshPath();
+        enemy.agent.CalculatePath(destination, path);
+        switch (path.status)
+        {
+            case NavMeshPathStatus.PathComplete:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
     }
     protected bool hasReachedDest() {
         return Vector2.Distance(new Vector2(enemy.rb.position.x, enemy.rb.position.z),
@@ -306,4 +320,5 @@ public abstract class Enemy_State
             }
         }
     }
+    
 }

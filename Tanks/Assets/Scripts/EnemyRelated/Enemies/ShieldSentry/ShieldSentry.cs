@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ShieldSentry : Enemy
+{
+    void Awake() {
+        enemyState = new ShieldSentry_Idle(this);
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        //set enemy values
+        health = 300;
+        gunRange = 8;
+        sightRange = 9;
+        FOV = 1.4f;
+        rotSpeed = 60;
+        reload = 1.25f;
+        bulletSpeed = 2.6f;
+        
+        damageFlash = new DamageFlash(transform.Find("Body").gameObject);
+        findPlayer();
+        rb = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (player == null) return;
+
+        Vector3 playerPos = player.transform.position;
+        enemyState = enemyState.Patrol(playerPos);
+        enemyState = enemyState.RotateTurret(playerPos);
+        enemyState = enemyState.Shoot(playerPos);
+
+        gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
+    }
+}

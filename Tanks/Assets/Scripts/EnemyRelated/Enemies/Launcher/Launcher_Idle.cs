@@ -17,7 +17,7 @@ public class Launcher_Idle : EnemyIdleState
         }
         frameTimer = 6;
 
-        if (getDist() < 12) {
+        if (getDist() < 16) {
             return new Launcher_Alert(enemy);
         }
         return this;

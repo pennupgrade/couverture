@@ -84,6 +84,10 @@ public class PlayerCamera : MonoBehaviour
 
     public void Kill(float duration) {
         Debug.Log("Player died, initiate camera death sequence");
+        Checkpoint newSpawn = CheckpointManager.GetCurrCheckpoint();
+        if (newSpawn != null) {
+            ogCamPos = newSpawn.gameObject.transform.position + transform.position - GameObject.FindWithTag("Player").transform.position;
+        }
         StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
         isDead = true;
     }
@@ -159,9 +163,9 @@ public class PlayerCamera : MonoBehaviour
 
         // Only update camera position if the distance to the camera has changed, or the tank has gone
         // out of bounds. Otherwise, we return early
-        if (range.IsWithinBounds(viewPos.x, viewPos.y) && !distanceChanged) return;
+        // if (range.IsWithinBounds(viewPos.x, viewPos.y) && !distanceChanged) return;
 
         var newPosition = playerPos + Vector3.Normalize(cameraDirection) * distanceFromPlayer;
-        mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, newPosition, Time.deltaTime);
+        mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, newPosition, 4*Time.deltaTime);
     }
 }

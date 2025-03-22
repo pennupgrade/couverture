@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Launcher : Enemy
 {
+    public float reloadValue;
 
     void Awake() {
         enemyState = new Launcher_Idle(this);
@@ -18,7 +19,7 @@ public class Launcher : Enemy
         sightRange = 10;
         FOV = 2f;
         rotSpeed = 0;
-        reload = 4;
+        reload = reloadValue;
         bulletSpeed = 3;
         leadChance = 0;
         

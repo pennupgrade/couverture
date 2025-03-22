@@ -29,14 +29,25 @@ public class ShieldedEnemy : Enemy
     }
     protected IEnumerator activateShield() {
         if (shield == null) yield break;
-        float i = 1;
-        while (i > 0) {
-            i -= 0.05f;
-            shieldMat.SetFloat("_Dissolve", i);
-            yield return new WaitForSeconds(0.06f);
-        }
-        shieldActivated = true;
         shieldMat.SetFloat("_Dissolve", 0);
+
+        Vector3 origScale = shield.transform.localScale;
+        float i = 0.1f;
+        while (i < 1) {
+            float f = Mathf.SmoothStep(0.2f, 1.2f, i);
+            shield.transform.localScale = f * origScale;
+            i += 4 * Time.deltaTime;
+            yield return null;
+        }
+        i = 0.1f;
+        while (i < 1) {
+            float f = Mathf.SmoothStep(1.2f, 1, i);
+            shield.transform.localScale = f * origScale;
+            i += 20 * Time.deltaTime;
+            yield return null;
+        }
+        shield.transform.localScale = origScale;
+        shieldActivated = true;
     }
     private IEnumerator deactivateShield() {
         shieldActivated = false;

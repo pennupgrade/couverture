@@ -19,7 +19,7 @@ public class Bomb : Enemy
         FOV = 1.4f;
         speed = 1.5f;
         turnSpeed = 160;
-        explosionRadius = 2.2f;
+        explosionRadius = 2.5f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();

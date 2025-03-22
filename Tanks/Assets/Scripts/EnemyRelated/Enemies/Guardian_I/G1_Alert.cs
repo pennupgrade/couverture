@@ -67,8 +67,8 @@ public class G1_Alert : EnemyAlertState
     }
     private IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(12);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 
@@ -96,7 +96,7 @@ public class G1_Alert : EnemyAlertState
                     enemy.numBullets = enemy.magSize;
                 }
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }

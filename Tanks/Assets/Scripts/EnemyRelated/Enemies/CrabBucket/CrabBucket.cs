@@ -43,8 +43,8 @@ public class CrabBucket : MonoBehaviour
                 attackWaitTimeCounter += Time.fixedDeltaTime;
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
-            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 4,
-            1, attackWaitTimeCounter * 4);
+            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 2.666f,
+            1, attackWaitTimeCounter * 2.666f);
         }
     }
 
@@ -73,7 +73,7 @@ public class CrabBucket : MonoBehaviour
     {
         Debug.Log("One Attack");
         attackEffects.Play();
-
+                        
         if (attackScript.isPlayerInRange()) 
         {
             GameObject player = attackScript.getPlayer().gameObject;
@@ -89,7 +89,19 @@ public class CrabBucket : MonoBehaviour
             if (!Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer))
             {
                 Debug.Log("Deals Damage");
-                player.GetComponent<Tank>().takeDamage(damage);
+                if (player.GetComponent<Tank>().character is BubbleChar)
+                {
+                    BubbleChar bc = (BubbleChar)(player.GetComponent<Tank>().character);
+                    if(bc!= null && bc.active)
+                    {
+                        bc.obj.GetComponent<Bubble>().takeDamage(1);
+                        Debug.Log("Attack Blocked by Shield");
+                        blockedSound.Play();
+                        return;
+                    }
+                }
+
+                    player.GetComponent<Tank>().takeDamage(damage);
                 sound.Play();
             }
             else
