@@ -150,6 +150,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
         previousPos = currentPos;//this gives them a single-tick of delta difference
         currentPos = transform.position;
+        print("PREV CURR" + previousPos + " " + currentPos);
         
         // FOR TESTING PURPOSES, SHOULD BE REMOVED
         if(Input.GetKeyDown(KeyCode.Z)) {
@@ -233,5 +234,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // spawn a base bullet, override if different base bullet
     public GameObject SpawnBullet() {
         return PoolManager.bulletPool.Get().gameObject;
+    }
+    public void ResetPosition(Vector3 pos) {
+        previousPos = pos;
+        currentPos = pos;
+        print("RESET" + previousPos + " " + currentPos);
     }
 }
