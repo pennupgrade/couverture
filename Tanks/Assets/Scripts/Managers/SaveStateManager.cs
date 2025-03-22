@@ -10,66 +10,65 @@ using System.IO;
 using System.Net.NetworkInformation;
 
 [Serializable]
-public class SaveStateManager
-{
-    private const string SAVE_LOCATION = "save_data.json";
-    public static SaveStateManager LoadInventory() {
+public class SaveStateManager {
+    public static SaveStateManager LoadInventory(string saveLocation) {
         SaveStateManager outManager;
         try {
-            using (StreamReader reader = new(SAVE_LOCATION)) {
+            using (StreamReader reader = new(saveLocation)) {
                 string jsonData = reader.ReadToEnd();
                 outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
             }
         } catch (IOException) {
-            outManager = new SaveStateManager();
+            outManager = new SaveStateManager(saveLocation);
         }
-        outManager.Setup();
         return outManager;
     }
 
-    public enum CharacterOption {
-        NONE,
-        ROCKET_CAT,
-        BUBBLE_CAT
+
+
+    [Serializable]
+    public class LevelSaveData {
+        public string LevelName;
+        public TankStats Stats;
+        public CharacterOption CurrCharacter = CharacterOption.NONE;
     }
 
-    // JSON representation for unlocked characters is an array of unlocked character id's
-    public List<CharacterOption> currentUnlockedCharList = new();
+    public enum CharacterOption {
+    NONE,
+    ROCKET_CAT,
+    BUBBLE_CAT
+    }
 
-    public string currCheckpointLevelName = null;
-    public int currCheckpoint = -1;
-    public CharacterOption currCharacter = CharacterOption.NONE;
+    private string saveLocation;
 
-    public int numLives = -1;
+    public List<CharacterOption> unlockedCharList = new();
 
-    public List<CharacterOption> oldUnlockedCharList = new();
-
+    public LevelSaveData latestLevel;
+    private LevelSaveData currentLevel; 
+    private CharacterOption currCharacter;
 
     private HashSet<CharacterOption> unlockedChars;
 
-    // must be run after deserialization to correctly setup stuff
-    public void Setup() {
-        // clean up unused characters
-        unlockedChars = new HashSet<CharacterOption>();
-        foreach (CharacterOption character in currentUnlockedCharList) {
-            unlockedChars.Add(character);
-        }
+    public SaveStateManager(string saveLocation) {
+        this.saveLocation = saveLocation;
     }
 
 
-    //          CHARACTER STUFF
-
-    // unlock character, returns true if character wasn't unlocked before (successfully unlocked) and false otherwise
-    public bool UnlockCharacter(CharacterOption character) {
-        return unlockedChars.Add(character);
+    // character management
+    public HashSet<CharacterOption> GetUnlockedCharacters() {
+        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        return new HashSet<CharacterOption>(unlockedChars);
     }
 
-    // Switch character
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
         if (unlockedChars.Contains(changeTo)) {
             t.character = CreateNewChar(changeTo);
             currCharacter = changeTo;
         }
+    }
+
+    public bool UnlockCharacter(CharacterOption character) {
+        return unlockedChars.Add(character);
     }
 
     private Character CreateNewChar(CharacterOption characterId) {
@@ -78,41 +77,69 @@ public class SaveStateManager
                 return new RocketChar();
             case CharacterOption.BUBBLE_CAT:
                 return new BubbleChar();
+            case CharacterOption.NONE:
+                return new DefaultChar();
             default:
                 throw new ArgumentException();
         };
     }
 
-
-    //          SAVE GAME STATE
-
-    // Save the inventory to a file so the state of a player can be loaded
-    public void SaveGameState() {
-        // update unlockedCharList
-        currentUnlockedCharList.Clear();
-        foreach (CharacterOption x in unlockedChars) {
-            currentUnlockedCharList.Add(x);
+    public void LoadLevel(string levelName, Tank t) {
+        if (latestLevel is null) {
+            latestLevel = new();
+            latestLevel.LevelName = levelName;
         }
+        // this could be optimized
+        unlockedChars = new(unlockedCharList);
+        if (levelName == latestLevel.LevelName) {
+            // if loading latest level, replace currentlevel with latestlevel
+            currentLevel = latestLevel;
+        } else if (currentLevel == null || currentLevel.LevelName != levelName) {
+            // If currentLevel data is not applicable, wipe it and create new data
+            currentLevel = new();
+        }
+        // load currentlevel
+        currCharacter = currentLevel.CurrCharacter;
+        // load current character
+        // TODO: should change so that it can switch to NONE???
+        SwitchCharacter(t, currentLevel.CurrCharacter);
+        if (currentLevel.Stats != null) {
+            currentLevel.Stats.TransferStats(t);
+        }
+    }
 
+    public void FinishLevel(string nextLevelName, TankStats t) {
+        // update unlockedCharList
+        unlockedCharList.Clear();
+        foreach (CharacterOption x in unlockedChars) {
+            unlockedCharList.Add(x);
+        }
+        if (nextLevelName != null) {
+            currentLevel.LevelName = nextLevelName;
+            currentLevel.Stats = t;
+            currentLevel.CurrCharacter = currCharacter;
+        } else {
+            latestLevel = new();
+            latestLevel.LevelName = "ALL LEVELS UNLOCKED";
+        }
+        WriteToSaveFile();
+    }
+
+    public void OnPlayerDeath() {
+        if (currentLevel.Stats != null) {
+            currentLevel.Stats = null;
+            if (currentLevel == latestLevel) {
+                WriteToSaveFile();
+            }
+        }
+    }
+
+    public void OnExitLevel() {
+        currentLevel = null;
+    }
+
+    private void WriteToSaveFile() {
         // write JSON to file
-        File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
-    }
-
-    public HashSet<CharacterOption> GetUnlockedCharacters() {
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        return new HashSet<CharacterOption>(unlockedChars);
-    }
-
-    public void FullUnlockCurrCharacters() {
-        oldUnlockedCharList = new(currentUnlockedCharList);
-    }
-
-    public void ResetToOld() {
-        currCheckpointLevelName = null;
-        currCheckpoint = -1;
-        numLives = -1;
-        // should I save the current character?
-        currCharacter = CharacterOption.NONE;
-        unlockedChars = new(oldUnlockedCharList);
+        File.WriteAllText(saveLocation, JsonUtility.ToJson(this, true));
     }
 }

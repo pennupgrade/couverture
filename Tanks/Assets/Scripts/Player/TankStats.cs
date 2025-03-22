@@ -1,7 +1,10 @@
+using System;
+
+[Serializable]
 public class TankStats {
-    private int health;
-    private int numBullets;
-    private float moveSpeed;
+    public int health;
+    public int numBullets;
+    public float moveSpeed;
 
     public TankStats(Tank t) {
         this.health = t.health;
