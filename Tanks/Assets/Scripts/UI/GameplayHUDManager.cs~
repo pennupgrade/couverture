@@ -9,12 +9,6 @@ public class GameplayHUDManager : MonoBehaviour
     public TMP_Text ready_Text;
     public Image abilityBar_Fill;
 
-    public void startFillAbilityBar(float reloadTime)
-    {
-        abilityBar_Fill.fillAmount = 0;
-        StartCoroutine("fillAbilityBar", reloadTime);
-    }
-
     private IEnumerator fillAbilityBar(float reloadTime)
     {
         float fillConstant = 1 / reloadTime * 0.05f;
