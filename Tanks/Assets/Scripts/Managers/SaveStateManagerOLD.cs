@@ -13,15 +13,15 @@ using System.Net.NetworkInformation;
 public class SaveStateManagerOLD
 {
     private const string SAVE_LOCATION = "save_data.json";
-    public static SaveStateManager LoadInventory() {
-        SaveStateManager outManager;
+    public static SaveStateManagerOLD LoadInventory() {
+        SaveStateManagerOLD outManager;
         try {
             using (StreamReader reader = new(SAVE_LOCATION)) {
                 string jsonData = reader.ReadToEnd();
-                outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+                outManager = JsonUtility.FromJson<SaveStateManagerOLD>(jsonData);
             }
         } catch (IOException) {
-            outManager = new SaveStateManager();
+            outManager = new SaveStateManagerOLD();
         }
         outManager.Setup();
         return outManager;

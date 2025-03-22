@@ -7,12 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class SaveStateManagerGameObjectOld : MonoBehaviour
 {
-    public static SaveStateManagerGameObject Instance = null;
+    public static SaveStateManagerGameObjectOld Instance = null;
 
     private SaveStateManagerOLD stateManager;
 
     [SerializeField]
-    public SaveStateManager.CharacterOption defaultTestingCat;
+    public SaveStateManagerOLD.CharacterOption defaultTestingCat;
 
     private static Tank FindTank() {
         return FindObjectOfType<Tank>();
@@ -22,14 +22,14 @@ public class SaveStateManagerGameObjectOld : MonoBehaviour
     // THIS IS MEANT FOR TESTING, WILL AUTOMATICALLY UNLOCK AND USE THE CAT SPECIFIED IN defaultTestingCat!!!!
     // TO HAVE THIS DO NOTHING, HAVE defaultCat set to NONE
     void SetDefaultCat() {
-        if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
+        if (defaultTestingCat != SaveStateManagerOLD.CharacterOption.NONE) {
             Instance.stateManager.UnlockCharacter(defaultTestingCat);
             SwitchCharacter(defaultTestingCat);
         }
     }
 
     private static void SetCurrCat() {
-        if (Instance.stateManager.currCharacter != SaveStateManager.CharacterOption.NONE) {
+        if (Instance.stateManager.currCharacter != SaveStateManagerOLD.CharacterOption.NONE) {
             SwitchCharacter(Instance.stateManager.currCharacter);
         }
     }
@@ -61,23 +61,23 @@ public class SaveStateManagerGameObjectOld : MonoBehaviour
 
 
     // Character setting/getting/unlocking
-    public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
+    public static void UnlockCharacter(SaveStateManagerOLD.CharacterOption c) {
         if (Instance.stateManager.UnlockCharacter(c)) {
             SaveState();
         }
     }
 
-    public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
+    public static void SwitchCharacter(SaveStateManagerOLD.CharacterOption c) {
         Instance.stateManager.SwitchCharacter(FindTank(), c);
     }
 
-    public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
+    public static HashSet<SaveStateManagerOLD.CharacterOption> GetUnlockedCharacters() {
         return Instance.stateManager.GetUnlockedCharacters();
     }
 
     // SAVE AND LOAD
     private static void LoadState() {
-        Instance.stateManager = SaveStateManager.LoadInventory();
+        Instance.stateManager = SaveStateManagerOLD.LoadInventory();
     }
 
     public static void SaveState() {
