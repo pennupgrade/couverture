@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // [HideInInspector] public LivesManager livesManager;
-    public string CurrentLevel;
+    private string currentLevel;
     public float respawnTime;
     // public int totalLives;
 
@@ -18,11 +18,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("Initialize game manager");
 
         Instance = this;
+        currentLevel = SceneManager.GetActiveScene().name;
         // livesManager = new LivesManager(respawnTime, totalLives);
     }
 
     void Start() {
-        SaveStateManagerGameObject.LoadLevel(SceneManager.GetActiveScene().name);
+        SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
 
     public void SwitchSublevel(float transitionTime, string sceneName)
@@ -38,9 +39,7 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         // livesManager.ResetLives();
-        // TODO: MUST ACCOUNT FOR LEVEL RESTARTING (AKA MUST LOAD SAVE DATA AGAIN, HOW WILL WE DO THIS?)
-        // SaveStateManagerGameObject.RestartLevel();
-        StartCoroutine(TimerToRestart(respawnTime, CurrentLevel));
+        StartCoroutine(TimerToRestart(respawnTime, currentLevel));
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)

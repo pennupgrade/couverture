@@ -9,7 +9,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     private const string SAVE_FILE_PREFIX = "save_data_";
     public static SaveStateManagerGameObject Instance = null;
 
-    private SaveStateManager stateManager;
+    private SaveStateManager stateManager = null;
 
     // TODO: should i optimize this (FindTank only at loadlevel)?
     private static Tank FindTank() {
@@ -52,5 +52,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static void ExitLevel() {
         Instance.stateManager.OnExitLevel();
+    }
+
+    // debug method so tests can be run from Unity editor from simply starting scene
+    public static void DebugLoadSave() {
+        if (Instance.stateManager is null) {
+            LoadSave(1);
+        }
     }
 }
