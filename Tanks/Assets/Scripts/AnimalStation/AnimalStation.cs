@@ -17,6 +17,7 @@ public class AnimalStation : MonoBehaviour
         {
             inRange = true;
         }
+        print("yay");
     }
     private void OnTriggerExit(Collider other)
     {

@@ -11,7 +11,7 @@ public abstract class Projectile : MonoBehaviour
     protected bool destroyed;
     public GameObject parent;
 
-    public float dontDamageOnSpawnDelay=0.1f;
+    public float dontDamageOnSpawnDelay=0.08f;
 
     protected float startLifetime;
 
@@ -52,11 +52,13 @@ public abstract class Projectile : MonoBehaviour
     }
 
     protected bool defaultCollisionChecks(Collision collision) {
-        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d) && (startLifetime-lifetime)>dontDamageOnSpawnDelay) // hit a player
+        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) // hit a player
         {
-            d.takeDamage(damage);
-            destruction();
-            return true;
+            if ((startLifetime - lifetime) > dontDamageOnSpawnDelay || parent != collision.gameObject) {
+                if (!destroyed) d.takeDamage(damage);
+                destruction();
+                return true;
+            }
         }
 
         if (collision.gameObject.tag == "Projectile" || collision.gameObject.tag == "NoBounce") // Parry other projectile or no bounce

@@ -149,10 +149,14 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.1f, (1 << 2) | (1 << 8));
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.2f, (1 << 2) | (1 << 8));
         foreach (var hit in hitColliders) {
-            if (hit.gameObject.tag == "Tank" || hit.gameObject.tag == "Player") {
+            if (hit.gameObject.tag == "Tank") {
                 return;
+            } else if (hit.gameObject.tag == "Player") {
+                enemy.pTank.takeDamage(300);
+                GameObject bExplode = GameObject.Instantiate(enemy.bulletExplosionPrefab, enemy.gunShotPos.position, Quaternion.identity);
+                GameObject.Destroy(bExplode, 3);
             }
         }
 

@@ -7,6 +7,7 @@ public class Bomb_Attack : EnemyAlertState
 {
     public Bomb_Attack(Enemy enemy) : base(enemy) {
         enemy.speed += 1;
+        ((Bomb)enemy).turnOnLight();
         enemy.cSpeed = enemy.speed;
     }
 
@@ -41,7 +42,7 @@ public class Bomb_Attack : EnemyAlertState
     public override Enemy_State Shoot(Vector3 _) {
         //explode
         if (getDist() < 1.4f) {
-            enemy.takeDamage(200);
+            ((Bomb)enemy).boom();
         }
         return this;
     }

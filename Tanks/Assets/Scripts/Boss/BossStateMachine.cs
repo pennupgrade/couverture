@@ -30,6 +30,9 @@ public class BossStateMachine : MonoBehaviour
 
     public float stunDur = 1f;
     private float stunStart;
+    public bool playerIsStunned;
+
+    [SerializeField] private GameObject wall;
     
 
     [SerializeField] private float chargeCD;
@@ -41,7 +44,7 @@ public class BossStateMachine : MonoBehaviour
     private Vector3 chargeDest;
 
     private float startTime;
-
+    private Vector3 lastPos;
 
     private void Awake()
     {
@@ -57,6 +60,7 @@ public class BossStateMachine : MonoBehaviour
             Debug.Log("Could not find player");
         }
         chargeStartTime = 0f;
+        playerIsStunned = false;
     }
 
     private void Start()
@@ -66,10 +70,21 @@ public class BossStateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time > stunDur + stunStart) {
+        if (Time.time > stunDur + stunStart && playerIsStunned) {
+            player.transform.position = lastPos;
             playerTank.enabled = true;
+            player.GetComponent<Rigidbody>().isKinematic = true;
+            playerTank.ResetPosition(lastPos);
+            playerIsStunned = false;
+        } else {
+            lastPos = player.transform.position;
         }
-        timer += Time.deltaTime;
+
+        if (wall.transform.position.y > -1.12)
+        {
+            timer += Time.deltaTime;
+        }
+        
         if (currentState == State.Idle)
         {
             if (timer > timeUntilAttack)
@@ -244,14 +259,16 @@ public class BossStateMachine : MonoBehaviour
 
     void OnCollisionEnter(Collision col) {
         Debug.Log("collided " + col.gameObject.tag + currentAttack + chargeHitAlready);
-        if (currentAttack == Attack.Charge && col.gameObject.tag == "Player" && !chargeHitAlready) {
+        if (currentAttack == Attack.Charge && col.gameObject.tag == "Player" && !chargeHitAlready && !playerIsStunned) {
+            col.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             Debug.Log("Player hit!");
             Tank tank = col.gameObject.GetComponent<Tank>();
             Vector3 diff = (player.transform.position - this.transform.position).normalized;
             Vector3 add = new Vector3 (UnityEngine.Random.Range(0.5f, 1.5f), 1, UnityEngine.Random.Range(0.5f, 1.5f));
-            Vector3 knock = new Vector3(diff.x * add.x, 2f, diff.z * add.z) * 20000;
+            Vector3 knock = new Vector3(diff.x * add.x, 2.5f, diff.z * add.z) * 8000;
 
             playerTank.enabled = false;
+            playerIsStunned = true;
             stunStart = Time.time;
 
             col.gameObject.GetComponent<Rigidbody>().AddForce(knock, ForceMode.Impulse);

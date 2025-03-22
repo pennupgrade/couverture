@@ -7,6 +7,7 @@ public class Bomb : Enemy
 {
     [HideInInspector] public float explosionRadius;
     public LayerMask explosionLM;
+    public Material glowMat;
     void Awake() {
         enemyState = new Bomb_Start(this);
     }
@@ -19,9 +20,9 @@ public class Bomb : Enemy
         FOV = 1.4f;
         speed = 1.5f;
         turnSpeed = 160;
-        explosionRadius = 2.5f;
+        explosionRadius = 2.4f;
         
-        damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
+        damageFlash = new DamageFlash(transform.Find("body_control").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
         rb = GetComponent<Rigidbody>();
@@ -59,6 +60,7 @@ public class Bomb : Enemy
         }
     }
     protected override void destruction() {
+        if (isDead) return;
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLM);
         foreach (var hit in hitColliders) {
             if (hit.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
@@ -67,5 +69,12 @@ public class Bomb : Enemy
         }
 
         base.destruction();
+    }
+    public void boom() {
+        destruction();
+    }
+
+    public void turnOnLight() {
+        glowMat.SetFloat("_Pulsing", 1);
     }
 }

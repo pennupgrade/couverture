@@ -238,4 +238,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject SpawnBullet() {
         return PoolManager.bulletPool.Get().gameObject;
     }
+    public void ResetPosition(Vector3 pos) {
+        previousPos = pos;
+        currentPos = pos;
+        print("RESET" + previousPos + " " + currentPos);
+    }
 }
