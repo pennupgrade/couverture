@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Character
 {
-    public abstract void Ability(Tank tank);
+    public abstract bool Ability(Tank tank);
 
     public abstract void AbilityUpdate(Tank t);
 

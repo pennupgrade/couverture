@@ -13,18 +13,24 @@ public class GameplayHUDManager : MonoBehaviour
     {
         abilityBar_Fill.fillAmount = 0;
         ready_Text.text = "Recharging...";
-        StartCoroutine("fillAbilityBar", reloadTime);
+        StartCoroutine("FillAbilityBar", reloadTime);
     }
 
-    private IEnumerator fillAbilityBar(float reloadTime)
+    private IEnumerator FillAbilityBar(float reloadTime)
     {
-        float fillConstant = 1 / reloadTime * 0.05f;
-        while (reloadTime > 0)
+        Debug.Log("Reload Time: " + reloadTime);
+        float elapsed = 0f;
+        abilityBar_Fill.fillAmount = 0f;
+
+        while (elapsed < reloadTime)
         {
             yield return new WaitForSeconds(0.05f);
-            reloadTime -= 0.05f;
-            abilityBar_Fill.fillAmount += fillConstant;
+            elapsed += 0.05f;
+            abilityBar_Fill.fillAmount = elapsed / reloadTime;
+            Debug.Log(abilityBar_Fill.fillAmount);
         }
+
+        abilityBar_Fill.fillAmount = 1f;
         ready_Text.text = "Ready!";
     }
 }

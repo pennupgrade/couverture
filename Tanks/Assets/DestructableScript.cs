@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class destrcutableScript : MonoBehaviour
+public class DestructableScript : MonoBehaviour
 {
     private DamageFlash damageFlash;
     public GameObject Body;
+    public float breakTime;
     public int hits;
 
     // Start is called before the first frame update
     void Start()
     {
         damageFlash = new DamageFlash(this.gameObject);
+        damageFlash._flashTime = breakTime;
     }
 
     // Update is called once per frame
@@ -22,7 +24,7 @@ public class destrcutableScript : MonoBehaviour
 
     void destroy()
     {
-        Destroy(this.gameObject, 0.25f);
+        Destroy(gameObject, breakTime);
     }
     
     private void OnCollisionEnter(Collision collision)
@@ -32,16 +34,19 @@ public class destrcutableScript : MonoBehaviour
         {
             
             GameObject parent = projectile.parent;
+            if(parent == null)
+            {
+                return;
+            }
             if(parent.tag == "Player")
             { 
                 damageFlash.CallDamageFlash(this);
                 hits--;
-                if (hits == 0)
+                if (hits <= 0)
                 {
                     destroy();
+                    projectile.destruction();
                 }
-                    
-                
             }
             else if (parent.tag == "Tank")
             {

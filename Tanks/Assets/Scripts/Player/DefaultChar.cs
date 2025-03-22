@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DefaultChar : Character
 {
-    public override void Ability(Tank tank)
+    public override bool Ability(Tank tank)
     {
-
+        return true;
     }
 
     public override void AbilityUpdate(Tank t)

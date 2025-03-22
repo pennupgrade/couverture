@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BubbleChar : Character
 {
-    public float cooldown = 3;
+    private float cooldown = 3;
     private float currCD = 0;
     public GameObject bubblePrefab = Resources.Load<GameObject>("BubbleShield");
 
@@ -15,13 +15,18 @@ public class BubbleChar : Character
     [HideInInspector]
     public GameObject obj;
 
-    public override void Ability(Tank tank)
+    public override bool Ability(Tank tank)
     {
-        if (!active)
+        if (!active && currCD <= 0)
         {   
             active = true;
             obj = Object.Instantiate(bubblePrefab);
             obj.GetComponent<Bubble>().targetTransform = tank.transform;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -30,6 +35,7 @@ public class BubbleChar : Character
         if (obj == null) {
             active = false;
         }
+        currCD -= Time.deltaTime;
     }
 
     public override float getCoolDown()
