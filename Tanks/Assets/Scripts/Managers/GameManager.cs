@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
+        SaveStateManagerGameObject.DebugLoadSave();
         SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
 
