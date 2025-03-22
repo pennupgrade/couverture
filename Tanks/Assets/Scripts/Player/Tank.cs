@@ -219,9 +219,13 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     // Character abilities
-    public void Ability() {
+    public bool Ability() {
         if (character != null) {
-            character.Ability(this);
+            return character.Ability(this);
+        }
+        else
+        {
+            return false;
         }
     }
     public void AbilityUpdate() {
@@ -233,5 +237,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // spawn a base bullet, override if different base bullet
     public GameObject SpawnBullet() {
         return PoolManager.bulletPool.Get().gameObject;
+    }
+    public void ResetPosition(Vector3 pos) {
+        previousPos = pos;
+        currentPos = pos;
+        print("RESET" + previousPos + " " + currentPos);
     }
 }

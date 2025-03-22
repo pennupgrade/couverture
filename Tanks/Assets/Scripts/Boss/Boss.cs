@@ -13,6 +13,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject gun;
     private Transform shotgunBarrel1;
     private Transform shotgunBarrel2;
+    private Transform shotgunBarrel3;
     private float bulletSpeed;
     public GameObject[] enemyPrefabs;
     public Transform[] summonLocations;
@@ -37,6 +38,7 @@ public class Boss : MonoBehaviour, IDestroyable
         player = GameObject.FindGameObjectWithTag("Player");
         shotgunBarrel1 = gun.transform.GetChild(0);
         shotgunBarrel2 = gun.transform.GetChild(1);
+        shotgunBarrel3 = gun.transform.GetChild(2);
         enemySpawned = null;
         df = new DamageFlash(this.gameObject);
         ind = 0;
@@ -47,11 +49,11 @@ public class Boss : MonoBehaviour, IDestroyable
         // Choose where to shoot for shotgun bullets vs normal bullets
         Transform startPos;
         if (barrel == 0)
-            startPos = gun.transform;
-        else if (barrel == 1)
             startPos = shotgunBarrel1;
-        else
+        else if (barrel == 1)
             startPos = shotgunBarrel2;
+        else
+            startPos = shotgunBarrel3;
 
         // Shoot the bullet forwards
         bool random = true;
@@ -95,11 +97,12 @@ public class Boss : MonoBehaviour, IDestroyable
     private void Update()
     {
         // Move gun to point towards the player
-        float GUN_DISTANCE = 1f;
-        Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
-        gun.transform.position = transform.position + movePos;
-        gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
-        
+        // float GUN_DISTANCE = 1f;
+        // Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
+        // gun.transform.position = transform.position + movePos;
+        // gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
+        gun.transform.LookAt(player.transform);
+
         if (!unplugged) {
             foreach (WireDeath wd in wires) {
                 print(wd);
