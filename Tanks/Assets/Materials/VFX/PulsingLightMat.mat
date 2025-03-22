@@ -11,14 +11,17 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: c45a7f5ff2c965745b05bf1c90691bc5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -37,12 +40,26 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Pulsing: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _CastShadows: 0
+    - _Cull: 2
+    - _DstBlend: 0
+    - _Pulsing: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 0
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _ZWriteControl: 0
     m_Colors:
     - _Dark: {r: 0.504717, g: 0, b: 0, a: 0}
-    - _Light: {r: 2.628303, g: 0, b: 0, a: 0}
+    - _Light: {r: 5.992157, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3984913342089977555
 MonoBehaviour:
