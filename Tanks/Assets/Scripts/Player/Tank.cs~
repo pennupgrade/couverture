@@ -11,18 +11,18 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
+    public int LIVES = 5;
+
     // Base Items
     public Controls controls;
     public TankState tankState;
-    public TankCharacterController tankController;
+    public TankController tankController;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Collider tankCollider;
-    [HideInInspector] public CharacterController characterController;
 
     // Config Variables
-    private bool invincible;
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -34,14 +34,13 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
+    public GameObject WheelsRef;
+    public GameObject[] Wheels;
     public GameObject Body;
     public Animator cannonAnimator;
     public Character charType;
 
-    public const int MAX_BULLETS = 5;
-
     // Misc
-    [HideInInspector] public int maxHealth;
     public int health;
     public int numBullets;
     public bool stunned;
@@ -59,33 +58,32 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
+
     //effects
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
+
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
-        tankController = new TankCharacterController(this);
+        tankController = new TankController(this);
         damageFlash = new DamageFlash(Body);
 
         rb = GetComponent<Rigidbody>();
-        characterController = GetComponent<CharacterController>();
         // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => {
             //If player is moving, bullet speed can be affected
             Vector3 deltaPos = currentPos - previousPos;
 
-            //Debug.Log(platformSpeed);
+            Debug.Log(platformSpeed);
 
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
 
-        numBullets = MAX_BULLETS;
-        maxHealth = health;
-
+        numBullets = 5;
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -96,23 +94,11 @@ public class Tank : MonoBehaviour, IDestroyable
         //         tank.moveSpeed /= 5.0f;
         //     }
         // );
+
         // addEffect(effect);
     }
 
-    void Start() {
-        // Get Player Stats
-        GameManager.TransferStats(this);
-    }
 
-    public void Freeze() {
-        controls.Disable();
-        invincible = true;
-    }
-
-    public void Unfreeze() {
-        invincible = false;
-        controls.Enable();
-    }
 
     // Effects
     ~Tank() {
@@ -120,7 +106,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
 
-    public void addEffect(TimedEffect timedEffect) {    
+    public void addEffect(TimedEffect timedEffect) {
         effects.Add(timedEffect);
         timedEffect.Start(this);
     }
@@ -138,7 +124,6 @@ public class Tank : MonoBehaviour, IDestroyable
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
         tankController.RayCastTank();
-        tankController.GravityFall();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
@@ -182,7 +167,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
-        if (enableGod || invincible) return;
+        if (enableGod) return;
 
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
@@ -192,8 +177,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            Freeze();
-            GameManager.LoseLife();
+            GameManager.Instance.livesManager.LoseLife();
 
             var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
@@ -223,11 +207,8 @@ public class Tank : MonoBehaviour, IDestroyable
         if (character != null) {
             return character.Ability(this);
         }
-        else
-        {
-            return false;
-        }
     }
+
     public void AbilityUpdate() {
         if (character != null) {
             character.AbilityUpdate(this);
