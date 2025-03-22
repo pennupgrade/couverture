@@ -27,8 +27,9 @@ public class GameManager : MonoBehaviour
         SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
 
-    public void SwitchSublevel(float transitionTime, string sceneName)
+    public void GoToNextLevel(float transitionTime, string sceneName)
     {
+        SaveStateManagerGameObject.FinishLevel(sceneName);
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
     }
 
