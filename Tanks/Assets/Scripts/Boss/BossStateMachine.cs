@@ -30,6 +30,7 @@ public class BossStateMachine : MonoBehaviour
 
     public float stunDur = 1f;
     private float stunStart;
+    [SerializeField] private GameObject wall;
     
 
     [SerializeField] private float chargeCD;
@@ -67,9 +68,18 @@ public class BossStateMachine : MonoBehaviour
     private void Update()
     {
         if (Time.time > stunDur + stunStart) {
+            Vector3 newpos = player.transform.position;
             playerTank.enabled = true;
+            player.GetComponent<Rigidbody>().isKinematic = true;
+            player.transform.position = newpos;
+            print(newpos + " " + player.transform.position);
         }
-        timer += Time.deltaTime;
+
+        if (wall.transform.position.y > -1.12)
+        {
+            timer += Time.deltaTime;
+        }
+        
         if (currentState == State.Idle)
         {
             if (timer > timeUntilAttack)
@@ -245,6 +255,7 @@ public class BossStateMachine : MonoBehaviour
     void OnCollisionEnter(Collision col) {
         Debug.Log("collided " + col.gameObject.tag + currentAttack + chargeHitAlready);
         if (currentAttack == Attack.Charge && col.gameObject.tag == "Player" && !chargeHitAlready) {
+            col.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             Debug.Log("Player hit!");
             Tank tank = col.gameObject.GetComponent<Tank>();
             Vector3 diff = (player.transform.position - this.transform.position).normalized;
