@@ -30,11 +30,11 @@ public class SaveStateManager {
     public class LevelSaveData {
         public string LevelName;
         public TankStats Stats;
-        public CharacterOption CurrCharacter = CharacterOption.NONE;
+        public CharacterOption CurrCharacter = CharacterOption.DEFAULT_CAT;
     }
 
     public enum CharacterOption {
-    NONE,
+    DEFAULT_CAT,
     ROCKET_CAT,
     BUBBLE_CAT
     }
@@ -77,7 +77,7 @@ public class SaveStateManager {
                 return new RocketChar();
             case CharacterOption.BUBBLE_CAT:
                 return new BubbleChar();
-            case CharacterOption.NONE:
+            case CharacterOption.DEFAULT_CAT:
                 return new DefaultChar();
             default:
                 throw new ArgumentException();

@@ -32,7 +32,7 @@ public class CatPFPManager : MonoBehaviour
         //SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
         SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
         Debug.Log(SaveStateManagerGameObject.GetUnlockedCharacters().Count);
-        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.NONE);
+        SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);
 
         HashSet<SaveStateManager.CharacterOption> characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
@@ -49,7 +49,7 @@ public class CatPFPManager : MonoBehaviour
 
     private void setPFP(SaveStateManager.CharacterOption character, CatPFP catPFP)
     {
-        if (character == SaveStateManager.CharacterOption.NONE)
+        if (character == SaveStateManager.CharacterOption.DEFAULT_CAT)
         {
             catPFP.init("Orange Cat", sprite_OrangeCat, character);
         }
