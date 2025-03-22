@@ -12,6 +12,7 @@ public class GameplayHUDManager : MonoBehaviour
     public void startFillAbilityBar(float reloadTime)
     {
         abilityBar_Fill.fillAmount = 0;
+        ready_Text.text = "Recharging...";
         StartCoroutine("fillAbilityBar", reloadTime);
     }
 
@@ -24,5 +25,6 @@ public class GameplayHUDManager : MonoBehaviour
             reloadTime -= 0.05f;
             abilityBar_Fill.fillAmount += fillConstant;
         }
+        ready_Text.text = "Ready!";
     }
 }
