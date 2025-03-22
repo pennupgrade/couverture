@@ -99,11 +99,6 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    void Start() {
-        // Get Player Stats
-        GameManager.TransferStats(this);
-    }
-
     public void Freeze() {
         controls.Disable();
         invincible = true;
@@ -193,9 +188,9 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             Freeze();
-            GameManager.LoseLife();
+            GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
+            var respawnTime = GameManager.Instance.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);

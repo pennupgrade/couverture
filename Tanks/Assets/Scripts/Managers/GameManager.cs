@@ -8,55 +8,43 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [HideInInspector] public LivesManager livesManager;
+    // [HideInInspector] public LivesManager livesManager;
     public string CurrentLevel;
     public float respawnTime;
-    public int totalLives;
-
-    private TankStats tankStats = null;
+    // public int totalLives;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Debug.Log("Initialize game manager");
+        Debug.Log("Initialize game manager");
 
-            Instance = this;
-            livesManager = new LivesManager(respawnTime, totalLives);
-
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); //  delete dupes
-        }
+        Instance = this;
+        // livesManager = new LivesManager(respawnTime, totalLives);
     }
 
     void Start() {
-        SaveStateManagerGameObject.SetupGameManager();
+        SaveStateManagerGameObject.LoadLevel(SceneManager.GetActiveScene().name);
     }
 
     public void SwitchSublevel(float transitionTime, string sceneName)
     {
-        StartCoroutine(TimerToRestart(transitionTime, sceneName, StoreTankStats));
+        StartCoroutine(TimerToRestart(transitionTime, sceneName));
     }
 
     public void Respawn() // me when I dedicate a whole function to call a coroutine
     {
-        StartCoroutine(TimerToRestart(livesManager.GetRespawnTime(), SceneManager.GetActiveScene().name, () => {}));
-        tankStats = null;
+        StartCoroutine(TimerToRestart(respawnTime, SceneManager.GetActiveScene().name));
     }
 
     public void RestartLevel()
     {
-        livesManager.ResetLives();
-        SaveStateManagerGameObject.RestartLevel();
-        StartCoroutine(TimerToRestart(livesManager.GetRespawnTime(), CurrentLevel, () => {}));
-        tankStats = null;
+        // livesManager.ResetLives();
+        // TODO: MUST ACCOUNT FOR LEVEL RESTARTING (AKA MUST LOAD SAVE DATA AGAIN, HOW WILL WE DO THIS?)
+        // SaveStateManagerGameObject.RestartLevel();
+        StartCoroutine(TimerToRestart(respawnTime, CurrentLevel));
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
-    private IEnumerator TimerToRestart(float duration, string sceneName, Action func)
+    private IEnumerator TimerToRestart(float duration, string sceneName)
     {
         var elapsedTime = 0f;
 
@@ -69,39 +57,11 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        func();
         Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
     }
 
-    private void StoreTankStats() {
-        Tank t = GameObject.FindWithTag("Player").GetComponent<Tank>();
-        tankStats = new TankStats(t);
-    }
-
-    public static void TransferStats(Tank t) {
-        if (Instance.tankStats != null) {
-            Instance.tankStats.TransferStats(t);
-        }
-        Instance.tankStats = null;
-    }
-
-    public static void LoseLife() {
-        Instance.livesManager.LoseLife();
-        
-        if (Instance.livesManager.GetLives() <= 0) {
-            Instance.RestartLevel();
-            return;
-        }
-
-        Instance.Respawn();
-    }
-
-    public int GetLives() {
-        return livesManager.GetLives();
-    }
-
-    public void SetLives(int numLives) {
-        livesManager.SetLives(numLives);
+    public float GetRespawnTime() {
+        return respawnTime;
     }
 }

@@ -84,7 +84,7 @@ public class SaveStateManagerGameObjectOld : MonoBehaviour
         if (GameManager.Instance is null) {
             throw new InvalidOperationException("GameManager Instance is Null!");
         }
-        Instance.stateManager.numLives = GameManager.Instance.GetLives();
+        // Instance.stateManager.numLives = GameManager.Instance.GetLives();
         Instance.stateManager.SaveGameState();
     }
 
@@ -112,7 +112,7 @@ public class SaveStateManagerGameObjectOld : MonoBehaviour
             return;
         }
         if (IsCorrectScene() && Instance.stateManager.numLives != -1) {
-            GameManager.Instance.SetLives(Instance.stateManager.numLives);
+            // GameManager.Instance.SetLives(Instance.stateManager.numLives);
         }
     }
 
