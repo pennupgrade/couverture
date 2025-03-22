@@ -7,13 +7,12 @@ using TMPro;
 public class GameplayHUDManager : MonoBehaviour
 {
     public TMP_Text ready_Text;
-    public Image abilityBar_Fill;
+    public Image abilitqyBar_Fill;
 
     public void startFillAbilityBar(float reloadTime)
     {
         abilityBar_Fill.fillAmount = 0;
         ready_Text.text = "Recharging..";
-        ready_Text.fontSize = 12;
         StartCoroutine("FillAbilityBar", reloadTime);
     }
 
@@ -32,7 +31,6 @@ public class GameplayHUDManager : MonoBehaviour
         }
 
         abilityBar_Fill.fillAmount = 1f;
-        ready_Text.fontSize = 16;
         ready_Text.text = "Ready!";
     }
 }
