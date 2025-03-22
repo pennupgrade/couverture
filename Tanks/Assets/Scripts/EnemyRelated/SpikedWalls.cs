@@ -8,12 +8,13 @@ public class SpikedWalls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("START");
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.tag == "Player")
+        Debug.Log(collision.tag);
+        if(collision.tag == "Player")
         {
             Vector3 bounceBack = collision.transform.position - transform.position;
             //collision.transform.position += bounceBack;
