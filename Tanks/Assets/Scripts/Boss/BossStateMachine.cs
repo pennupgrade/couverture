@@ -30,6 +30,7 @@ public class BossStateMachine : MonoBehaviour
 
     public float stunDur = 1f;
     private float stunStart;
+    [SerializeField] private GameObject wall;
     
 
     [SerializeField] private float chargeCD;
@@ -73,7 +74,12 @@ public class BossStateMachine : MonoBehaviour
             player.transform.position = newpos;
             print(newpos + " " + player.transform.position);
         }
-        timer += Time.deltaTime;
+
+        if (wall.transform.position.y > -1.12)
+        {
+            timer += Time.deltaTime;
+        }
+        
         if (currentState == State.Idle)
         {
             if (timer > timeUntilAttack)
