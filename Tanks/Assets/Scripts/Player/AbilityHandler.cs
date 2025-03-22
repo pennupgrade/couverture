@@ -19,7 +19,9 @@ public class AbilityHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             tank.Ability();
-            UIManager.instance.
+            UIManager.instance.Gameplay_Panel.
+                GetComponentInChildren<GameplayHUDManager>()
+                .startFillAbilityBar(Tank.COOLDOWN_TIME);
         }
     }
 }
