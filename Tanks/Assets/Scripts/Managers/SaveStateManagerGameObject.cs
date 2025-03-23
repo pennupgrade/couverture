@@ -19,14 +19,19 @@ public class SaveStateManagerGameObject : MonoBehaviour
     void Awake() {
         if (Instance is null) {
             Instance = this;
+            Application.quitting += ExitCurrentSave;
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
     }
 
+    private static string GetSaveLocation(int saveNumber) {
+        return SAVE_FILE_PREFIX + saveNumber + ".json";
+    }
+
     public static void LoadSave(int saveNumber) {
-        Instance.stateManager = SaveStateManager.LoadInventory(SAVE_FILE_PREFIX + saveNumber + ".json");
+        Instance.stateManager = SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
@@ -59,5 +64,17 @@ public class SaveStateManagerGameObject : MonoBehaviour
         if (Instance.stateManager is null) {
             LoadSave(1);
         }
+    }
+    
+    public static void CreateSave(int saveSlot) {
+        Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveSlot));
+    }
+
+    public static void ExitCurrentSave() {
+        if (Instance is null || Instance.stateManager is null) {
+            return;
+        }
+        Instance.stateManager.ExitSaveFile();
+        Instance.stateManager = null;
     }
 }

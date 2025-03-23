@@ -12,45 +12,72 @@ using System.Net.NetworkInformation;
 [Serializable]
 public class SaveStateManager {
     public static SaveStateManager LoadInventory(string saveLocation) {
-        SaveStateManager outManager;
         try {
+            SaveStateManager outManager;
             using (StreamReader reader = new(saveLocation)) {
                 string jsonData = reader.ReadToEnd();
                 outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+                outManager.SetSaveLocation(saveLocation);
             }
-        } catch (IOException) {
-            outManager = new SaveStateManager(saveLocation);
+            return outManager;
+        } catch (FileNotFoundException) {
+            return CreateSave(saveLocation);
         }
+    }
+
+    public static SaveStateManager CreateSave(string saveLocation) {
+        SaveStateManager outManager = new();
+        outManager.CreateNewSave(saveLocation);
         return outManager;
     }
 
 
-
     [Serializable]
-    public class LevelSaveData {
+    private class LevelSaveData {
         public string LevelName;
         public TankStats Stats;
         public CharacterOption CurrCharacter = CharacterOption.DEFAULT_CAT;
     }
 
     public enum CharacterOption {
-    DEFAULT_CAT,
-    ROCKET_CAT,
-    BUBBLE_CAT
+        DEFAULT_CAT,
+        ROCKET_CAT,
+        BUBBLE_CAT
     }
 
+    // serialized properties
+    [SerializeField] private List<CharacterOption> unlockedCharList = new() { CharacterOption.DEFAULT_CAT};
+
+    [SerializeField] private LevelSaveData latestLevel;
+
+    [SerializeField] private DateTimeSerializable startTime;
+    
+    [SerializeField] private DateTimeSerializable lastPlayedTime;
+
+    [SerializeField] private TimeSpanSerializable timePlayed;
+
+
+
     private string saveLocation;
-
-    public List<CharacterOption> unlockedCharList = new();
-
-    public LevelSaveData latestLevel;
     private LevelSaveData currentLevel; 
     private CharacterOption currCharacter;
-
     private HashSet<CharacterOption> unlockedChars;
+    private DateTime startOfSession;
 
-    public SaveStateManager(string saveLocation) {
+    public SaveStateManager() {
+        startOfSession = DateTime.Now;
+    }
+
+    public void SetSaveLocation(string saveLocation) {
         this.saveLocation = saveLocation;
+    }
+
+    public void CreateNewSave(string saveLocation) {
+        this.saveLocation = saveLocation;
+        startTime = DateTimeSerializable.Now();
+        lastPlayedTime = DateTimeSerializable.Now();
+        timePlayed = new(TimeSpan.Zero);
+        WriteToSaveFile();
     }
 
 
@@ -138,8 +165,34 @@ public class SaveStateManager {
         currentLevel = null;
     }
 
+    // Save play time on game exit
+    public void ExitSaveFile() {
+        WriteToSaveFile();
+    }
+
     private void WriteToSaveFile() {
+        // calculate last played time and total play time
+        DateTime now = DateTime.Now;
+        // TODO: could have issues if crossing between time zones
+        lastPlayedTime = new(now);
+        timePlayed = new(GetTimePlayed().Add(now.Subtract(startOfSession)));
+        startOfSession = now;
+
         // write JSON to file
         File.WriteAllText(saveLocation, JsonUtility.ToJson(this, true));
+    }
+    
+
+    // Getters
+    public DateTime GetStartTime() {
+        return startTime.ToDateTime();
+    }
+
+    public DateTime GetLastPlayedTime() {
+        return lastPlayedTime.ToDateTime();
+    }
+
+    public TimeSpan GetTimePlayed() {
+        return timePlayed.ToTimeSpan();
     }
 }
