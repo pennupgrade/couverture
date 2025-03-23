@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private string currentLevel;
     public float respawnTime;
     // public int totalLives;
+    private Tank player; 
 
     void Awake()
     {
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
+        player = GameObject.FindWithTag("Player").GetComponent<Tank>();
         SaveStateManagerGameObject.DebugLoadSave();
         SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
@@ -64,5 +66,15 @@ public class GameManager : MonoBehaviour
 
     public float GetRespawnTime() {
         return respawnTime;
+    }
+
+    public void PauseGame() {
+        Time.timeScale = 0;
+        player.Freeze();
+    }
+
+    public void ResumeGame() {
+        Time.timeScale = 1;
+        player.Unfreeze();
     }
 }
