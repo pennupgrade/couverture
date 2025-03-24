@@ -205,4 +205,12 @@ public class SaveStateManager {
     public TimeSpan GetTimePlayed() {
         return timePlayed.ToTimeSpan();
     }
+
+    public string GetLatestLevelName() {
+        if (latestLevel is null) {
+            // TODO: WHAT TO DO IN THIS CASE?
+            return null;
+        }
+        return latestLevel.LevelName;
+    }
 }

@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 
 public class SaveStateMenuInfo : MonoBehaviour
 {
     private SaveStateManager[] saves = new SaveStateManager[3];
 
     private static SaveStateManager TryLoadSaveState(int saveNumber) {
-        if (File.Exists(SaveStateManagerGameObject.GetSaveLocation(saveNumber))) {
+        try {
             return SaveStateManagerGameObject.LoadSaveToManager(saveNumber);
+        } catch (FileNotFoundException) {
+            return null;
         }
-        return null;
     }
 
     void Awake() {
@@ -20,15 +22,27 @@ public class SaveStateMenuInfo : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public DateTime GetStartTime(int saveNumber) {
+        return saves[saveNumber].GetStartTime();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public DateTime GetLastPlayedTime(int saveNumber) {
+        return saves[saveNumber].GetLastPlayedTime();
+    }
+
+    public TimeSpan GetTimePlayed(int saveNumber) {
+        return saves[saveNumber].GetTimePlayed();
+    }
+
+    public string GetLatestLevelName(int saveNumber) {
+        return saves[saveNumber].GetLatestLevelName();
+    }
+
+    public bool DoesSaveExist(int saveNumber) {
+        return saves[saveNumber] != null;
+    }
+
+    public HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters(int saveNumber) {
+        return saves[saveNumber].GetUnlockedCharacters();
     }
 }
