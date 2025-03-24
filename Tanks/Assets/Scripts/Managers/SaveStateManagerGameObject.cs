@@ -26,7 +26,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
     }
 
-    private static string GetSaveLocation(int saveNumber) {
+    public static string GetSaveLocation(int saveNumber) {
         return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
