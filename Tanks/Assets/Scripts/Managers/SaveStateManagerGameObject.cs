@@ -77,4 +77,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.ExitSaveFile();
         Instance.stateManager = null;
     }
+
+    public static void PlayerDied() {
+        Instance.stateManager.OnPlayerDeath();
+    }
 }

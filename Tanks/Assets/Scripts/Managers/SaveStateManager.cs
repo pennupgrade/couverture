@@ -157,6 +157,9 @@ public class SaveStateManager {
     }
 
     public void OnPlayerDeath() {
+        if (currentLevel is null) {
+            throw new InvalidOperationException("Trying to restart level, but not currently in a level!");
+        }
         if (currentLevel.Stats.health != 0) {
             currentLevel.Stats.health = 0;
             if (currentLevel == latestLevel) {
