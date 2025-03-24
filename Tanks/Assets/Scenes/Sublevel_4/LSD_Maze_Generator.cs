@@ -32,6 +32,8 @@ public class LSD_Maze_Generator : MonoBehaviour
         GenerateGraph();
         // Generate the maze
         GenerateMaze();
+
+        DeleteAllWallsAtOnce();
         
     }
 
