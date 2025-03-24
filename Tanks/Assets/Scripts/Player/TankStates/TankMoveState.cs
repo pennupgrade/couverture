@@ -2,10 +2,22 @@ using UnityEngine;
 
 public class TankMoveState : TankState
 {
-    public TankMoveState(Tank tank) : base(tank) { }
+    private float cTurnSpeed;
+    public TankMoveState(Tank tank) : base(tank) { cTurnSpeed = 0;}
 
     public override TankState HandleMovement(Vector2 dir) {
-        if (tank.stunned || (dir.magnitude < 0.1f)) return new TankIdleState(tank);
+        if (dir.magnitude < 0.1f) return new TankIdleState(tank);
+
+        float dot = Vector3.Dot(tank.Roomba.transform.right, new Vector3(dir.x, 0, dir.y));
+        if (dot > 0.0001f) {
+            cTurnSpeed = -400;
+        } else if (dot < -0.0001f) {
+            cTurnSpeed = 400;
+        } else {
+            cTurnSpeed = 0;
+        }
+        tank.Roomba.transform.eulerAngles += cTurnSpeed * Time.deltaTime * Vector3.up;
+
 
         // There is input, move tank
         tank.tankController.MoveTank(dir);

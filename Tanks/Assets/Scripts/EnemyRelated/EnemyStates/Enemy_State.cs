@@ -176,7 +176,7 @@ public abstract class Enemy_State
         return getRandomNavPoint(enemy.transform.position, radius);
     }
     protected Vector3 getLOSPoint(Vector3 pos, float radius, float avoidRadius) {
-        for (int i = 0; i < 20; ++i)
+        for (int i = 0; i < 12; ++i)
         {
             Vector3 randomPoint = pos + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
@@ -221,7 +221,7 @@ public abstract class Enemy_State
         if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1f) {
             return getRandomPoint(6);
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 8; i++)
         {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(enemy.playerRB.position + radius * UnityEngine.Random.insideUnitSphere,
@@ -235,7 +235,7 @@ public abstract class Enemy_State
         return getRandomPoint(radius);
     }
     protected Vector3 getRandomNavPoint(Vector3 point, float radius) {
-        for (int i = 0; i < 20; ++i)
+        for (int i = 0; i < 16; ++i)
         {
             Vector3 randomPoint = point + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;

@@ -34,7 +34,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
-    public GameObject Body;
+    public GameObject Body, Roomba;
     public Animator cannonAnimator;
     public Character charType;
 
