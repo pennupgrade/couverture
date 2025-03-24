@@ -12,17 +12,13 @@ using System.Net.NetworkInformation;
 [Serializable]
 public class SaveStateManager {
     public static SaveStateManager LoadInventory(string saveLocation) {
-        try {
-            SaveStateManager outManager;
-            using (StreamReader reader = new(saveLocation)) {
-                string jsonData = reader.ReadToEnd();
-                outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
-                outManager.SetSaveLocation(saveLocation);
-            }
-            return outManager;
-        } catch (FileNotFoundException) {
-            return CreateSave(saveLocation);
+        SaveStateManager outManager;
+        using (StreamReader reader = new(saveLocation)) {
+            string jsonData = reader.ReadToEnd();
+            outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+            outManager.SetSaveLocation(saveLocation);
         }
+        return outManager;
     }
 
     public static SaveStateManager CreateSave(string saveLocation) {
@@ -64,9 +60,7 @@ public class SaveStateManager {
     private HashSet<CharacterOption> unlockedChars;
     private DateTime startOfSession;
 
-    public SaveStateManager() {
-        startOfSession = DateTime.Now;
-    }
+    public SaveStateManager() { }
 
     public void SetSaveLocation(string saveLocation) {
         this.saveLocation = saveLocation;
@@ -74,12 +68,20 @@ public class SaveStateManager {
 
     public void CreateNewSave(string saveLocation) {
         this.saveLocation = saveLocation;
+        BeginSession();
         startTime = DateTimeSerializable.Now();
         lastPlayedTime = DateTimeSerializable.Now();
         timePlayed = new(TimeSpan.Zero);
         WriteToSaveFile();
     }
 
+    // call when session is started (save file is selected!)
+    public void BeginSession() {
+        startOfSession = DateTime.Now;
+
+        // should it be saved here?
+        WriteToSaveFile();
+    }
 
     // character management
     public HashSet<CharacterOption> GetUnlockedCharacters() {
