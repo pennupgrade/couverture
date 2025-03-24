@@ -213,4 +213,8 @@ public class SaveStateManager {
         }
         return latestLevel.LevelName;
     }
+
+    public void DeleteSaveFile(string file) {
+        File.Delete(file);
+    }
 }
