@@ -21,12 +21,14 @@ public class GameManager : MonoBehaviour
         Instance = this;
         currentLevel = SceneManager.GetActiveScene().name;
         // livesManager = new LivesManager(respawnTime, totalLives);
-    }
 
-    void Start() {
+        // this is OK because SaveStateManagerGameObject has execution order -1, Tank has execution order -2
         player = GameObject.FindWithTag("Player").GetComponent<Tank>();
         SaveStateManagerGameObject.DebugLoadSave();
         SaveStateManagerGameObject.LoadLevel(currentLevel);
+    }
+
+    void Start() {
     }
 
     public void GoToNextLevel(float transitionTime, string sceneName)
