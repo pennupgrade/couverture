@@ -40,10 +40,12 @@ public class UIManager : MonoBehaviour
     {
         Cat_Selection_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
+        GameManager.Instance.ResumeGame();
     }
 
     public void Open_CatSelectionPanel_DuringGame()
     {
+        GameManager.Instance.PauseGame();
         Cat_Selection_Panel.SetActive(true);
         Gameplay_Panel.SetActive(false);
     }
