@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using System;
 
-public class SaveStateMenuInfo : MonoBehaviour
+public class SaveStateMenuInfo
 {
     private SaveStateManager[] saves = new SaveStateManager[3];
 
@@ -16,7 +16,7 @@ public class SaveStateMenuInfo : MonoBehaviour
         }
     }
 
-    void Awake() {
+    public SaveStateMenuInfo() {
         for (int i = 0; i < 3; i++) {
             saves[i] = TryLoadSaveState(i);
         }
