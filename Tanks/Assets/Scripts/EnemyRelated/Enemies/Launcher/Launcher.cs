@@ -37,4 +37,8 @@ public class Launcher : Enemy
         enemyState = enemyState.Patrol(playerPos);
         enemyState = enemyState.Shoot(playerPos);
     }
+
+    public override void takeDamage(int dmg) {
+        
+    }
 }
