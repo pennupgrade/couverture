@@ -66,16 +66,17 @@ public class SaveStateManager {
         this.saveLocation = saveLocation;
     }
 
+    // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
     public void CreateNewSave(string saveLocation) {
         this.saveLocation = saveLocation;
-        BeginSession();
+        // initialize values
         startTime = DateTimeSerializable.Now();
         lastPlayedTime = DateTimeSerializable.Now();
         timePlayed = new(TimeSpan.Zero);
-        WriteToSaveFile();
     }
 
     // call when session is started (save file is selected!)
+    // instantiates startOfSession and saves file
     public void BeginSession() {
         startOfSession = DateTime.Now;
 
