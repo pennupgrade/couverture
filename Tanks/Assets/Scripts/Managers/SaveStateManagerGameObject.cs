@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,8 +31,18 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
+    public static SaveStateManager LoadSaveToManager(int saveNumber) {
+        return SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
+    }
+
     public static void LoadSave(int saveNumber) {
-        Instance.stateManager = SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
+        try {
+            Instance.stateManager = LoadSaveToManager(saveNumber);
+        } catch (FileNotFoundException) {
+            Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveNumber));
+        }
+        // start the session
+        Instance.stateManager.BeginSession();
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
@@ -76,5 +87,13 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
         Instance.stateManager.ExitSaveFile();
         Instance.stateManager = null;
+    }
+
+    public static void PlayerDied() {
+        Instance.stateManager.OnPlayerDeath();
+    }
+
+    public static void DeleteSave(int saveNumber) {
+        Instance.stateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
     }
 }

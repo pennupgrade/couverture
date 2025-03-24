@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void Respawn() // me when I dedicate a whole function to call a coroutine
     {
+        SaveStateManagerGameObject.PlayerDied();
         StartCoroutine(TimerToRestart(respawnTime, SceneManager.GetActiveScene().name));
     }
 
