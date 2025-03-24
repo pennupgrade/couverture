@@ -6,6 +6,11 @@ public class TankStats {
     public int numBullets;
     public float moveSpeed;
 
+    // very specific usecases, dont use often!
+    public TankStats() { 
+        health = 0;
+    }
+
     public TankStats(Tank t) {
         this.health = t.health;
         this.numBullets = t.numBullets;

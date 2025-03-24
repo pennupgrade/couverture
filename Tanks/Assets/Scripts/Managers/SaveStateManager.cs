@@ -35,7 +35,7 @@ public class SaveStateManager {
     [Serializable]
     private class LevelSaveData {
         public string LevelName;
-        public TankStats Stats;
+        public TankStats Stats = new();
         public CharacterOption CurrCharacter = CharacterOption.DEFAULT_CAT;
     }
 
@@ -88,9 +88,12 @@ public class SaveStateManager {
     }
 
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
-        if (unlockedChars.Contains(changeTo)) {
+        // shouldn't ever be an issue since DEFAULT CAT should always be in the list, but its good to be safe
+        if (unlockedChars.Contains(changeTo) || changeTo == CharacterOption.DEFAULT_CAT) {
             t.character = CreateNewChar(changeTo);
             currCharacter = changeTo;
+        } else {
+            throw new InvalidOperationException("Player has not unlocked that character!");
         }
     }
 
@@ -130,7 +133,8 @@ public class SaveStateManager {
         // load current character
         // TODO: should change so that it can switch to NONE???
         SwitchCharacter(t, currentLevel.CurrCharacter);
-        if (currentLevel.Stats != null) {
+        // Having the health stat be 0 will be an indicator to not transfer stats (essentially a null value)
+        if (currentLevel.Stats.health != 0) {
             currentLevel.Stats.TransferStats(t);
         }
     }
@@ -153,8 +157,8 @@ public class SaveStateManager {
     }
 
     public void OnPlayerDeath() {
-        if (currentLevel.Stats != null) {
-            currentLevel.Stats = null;
+        if (currentLevel.Stats.health != 0) {
+            currentLevel.Stats.health = 0;
             if (currentLevel == latestLevel) {
                 WriteToSaveFile();
             }
