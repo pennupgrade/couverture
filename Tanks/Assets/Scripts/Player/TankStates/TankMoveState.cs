@@ -16,7 +16,7 @@ public class TankMoveState : TankState
         } else {
             cTurnSpeed = 0;
         }
-        tank.Roomba.transform.eulerAngles += cTurnSpeed * Time.deltaTime * Vector3.up;
+        tank.Roomba.transform.localEulerAngles += cTurnSpeed * Time.deltaTime * Vector3.forward;
 
 
         // There is input, move tank
