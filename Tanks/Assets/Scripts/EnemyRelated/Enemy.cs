@@ -165,11 +165,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
     }
     protected void die() {
-        isDead = true;
         onDeath?.Invoke();
-
         destruction();
         onDeath = null;
+        isDead = true;
     }
     public void incapacitate(float time) {
         StartCoroutine(stunTimer(time));
