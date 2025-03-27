@@ -28,9 +28,7 @@ public class CatPFPManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        Debug.Log(SaveStateManagerGameObject.GetUnlockedCharacters().Count);
-        
+    {        
         HashSet<SaveStateManager.CharacterOption> characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
         Debug.Log("# of characters: " + characters.Count);
