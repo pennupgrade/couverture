@@ -24,6 +24,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public Rigidbody playerRB;
     [HideInInspector] public Tank pTank;
 
+    public AudioManager audioManager;
+
     // Damage related
     public delegate void OnDeath();
     public event OnDeath onDeath;
@@ -239,4 +241,21 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
             return Instantiate(bulletPrefab);
         }
     }
+
+    public void dieSound() {
+        audioManager.Play("Explosion");
+    }
+
+    public void ratSound() {
+        audioManager.Play("Rat");
+    }
+
+    public void fireSound() {
+        audioManager.Play("Fire");
+    }
+
+    public void bubbleSound() {
+        audioManager.Play("Pop");
+    }
+
 }

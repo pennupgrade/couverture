@@ -185,6 +185,7 @@ public class Tank : MonoBehaviour, IDestroyable
         if (health <= 0) {
             if (explosionPrefab != null) {
                 var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                audioManager.Play("Explosion");
                 Destroy(expl, 2);
             }
 

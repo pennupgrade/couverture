@@ -127,6 +127,7 @@ public abstract class TankState
             }
 
             tank.numBullets++;
+            tank.audioManager.Play("Reloaded");
         }
 
         tank.reloadCoroutine = null;
