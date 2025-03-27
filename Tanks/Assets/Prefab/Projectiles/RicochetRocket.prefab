@@ -5017,7 +5017,7 @@ MonoBehaviour:
   bulletSpeed: 6
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
-  audioManager: {fileID: 0}
+  audioManager: {fileID: 7702770196705938751}
   bounces: 2
 --- !u!54 &8992851944659332771
 Rigidbody:
@@ -5058,6 +5058,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: Hit
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.878
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Bounce
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.878
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
   singleton: 0
   playedSounds: []
