@@ -15,6 +15,8 @@ public class Bullet_Default : Projectile
     private Animator animator;
     private Collider collider;
     public MeshTrail meshTrail;
+
+    public AudioManager audioManager;
     
     // Start is called before the first frame update
     protected override void Awake() {
@@ -59,6 +61,9 @@ public class Bullet_Default : Projectile
     {
         Vector3 bounceDirection = Vector3.Reflect(bulletDir, wallNormal);
         rb.velocity = bounceDirection * lastVelocity.magnitude;
+
+        audioManager.Play("Bounce");
+
         if (bounces <= 0) // changed from == -1 in case... something weird happens
         {
             destruction();

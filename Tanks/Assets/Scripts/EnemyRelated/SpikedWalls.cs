@@ -29,7 +29,6 @@ public class SpikedWalls : MonoBehaviour
     private IEnumerator bounceBack(GameObject collision)
     {
         Vector3 bounceBack = collision.transform.position - transform.position;
-
         Debug.Log("Deals Damage.");
         Tank tank = collision.gameObject.GetComponent<Tank>();
         if(tank != null)

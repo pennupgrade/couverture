@@ -15,6 +15,8 @@ public class FadeInEffect : SoundEffect
 
     public override void Invoke(Sound s)
     {
+        base.Invoke(s);
+
         originalVolume = s.volume;
         currTime = 0f;
         s.source.volume = baseVolume;
