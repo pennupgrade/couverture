@@ -81,6 +81,7 @@ public class Javelin : EnemyOmniMove
         flashParticles.GetComponent<ParticleSystem>().Stop();
     }
     public void fireBeam(float dist) {
+        fireSound();
         RailgunLineScript ls = Instantiate(bulletPrefab).GetComponent<RailgunLineScript>();
         ls.dist = dist;
         ls.startPos = gunShotPos.position;

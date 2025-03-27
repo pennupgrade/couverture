@@ -155,9 +155,9 @@ MonoBehaviour:
   bulletSpeed: 3
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
+  audioManager: {fileID: 7490907543859081955}
   bounces: 1
   meshTrail: {fileID: 2575013116013444543}
-  audioManager: {fileID: 7490907543859081955}
 --- !u!95 &2740335933661706757
 Animator:
   serializedVersion: 5
@@ -209,7 +209,16 @@ MonoBehaviour:
   sounds:
   - name: Bounce
     clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
-    volume: 0.878
+    volume: 0.074
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Hit
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.226
     loop: 0
     playOnAwake: 0
     destroyOnComplete: 0
