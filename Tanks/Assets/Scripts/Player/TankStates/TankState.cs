@@ -57,6 +57,7 @@ public abstract class TankState
     public virtual TankState HandleShoot(Vector3 offsetVelocity)
     {
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
+        tank.audioManager.Play("Fire");
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = tank.SpawnBullet();
