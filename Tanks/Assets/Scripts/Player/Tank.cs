@@ -15,6 +15,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Controls controls;
     public TankState tankState;
     public TankCharacterController tankController;
+    public AudioManager audioManager;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;

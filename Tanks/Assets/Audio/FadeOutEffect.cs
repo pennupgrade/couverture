@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FadeOutEffect : SoundEffect
 {
-    public float time;
+    public float length;
 
     public float baseVolume;
 
@@ -14,6 +14,8 @@ public class FadeOutEffect : SoundEffect
 
     public override void Invoke(Sound s)
     {
+        base.Invoke(s);
+
         originalVolume = s.volume;
         currTime = 0f;
         StartCoroutine(ChangeVolume(s));
@@ -21,7 +23,7 @@ public class FadeOutEffect : SoundEffect
 
     private IEnumerator ChangeVolume(Sound s)
     {
-        yield return new WaitForSecondsRealtime(s.clip.length - time);
+        yield return new WaitForSecondsRealtime(s.clip.length - length);
 
         while (true)
         {
@@ -29,9 +31,9 @@ public class FadeOutEffect : SoundEffect
 
             currTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
-            s.source.volume = Mathf.Lerp(originalVolume, baseVolume, currTime / time);
+            s.source.volume = Mathf.Lerp(originalVolume, baseVolume, currTime / length);
 
-            if (currTime >= time)
+            if (currTime >= length)
             {
                 yield break;
             }
