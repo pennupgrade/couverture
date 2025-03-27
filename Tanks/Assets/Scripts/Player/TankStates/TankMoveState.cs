@@ -8,7 +8,7 @@ public class TankMoveState : TankState
     public override TankState HandleMovement(Vector2 dir) {
         if (dir.magnitude < 0.1f) return new TankIdleState(tank);
 
-        Vector3 target = -dir.x * tank.transform.forward + dir.y * tank.transform.right;
+        Vector3 target = -dir.x * tank.forward + dir.y * tank.right;
 
         float dot = Vector3.Dot(tank.Roomba.transform.right, target);
         if (dot > 0.0001f) {

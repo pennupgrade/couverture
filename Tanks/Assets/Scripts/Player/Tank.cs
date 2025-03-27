@@ -52,6 +52,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public float cooldownProgress;
     public float animationProgress;
 
+    public Vector3 forward;
+    public Vector3 right;
+
     private Vector3 currentPos = Vector3.zero;
     private Vector3 previousPos = Vector3.zero;
 
@@ -70,6 +73,9 @@ public class Tank : MonoBehaviour, IDestroyable
         tankState = new TankIdleState(this);
         tankController = new TankCharacterController(this);
         damageFlash = new DamageFlash(Body);
+
+        forward = transform.forward;
+        right = transform.right;
 
         rb = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
