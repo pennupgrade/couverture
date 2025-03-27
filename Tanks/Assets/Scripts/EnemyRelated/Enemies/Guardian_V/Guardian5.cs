@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Guardian5 : EnemyOmniMove
 {
-    public GameObject minePrefab;
     void Awake() {
         enemyState = new G5_Start(this);
     }
@@ -21,7 +20,7 @@ public class Guardian5 : EnemyOmniMove
         reload = 4;
         magSize = 3;
         numBullets = magSize;
-        bulletSpeed = 5.8f;
+        bulletSpeed = 5.1f;
         leadChance = 0.5f;
         speed = 1.7f;
         turnSpeed = 180;
@@ -71,13 +70,6 @@ public class Guardian5 : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
-    }
-    public IEnumerator deployMines() {
-        yield return new WaitForSeconds(4);
-        while (true) {
-            Object.Instantiate(minePrefab, transform.position - 0.15f * Vector3.up, Quaternion.identity);
-            yield return new WaitForSeconds(16);
-        }
     }
     protected override IEnumerator reactivateShield() {
         yield return new WaitForSeconds(15);

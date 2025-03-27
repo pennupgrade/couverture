@@ -11,18 +11,19 @@ public class Tank : MonoBehaviour, IDestroyable
     public const float RELOAD_TIME = 1.5f;
     public const float COOLDOWN_TIME = 0.18f;
 
-    public int LIVES = 5;
-
     // Base Items
     public Controls controls;
     public TankState tankState;
-    public TankController tankController;
+    public TankCharacterController tankController;
+    public AudioManager audioManager;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Collider tankCollider;
+    [HideInInspector] public CharacterController characterController;
 
     // Config Variables
+    private bool invincible;
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -34,13 +35,14 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
-    public GameObject WheelsRef;
-    public GameObject[] Wheels;
-    public GameObject Body;
+    public GameObject Body, Roomba;
     public Animator cannonAnimator;
     public Character charType;
 
+    public const int MAX_BULLETS = 5;
+
     // Misc
+    [HideInInspector] public int maxHealth;
     public int health;
     public int numBullets;
     public bool stunned;
@@ -58,32 +60,33 @@ public class Tank : MonoBehaviour, IDestroyable
     // Couroutine Garbage
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
-
     //effects
     private List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
-
     private void Awake() {
         controls = new Controls();
         tankState = new TankIdleState(this);
-        tankController = new TankController(this);
+        tankController = new TankCharacterController(this);
         damageFlash = new DamageFlash(Body);
 
         rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         // tankCollider = GetComponent<BoxCollider>();
 
         controls.TankControls.Shoot.performed += _ => {
             //If player is moving, bullet speed can be affected
             Vector3 deltaPos = currentPos - previousPos;
 
-            Debug.Log(platformSpeed);
+            //Debug.Log(platformSpeed);
 
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
         };
 
-        numBullets = 5;
+        numBullets = MAX_BULLETS;
+        maxHealth = health;
+
 
         //Temporary TimedEffect
         // TimedEffect effect = new(15.0f, 
@@ -94,11 +97,18 @@ public class Tank : MonoBehaviour, IDestroyable
         //         tank.moveSpeed /= 5.0f;
         //     }
         // );
-
         // addEffect(effect);
     }
 
+    public void Freeze() {
+        controls.Disable();
+        invincible = true;
+    }
 
+    public void Unfreeze() {
+        invincible = false;
+        controls.Enable();
+    }
 
     // Effects
     ~Tank() {
@@ -106,7 +116,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
 
-    public void addEffect(TimedEffect timedEffect) {
+    public void addEffect(TimedEffect timedEffect) {    
         effects.Add(timedEffect);
         timedEffect.Start(this);
     }
@@ -124,6 +134,7 @@ public class Tank : MonoBehaviour, IDestroyable
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 
         tankController.RayCastTank();
+        tankController.GravityFall();
         tankState = tankState.HandleMovement(moveDir);
         tankState = tankState.HandleGunRotation(gunRot);
 
@@ -167,19 +178,21 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void takeDamage(int dmg) {
-        if (enableGod) return;
+        if (enableGod || invincible) return;
 
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {
                 var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                audioManager.Play("Explosion");
                 Destroy(expl, 2);
             }
 
-            GameManager.Instance.livesManager.LoseLife();
+            Freeze();
+            GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
+            var respawnTime = GameManager.Instance.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
@@ -203,12 +216,15 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     // Character abilities
-    public void Ability() {
+    public bool Ability() {
         if (character != null) {
-            character.Ability(this);
+            return character.Ability(this);
+        }
+        else
+        {
+            return false;
         }
     }
-
     public void AbilityUpdate() {
         if (character != null) {
             character.AbilityUpdate(this);
@@ -218,5 +234,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // spawn a base bullet, override if different base bullet
     public GameObject SpawnBullet() {
         return PoolManager.bulletPool.Get().gameObject;
+    }
+    public void ResetPosition(Vector3 pos) {
+        previousPos = pos;
+        currentPos = pos;
+        print("RESET" + previousPos + " " + currentPos);
     }
 }

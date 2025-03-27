@@ -4902,6 +4902,7 @@ GameObject:
   - component: {fileID: 244979289591368073}
   - component: {fileID: 7536190676050935140}
   - component: {fileID: 8992851944659332771}
+  - component: {fileID: 7702770196705938751}
   m_Layer: 7
   m_Name: RicochetRocket
   m_TagString: Projectile
@@ -4932,7 +4933,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6274168866743824357}
-  m_Mesh: {fileID: 1988216149656743765, guid: 12c76e0954bd4bc449fb418198492259, type: 3}
+  m_Mesh: {fileID: 4711208715938537054, guid: 5b55a56f48524614381026c64574a306, type: 3}
 --- !u!23 &3255278806402608534
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4953,7 +4954,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad0a52ca23594674a856d0ba7d07c033, type: 2}
+  - {fileID: 8716615438154532767, guid: 5b55a56f48524614381026c64574a306, type: 3}
+  - {fileID: -6054086630736493026, guid: 5b55a56f48524614381026c64574a306, type: 3}
+  - {fileID: -462343691428377237, guid: 5b55a56f48524614381026c64574a306, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5012,7 +5015,9 @@ MonoBehaviour:
   lifetime: 10
   explosionPrefab: {fileID: 6950485930908214961, guid: 10a4834eb912ee142af466050a55bed3, type: 3}
   bulletSpeed: 6
+  parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
+  audioManager: {fileID: 7702770196705938751}
   bounces: 2
 --- !u!54 &8992851944659332771
 Rigidbody:
@@ -5041,3 +5046,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7702770196705938751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274168866743824357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Hit
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.878
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Bounce
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.878
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []

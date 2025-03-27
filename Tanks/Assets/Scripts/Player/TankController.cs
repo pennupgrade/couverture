@@ -22,26 +22,19 @@ public class TankController
     private Vector3 hitNormal;
 
     int front = 0; // someone better than me at coding can refactor this :)
-    int back = 1;
+    int back = 0;
 
     Wheel[] wheels;
 
     public TankController(Tank tank)
     {
         this.tank = tank;
-        wheels = new Wheel[tank.Wheels.Length];
-
-        for (int i = 0; i < tank.Wheels.Length; i++)
-        {
-            wheels[i].obj = tank.Wheels[i];
-            wheels[i].fallDelta = 0.0f;
-            wheels[i].maxFall = 0.14f;
-        }
+        wheels = new Wheel[1];
     }
 
     public void CalculateBodyVectors(Vector3 FrontWheelPos, Vector3 BackWheelPos)
     {
-        bodyForward = Vector3.Normalize(FrontWheelPos - BackWheelPos);
+        bodyForward = Vector3.Normalize(FrontWheelPos);
 
         float wheelDistances = Vector3.Distance(FrontWheelPos, BackWheelPos);
         bodyOrigin = 0.50f * wheelDistances * bodyForward + BackWheelPos;
@@ -142,7 +135,15 @@ public class TankController
             hitNormal = Vector3.Normalize(wheels[front].hit.normal + wheels[back].hit.normal);
         }
 
-        Quaternion targetRotation = Quaternion.LookRotation(bodyForward, hitNormal);
+        Vector3 axis = Vector3.Cross(Vector3.up, hitNormal);
+
+        if (axis == Vector3.zero)
+        {
+            axis = tank.Body.transform.forward;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.Normalize(axis), hitNormal);
+
         tank.Body.transform.rotation = Quaternion.Slerp(tank.Body.transform.rotation, targetRotation, Time.deltaTime * 20.0f);
 
         // Use this to translate based on normal
@@ -159,7 +160,7 @@ public class TankController
 
     public void RotateWheels(Vector3 direction, float magnitude)
     {
-        GameObject wheelsRef = tank.WheelsRef;
+        GameObject wheelsRef = null;
         Vector3 tankForward = wheelsRef.transform.forward;
         Quaternion targetQuat = Quaternion.LookRotation(direction);
 
@@ -191,7 +192,7 @@ public class TankController
         //float theta = Vector3.Dot(direction, bodyForward);
         //thetaFallOff = Mathf.Exp(-Mathf.Abs(theta));
 
-        tank.Velocity = tank.moveSpeed * direction * thetaFallOff;
+        tank.Velocity = (tank.stunned ? 0.4f : 1) * tank.moveSpeed * direction * thetaFallOff;
 
         // ensure y is not weird af
         Vector3 tankPos = tank.transform.position;

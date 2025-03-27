@@ -8,12 +8,14 @@ public class ActivatorButton : MonoBehaviour
     public bool reusable;
     protected bool onCooldown;
     public GameObject[] toChange;
+    public AudioManager audioManager;
 
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (!onCooldown && other.transform.tag == "Player")
         {
             buttonPressed();
+            audioManager.Play("Press");
         }
     }
     protected void buttonPressed() {

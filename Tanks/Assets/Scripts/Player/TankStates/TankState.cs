@@ -41,20 +41,27 @@ public abstract class TankState
 
     protected bool spawnInsideWallCheck()
     {
+        Collider[] hitColliders = Physics.OverlapSphere(tank.gunShotPos.position, 0.1f, 1 << 8);
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.TryGetComponent<Enemy>(out Enemy e)) {
+                e.takeDamage(100);
+                return true;
+            }
+        }
         return
-            Physics.Raycast(tank.gameObject.transform.position,
-                            tank.gunShotPos.position - tank.gameObject.transform.position,
+            Physics.Raycast(tank.gunShotPos.position - 0.2f * tank.gunShotPos.forward,
+                            tank.gunShotPos.forward,
                             Vector3.Distance(tank.gameObject.transform.position, tank.gunShotPos.position), 1 << 3);
     }
 
     public virtual TankState HandleShoot(Vector3 offsetVelocity)
     {
         if (tank.numBullets <= 0 || tank.cooldownCoroutine != null || spawnInsideWallCheck()) return this;
+        tank.audioManager.Play("Fire");
         tank.numBullets--;
         tank.cooldownCoroutine = tank.StartCoroutine(Cooldown());
         var bullet = tank.SpawnBullet();
         bullet.transform.position = tank.gunShotPos.position;
-        MonoBehaviour.print(bullet.transform.position);
         bullet.transform.rotation = Quaternion.identity;
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(0, Vector3.up)
                                                     * (tank.gun.transform.forward *
@@ -73,8 +80,8 @@ public abstract class TankState
 
     public virtual IEnumerator Cooldown()
     {
-        tank.cannonAnimator.SetTrigger("Fire");
         tank.cooldownProgress = 0f;
+        //tank.cannonAnimator.SetTrigger("Fire");
         tank.StartCoroutine(AnimationCooldown());
 
         while (tank.cooldownProgress <= Tank.COOLDOWN_TIME)
@@ -92,14 +99,14 @@ public abstract class TankState
         tank.animationProgress = 0f;
         var meshMaterial = tank.cannonAnimator.gameObject.GetComponent<MeshRenderer>().material;
 
-
-
         while (tank.animationProgress <= Tank.COOLDOWN_TIME)
         {
             tank.animationProgress += Time.deltaTime / 1.5f;
             float boomProg = Mathf.Min(0.99f, tank.animationProgress / (Tank.COOLDOWN_TIME)); // 0-1
+            boomProg = 1.0f - Mathf.Max(0.0f, boomProg);
+            boomProg = boomProg * 2.0f - 1.0f; // [-1, 1]
 
-            meshMaterial.SetFloat("_Boom", Mathf.Max(0.0f, boomProg));
+            meshMaterial.SetFloat("_T", boomProg);
             yield return null;
         }
 
@@ -109,7 +116,7 @@ public abstract class TankState
 
     public virtual IEnumerator Reload()
     {
-        while (tank.numBullets < 5)
+        while (tank.numBullets < Tank.MAX_BULLETS)
         {
             tank.reloadProgress = 0f;
 
@@ -120,6 +127,7 @@ public abstract class TankState
             }
 
             tank.numBullets++;
+            tank.audioManager.Play("Reloaded");
         }
 
         tank.reloadCoroutine = null;

@@ -32,6 +32,8 @@ public class RicochetRocket : Projectile
         if (bounces < 0)
         {
             destruction();
+        } else {
+            audioManager.Play("Bounce");
         }
     }
 

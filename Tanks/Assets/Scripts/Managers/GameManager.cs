@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,43 +8,45 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [HideInInspector] public LivesManager livesManager;
-    public string CurrentLevel;
+    // [HideInInspector] public LivesManager livesManager;
+    private string currentLevel;
     public float respawnTime;
-    public int totalLives;
-
+    // public int totalLives;
+    private Tank player; 
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Debug.Log("Initialize game manager");
+        Debug.Log("Initialize game manager");
 
-            Instance = this;
-            livesManager = new LivesManager(respawnTime, totalLives);
+        Instance = this;
+        currentLevel = SceneManager.GetActiveScene().name;
+        // livesManager = new LivesManager(respawnTime, totalLives);
 
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); //  delete dupes
-        }
+        // this is OK because SaveStateManagerGameObject has execution order -1, Tank has execution order -2
+        player = GameObject.FindWithTag("Player").GetComponent<Tank>();
+        SaveStateManagerGameObject.DebugLoadSave();
+        SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
 
-    public void GoToSubLevel(float transitionTime, string sceneName)
+    void Start() {
+    }
+
+    public void GoToNextLevel(float transitionTime, string sceneName)
     {
+        SaveStateManagerGameObject.FinishLevel(sceneName);
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
     }
 
-    public void RestartSublevel() // me when I dedicate a whole function to call a coroutine
+    public void Respawn() // me when I dedicate a whole function to call a coroutine
     {
-        GoToSubLevel(livesManager.GetRespawnTime(), SceneManager.GetActiveScene().name);
+        SaveStateManagerGameObject.PlayerDied();
+        StartCoroutine(TimerToRestart(respawnTime, SceneManager.GetActiveScene().name));
     }
 
     public void RestartLevel()
     {
-        livesManager.ResetLives();
-        GoToSubLevel(livesManager.GetRespawnTime(), CurrentLevel);
+        // livesManager.ResetLives();
+        StartCoroutine(TimerToRestart(respawnTime, currentLevel));
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
@@ -62,5 +65,19 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
+    }
+
+    public float GetRespawnTime() {
+        return respawnTime;
+    }
+
+    public void PauseGame() {
+        Time.timeScale = 0;
+        player.Freeze();
+    }
+
+    public void ResumeGame() {
+        Time.timeScale = 1;
+        player.Unfreeze();
     }
 }

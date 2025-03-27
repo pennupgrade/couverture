@@ -29,7 +29,7 @@ public class Aegis_Shield : EnemyAlertState
         while (true) {
             for (int i = 0; i < 3; i++) {
                 enemy.destination = getPlayerPoint(0);
-                if (!lineOfSightCheck() || getDist() > 6.5f) {
+                if (!lineOfSightCheck() || getDist() > 6f) {
                     turretMode = false;
                 }
                 enemy.agent.SetDestination(enemy.destination);
@@ -96,8 +96,8 @@ public class Aegis_Shield : EnemyAlertState
         yield return new WaitForSeconds(0.2f);
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
-                yield return new WaitForSeconds(enemy.reload);
-                enemy.numBullets += 2;
+                yield return new WaitForSeconds(enemy.reload / 3);
+                enemy.numBullets++;
             } else {
                 yield return null;
             }

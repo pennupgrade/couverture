@@ -1,0 +1,42 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AnimalStation : MonoBehaviour
+{
+    private bool inRange = false;
+
+    void Start()
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            inRange = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            inRange = false;
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Clicked");
+            Debug.Log(inRange);
+        }
+        
+        if(inRange && Input.GetKeyDown(KeyCode.E))
+        {
+            UIManager.instance.Open_CatSelectionPanel_DuringGame();
+        }
+    }
+}
