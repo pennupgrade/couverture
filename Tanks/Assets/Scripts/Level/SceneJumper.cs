@@ -26,7 +26,7 @@ public class SceneJumper : MonoBehaviour
             tank.Freeze();
         }
         
-        GameManager.Instance.SwitchSublevel(transitionTime, nextScene);
+        GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
 
         StartCoroutine(SlideButtonDown());
         onCooldown = true; // debounce

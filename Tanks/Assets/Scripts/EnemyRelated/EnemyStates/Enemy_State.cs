@@ -149,10 +149,14 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.1f, (1 << 2) | (1 << 8));
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.2f, (1 << 2) | (1 << 8));
         foreach (var hit in hitColliders) {
-            if (hit.gameObject.tag == "Tank" || hit.gameObject.tag == "Player") {
+            if (hit.gameObject.tag == "Tank") {
                 return;
+            } else if (hit.gameObject.tag == "Player") {
+                enemy.pTank.takeDamage(300);
+                GameObject bExplode = GameObject.Instantiate(enemy.bulletExplosionPrefab, enemy.gunShotPos.position, Quaternion.identity);
+                GameObject.Destroy(bExplode, 3);
             }
         }
 
@@ -172,7 +176,7 @@ public abstract class Enemy_State
         return getRandomNavPoint(enemy.transform.position, radius);
     }
     protected Vector3 getLOSPoint(Vector3 pos, float radius, float avoidRadius) {
-        for (int i = 0; i < 20; ++i)
+        for (int i = 0; i < 12; ++i)
         {
             Vector3 randomPoint = pos + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;
@@ -217,7 +221,7 @@ public abstract class Enemy_State
         if (enemy.playerRB == null || Mathf.Abs(enemy.playerRB.position.y - enemy.rb.position.y) > 1f) {
             return getRandomPoint(6);
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 8; i++)
         {
             NavMeshHit hit;
             if (NavMesh.SamplePosition(enemy.playerRB.position + radius * UnityEngine.Random.insideUnitSphere,
@@ -231,7 +235,7 @@ public abstract class Enemy_State
         return getRandomPoint(radius);
     }
     protected Vector3 getRandomNavPoint(Vector3 point, float radius) {
-        for (int i = 0; i < 20; ++i)
+        for (int i = 0; i < 16; ++i)
         {
             Vector3 randomPoint = point + radius * UnityEngine.Random.insideUnitSphere;
             randomPoint.y = enemy.rb.position.y;

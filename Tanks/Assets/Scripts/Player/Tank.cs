@@ -34,7 +34,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
-    public GameObject Body;
+    public GameObject Body, Roomba;
     public Animator cannonAnimator;
     public Character charType;
 
@@ -99,11 +99,6 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    void Start() {
-        // Get Player Stats
-        GameManager.TransferStats(this);
-    }
-
     public void Freeze() {
         controls.Disable();
         invincible = true;
@@ -150,7 +145,6 @@ public class Tank : MonoBehaviour, IDestroyable
 
         previousPos = currentPos;//this gives them a single-tick of delta difference
         currentPos = transform.position;
-        print("PREV CURR" + previousPos + " " + currentPos);
         
         // FOR TESTING PURPOSES, SHOULD BE REMOVED
         if(Input.GetKeyDown(KeyCode.Z)) {
@@ -194,9 +188,9 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             Freeze();
-            GameManager.LoseLife();
+            GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
+            var respawnTime = GameManager.Instance.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
@@ -220,9 +214,13 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     // Character abilities
-    public void Ability() {
+    public bool Ability() {
         if (character != null) {
-            character.Ability(this);
+            return character.Ability(this);
+        }
+        else
+        {
+            return false;
         }
     }
     public void AbilityUpdate() {

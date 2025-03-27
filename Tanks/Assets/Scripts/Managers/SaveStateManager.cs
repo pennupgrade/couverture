@@ -10,66 +10,98 @@ using System.IO;
 using System.Net.NetworkInformation;
 
 [Serializable]
-public class SaveStateManager
-{
-    private const string SAVE_LOCATION = "save_data.json";
-    public static SaveStateManager LoadInventory() {
+public class SaveStateManager {
+    public static SaveStateManager LoadInventory(string saveLocation) {
         SaveStateManager outManager;
-        try {
-            using (StreamReader reader = new(SAVE_LOCATION)) {
-                string jsonData = reader.ReadToEnd();
-                outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
-            }
-        } catch (IOException) {
-            outManager = new SaveStateManager();
+        using (StreamReader reader = new(saveLocation)) {
+            string jsonData = reader.ReadToEnd();
+            outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
+            outManager.SetSaveLocation(saveLocation);
         }
-        outManager.Setup();
         return outManager;
     }
 
+    public static SaveStateManager CreateSave(string saveLocation) {
+        SaveStateManager outManager = new();
+        outManager.CreateNewSave(saveLocation);
+        return outManager;
+    }
+
+
+    [Serializable]
+    private class LevelSaveData {
+        public string LevelName;
+        public TankStats Stats = new();
+        public CharacterOption CurrCharacter = CharacterOption.DEFAULT_CAT;
+    }
+
     public enum CharacterOption {
-        NONE,
+        DEFAULT_CAT,
         ROCKET_CAT,
         BUBBLE_CAT
     }
 
-    // JSON representation for unlocked characters is an array of unlocked character id's
-    public List<CharacterOption> currentUnlockedCharList = new();
+    // serialized properties
+    [SerializeField] private List<CharacterOption> unlockedCharList = new() { CharacterOption.DEFAULT_CAT};
 
-    public string currCheckpointLevelName = null;
-    public int currCheckpoint = -1;
-    public CharacterOption currCharacter = CharacterOption.NONE;
+    [SerializeField] private LevelSaveData latestLevel;
 
-    public int numLives = -1;
+    [SerializeField] private DateTimeSerializable startTime;
+    
+    [SerializeField] private DateTimeSerializable lastPlayedTime;
 
-    public List<CharacterOption> oldUnlockedCharList = new();
+    [SerializeField] private TimeSpanSerializable timePlayed;
 
 
+
+    private string saveLocation;
+    private LevelSaveData currentLevel; 
+    private CharacterOption currCharacter;
     private HashSet<CharacterOption> unlockedChars;
+    private DateTime startOfSession;
 
-    // must be run after deserialization to correctly setup stuff
-    public void Setup() {
-        // clean up unused characters
-        unlockedChars = new HashSet<CharacterOption>();
-        foreach (CharacterOption character in currentUnlockedCharList) {
-            unlockedChars.Add(character);
-        }
+    public SaveStateManager() { }
+
+    public void SetSaveLocation(string saveLocation) {
+        this.saveLocation = saveLocation;
     }
 
-
-    //          CHARACTER STUFF
-
-    // unlock character, returns true if character wasn't unlocked before (successfully unlocked) and false otherwise
-    public bool UnlockCharacter(CharacterOption character) {
-        return unlockedChars.Add(character);
+    // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
+    public void CreateNewSave(string saveLocation) {
+        this.saveLocation = saveLocation;
+        // initialize values
+        startTime = DateTimeSerializable.Now();
+        lastPlayedTime = DateTimeSerializable.Now();
+        timePlayed = new(TimeSpan.Zero);
     }
 
-    // Switch character
+    // call when session is started (save file is selected!)
+    // instantiates startOfSession and saves file
+    public void BeginSession() {
+        startOfSession = DateTime.Now;
+
+        // should it be saved here?
+        WriteToSaveFile();
+    }
+
+    // character management
+    public HashSet<CharacterOption> GetUnlockedCharacters() {
+        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        return new HashSet<CharacterOption>(unlockedChars);
+    }
+
     public void SwitchCharacter(Tank t, CharacterOption changeTo) {
-        if (unlockedChars.Contains(changeTo)) {
+        // shouldn't ever be an issue since DEFAULT CAT should always be in the list, but its good to be safe
+        if (unlockedChars.Contains(changeTo) || changeTo == CharacterOption.DEFAULT_CAT) {
             t.character = CreateNewChar(changeTo);
             currCharacter = changeTo;
+        } else {
+            throw new InvalidOperationException("Player has not unlocked that character!");
         }
+    }
+
+    public bool UnlockCharacter(CharacterOption character) {
+        return unlockedChars.Add(character);
     }
 
     private Character CreateNewChar(CharacterOption characterId) {
@@ -78,43 +110,111 @@ public class SaveStateManager
                 return new RocketChar();
             case CharacterOption.BUBBLE_CAT:
                 return new BubbleChar();
-            case CharacterOption.NONE:
+            case CharacterOption.DEFAULT_CAT:
                 return new DefaultChar();
             default:
                 throw new ArgumentException();
         };
     }
 
-
-    //          SAVE GAME STATE
-
-    // Save the inventory to a file so the state of a player can be loaded
-    public void SaveGameState() {
-        // update unlockedCharList
-        currentUnlockedCharList.Clear();
-        foreach (CharacterOption x in unlockedChars) {
-            currentUnlockedCharList.Add(x);
+    public void LoadLevel(string levelName, Tank t) {
+        if (latestLevel is null) {
+            latestLevel = new();
+            latestLevel.LevelName = levelName;
         }
+        // this could be optimized
+        unlockedChars = new(unlockedCharList);
+        if (levelName == latestLevel.LevelName) {
+            // if loading latest level, replace currentlevel with latestlevel
+            currentLevel = latestLevel;
+        } else if (currentLevel == null || currentLevel.LevelName != levelName) {
+            // If currentLevel data is not applicable, wipe it and create new data
+            currentLevel = new();
+        }
+        // load currentlevel
+        currCharacter = currentLevel.CurrCharacter;
+        // load current character
+        // TODO: should change so that it can switch to NONE???
+        SwitchCharacter(t, currentLevel.CurrCharacter);
+        // Having the health stat be 0 will be an indicator to not transfer stats (essentially a null value)
+        if (currentLevel.Stats.health != 0) {
+            currentLevel.Stats.TransferStats(t);
+        }
+    }
+
+    public void FinishLevel(string nextLevelName, TankStats t) {
+        // update unlockedCharList
+        unlockedCharList.Clear();
+        foreach (CharacterOption x in unlockedChars) {
+            unlockedCharList.Add(x);
+        }
+        if (nextLevelName != null) {
+            currentLevel.LevelName = nextLevelName;
+            currentLevel.Stats = t;
+            currentLevel.CurrCharacter = currCharacter;
+        } else {
+            latestLevel = new();
+            latestLevel.LevelName = "ALL LEVELS UNLOCKED";
+        }
+        WriteToSaveFile();
+    }
+
+    public void OnPlayerDeath() {
+        if (currentLevel is null) {
+            throw new InvalidOperationException("Trying to restart level, but not currently in a level!");
+        }
+        if (currentLevel.Stats.health != 0) {
+            currentLevel.Stats.health = 0;
+            if (currentLevel == latestLevel) {
+                WriteToSaveFile();
+            }
+        }
+    }
+
+    public void OnExitLevel() {
+        currentLevel = null;
+    }
+
+    // Save play time on game exit
+    public void ExitSaveFile() {
+        WriteToSaveFile();
+    }
+
+    private void WriteToSaveFile() {
+        // calculate last played time and total play time
+        DateTime now = DateTime.Now;
+        // TODO: could have issues if crossing between time zones
+        lastPlayedTime = new(now);
+        timePlayed = new(GetTimePlayed().Add(now.Subtract(startOfSession)));
+        startOfSession = now;
 
         // write JSON to file
-        File.WriteAllText(SAVE_LOCATION, JsonUtility.ToJson(this, true));
+        File.WriteAllText(saveLocation, JsonUtility.ToJson(this, true));
+    }
+    
+
+    // Getters
+    public DateTime GetStartTime() {
+        return startTime.ToDateTime();
     }
 
-    public HashSet<CharacterOption> GetUnlockedCharacters() {
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        return new HashSet<CharacterOption>(unlockedChars);
+    public DateTime GetLastPlayedTime() {
+        return lastPlayedTime.ToDateTime();
     }
 
-    public void FullUnlockCurrCharacters() {
-        oldUnlockedCharList = new(currentUnlockedCharList);
+    public TimeSpan GetTimePlayed() {
+        return timePlayed.ToTimeSpan();
     }
 
-    public void ResetToOld() {
-        currCheckpointLevelName = null;
-        currCheckpoint = -1;
-        numLives = -1;
-        // should I save the current character?
-        currCharacter = CharacterOption.NONE;
-        unlockedChars = new(oldUnlockedCharList);
+    public string GetLatestLevelName() {
+        if (latestLevel is null) {
+            // TODO: WHAT TO DO IN THIS CASE?
+            return null;
+        }
+        return latestLevel.LevelName;
+    }
+
+    public void DeleteSaveFile(string file) {
+        File.Delete(file);
     }
 }
