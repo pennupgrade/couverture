@@ -94,8 +94,6 @@ public partial class AudioManager : MonoBehaviour
 
         s.source.Play();
 
-        print(s.effects.Length);
-
         foreach (SoundEffect effect in s.effects)
         {
             effect.Invoke(s);

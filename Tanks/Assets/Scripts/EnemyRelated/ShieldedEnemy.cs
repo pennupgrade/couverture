@@ -19,6 +19,7 @@ public class ShieldedEnemy : Enemy
         }
         if (shieldActivated) {
             StartCoroutine(deactivateShield());
+            bubbleSound();
             return;
         }
         health -= dmg;

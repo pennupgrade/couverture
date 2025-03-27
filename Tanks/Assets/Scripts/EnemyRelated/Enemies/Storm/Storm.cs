@@ -74,6 +74,7 @@ public class Storm : EnemyOmniMove
     }
 
     public void fireRocket(bool left) {
+        fireSound();
         Vector3 rocketDir = Quaternion.AngleAxis(25 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(rocketDir));
         bulletPrefab.GetComponent<HomingRocket2>().player = player;

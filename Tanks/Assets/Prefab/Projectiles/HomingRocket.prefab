@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8878267054489980791}
   - component: {fileID: 5391773642005696221}
   - component: {fileID: 6194662905084651177}
+  - component: {fileID: 4627311981846753305}
   m_Layer: 7
   m_Name: HomingRocket
   m_TagString: Projectile
@@ -129,6 +130,7 @@ MonoBehaviour:
   bulletSpeed: 4
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
+  audioManager: {fileID: 4627311981846753305}
   player: {fileID: 0}
 --- !u!54 &5391773642005696221
 Rigidbody:
@@ -178,6 +180,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4627311981846753305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068608481609979010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Hit
+    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
+    volume: 0.878
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1 &4157527417949738597
 GameObject:
   m_ObjectHideFlags: 0

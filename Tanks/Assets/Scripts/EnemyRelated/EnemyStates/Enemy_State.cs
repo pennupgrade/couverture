@@ -154,12 +154,15 @@ public abstract class Enemy_State
             if (hit.gameObject.tag == "Tank") {
                 return;
             } else if (hit.gameObject.tag == "Player") {
+                enemy.fireSound();
                 enemy.pTank.takeDamage(300);
                 GameObject bExplode = GameObject.Instantiate(enemy.bulletExplosionPrefab, enemy.gunShotPos.position, Quaternion.identity);
                 GameObject.Destroy(bExplode, 3);
+                return;
             }
         }
 
+        enemy.fireSound();
         GameObject bullet = enemy.SpawnBullet();
         bullet.transform.position = enemy.gunShotPos.position;
         bullet.transform.rotation = Quaternion.identity;

@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6595186563768735750}
   - component: {fileID: 2263844223989962516}
   - component: {fileID: 2319106078181195739}
+  - component: {fileID: 2743715685119515656}
   m_Layer: 8
   m_Name: Storm
   m_TagString: Tank
@@ -165,6 +166,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerRB: {fileID: 0}
   pTank: {fileID: 0}
+  audioManager: {fileID: 2743715685119515656}
   speed: 0
   turnSpeed: 0
   cSpeed: 0
@@ -238,6 +240,57 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2743715685119515656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233078976524875186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Fire
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Rat
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Pop
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1001 &6826236580290273851
 PrefabInstance:
   m_ObjectHideFlags: 0

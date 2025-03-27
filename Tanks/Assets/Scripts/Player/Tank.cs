@@ -148,7 +148,7 @@ public class Tank : MonoBehaviour, IDestroyable
         currentPos = transform.position;
         
         // FOR TESTING PURPOSES, SHOULD BE REMOVED
-        if(Input.GetKeyDown(KeyCode.Z)) {
+        /*if(Input.GetKeyDown(KeyCode.Z)) {
             Debug.Log("Adding Speed");
 
             //Temporary TimedEffect
@@ -162,7 +162,7 @@ public class Tank : MonoBehaviour, IDestroyable
             );
 
             addEffect(effect);
-        }
+        }*/
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
@@ -185,6 +185,7 @@ public class Tank : MonoBehaviour, IDestroyable
         if (health <= 0) {
             if (explosionPrefab != null) {
                 var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                audioManager.Play("Explosion");
                 Destroy(expl, 2);
             }
 

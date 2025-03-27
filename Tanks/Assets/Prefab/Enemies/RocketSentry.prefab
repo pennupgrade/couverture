@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 7470632914780178816}
   - component: {fileID: 193530363016940448}
   - component: {fileID: 8352598719278399475}
+  - component: {fileID: 1962429866979091526}
   m_Layer: 8
   m_Name: RocketSentry
   m_TagString: Tank
@@ -123,6 +124,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerRB: {fileID: 0}
   pTank: {fileID: 0}
+  audioManager: {fileID: 1962429866979091526}
   speed: 0
   turnSpeed: 0
   cSpeed: 0
@@ -193,6 +195,57 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &1962429866979091526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763705744377458365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Fire
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Rat
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Pop
+    clip: {fileID: 8300000, guid: 40891b3a3fc644c8a92913021f2ac2f3, type: 3}
+    volume: 0
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1 &6878733250312288248
 GameObject:
   m_ObjectHideFlags: 0
