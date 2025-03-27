@@ -6,7 +6,7 @@ public class SoundEffect : MonoBehaviour
 {
     public virtual void Invoke(Sound s)
     {
-
+        StopAllCoroutines();
     }
 
 }
