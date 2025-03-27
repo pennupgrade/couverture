@@ -43,12 +43,9 @@ public class FanScript : MonoBehaviour
         float threshold = maxEffectiveDistance / 2.5f;
 
 
-        if (distance <= threshold / 1.5)
+        if (distance <= threshold)
         {
-            displacement *= (1 + 30 * (threshold - distance));
-        } else if (distance <= threshold)
-        {
-            displacement *= (1 + 10 * (threshold - distance));
+            displacement *= (1 + 5 * (threshold - distance));
         }
 
         player.transform.position += displacement;
