@@ -36,7 +36,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public Transform gunShotPos;
     public GameObject Body, Roomba;
     public Animator cannonAnimator;
-    public Character charType;
 
     public const int MAX_BULLETS = 5;
 
