@@ -31,7 +31,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public bool enableGod = false;
 
     // Object References
-    public GameObject bulletPrefab;
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
