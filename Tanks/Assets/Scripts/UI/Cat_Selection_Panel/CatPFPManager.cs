@@ -18,7 +18,6 @@ public class CatPFPManager : MonoBehaviour
     public Sprite sprite_UnknownCat;
 
     private List<CatPFP> pfps = new List<CatPFP>();
-
     private CatPFP currentPFP = null;
 
     private void Awake()
@@ -28,17 +27,33 @@ public class CatPFPManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        LoadPFP();
+    }
+
+    public void LoadPFP()
+    {
+        // optimize later
+        foreach (Transform child in CatsPFPPanel)
+        {
+            Destroy(child.gameObject);
+        }
+
         HashSet<SaveStateManager.CharacterOption> characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
         Debug.Log("# of characters: " + characters.Count);
         foreach (SaveStateManager.CharacterOption character in characters)
         {
-            GameObject catPFP = GameObject.Instantiate(CatPFP_obj, CatsPFPPanel);
+            // DEFAULT_CAT has no ability, so why make it an option?
+            // - Anthony
+            if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) continue;
+
+            GameObject catPFP = Instantiate(CatPFP_obj, CatsPFPPanel);
             CatPFP pfp = catPFP.GetComponent<CatPFP>();
             setPFP(character, pfp);
             pfps.Add(pfp);
         }
+
         btn_Confirm.onClick.AddListener(ConfirmBtnOnClick);
     }
 

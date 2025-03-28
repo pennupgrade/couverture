@@ -43,6 +43,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ResumeGame();
     }
 
+    public void Update_CatSelectionPanel_DuringGame()
+    {
+        CatPFPManager PFPManager = Cat_Selection_Panel.GetComponent<CatPFPManager>();
+        PFPManager.LoadPFP();
+    }
+
     public void Open_CatSelectionPanel_DuringGame()
     {
         GameManager.Instance.PauseGame();
