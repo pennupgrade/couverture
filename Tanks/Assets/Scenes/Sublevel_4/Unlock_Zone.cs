@@ -5,10 +5,11 @@ using UnityEngine;
 public class Unlock_Zone : MonoBehaviour
 {
 
-    [Header("Write BUBBLE_CAT or ROCKET_CAT.")]
-    [Header("It's probably case sensitive.")]
-    [Header("Make sure you spell the thing corectly")]
-    [Header("Otherwise I think it's going to creash.")]
+    // [Header("Write BUBBLE_CAT or ROCKET_CAT.")]
+    // [Header("It's probably case sensitive.")]
+    // [Header("Make sure you spell the thing corectly")]
+    // [Header("Otherwise I think it's going to creash.")]
+    [Header("Choose which cat you want to unlock.")]
     [SerializeField] public SaveStateManager.CharacterOption characterToUnlock;
     // Start is called before the first frame update
     void Start()
@@ -28,16 +29,17 @@ public class Unlock_Zone : MonoBehaviour
         {
             // other.GetComponent<Tank>().takeDamage(300000);
             // Debug.Log("taking damage");
-            if (characterToUnlock == SaveStateManager.CharacterOption.BUBBLE_CAT) {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
-            } else if (characterToUnlock == SaveStateManager.CharacterOption.ROCKET_CAT) {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
-            } else {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);
-            }
+            // if (characterToUnlock == SaveStateManager.CharacterOption.BUBBLE_CAT) {
+            //     Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);");
+            //     SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
+            // } else if (characterToUnlock == SaveStateManager.CharacterOption.ROCKET_CAT) {
+            //     Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);");
+            //     SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
+            // } else {
+            //     Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);");
+            //     SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);
+            // }
+            SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
             
         }
         // if (other.gameObject.tag == "Tank")
