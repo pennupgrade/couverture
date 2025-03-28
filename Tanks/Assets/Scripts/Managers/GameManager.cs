@@ -52,18 +52,16 @@ public class GameManager : MonoBehaviour
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
     private IEnumerator TimerToRestart(float duration, string sceneName)
     {
-        var elapsedTime = 0f;
+        var operation = SceneManager.LoadSceneAsync(sceneName)!;
+        operation.allowSceneActivation = false;
+        
+        SceneTransition.I.UpdatePosition();
+        SceneTransition.I.Appear();
+        
+        // Wait on the max between duration and the scene transition duration
+        yield return new WaitForSeconds(duration);
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
-        var operation = SceneManager.LoadSceneAsync(sceneName);
-        operation!.allowSceneActivation = false;
-
-        while (elapsedTime <= duration)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
     }
 
