@@ -165,6 +165,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
     }
     protected void die() {
+        if (isDead) return;
         onDeath?.Invoke();
         destruction();
         onDeath = null;
@@ -212,7 +213,6 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
 
     protected virtual void destruction() {
-        if (isDead) return;
         dieSound();
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
