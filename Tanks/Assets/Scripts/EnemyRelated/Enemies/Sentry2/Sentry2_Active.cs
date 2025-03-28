@@ -52,9 +52,9 @@ public class Sentry2_Active : EnemyAlertState
             yield return new WaitForSeconds(1f);
             if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.forward) < -0.16f) {
                 if (Vector3.Dot(-enemy.gun.transform.right, enemy.transform.forward) > 0) {
-                    enemy.cTurretTurn = -enemy.rotSpeed;
+                    enemy.cTurretTurn = -0.8f * enemy.rotSpeed;
                 } else {
-                    enemy.cTurretTurn = enemy.rotSpeed;
+                    enemy.cTurretTurn = 0.8f * enemy.rotSpeed;
                 }
             }
         }
