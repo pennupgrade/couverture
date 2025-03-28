@@ -53,9 +53,8 @@ public class Sentry2_Attack : EnemyAlertState
         while (true) {       
             if (isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 while (enemy.numBullets > 0 && lineOfSightCheck()) {
-                    fire(12);
+                    fire(20);
                     enemy.numBullets--;
-                    leadPlayer = Random.value < enemy.leadChance;
                     yield return new WaitForSeconds(enemy.cooldownTime);
                 }
             }
@@ -63,6 +62,7 @@ public class Sentry2_Attack : EnemyAlertState
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload - enemy.cooldownTime);
                 enemy.numBullets = enemy.magSize;
+                leadPlayer = Random.value < enemy.leadChance;
             } else {
                 yield return new WaitForSeconds(0.2f);
             }

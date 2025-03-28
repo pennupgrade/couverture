@@ -301,6 +301,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7603108256866851323, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 91
+      objectReference: {fileID: 0}
     - target: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_Name
       value: Tank prefab
@@ -334,15 +338,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8410636013499981182, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2792255457135839967}
-    - targetCorrespondingSourceObject: {fileID: 953294478648327036, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4263046467715098252}
-    - targetCorrespondingSourceObject: {fileID: 953294478648327036, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6932909512406442934}
-    - targetCorrespondingSourceObject: {fileID: 953294478648327036, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6494635745701239042}
     - targetCorrespondingSourceObject: {fileID: 3878171580942705607, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       insertIndex: 1
       addedObject: {fileID: 4945313595724156551}
@@ -405,6 +400,15 @@ MonoBehaviour:
     pool: 0
     source: {fileID: 0}
     effects: []
+  - name: Cat
+    clip: {fileID: 8300000, guid: 717017b9bb27ab345958d072c2ae4084, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
   singleton: 0
   playedSounds: []
 --- !u!114 &3772262592335051483
@@ -434,83 +438,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 0.2
-  baseVolume: 0
---- !u!1 &6200493283313011058 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 953294478648327036, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-  m_PrefabInstance: {fileID: 6572541368118145550}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4263046467715098252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200493283313011058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - name: Fire
-    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
-    volume: 0.1
-    loop: 0
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    source: {fileID: 0}
-    effects:
-    - {fileID: 6932909512406442934}
-    - {fileID: 6494635745701239042}
-  - name: Explosion
-    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
-    volume: 0.1
-    loop: 0
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    source: {fileID: 0}
-    effects: []
-  - name: Reloaded
-    clip: {fileID: 8300000, guid: f1845d74b2f3e4738994013a4362d868, type: 3}
-    volume: 0.1
-    loop: 0
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    source: {fileID: 0}
-    effects: []
-  singleton: 0
-  playedSounds: []
---- !u!114 &6932909512406442934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200493283313011058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b06984b31ad6b044b82a6a5884f0c6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  length: 0.2
-  baseVolume: 0
---- !u!114 &6494635745701239042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200493283313011058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b6c65d9f146a354badd6846ee6f5408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 0.2
   baseVolume: 0
 --- !u!1 &7990602951110889929 stripped
 GameObject:

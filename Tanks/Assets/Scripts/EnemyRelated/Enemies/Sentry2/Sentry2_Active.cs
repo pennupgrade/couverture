@@ -9,7 +9,7 @@ public class Sentry2_Active : EnemyAlertState
     private float rayDist;
     private Vector3 rayPos, rayDir;
     public Sentry2_Active(Enemy enemy) : base(enemy) {
-        ((Defender)enemy).pauseRot = false;
+        ((Sentry2)enemy).pauseRot = false;
         frameTimer = 1;
     }
 
@@ -50,7 +50,7 @@ public class Sentry2_Active : EnemyAlertState
         enemy.cTurretTurn = -enemy.rotSpeed;
         while (true) {
             yield return new WaitForSeconds(1f);
-            if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.forward) < -0.25f) {
+            if (Vector3.Dot(enemy.gun.transform.forward, enemy.transform.forward) < -0.16f) {
                 if (Vector3.Dot(-enemy.gun.transform.right, enemy.transform.forward) > 0) {
                     enemy.cTurretTurn = -enemy.rotSpeed;
                 } else {
@@ -103,13 +103,13 @@ public class Sentry2_Active : EnemyAlertState
     }
     private IEnumerator shootCor() {
         enemy.reloadCor = enemy.StartCoroutine(reloader());
-        ((Defender)enemy).pauseRot = true;
-        fire(36);
-        yield return new WaitForSeconds(enemy.cooldownTime);
-        fire(36);
-        yield return new WaitForSeconds(enemy.cooldownTime);
-        fire(36);
-        ((Defender)enemy).pauseRot = false;
+        ((Sentry2)enemy).pauseRot = true;
+        fire(10);
+        yield return new WaitForSeconds(1.5f * enemy.cooldownTime);
+        fire(18);
+        yield return new WaitForSeconds(1.5f * enemy.cooldownTime);
+        fire(25);
+        ((Sentry2)enemy).pauseRot = false;
         enemy.activeShootPeriodically = null;
     }
     private IEnumerator reloader() {
