@@ -22,7 +22,6 @@ public class SceneJumper : MonoBehaviour
         Tank tank = playerCollider.gameObject.GetComponent<Tank>();
         if (tank)
         {
-            tank.Dissolve(transitionTime);
             tank.Freeze();
         }
         
