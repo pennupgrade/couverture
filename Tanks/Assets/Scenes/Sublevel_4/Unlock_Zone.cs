@@ -28,17 +28,7 @@ public class Unlock_Zone : MonoBehaviour
         {
             // other.GetComponent<Tank>().takeDamage(300000);
             // Debug.Log("taking damage");
-            if (characterToUnlock == SaveStateManager.CharacterOption.BUBBLE_CAT) {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.BUBBLE_CAT);
-            } else if (characterToUnlock == SaveStateManager.CharacterOption.ROCKET_CAT) {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.ROCKET_CAT);
-            } else {
-                Debug.Log("SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);");
-                SaveStateManagerGameObject.UnlockCharacter(SaveStateManager.CharacterOption.DEFAULT_CAT);
-            }
-            
+            SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
         }
         // if (other.gameObject.tag == "Tank")
         // {
