@@ -11,12 +11,12 @@ public class TankMoveState : TankState
         Vector3 target = -dir.x * tank.transform.forward + dir.y * tank.transform.right;
 
         float dot = Vector3.Dot(tank.Roomba.transform.right, target);
-        if (dot > 0.0001f) {
+        if (dot > 0.01f) {
             cTurnSpeed = -400;
-        } else if (dot < -0.0001f) {
+        } else if (dot < -0.01f) {
             cTurnSpeed = 400;
         } else {
-            cTurnSpeed = 0;
+            cTurnSpeed /= -100;
         }
         tank.Roomba.transform.localEulerAngles += cTurnSpeed * Time.deltaTime * Vector3.forward;
 
