@@ -15,6 +15,7 @@ public class SceneTransition : MonoBehaviour
 
     private const float Init = 0f;
     private const float Final = 4.5f;
+    private string previousSceneName = "sublevel 1";
     
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
@@ -38,6 +39,9 @@ public class SceneTransition : MonoBehaviour
     private void Start() => Disappear();
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.name == previousSceneName) return;
+
+        previousSceneName = scene.name;
         UpdatePosition();
         Disappear();
     }
