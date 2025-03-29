@@ -59,7 +59,7 @@ public class Viper : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1.3f));
+            StartCoroutine(stopMove(1f));
         }
     }
     public void fireRocket() {

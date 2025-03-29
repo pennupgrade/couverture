@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public void Respawn() // me when I dedicate a whole function to call a coroutine
     {
         SaveStateManagerGameObject.PlayerDied();
-        StartCoroutine(TimerToRestart(respawnTime, SceneManager.GetActiveScene().name));
+        StartCoroutine(TimerToRestart(respawnTime, SceneManager.GetActiveScene().name, true));
     }
 
     public void RestartLevel()
@@ -50,20 +50,21 @@ public class GameManager : MonoBehaviour
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
-    private IEnumerator TimerToRestart(float duration, string sceneName)
+    private IEnumerator TimerToRestart(float duration, string sceneName, bool respawn = false)
     {
-        var elapsedTime = 0f;
+        var operation = SceneManager.LoadSceneAsync(sceneName)!;
+        operation.allowSceneActivation = false;
 
-        var operation = SceneManager.LoadSceneAsync(sceneName);
-        operation!.allowSceneActivation = false;
-
-        while (elapsedTime <= duration)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
+        // Only do scene transition if we're not respawning (aka we're entering new level)
+        if (!respawn) {
+            SceneTransition.I.UpdatePosition();
+            SceneTransition.I.Appear();
         }
+        
+        // Wait on the max between duration and the scene transition duration
+        yield return new WaitForSeconds(duration);
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
-        Debug.Log($"Restart to scene '{sceneName}'");
         operation.allowSceneActivation = true;
     }
 

@@ -56,7 +56,7 @@ public class TankCharacterController
 
     public void MoveTank(Vector2 dir)
     {
-        Vector3 playerInput = new Vector3(-dir.x, 0, -dir.y);
+        Vector3 playerInput = dir.x * tank.forward + -dir.y * tank.right;
         Vector3 direction = Vector3.Normalize(playerInput);
 
         // insert zach's code to rotate the body thing

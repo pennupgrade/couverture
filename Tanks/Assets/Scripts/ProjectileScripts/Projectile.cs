@@ -25,7 +25,7 @@ public abstract class Projectile : MonoBehaviour
     protected virtual void Update()
     {
         lifetime -= Time.deltaTime;
-        if (lifetime < 0) Destroy(gameObject);
+        if (lifetime < 0) removeObjectFromGame();
     }
     public virtual void destruction() {
         if (destroyed) return;

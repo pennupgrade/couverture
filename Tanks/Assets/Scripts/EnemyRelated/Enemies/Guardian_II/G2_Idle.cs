@@ -6,6 +6,7 @@ public class G2_Idle : G1_Idle
 {
     public G2_Idle(Enemy enemy) : base(enemy) {
         enemy.speed = 1.4f;
+        enemy.cSpeed = enemy.speed;
     }
     public override Enemy_State Patrol(Vector3 playerPos)
     {

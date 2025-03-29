@@ -65,6 +65,7 @@ public class Scout : PatrollingEnemy
     }
 
     public void signalFlare() {
+        playSound("Flare");
         GameObject flare = Instantiate(signalPrefab, transform.position + 0.2f * Vector3.up, Quaternion.identity);
         Destroy(flare, 10);
     }
