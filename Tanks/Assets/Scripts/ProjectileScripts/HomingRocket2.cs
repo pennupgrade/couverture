@@ -31,7 +31,7 @@ public class HomingRocket2 : Projectile
         if (player == null) return;
 
         if (disabled && Vector3.Distance(player.transform.position, transform.position) < 2.8f) {
-            homingStr = 200;
+            homingStr = 180;
             disabled = false;
         } else if (!disabled) {
             bulletSpeed = Mathf.Max(bulletSpeed - Time.deltaTime, 3);
@@ -84,6 +84,7 @@ public class HomingRocket2 : Projectile
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
+        audioManager.Stop("Rocket");
 
         Destroy(gameObject, 0.25f);
     }

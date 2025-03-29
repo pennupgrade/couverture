@@ -7,8 +7,10 @@ public class Artemis_Alert : EnemyAlertState
 {
     protected bool playerGone;
     public Artemis_Alert(Enemy enemy) : base(enemy) {
+        enemy.audioManager.Stop("Engine");
         enemy.cSpeed = 0;
         ((Artemis)enemy).toggleLaser();
+        enemy.playSound("Laser");
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -60,6 +62,7 @@ public class Artemis_Alert : EnemyAlertState
                     enemy.wayPointUpdate = null;
                 }
                 ((Artemis)enemy).toggleLaser();
+                enemy.audioManager.Play("Engine");
                 enemy.cSpeed = enemy.speed;
                 return new Artemis_Idle(enemy);
             }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class FrontalShield : MonoBehaviour
 {
     Material shieldMat;
+    public AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +27,6 @@ public class FrontalShield : MonoBehaviour
         if (other.gameObject.tag != "Projectile" || Vector3.Dot(other.transform.forward, transform.forward) > 0) return;
         other.transform.forward = Vector3.Reflect(other.transform.forward, transform.forward);
         other.gameObject.GetComponent<Rigidbody>().velocity = other.transform.forward * other.gameObject.GetComponent<Rigidbody>().velocity.magnitude;
+        audioManager.Play("Bounce");
     }
 }

@@ -68,11 +68,13 @@ public class Phantom : Enemy
         if (!camoOnStart) {
             yield return new WaitForSeconds(1 + Random.value);
             damageFlash.CallDissolve(this, 2);
+            playSound("Ping");
             yield return new WaitForSeconds(2);
         }
         while (true) {
             yield return new WaitForSeconds(2 + 1.5f * Random.value);
             damageFlash.CallInvisFlicker(this, 0.5f);
+            playSound("Ping");
         }
     }
     public override void takeDamage(int dmg) {

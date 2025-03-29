@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Bullet_Default : Projectile
     private Material material;
     private Animator animator;
     private Collider collider;
-    public MeshTrail meshTrail;
+    [NonSerialized] public MeshTrail meshTrail;
     
     // Start is called before the first frame update
     protected override void Awake() {
@@ -22,6 +23,11 @@ public class Bullet_Default : Projectile
         animator = GetComponent<Animator>();
         collider = GetComponent<Collider>();
         material = GetComponent<MeshRenderer>().material;
+        meshTrail = GetComponent<MeshTrail>();
+
+        if (meshTrail is null) {
+            throw new InvalidOperationException("Meshtrail doesn't exist, BulletDefault being used incorrectly!");
+        }
         startBounces = bounces;
         originalDamage = damage;
     }

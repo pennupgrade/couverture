@@ -8,6 +8,7 @@ public class MissileSentry_Alert : EnemyAlertState
     public MissileSentry_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = enemy.magSize;
         ((MissileSentry)enemy).toggleLaser();
+        enemy.playSound("Laser");
     }
 
     public override Enemy_State Patrol(Vector3 playerPos)
@@ -69,11 +70,11 @@ public class MissileSentry_Alert : EnemyAlertState
         while (true) {   
             if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 ((MissileSentry)enemy).fireRocket();
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.55f);
                 ((MissileSentry)enemy).fireRocket();
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.55f);
                 ((MissileSentry)enemy).fireRocket();
-                enemy.numBullets = enemy.magSize - 2;
+                enemy.numBullets = enemy.magSize - 4;
             } else {
                 yield return new WaitForSeconds(0.2f);
             }

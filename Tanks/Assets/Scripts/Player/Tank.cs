@@ -31,13 +31,11 @@ public class Tank : MonoBehaviour, IDestroyable
     public bool enableGod = false;
 
     // Object References
-    public GameObject bulletPrefab;
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
     public GameObject Body, Roomba;
     public Animator cannonAnimator;
-    public Character charType;
 
     public const int MAX_BULLETS = 5;
 
@@ -51,6 +49,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public float reloadProgress;
     public float cooldownProgress;
     public float animationProgress;
+
+    public Vector3 forward;
+    public Vector3 right;
 
     private Vector3 currentPos = Vector3.zero;
     private Vector3 previousPos = Vector3.zero;
@@ -70,6 +71,9 @@ public class Tank : MonoBehaviour, IDestroyable
         tankState = new TankIdleState(this);
         tankController = new TankCharacterController(this);
         damageFlash = new DamageFlash(Body);
+
+        forward = transform.forward;
+        right = transform.right;
 
         rb = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
@@ -135,7 +139,13 @@ public class Tank : MonoBehaviour, IDestroyable
 
         tankController.RayCastTank();
         tankController.GravityFall();
+        bool wasIdle = tankState is TankIdleState;
         tankState = tankState.HandleMovement(moveDir);
+        if (wasIdle && tankState is TankMoveState) {
+            audioManager.Play("Engine");
+        } else if (!wasIdle && tankState is TankIdleState){
+            audioManager.Stop("Engine");
+        }
         tankState = tankState.HandleGunRotation(gunRot);
 
         for(int i = 0; i < effects.Count; i++) {
@@ -196,6 +206,9 @@ public class Tank : MonoBehaviour, IDestroyable
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
+        }
+        else if (Random.value < 0.5f) {
+            audioManager.Play("Meow");
         }
     }
 

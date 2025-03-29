@@ -19,7 +19,7 @@ public class Guardian4 : EnemyOmniMove
         FOV = 1.4f;
         rotSpeed = 108;
         cooldownTime = 0.8f;
-        reload = 4.5f;
+        reload = 4.8f;
         magSize = 2;
         numBullets = magSize;
         bulletSpeed = 5.2f;

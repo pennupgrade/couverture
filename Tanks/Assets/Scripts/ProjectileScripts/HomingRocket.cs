@@ -17,7 +17,7 @@ public class HomingRocket : Projectile
         bulletSpeed = 3f;
         turnTimer = 0.1f;
         homingStr = 160;
-        Cturn = 0;
+        Cturn = (Random.value < 0.5f) ? 50 : -50;
     }
     void Start()
     {
@@ -89,6 +89,7 @@ public class HomingRocket : Projectile
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
+        audioManager.Stop("Rocket");
 
         Destroy(gameObject, 0.25f);
     }

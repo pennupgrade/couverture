@@ -78,13 +78,16 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     protected IEnumerator stopMove(float length) {
         cSpeed = 0;
+        audioManager.Stop("Engine");
         yield return new WaitForSeconds(0.1f);
         if (moveStraightTimer != null) {
             cSpeed = speed;
+            audioManager.Play("Engine");
             yield break;
         }
         yield return new WaitForSeconds(length);
         cSpeed = speed;
+        audioManager.Play("Engine");
     }
     //----------------------------------bullet dodging--------------------------------------
     protected void turnTowardsVector(Vector3 v) {
@@ -162,9 +165,12 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         alert();
         if (health <= 0 && !isDead) {
             die();
+        } else if (Random.value < 0.25f) {
+            ratSound();
         }
     }
     protected void die() {
+        if (isDead) return;
         onDeath?.Invoke();
         destruction();
         onDeath = null;
@@ -212,7 +218,6 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
 
     protected virtual void destruction() {
-        if (isDead) return;
         dieSound();
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -257,6 +262,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
     public void bubbleSound() {
         audioManager.Play("Pop");
+    }
+
+    public void playSound(string s) {
+        audioManager.Play(s);
     }
 
 }

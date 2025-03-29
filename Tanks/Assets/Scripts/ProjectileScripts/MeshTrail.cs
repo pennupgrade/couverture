@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MeshTrail : MonoBehaviour
 {
-    public GameObject meshPrefab;
-    public float destroyTime;
     public float spawnRate;
     // Start is called before the first frame update
     void Start()
