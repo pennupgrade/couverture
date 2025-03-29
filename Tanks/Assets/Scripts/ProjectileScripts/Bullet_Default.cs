@@ -24,6 +24,7 @@ public class Bullet_Default : Projectile
         collider = GetComponent<Collider>();
         material = GetComponent<MeshRenderer>().material;
         meshTrail = GetComponent<MeshTrail>();
+
         if (meshTrail is null) {
             throw new InvalidOperationException("Meshtrail doesn't exist, BulletDefault being used incorrectly!");
         }
