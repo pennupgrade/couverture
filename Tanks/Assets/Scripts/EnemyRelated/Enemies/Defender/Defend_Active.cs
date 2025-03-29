@@ -74,7 +74,7 @@ public class Defend_Active : EnemyAlertState
                 rayDist -= Vector3.Distance(rayPos, hit.point);
                 if (rayDist <= 0) return this;
                 rayDir = Vector3.Reflect(rayDir, hit.normal);
-                rayPos = hit.point + 0.01f * rayDir;
+                rayPos = hit.point + 0.06f * rayDir;
 
             } else {
                 if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 2)) {

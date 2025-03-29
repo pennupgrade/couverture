@@ -201,6 +201,9 @@ public class Tank : MonoBehaviour, IDestroyable
 
             gameObject.SetActive(false);
         }
+        else if (Random.value < 0.5f) {
+            audioManager.Play("Meow");
+        }
     }
 
     public void Dissolve(float dissolveTime)

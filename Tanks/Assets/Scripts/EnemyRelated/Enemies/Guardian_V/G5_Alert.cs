@@ -87,7 +87,7 @@ public class G5_Alert : G2_Alert
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
                 if (enemy.getHealth() < 300) {
-                    enemy.numBullets += 2;
+                    enemy.numBullets += 3;
                 } else {
                     enemy.numBullets++;
                 }
@@ -100,7 +100,7 @@ public class G5_Alert : G2_Alert
         yield return new WaitForSeconds(0.16f);
         while (true) {   
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
-                fire(10);
+                fire(13);
                 enemy.numBullets--;
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.cooldownTime);
