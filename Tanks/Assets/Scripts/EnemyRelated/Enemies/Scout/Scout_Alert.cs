@@ -12,7 +12,6 @@ public class Scout_Alert : EnemyAlertState
             ((Scout)enemy).warningSent = true;
             enemy.StartCoroutine(sendWarning());
         }
-        enemy.ratSound();
     }
     private IEnumerator sendWarning() {
         yield return new WaitForSeconds(4);

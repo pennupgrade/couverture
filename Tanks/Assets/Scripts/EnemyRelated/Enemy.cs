@@ -162,7 +162,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         alert();
         if (health <= 0 && !isDead) {
             die();
-        } else if (Random.value < 0.03f) {
+        } else if (Random.value < 0.25f) {
             ratSound();
         }
     }
@@ -259,6 +259,10 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
     public void bubbleSound() {
         audioManager.Play("Pop");
+    }
+
+    public void playSound(string s) {
+        audioManager.Play(s);
     }
 
 }
