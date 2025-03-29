@@ -139,7 +139,13 @@ public class Tank : MonoBehaviour, IDestroyable
 
         tankController.RayCastTank();
         tankController.GravityFall();
+        bool wasIdle = tankState is TankIdleState;
         tankState = tankState.HandleMovement(moveDir);
+        if (wasIdle && tankState is TankMoveState) {
+            audioManager.Play("Engine");
+        } else if (!wasIdle && tankState is TankIdleState){
+            audioManager.Stop("Engine");
+        }
         tankState = tankState.HandleGunRotation(gunRot);
 
         for(int i = 0; i < effects.Count; i++) {
