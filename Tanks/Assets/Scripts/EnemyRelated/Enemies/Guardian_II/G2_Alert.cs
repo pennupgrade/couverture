@@ -8,7 +8,8 @@ public class G2_Alert : EnemyAlertState
     protected bool playerGone, leadPlayer;
     public G2_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 5;
-        enemy.speed = 1.8f;
+        enemy.speed = 1.6f;
+        enemy.cSpeed = enemy.speed;
         leadPlayer = false;
     }
 

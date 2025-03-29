@@ -162,6 +162,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         alert();
         if (health <= 0 && !isDead) {
             die();
+        } else if (Random.value < 0.03f) {
+            ratSound();
         }
     }
     protected void die() {
