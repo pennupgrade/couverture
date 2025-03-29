@@ -31,7 +31,7 @@ public class HomingRocket2 : Projectile
         if (player == null) return;
 
         if (disabled && Vector3.Distance(player.transform.position, transform.position) < 2.8f) {
-            homingStr = 200;
+            homingStr = 180;
             disabled = false;
         } else if (!disabled) {
             bulletSpeed = Mathf.Max(bulletSpeed - Time.deltaTime, 3);

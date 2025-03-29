@@ -261,4 +261,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         audioManager.Play("Pop");
     }
 
+    public void playSound(string s) {
+        audioManager.Play(s);
+    }
+
 }
