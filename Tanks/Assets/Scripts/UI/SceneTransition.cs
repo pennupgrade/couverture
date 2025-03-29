@@ -15,7 +15,7 @@ public class SceneTransition : MonoBehaviour
 
     private const float Init = 0f;
     private const float Final = 4.5f;
-    private string previousSceneName = "sublevel 1";
+    private string previousSceneName;
     
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
@@ -33,12 +33,14 @@ public class SceneTransition : MonoBehaviour
         }
         
         mat = overlay.material;
+        previousSceneName = SceneManager.GetActiveScene().name;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start() => Disappear();
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        // This function should only run when we enter a new level
         if (scene.name == previousSceneName) return;
 
         previousSceneName = scene.name;
