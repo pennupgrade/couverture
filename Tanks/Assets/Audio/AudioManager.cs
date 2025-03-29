@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 //Credit to Brackeys youtube tutorial on Audio managers, as the majority of this code and learning how to use it was made by him.
 
-
 public partial class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
@@ -44,6 +43,7 @@ public partial class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = 1f;
             s.source.loop = s.loop;
+            s.source.spatialBlend = 1.0f;
 
             if (s.playOnAwake)
             {
@@ -90,9 +90,9 @@ public partial class AudioManager : MonoBehaviour
             return;
         }
 
-        s.source.Play();
+        s.source.transform.position = transform.position;
 
-        print(s.effects.Length);
+        s.source.Play();
 
         foreach (SoundEffect effect in s.effects)
         {

@@ -8,7 +8,8 @@ public class G2_Alert : EnemyAlertState
     protected bool playerGone, leadPlayer;
     public G2_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 5;
-        enemy.speed = 1.8f;
+        enemy.speed = 1.6f;
+        enemy.cSpeed = enemy.speed;
         leadPlayer = false;
     }
 
@@ -74,8 +75,8 @@ public class G2_Alert : EnemyAlertState
     }
     protected IEnumerator alertPatroller() {
         while (true) {
-            playerGone = !checkIfPlayerDetected(false);
             yield return new WaitForSeconds(16);
+            playerGone = !checkIfPlayerDetected(false);
         }
     }
 
@@ -103,7 +104,7 @@ public class G2_Alert : EnemyAlertState
                     enemy.numBullets = enemy.magSize;
                 }
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }

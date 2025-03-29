@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveSpawner : Activatable
+public class WaveSpawner : Activatable, IAlertableEnemy
 {
+    public bool alertable;
     public GameObject[] wave1;
     public GameObject[] wave2; 
     public GameObject[] wave3; 
@@ -28,6 +29,12 @@ public class WaveSpawner : Activatable
             enemies.Add(wave4);
         }
     }
+
+    public virtual void alert(bool alertState = false) {
+        if (!alertable) return;
+        activate();
+    }
+
     public override void activate() {
         if (activated) return;
         activated = true;

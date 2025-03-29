@@ -22,6 +22,9 @@ public class MovingPlatformRotating : MovingPlatform
     {
         Vector3 oldPos = transform.position;
         Vector3 oldRot = transform.rotation.eulerAngles;
+
+        if (vertexPath == null) return;
+
         transform.position = vertexPath.MoveConstantVelocity(speed, advanceForward: true, ref time);
 
         transform.forward = vertexPath.GetTangent(time);

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Guardian2 : ShieldedEnemy
 {
-    public GameObject minePrefab;
     void Awake() {
         enemyState = new G2_Start(this);
     }
@@ -63,13 +62,6 @@ public class Guardian2 : ShieldedEnemy
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
             StartCoroutine(stopMove(1.3f));
-        }
-    }
-    public IEnumerator deployMines() {
-        yield return new WaitForSeconds(4);
-        while (true) {
-            Object.Instantiate(minePrefab, transform.position - 0.15f * Vector3.up, Quaternion.identity);
-            yield return new WaitForSeconds(16);
         }
     }
 }

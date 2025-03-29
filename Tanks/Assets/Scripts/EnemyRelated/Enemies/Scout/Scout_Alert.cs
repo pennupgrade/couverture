@@ -17,7 +17,7 @@ public class Scout_Alert : EnemyAlertState
         yield return new WaitForSeconds(4);
         Collider[] hitColliders = Physics.OverlapSphere(enemy.transform.position, 12, 1 << 8);
         foreach (var hit in hitColliders) {
-            if (hit.gameObject.TryGetComponent<Enemy>(out Enemy e)) {
+            if (hit.gameObject.TryGetComponent<IAlertableEnemy>(out IAlertableEnemy e)) {
                 e.alert(Random.value > 0.5f);
             }
         }
