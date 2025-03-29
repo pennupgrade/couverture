@@ -15,6 +15,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Controls controls;
     public TankState tankState;
     public TankCharacterController tankController;
+    public AudioManager audioManager;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
@@ -30,13 +31,11 @@ public class Tank : MonoBehaviour, IDestroyable
     public bool enableGod = false;
 
     // Object References
-    public GameObject bulletPrefab;
     public GameObject explosionPrefab;
     public GameObject gun;
     public Transform gunShotPos;
-    public GameObject Body;
+    public GameObject Body, Roomba;
     public Animator cannonAnimator;
-    public Character charType;
 
     public const int MAX_BULLETS = 5;
 
@@ -50,6 +49,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public float reloadProgress;
     public float cooldownProgress;
     public float animationProgress;
+
+    public Vector3 forward;
+    public Vector3 right;
 
     private Vector3 currentPos = Vector3.zero;
     private Vector3 previousPos = Vector3.zero;
@@ -69,6 +71,9 @@ public class Tank : MonoBehaviour, IDestroyable
         tankState = new TankIdleState(this);
         tankController = new TankCharacterController(this);
         damageFlash = new DamageFlash(Body);
+
+        forward = transform.forward;
+        right = transform.right;
 
         rb = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
@@ -97,11 +102,6 @@ public class Tank : MonoBehaviour, IDestroyable
         //     }
         // );
         // addEffect(effect);
-    }
-
-    void Start() {
-        // Get Player Stats
-        GameManager.TransferStats(this);
     }
 
     public void Freeze() {
@@ -152,7 +152,7 @@ public class Tank : MonoBehaviour, IDestroyable
         currentPos = transform.position;
         
         // FOR TESTING PURPOSES, SHOULD BE REMOVED
-        if(Input.GetKeyDown(KeyCode.Z)) {
+        /*if(Input.GetKeyDown(KeyCode.Z)) {
             Debug.Log("Adding Speed");
 
             //Temporary TimedEffect
@@ -166,7 +166,7 @@ public class Tank : MonoBehaviour, IDestroyable
             );
 
             addEffect(effect);
-        }
+        }*/
 
         // if (!isReloading && numBullets < 4) {
         //     StartCoroutine(reloadMagazine());
@@ -189,16 +189,20 @@ public class Tank : MonoBehaviour, IDestroyable
         if (health <= 0) {
             if (explosionPrefab != null) {
                 var expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                audioManager.Play("Explosion");
                 Destroy(expl, 2);
             }
 
             Freeze();
-            GameManager.LoseLife();
+            GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.livesManager.GetRespawnTime();
+            var respawnTime = GameManager.Instance.GetRespawnTime();
             Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
 
             gameObject.SetActive(false);
+        }
+        else if (Random.value < 0.5f) {
+            audioManager.Play("Meow");
         }
     }
 
@@ -219,9 +223,13 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     // Character abilities
-    public void Ability() {
+    public bool Ability() {
         if (character != null) {
-            character.Ability(this);
+            return character.Ability(this);
+        }
+        else
+        {
+            return false;
         }
     }
     public void AbilityUpdate() {

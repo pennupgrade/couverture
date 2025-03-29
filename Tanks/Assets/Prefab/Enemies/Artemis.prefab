@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 2709460227676102625}
   - component: {fileID: 3945106546514323777}
   - component: {fileID: 7494889832719038881}
+  - component: {fileID: 6420785368833383777}
   m_Layer: 8
   m_Name: Artemis
   m_TagString: Tank
@@ -229,6 +230,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerRB: {fileID: 0}
   pTank: {fileID: 0}
+  audioManager: {fileID: 6420785368833383777}
   speed: 0
   turnSpeed: 0
   cSpeed: 0
@@ -322,6 +324,66 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6420785368833383777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353276348830840516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Fire
+    clip: {fileID: 8300000, guid: a21f75a81b2aca6419c0195a2a4e2f33, type: 3}
+    volume: 0.9
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
+    volume: 0.8
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Rat
+    clip: {fileID: 8300000, guid: 6f3ea3674c9b3cf419d7808622e0d1e2, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Pop
+    clip: {fileID: 8300000, guid: 3b5fcfc55d44a174684bf547e16cb1ff, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Laser
+    clip: {fileID: 8300000, guid: d4e3b83859ee39e4cbbe4d0c08db97cb, type: 3}
+    volume: 0.5
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1 &7855492538652315855
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,6 +503,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3718366029561609953, guid: 7c22eed39b2fce94f8f5d06332a7ed12, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6db411b4c215b0d41bb6d6bd655ab652, type: 2}
     - target: {fileID: 3718366029561609953, guid: 7c22eed39b2fce94f8f5d06332a7ed12, type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.08

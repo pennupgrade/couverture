@@ -4902,6 +4902,7 @@ GameObject:
   - component: {fileID: 244979289591368073}
   - component: {fileID: 7536190676050935140}
   - component: {fileID: 8992851944659332771}
+  - component: {fileID: 7702770196705938751}
   m_Layer: 7
   m_Name: RicochetRocket
   m_TagString: Projectile
@@ -5016,6 +5017,7 @@ MonoBehaviour:
   bulletSpeed: 6
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
+  audioManager: {fileID: 7702770196705938751}
   bounces: 2
 --- !u!54 &8992851944659332771
 Rigidbody:
@@ -5044,3 +5046,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7702770196705938751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274168866743824357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Bounce
+    clip: {fileID: 8300000, guid: 5da6f9995452aef4abaa651d7b43f8a9, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Hit
+    clip: {fileID: 8300000, guid: e37388d5a781afe42b60b8db0d28a2c6, type: 3}
+    volume: 0.8
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []

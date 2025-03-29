@@ -83,11 +83,6 @@ public class PlayerCamera : MonoBehaviour
     }
 
     public void Kill(float duration) {
-        Debug.Log("Player died, initiate camera death sequence");
-        Checkpoint newSpawn = CheckpointManager.GetCurrCheckpoint();
-        if (newSpawn != null) {
-            ogCamPos = newSpawn.gameObject.transform.position + transform.position - GameObject.FindWithTag("Player").transform.position;
-        }
         StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
         isDead = true;
     }
@@ -101,7 +96,7 @@ public class PlayerCamera : MonoBehaviour
 
         while (elapsedTime < animDuration) {
             var t = Easing.InOutPower(elapsedTime / animDuration, 5);
-            mainCamera.transform.position = Vector3.Slerp(initialCamPos, ogCamPos, t);
+            mainCamera.transform.position = Vector3.Slerp(initialCamPos, endPos, t);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

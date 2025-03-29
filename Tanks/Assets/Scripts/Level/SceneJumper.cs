@@ -22,11 +22,10 @@ public class SceneJumper : MonoBehaviour
         Tank tank = playerCollider.gameObject.GetComponent<Tank>();
         if (tank)
         {
-            tank.Dissolve(transitionTime);
             tank.Freeze();
         }
         
-        GameManager.Instance.SwitchSublevel(transitionTime, nextScene);
+        GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
 
         StartCoroutine(SlideButtonDown());
         onCooldown = true; // debounce

@@ -9,6 +9,7 @@ public class Artemis_Alert : EnemyAlertState
     public Artemis_Alert(Enemy enemy) : base(enemy) {
         enemy.cSpeed = 0;
         ((Artemis)enemy).toggleLaser();
+        enemy.playSound("Laser");
     }
 
     public override Enemy_State Move(Vector3 _)

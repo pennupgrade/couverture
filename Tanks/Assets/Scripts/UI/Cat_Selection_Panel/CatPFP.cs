@@ -7,7 +7,7 @@ using TMPro;
 public class CatPFP : MonoBehaviour
 {
     public SaveStateManager.CharacterOption character =
-        SaveStateManager.CharacterOption.NONE;
+        SaveStateManager.CharacterOption.DEFAULT_CAT;
 
     public Image ring;
     public Image checkMark;

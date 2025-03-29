@@ -18,7 +18,13 @@ public class AbilityHandler : MonoBehaviour
         tank.AbilityUpdate();
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            tank.Ability();
+            bool sucessed = tank.Ability();
+            if (sucessed)
+            {
+                UIManager.instance.Gameplay_Panel.
+                    GetComponentInChildren<GameplayHUDManager>()
+                    .startFillAbilityBar(tank.character.getCoolDown());
+            }
         }
     }
 }

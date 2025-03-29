@@ -85,6 +85,87 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1633686794484472441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6710580835448154891}
+  - component: {fileID: 7006165001550565511}
+  - component: {fileID: 6062257290073932743}
+  m_Layer: 3
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6710580835448154891
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633686794484472441}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7611551975137905497}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7006165001550565511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633686794484472441}
+  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.15, z: 0}
+--- !u!54 &6062257290073932743
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633686794484472441}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &2143151884918091725
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,11 +176,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7611551975137905497}
   - component: {fileID: 9105552907074292257}
-  - component: {fileID: 5306539453337901482}
-  - component: {fileID: 7774416096444737568}
-  m_Layer: 8
+  - component: {fileID: 6352269432105034855}
+  m_Layer: 3
   m_Name: Launcher
-  m_TagString: Tank
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,12 +192,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2143151884918091725}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7315701, z: -0, w: -0.6817662}
+  m_LocalRotation: {x: 0, y: 0.73156804, z: -0, w: -0.6817685}
   m_LocalPosition: {x: 14.38, y: -1.5080003, z: -13.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8540273143145375796}
+  - {fileID: 6710580835448154891}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 265.964, z: 0}
 --- !u!114 &9105552907074292257
@@ -143,6 +224,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerRB: {fileID: 0}
   pTank: {fileID: 0}
+  audioManager: {fileID: 6352269432105034855}
   speed: 0
   turnSpeed: 0
   cSpeed: 0
@@ -164,54 +246,58 @@ MonoBehaviour:
   bulletSpeed: 0
   cooldownTime: 0
   reloadValue: 3.5
---- !u!65 &5306539453337901482
-BoxCollider:
+  hitbox: {fileID: 1633686794484472441}
+--- !u!114 &6352269432105034855
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2143151884918091725}
-  m_Material: {fileID: 13400000, guid: 1190b30c8a54347498a7930a187818ec, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.15, z: 0}
---- !u!54 &7774416096444737568
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2143151884918091725}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Fire
+    clip: {fileID: 8300000, guid: 0d273e2b72bd0d640bf24bad987cf494, type: 3}
+    volume: 0.8
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Explosion
+    clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
+    volume: 0.8
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Rat
+    clip: {fileID: 8300000, guid: 6f3ea3674c9b3cf419d7808622e0d1e2, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  - name: Pop
+    clip: {fileID: 8300000, guid: 3b5fcfc55d44a174684bf547e16cb1ff, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1 &2958589580117887310
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class Javelin : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 200;
+        health = 300;
         gunRange = 6.5f;
         sightRange = 9;
         FOV = 1.25f;
@@ -81,6 +81,7 @@ public class Javelin : EnemyOmniMove
         flashParticles.GetComponent<ParticleSystem>().Stop();
     }
     public void fireBeam(float dist) {
+        fireSound();
         RailgunLineScript ls = Instantiate(bulletPrefab).GetComponent<RailgunLineScript>();
         ls.dist = dist;
         ls.startPos = gunShotPos.position;
