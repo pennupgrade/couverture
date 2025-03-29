@@ -9,6 +9,7 @@ public class Viper_Alert : EnemyAlertState
     public Viper_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = enemy.magSize;
         ((Viper)enemy).toggleLaser();
+        enemy.playSound("Laser");
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -102,7 +103,7 @@ public class Viper_Alert : EnemyAlertState
         while (true) {   
             if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 ((Viper)enemy).fireRocket();
-                enemy.numBullets = enemy.magSize - 3;
+                enemy.numBullets = enemy.magSize - 4;
             } else {
                 yield return new WaitForSeconds(0.16f);
             }

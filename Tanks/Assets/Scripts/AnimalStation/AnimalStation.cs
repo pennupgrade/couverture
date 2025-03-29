@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class AnimalStation : MonoBehaviour
 {
+    [Header("Write BUBBLE_CAT or ROCKET_CAT.")]
+    [Header("It's probably case sensitive.")]
+    [Header("Make sure you spell the thing corectly")]
+    [Header("Otherwise I think it's going to creash.")]
+    [SerializeField] public SaveStateManager.CharacterOption characterToUnlock;
+
     private bool inRange = false;
 
     void Start()
@@ -36,6 +42,8 @@ public class AnimalStation : MonoBehaviour
         
         if(inRange && Input.GetKeyDown(KeyCode.E))
         {
+            SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
+            UIManager.instance.Update_CatSelectionPanel_DuringGame();
             UIManager.instance.Open_CatSelectionPanel_DuringGame();
         }
     }

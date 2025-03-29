@@ -37,6 +37,7 @@ public class Meteor : Enemy
     }
 
     public void fireMissile(Vector3 target) {
+        fireSound();
         GameObject missile = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(gunShotPos.position, target);

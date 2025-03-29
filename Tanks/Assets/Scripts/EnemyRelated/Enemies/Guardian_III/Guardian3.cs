@@ -23,7 +23,7 @@ public class Guardian3 : EnemyOmniMove
         bulletSpeed = 3.2f;
         leadChance = 0.33f;
         speed = 1.6f;
-        turnSpeed = 150;
+        turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -69,8 +69,8 @@ public class Guardian3 : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 8 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }

@@ -90,11 +90,14 @@ public partial class AudioManager : MonoBehaviour
             return;
         }
 
+        if (s.source == null)
+        {
+            // Debug.Log("Broken!!! fix later");
+            return;
+        }
+
         s.source.transform.position = transform.position;
-
         s.source.Play();
-
-        print(s.effects.Length);
 
         foreach (SoundEffect effect in s.effects)
         {

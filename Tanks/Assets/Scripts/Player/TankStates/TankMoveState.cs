@@ -8,13 +8,15 @@ public class TankMoveState : TankState
     public override TankState HandleMovement(Vector2 dir) {
         if (dir.magnitude < 0.1f) return new TankIdleState(tank);
 
-        float dot = Vector3.Dot(tank.Roomba.transform.right, new Vector3(dir.x, 0, dir.y));
-        if (dot > 0.0001f) {
+        Vector3 target = -dir.x * tank.forward + dir.y * tank.right;
+
+        float dot = Vector3.Dot(tank.Roomba.transform.right, target);
+        if (dot > 0.01f) {
             cTurnSpeed = -400;
-        } else if (dot < -0.0001f) {
+        } else if (dot < -0.01f) {
             cTurnSpeed = 400;
         } else {
-            cTurnSpeed = 0;
+            cTurnSpeed /= -100;
         }
         tank.Roomba.transform.localEulerAngles += cTurnSpeed * Time.deltaTime * Vector3.forward;
 

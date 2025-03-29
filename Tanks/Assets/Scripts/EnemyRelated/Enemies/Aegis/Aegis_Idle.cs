@@ -5,6 +5,7 @@ using UnityEngine;
 public class Aegis_Idle : G3_Idle
 {
     public Aegis_Idle(Enemy enemy) : base(enemy) {
+        enemy.cSpeed = enemy.speed;
         frameTimer = 1;
     }
 

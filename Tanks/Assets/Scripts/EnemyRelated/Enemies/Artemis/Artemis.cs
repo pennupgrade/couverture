@@ -71,6 +71,7 @@ public class Artemis : Enemy
         if (Physics.Raycast(gunShotPos.position, gunShotPos.forward, out RaycastHit hit, 15, 1 << 2))
         { 
             //Debug.Log("raycast hit");
+            fireSound();
             pTank.takeDamage(100);
             GameObject explosion = Instantiate(bulletPrefab, hit.point, Quaternion.identity);
             Destroy(explosion, 3);

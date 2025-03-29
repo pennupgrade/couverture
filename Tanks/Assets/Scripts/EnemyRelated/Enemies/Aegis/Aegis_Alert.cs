@@ -8,6 +8,7 @@ public class Aegis_Alert : EnemyAlertState
     private bool turretMode, leadPlayer, playerGone;
     public Aegis_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 3;
+        enemy.cSpeed = enemy.speed;
         leadPlayer = false;
         turretMode = false;
     }
@@ -30,7 +31,7 @@ public class Aegis_Alert : EnemyAlertState
                     Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
                     dir.y = 0;
                     enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
-                } else if (i % 2 == 0 && lineOfSightCheck() && getDist() < 5) {
+                } else if (i % 2 == 0 && lineOfSightCheck() && getDist() < 4.8f) {
                     turretMode = true;
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 7, 3.5f);

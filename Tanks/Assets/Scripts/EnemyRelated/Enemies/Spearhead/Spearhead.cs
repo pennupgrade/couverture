@@ -12,7 +12,7 @@ public class Spearhead : Enemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 400;
         gunRange = 4.5f;
         sightRange = 8;
         FOV = 0.9f;

@@ -17,7 +17,7 @@ public class HomingRocket : Projectile
         bulletSpeed = 3f;
         turnTimer = 0.1f;
         homingStr = 160;
-        Cturn = 0;
+        Cturn = (Random.value < 0.5f) ? 50 : -50;
     }
     void Start()
     {
