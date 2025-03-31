@@ -77,7 +77,9 @@ public class Javelin : EnemyOmniMove
 
     public IEnumerator muzzleFlash() {
         flashParticles.GetComponent<ParticleSystem>().Play();
+        audioManager.Play("Charging");
         yield return new WaitForSeconds(1.3f);
+        audioManager.Stop("Charging");
         flashParticles.GetComponent<ParticleSystem>().Stop();
     }
     public void fireBeam(float dist) {

@@ -90,9 +90,11 @@ public class Javelin_Attack : EnemyAlertState
         while (true) {   
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && Random.value < 0.75f) {
                 ((Javelin)enemy).stationary = true;
+                enemy.audioManager.Stop("Engine");
                 enemy.StartCoroutine(((Javelin)enemy).muzzleFlash());
                 yield return new WaitForSeconds(1.25f);
                 ((Javelin)enemy).stationary = false;
+                enemy.audioManager.Play("Engine");
                 fireRailgun();
             } else {
                 yield return new WaitForSeconds(0.16f);

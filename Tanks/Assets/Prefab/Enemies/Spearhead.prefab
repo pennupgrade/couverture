@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6339293736608623815}
   - component: {fileID: 1046027440188838279}
   - component: {fileID: 5847967143480591239}
+  - component: {fileID: 9188472655548196380}
   m_Layer: 8
   m_Name: Spearhead
   m_TagString: Tank
@@ -176,7 +177,7 @@ MonoBehaviour:
     effects: []
   - name: Explosion
     clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
-    volume: 0.8
+    volume: 0.86
     loop: 0
     playOnAwake: 0
     destroyOnComplete: 0
@@ -205,7 +206,7 @@ MonoBehaviour:
     spatialBlend: 1
     effects: []
   - name: Engine
-    clip: {fileID: 8300000, guid: b3b4d951507edf548beeaebf480fbd43, type: 3}
+    clip: {fileID: 8300000, guid: 35b7c5316e15a78478b27680a622c80a, type: 3}
     volume: 0.25
     loop: 1
     playOnAwake: 0
@@ -216,6 +217,22 @@ MonoBehaviour:
     effects: []
   singleton: 0
   playedSounds: []
+--- !u!114 &9188472655548196380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431495254974077911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37697d829a9c60544ae6b7964bc8e128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bm: {fileID: 2046430607019668972, guid: d21d9755df217d548ae5fb0657656008, type: 3}
+  lm:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &4014685377014618481
 GameObject:
   m_ObjectHideFlags: 0
