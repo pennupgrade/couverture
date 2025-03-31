@@ -49,7 +49,6 @@ public class Tank : MonoBehaviour, IDestroyable
     public float reloadProgress;
     public float cooldownProgress;
     public float animationProgress;
-
     public Vector3 forward;
     public Vector3 right;
 

@@ -22,7 +22,9 @@ public class TankCharacterController
         Vector3 direction = -tank.transform.up;
 
         Physics.Raycast(origin, direction, out hit, tank.wheelMaxDist);
-        if (hit.collider == null || hit.transform.gameObject.layer >= 7)
+        int layer = hit.transform.gameObject.layer;
+
+        if (hit.collider == null || layer  >= 7)
         {
             return;
         }
