@@ -47,7 +47,7 @@ public class BulletBar : MonoBehaviour
     {
         LeanTween.cancel(gameObject);
         rect.anchoredPosition = startPosition;
-        LeanTween.moveY(rect, startPosition.y - 20f, 0.07f).setEaseInQuart().setIgnoreTimeScale(true);
-        LeanTween.moveY(rect, startPosition.y, 0.08f).setEaseOutQuart().setIgnoreTimeScale(true).setDelay(0.05f);
+        LeanTween.moveY(rect, startPosition.y - 12f, 0.06f).setEaseInQuart().setIgnoreTimeScale(true);
+        LeanTween.moveY(rect, startPosition.y, 0.07f).setEaseOutQuart().setIgnoreTimeScale(true).setDelay(0.06f);
     }
 }
