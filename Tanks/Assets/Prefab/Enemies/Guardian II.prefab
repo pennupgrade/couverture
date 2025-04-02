@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 8065805203986549314}
   - component: {fileID: 1526332913397098455}
   - component: {fileID: 6368503788952935131}
+  - component: {fileID: -1830681502313325850}
   m_Layer: 8
   m_Name: Guardian II
   m_TagString: Tank
@@ -260,6 +261,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Explosion
     clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
@@ -269,6 +271,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Rat
     clip: {fileID: 8300000, guid: 6f3ea3674c9b3cf419d7808622e0d1e2, type: 3}
@@ -278,6 +281,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Pop
     clip: {fileID: 8300000, guid: 3b5fcfc55d44a174684bf547e16cb1ff, type: 3}
@@ -287,9 +291,36 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
+    effects: []
+  - name: Engine
+    clip: {fileID: 8300000, guid: 35b7c5316e15a78478b27680a622c80a, type: 3}
+    volume: 0.25
+    loop: 1
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   singleton: 0
   playedSounds: []
+--- !u!114 &-1830681502313325850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340933615111402350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37697d829a9c60544ae6b7964bc8e128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bm: {fileID: 2046430607019668972, guid: d21d9755df217d548ae5fb0657656008, type: 3}
+  lm:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &8800270349713692735
 GameObject:
   m_ObjectHideFlags: 0
