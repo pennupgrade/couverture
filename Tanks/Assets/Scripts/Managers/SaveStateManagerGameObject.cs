@@ -94,6 +94,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void DeleteSave(int saveNumber) {
-        Instance.stateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
+        SaveStateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
     }
 }
