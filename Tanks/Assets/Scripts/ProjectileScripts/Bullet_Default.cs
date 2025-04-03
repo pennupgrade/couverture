@@ -121,7 +121,7 @@ public class Bullet_Default : Projectile
     }
 
     private IEnumerator RemoveCoroutine() {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.16f);
         PoolManager.bulletPool.Release(this);
     }
 }
