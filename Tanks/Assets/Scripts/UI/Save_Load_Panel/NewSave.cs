@@ -7,6 +7,7 @@ public class NewSave : MonoBehaviour
 {
     public int index;
     public Button btn_CreateNewSave;
+    public SaveLoadPanelManager parent;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,5 +18,6 @@ public class NewSave : MonoBehaviour
     {
         SaveStateManagerGameObject.LoadSave(index);
         Debug.Log("save created");
+        parent.reloadPanel();
     }
 }

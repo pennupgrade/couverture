@@ -14,10 +14,12 @@ public class SaveBlockController : MonoBehaviour
     public GameObject lockedSign;
     public Button btn_Delete;
     int index;
+    public SaveLoadPanelManager parent;
 
-    public void updateBlock(int i, SaveStateMenuInfo state)
+    public void updateBlock(int i, SaveStateMenuInfo state, SaveLoadPanelManager parent)
     {
         this.index = i;
+        this.parent = parent;
         lastPlayed.text = state.GetLastPlayedTime(i).ToLongDateString();
         totalPlayTime.text = state.GetTimePlayed(i).ToString();
         started.text = state.GetStartTime(i).ToLongDateString();
@@ -38,5 +40,6 @@ public class SaveBlockController : MonoBehaviour
     public void delete()
     {
         SaveStateManagerGameObject.DeleteSave(index);
+        parent.reloadPanel();
     }
 }
