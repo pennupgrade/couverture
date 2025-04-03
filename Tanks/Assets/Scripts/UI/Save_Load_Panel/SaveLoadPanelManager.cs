@@ -8,9 +8,11 @@ public class SaveLoadPanelManager : MonoBehaviour
     public GameObject SaveBlock;
     public GameObject NewBlock;
     public GameObject[] Save123;
+    public Button btn_Back;
     // Start is called before the first frame update
     void Start()
     {
+        btn_Back.onClick.AddListener(exitButtonOnClick);
         SaveStateMenuInfo saveState = new SaveStateMenuInfo();
         for (int i = 0; i < 3; i++)
         {
@@ -28,5 +30,10 @@ public class SaveLoadPanelManager : MonoBehaviour
                 newBlock.GetComponent<NewSave>().index = i;
             }
         }
+    }
+
+    public void exitButtonOnClick()
+    {
+        UIManager.instance.QuitFrom_SaveLoadPanel_DuringGame();
     }
 }
