@@ -56,12 +56,12 @@ public class UIManager : MonoBehaviour
     {
         Save_Load_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
-        GameManager.Instance.ResumeGame();
+        //GameManager.Instance.ResumeGame();
     }
 
     public void Open_SaveLoadPanel_DuringGame()
     {
-        GameManager.Instance.PauseGame();
+        //GameManager.Instance.PauseGame();
         Save_Load_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
     }
