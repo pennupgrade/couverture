@@ -87,6 +87,10 @@ public class SaveStateManager {
     // character management
     public HashSet<CharacterOption> GetUnlockedCharacters() {
         // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        // null check so that it works out of levels
+        if (unlockedChars is null) {
+            return new HashSet<CharacterOption>(unlockedCharList);
+        }
         return new HashSet<CharacterOption>(unlockedChars);
     }
 
@@ -214,7 +218,7 @@ public class SaveStateManager {
         return latestLevel.LevelName;
     }
 
-    public void DeleteSaveFile(string file) {
+    public static void DeleteSaveFile(string file) {
         File.Delete(file);
     }
 }
