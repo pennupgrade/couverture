@@ -12,7 +12,7 @@ public class Sentry2 : Enemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 400;
         sightRange = 10;
         gunRange = 9;
         FOV = 1.5f;
