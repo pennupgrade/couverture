@@ -189,7 +189,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public void takeDamage(int dmg) {
         if (enableGod || invincible) return;
 
-        health -= (dmg < 500) ? 100 : dmg;
+        health -= (dmg < 600) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {

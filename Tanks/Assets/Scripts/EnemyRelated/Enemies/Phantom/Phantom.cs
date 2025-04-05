@@ -72,8 +72,8 @@ public class Phantom : Enemy
             yield return new WaitForSeconds(2);
         }
         while (true) {
-            yield return new WaitForSeconds(2 + 1.5f * Random.value);
-            damageFlash.CallInvisFlicker(this, 0.5f);
+            yield return new WaitForSeconds(2.3f + 1.5f * Random.value);
+            damageFlash.CallInvisFlicker(this, 0.75f);
             playSound("Ping");
         }
     }
