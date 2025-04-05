@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad0a52ca23594674a856d0ba7d07c033, type: 2}
+  - {fileID: 2100000, guid: 1f94f288c3658fd4c8795c4a6cbc526f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   damage: 100
   lifetime: 12
   explosionPrefab: {fileID: 6950485930908214961, guid: 10a4834eb912ee142af466050a55bed3, type: 3}
+  ricochetSoundPrefab: {fileID: 8327127399722087480, guid: cec10406bbd336341bd67d3cff2e5f30, type: 3}
   bulletSpeed: 3
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
@@ -207,16 +208,6 @@ MonoBehaviour:
   - name: Bounce
     clip: {fileID: 8300000, guid: 5da6f9995452aef4abaa651d7b43f8a9, type: 3}
     volume: 1
-    loop: 0
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    source: {fileID: 0}
-    spatialBlend: 1
-    effects: []
-  - name: Hit
-    clip: {fileID: 8300000, guid: e37388d5a781afe42b60b8db0d28a2c6, type: 3}
-    volume: 0.6
     loop: 0
     playOnAwake: 0
     destroyOnComplete: 0

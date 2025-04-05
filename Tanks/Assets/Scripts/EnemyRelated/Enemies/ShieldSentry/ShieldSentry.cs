@@ -11,7 +11,7 @@ public class ShieldSentry : Enemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 400;
         gunRange = 8;
         sightRange = 9;
         FOV = 1.4f;
