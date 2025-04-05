@@ -16,6 +16,7 @@ public class GameplayHUDManager : MonoBehaviour
     private void Start()
     {
         startPosition = abilityIcon.anchoredPosition;
+        EnableAbilityBar(false);
     }
 
     public void StartFillAbilityBar(float reloadTime)
@@ -47,16 +48,17 @@ public class GameplayHUDManager : MonoBehaviour
         readyTag.gameObject.SetActive(true);
         StartReadyTagAnim();
     }
-
+    
+    private void StartReadyTagAnim()
+    {
+        LeanTween.cancel(readyTag.gameObject);
+        LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true)
+            .setOnComplete(ReadyTagBounceDown);
+    }
+    
     private void ReadyTagBounceUp()
     {
         LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true).setOnComplete(ReadyTagBounceDown).setDelay(0.25f);
-    }
-
-    private void StartReadyTagAnim()
-    {
-        LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true)
-            .setOnComplete(ReadyTagBounceDown);
     }
 
     private void ReadyTagBounceDown()
@@ -70,8 +72,8 @@ public class GameplayHUDManager : MonoBehaviour
         {
             abilityEnabled = true;
             abilityIcon.gameObject.SetActive(true);
-            LeanTween.moveY(abilityIcon, -50f, 0f);
-            LeanTween.moveY(abilityIcon, 45f, 0.6f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true);
+            LeanTween.moveY(abilityIcon, -100f, 0f);
+            LeanTween.moveY(abilityIcon, 45f, 0.5f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true).setDelay(0.2f);
         }
         else
         {

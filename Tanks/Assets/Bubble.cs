@@ -10,13 +10,13 @@ public class Bubble : MonoBehaviour, IDestroyable
 
     public void incapacitate(float time)
     {
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
 
     public void takeDamage(int dmg)
     {
-        Debug.Log("Taking Damage As Shield");
-        Destroy(gameObject);
+        // Debug.Log("Taking Damage As Shield");
+        // Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -26,9 +26,9 @@ public class Bubble : MonoBehaviour, IDestroyable
     }
 
     private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
-            Debug.Log("Hit other tank");
-            Destroy(gameObject);
-        }
+        // if (other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+        //     Debug.Log("Hit other tank");
+        //     Destroy(gameObject);
+        // }
     }
 }
