@@ -19,10 +19,11 @@ public class GameplayHUDManager : MonoBehaviour
         EnableAbilityBar(false);
     }
 
-    public void AbilityBarIsCasting()
+    public void AbilityBarIsCasting(float stayTime, Character tank)
     {
         abilityBarFill.fillAmount = 0;
         readyTag.gameObject.SetActive(false);
+        StartCoroutine(DrainAbilityBar(stayTime, tank));
     }
 
     public void StartFillAbilityBar(float reloadTime)
@@ -54,7 +55,36 @@ public class GameplayHUDManager : MonoBehaviour
         readyTag.gameObject.SetActive(true);
         StartReadyTagAnim();
     }
-    
+
+    private IEnumerator DrainAbilityBar(float reloadTime, Character tank)
+    {
+        abilityBarFill.fillMethod = Image.FillMethod.Vertical;
+        float elapsed = 0f;
+        readyTag.gameObject.SetActive(true);
+        readyTag.GetComponentInChildren<TMP_Text>().text = "Shielding...";
+        abilityBarFill.fillAmount = 1f;
+
+        while (elapsed < reloadTime)
+        {
+            if(tank.GetType() == typeof(BubbleChar))
+            {
+                if(((BubbleChar)tank).active == false)
+                {
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(0.05f);
+            elapsed += 0.05f;
+            abilityBarFill.fillAmount = 1 - elapsed / reloadTime;
+        }
+
+        abilityBarFill.fillAmount = 0f;
+        abilityBarFill.fillMethod = Image.FillMethod.Radial360;
+        readyTag.GetComponentInChildren<TMP_Text>().text = "Ready!";
+        readyTag.gameObject.SetActive(false);
+        StartReadyTagAnim();
+    }
+
     private void StartReadyTagAnim()
     {
         LeanTween.cancel(readyTag.gameObject);
