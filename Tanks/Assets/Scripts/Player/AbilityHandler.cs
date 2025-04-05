@@ -19,7 +19,7 @@ public class AbilityHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             bool success = tank.Ability();
-            if (success)
+            if (tank.CharacterHasAbility() && success)
             {
                 UIManager.instance.Gameplay_Panel.
                     GetComponentInChildren<GameplayHUDManager>()
