@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class BubbleChar : Character
 {
-    private float cooldown = 3;
-    private float currCD = 0;
+    public float cooldown = 3;
+    public float currCD = 0;
     public GameObject bubblePrefab = Resources.Load<GameObject>("BubbleShield");
 
     [HideInInspector]
@@ -40,6 +40,11 @@ public class BubbleChar : Character
 
     public override float getCoolDown()
     {
-        return cooldown;
+        return currCD;
+    }
+
+    public override bool isActive()
+    {
+        return active;
     }
 }

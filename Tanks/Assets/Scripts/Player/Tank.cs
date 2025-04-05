@@ -189,6 +189,13 @@ public class Tank : MonoBehaviour, IDestroyable
     public void takeDamage(int dmg) {
         if (enableGod || invincible) return;
 
+        // manage bubbleshield
+        if (character.isActive() && character.GetType() == typeof(BubbleChar)) {
+            Destroy(((BubbleChar)character).obj);
+            ((BubbleChar)character).currCD = ((BubbleChar)character).cooldown;
+            return;
+        }
+
         health -= (dmg < 500) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
@@ -241,6 +248,11 @@ public class Tank : MonoBehaviour, IDestroyable
         if (character != null) {
             character.AbilityUpdate(this);
         }
+    }
+
+    public bool CharacterHasAbility()
+    {
+        return character.GetType() == typeof(RocketChar);
     }
 
     // spawn a base bullet, override if different base bullet

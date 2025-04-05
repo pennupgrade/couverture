@@ -867,6 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   rb: {fileID: 0}
   tankCollider: {fileID: 0}
   characterController: {fileID: 0}
@@ -875,7 +876,6 @@ MonoBehaviour:
   groundMargin: 0.3
   wheelMaxDist: 3
   enableGod: 0
-  bulletPrefab: {fileID: 8949003392545578422, guid: d039d63e3431d934589f601144548493, type: 3}
   explosionPrefab: {fileID: 3539902868303866272, guid: 349ffc2b496edae4c81121d174505a5d, type: 3}
   gun: {fileID: 259834041627840154}
   gunShotPos: {fileID: 2603477584315941685}
@@ -890,7 +890,10 @@ MonoBehaviour:
   reloadProgress: 2
   cooldownProgress: 0.16
   animationProgress: 0
+  forward: {x: 0, y: 0, z: 0}
+  right: {x: 0, y: 0, z: 0}
   platformSpeed: 0
+  abilityHandler: {fileID: 5733553198223771888}
 --- !u!54 &8699447814597592467
 Rigidbody:
   m_ObjectHideFlags: 0
