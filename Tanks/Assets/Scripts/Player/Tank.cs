@@ -191,8 +191,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
         // manage bubbleshield
         if (character != null && character.isActive() && character.GetType() == typeof(BubbleChar)) {
-            Destroy(((BubbleChar)character).obj);
-            ((BubbleChar)character).currCD = ((BubbleChar)character).cooldown;
+            ((BubbleChar)character).DestroyBubble();
             return;
         }
 

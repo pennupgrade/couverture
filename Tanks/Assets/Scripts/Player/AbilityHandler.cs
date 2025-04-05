@@ -23,8 +23,11 @@ public class AbilityHandler : MonoBehaviour
             {
                 if(tank.character.GetType() == typeof(BubbleChar))
                 {
-
-                }else if(tank.character.GetType() == typeof(RocketChar))
+                    UIManager.instance.Gameplay_Panel.
+                        GetComponentInChildren<GameplayHUDManager>().
+                        AbilityBarIsCasting(((BubbleChar)(tank.character)).getStayTime(), (tank.character));
+                }
+                else if(tank.character.GetType() == typeof(RocketChar))
                 {
                     UIManager.instance.Gameplay_Panel.
                         GetComponentInChildren<GameplayHUDManager>()
