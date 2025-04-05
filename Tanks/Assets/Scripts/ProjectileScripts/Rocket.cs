@@ -53,6 +53,7 @@ public class Rocket : Projectile
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
+        audioManager.Stop("Rocket");
 
         Destroy(gameObject, 0.25f);
     }

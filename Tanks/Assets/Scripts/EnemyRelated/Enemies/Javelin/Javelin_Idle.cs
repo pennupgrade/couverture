@@ -6,6 +6,8 @@ public class Javelin_Idle : G1_Idle
 {
     public Javelin_Idle(Enemy enemy) : base(enemy) {
         frameTimer = 1;
+        ((Javelin)enemy).stationary = false;
+        enemy.audioManager.Play("Engine");
     }
 
     public override Enemy_State Move(Vector3 _)

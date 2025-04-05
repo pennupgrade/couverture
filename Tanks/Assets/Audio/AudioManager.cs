@@ -38,12 +38,13 @@ public partial class AudioManager : MonoBehaviour
             //GameObject newObj = Instantiate(new GameObject(), null);
 
             s.source = gameObject.AddComponent<AudioSource>();
+            s.source.playOnAwake = false;
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
             s.source.pitch = 1f;
             s.source.loop = s.loop;
-            s.source.spatialBlend = 1.0f;
+            s.source.spatialBlend = s.spatialBlend;
 
             if (s.playOnAwake)
             {

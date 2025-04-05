@@ -60,14 +60,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7753028872035102186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.8910066, z: -0.45399043, w: 0}
-  m_LocalPosition: {x: -0, y: 8.6, z: 6.73}
+  m_LocalRotation: {x: -0, y: 0.95493305, z: -0.29682153, w: 0}
+  m_LocalPosition: {x: -0.0000009536745, y: 4.58, z: 6.73013}
   m_LocalScale: {x: 1.5000007, y: 1.5000002, z: 1.5000004}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4612407986138652806}
   m_Father: {fileID: 7615726474613048892}
-  m_LocalEulerAnglesHint: {x: 54, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.534, y: 180, z: 0}
 --- !u!20 &8857870588652832852
 Camera:
   m_ObjectHideFlags: 0
@@ -78,7 +78,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.33681917, g: 0.69073546, b: 0.8207547, a: 1}
+  m_BackGroundColor: {r: 0.74509805, g: 0.5803922, b: 0.43137258, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Explosion
     clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
@@ -434,6 +435,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Reloaded
     clip: {fileID: 8300000, guid: 717017b9bb27ab345958d072c2ae4084, type: 3}
@@ -443,6 +445,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   - name: Meow
     clip: {fileID: 8300000, guid: 10650ec118b5c404fa4c16f239ecb7e7, type: 3}
@@ -452,6 +455,27 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
+    spatialBlend: 1
+    effects: []
+  - name: Engine
+    clip: {fileID: 8300000, guid: 664d6eb80e7091e4880fda8e9b12415c, type: 3}
+    volume: 0.03
+    loop: 1
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    spatialBlend: 0
+    effects: []
+  - name: Blank
+    clip: {fileID: 8300000, guid: adab6bc030b666b4d8c14ade8e906c30, type: 3}
+    volume: 0.5
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    source: {fileID: 0}
+    spatialBlend: 0
     effects: []
   singleton: 0
   playedSounds: []

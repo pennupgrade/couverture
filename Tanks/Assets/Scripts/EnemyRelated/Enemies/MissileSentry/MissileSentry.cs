@@ -12,7 +12,7 @@ public class MissileSentry : ShieldedEnemy
     void Start()
     {
         //set enemy values
-        health = 400;
+        health = 500;
         gunRange = 12;
         sightRange = 13;
         FOV = 1.4f;

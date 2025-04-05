@@ -15,7 +15,7 @@ public class Artemis : Enemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 400;
         gunRange = 14;
         sightRange = 14;
         FOV = 1.6f;
