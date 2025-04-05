@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class BubbleChar : Character
 {
-    public float cooldown = 3;
+    public float cooldown = 8;
+    public float stayTime = 3;
+    public float selfDestroyCD = 3;
     public float currCD = 0;
     public GameObject bubblePrefab = Resources.Load<GameObject>("BubbleShield");
 
@@ -37,7 +39,18 @@ public class BubbleChar : Character
         if (obj == null) {
             active = false;
         }
-        currCD -= Time.deltaTime;
+        if (active)
+        {
+            selfDestroyCD -= Time.deltaTime;
+            if (selfDestroyCD <= 0)
+            {
+                DestroyBubble();
+            }
+        }
+        else
+        {
+            currCD -= Time.deltaTime;
+        }
     }
 
     public override float getCoolDown()
@@ -45,8 +58,23 @@ public class BubbleChar : Character
         return cooldown;
     }
 
+    public float getStayTime()
+    {
+        return stayTime;
+    }
+
     public override bool isActive()
     {
         return active;
+    }
+
+    public void DestroyBubble()
+    {
+        currCD = cooldown;
+        selfDestroyCD = stayTime;
+        GameObject.Destroy(obj);
+        UIManager.instance.Gameplay_Panel.
+                        GetComponentInChildren<GameplayHUDManager>()
+                        .StartFillAbilityBar(getCoolDown());
     }
 }
