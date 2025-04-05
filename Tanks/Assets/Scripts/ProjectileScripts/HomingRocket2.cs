@@ -30,7 +30,7 @@ public class HomingRocket2 : Projectile
 
         if (player == null) return;
 
-        if (disabled && Vector3.Distance(player.transform.position, transform.position) < 2.8f) {
+        if (disabled && (Vector3.Distance(player.transform.position, transform.position) < 2.8f || Vector3.Dot(player.transform.position - transform.position, transform.forward) < -0.1f)) {
             homingStr = 180;
             disabled = false;
         } else if (!disabled) {
