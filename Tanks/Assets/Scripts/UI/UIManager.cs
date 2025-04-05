@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
     {
         Cat_Selection_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
+        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(true);
         GameManager.Instance.ResumeGame();
     }
 

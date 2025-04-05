@@ -250,6 +250,11 @@ public class Tank : MonoBehaviour, IDestroyable
         }
     }
 
+    public bool CharacterHasAbility()
+    {
+        return character.GetType() == typeof(RocketChar);
+    }
+
     // spawn a base bullet, override if different base bullet
     public GameObject SpawnBullet() {
         return PoolManager.bulletPool.Get().gameObject;
