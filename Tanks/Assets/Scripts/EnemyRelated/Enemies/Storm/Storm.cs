@@ -17,7 +17,7 @@ public class Storm : EnemyOmniMove
         gunRange = 13;
         sightRange = 13;
         FOV = 1.5f;
-        rotSpeed = 110;
+        rotSpeed = 80;
         cooldownTime = 0.5f;
         reload = 5f;
         magSize = 2;
@@ -64,7 +64,7 @@ public class Storm : EnemyOmniMove
         else if (moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= 0.5f *cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
 
         //moving
