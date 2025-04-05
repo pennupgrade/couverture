@@ -21,15 +21,10 @@ public class AbilityHandler : MonoBehaviour
             bool success = tank.Ability();
             if (success)
             {
-                if(tank.character.GetType() == typeof(BubbleChar))
-                {
-
-                }else if(tank.character.GetType() == typeof(RocketChar))
-                {
-                    UIManager.instance.Gameplay_Panel.
-                        GetComponentInChildren<GameplayHUDManager>()
-                        .StartFillAbilityBar(tank.character.getCoolDown());
-                }
+                Debug.Log("Cooling Down");
+                UIManager.instance.Gameplay_Panel.
+                    GetComponentInChildren<GameplayHUDManager>()
+                    .StartFillAbilityBar(tank.character.getCoolDown());
             }
         }
     }

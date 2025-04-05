@@ -9,4 +9,6 @@ public abstract class Character
     public abstract void AbilityUpdate(Tank t);
 
     public abstract float getCoolDown();
+
+    public abstract bool isActive();
 }

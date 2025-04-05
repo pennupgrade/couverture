@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Storm : EnemyOmniMove
 {
+    [SerializeField] GameObject laser;
+
     void Awake() {
         enemyState = new Storm_Start(this);
     }
@@ -15,9 +17,9 @@ public class Storm : EnemyOmniMove
         gunRange = 13;
         sightRange = 13;
         FOV = 1.5f;
-        rotSpeed = 80;
+        rotSpeed = 110;
         cooldownTime = 0.5f;
-        reload = 5.5f;
+        reload = 5f;
         magSize = 2;
         numBullets = magSize;
         bulletSpeed = 4f;
@@ -62,7 +64,7 @@ public class Storm : EnemyOmniMove
         else if (moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= 0.5f *cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
 
         //moving
@@ -75,8 +77,12 @@ public class Storm : EnemyOmniMove
 
     public void fireRocket(bool left) {
         fireSound();
-        Vector3 rocketDir = Quaternion.AngleAxis(25 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
+        Vector3 rocketDir = Quaternion.AngleAxis(36 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(rocketDir));
         bulletPrefab.GetComponent<HomingRocket2>().player = player;
+    }
+
+    public void toggleLaser() {
+        laser.SetActive(!laser.activeSelf);
     }
 }
