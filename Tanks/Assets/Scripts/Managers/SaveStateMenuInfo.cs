@@ -22,22 +22,27 @@ public class SaveStateMenuInfo
     }
 
     public DateTime GetStartTime(int saveNumber) {
+        //return new DateTime(1, 1, 1);
         return saves[saveNumber].GetStartTime();
     }
 
     public DateTime GetLastPlayedTime(int saveNumber) {
+        //return new DateTime(1, 1, 1);
         return saves[saveNumber].GetLastPlayedTime();
     }
 
     public TimeSpan GetTimePlayed(int saveNumber) {
+        //return TimeSpan.FromDays(1);
         return saves[saveNumber].GetTimePlayed();
     }
 
     public string GetLatestLevelName(int saveNumber) {
+        //return "hi";
         return saves[saveNumber].GetLatestLevelName();
     }
 
     public bool DoesSaveExist(int saveNumber) {
+        //return true;
         return saves[saveNumber] != null;
     }
 

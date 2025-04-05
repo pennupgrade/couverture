@@ -46,7 +46,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8949003392545578422}
-  m_Mesh: {fileID: 212370497460711607, guid: b5418c6cbe1bbc046b2b3749b2abd9c6, type: 3}
+  m_Mesh: {fileID: -7204647971529134275, guid: e05064a0b1a8e5540a57c1b4d002c7bd, type: 3}
 --- !u!23 &1380368868309052212
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad0a52ca23594674a856d0ba7d07c033, type: 2}
+  - {fileID: 2100000, guid: 1f94f288c3658fd4c8795c4a6cbc526f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   damage: 100
   lifetime: 12
   explosionPrefab: {fileID: 6950485930908214961, guid: 10a4834eb912ee142af466050a55bed3, type: 3}
+  ricochetSoundPrefab: {fileID: 8327127399722087480, guid: cec10406bbd336341bd67d3cff2e5f30, type: 3}
   bulletSpeed: 3
   parent: {fileID: 0}
   dontDamageOnSpawnDelay: 0.1
@@ -212,15 +213,7 @@ MonoBehaviour:
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
-    effects: []
-  - name: Hit
-    clip: {fileID: 8300000, guid: e37388d5a781afe42b60b8db0d28a2c6, type: 3}
-    volume: 0.6
-    loop: 0
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    source: {fileID: 0}
+    spatialBlend: 1
     effects: []
   singleton: 0
   playedSounds: []

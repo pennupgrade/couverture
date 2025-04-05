@@ -46,7 +46,8 @@ public class TipBubbleDisplay : MonoBehaviour
 
         if (tipActive || canvasGroup.alpha > 0)
         {
-            rect.anchoredPosition = playerCamera.WorldToScreenPoint(lastTipPosition);
+            Vector3 viewportPoint = playerCamera.WorldToViewportPoint(lastTipPosition);
+            rect.anchoredPosition = new Vector3(1920f * viewportPoint.x, 1080f * viewportPoint.y, 0f);
         }
     }
 }

@@ -46,7 +46,7 @@ public class HealthBar : MonoBehaviour
         slider.value = currentHealth;
         delaySlider.value = currentDelayHealth;
 
-        int displayHealth = tank.health / 100;
+        int displayHealth = Mathf.Max(0, tank.health) / 100;
         healthText.text = $"{displayHealth}<size=\"14\">/{maxHealth / 100}</size>";
     }
 

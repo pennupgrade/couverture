@@ -1,13 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using System.Text.Json;
-using System.Collections.ObjectModel;
-using Unity.VisualScripting;
 using System.IO;
-using System.Net.NetworkInformation;
 
 [Serializable]
 public class SaveStateManager {
@@ -87,6 +81,10 @@ public class SaveStateManager {
     // character management
     public HashSet<CharacterOption> GetUnlockedCharacters() {
         // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
+        // null check so that it works out of levels
+        if (unlockedChars is null) {
+            return new HashSet<CharacterOption>(unlockedCharList);
+        }
         return new HashSet<CharacterOption>(unlockedChars);
     }
 
@@ -134,7 +132,6 @@ public class SaveStateManager {
         // load currentlevel
         currCharacter = currentLevel.CurrCharacter;
         // load current character
-        // TODO: should change so that it can switch to NONE???
         SwitchCharacter(t, currentLevel.CurrCharacter);
         // Having the health stat be 0 will be an indicator to not transfer stats (essentially a null value)
         if (currentLevel.Stats.health != 0) {
@@ -214,7 +211,7 @@ public class SaveStateManager {
         return latestLevel.LevelName;
     }
 
-    public void DeleteSaveFile(string file) {
+    public static void DeleteSaveFile(string file) {
         File.Delete(file);
     }
 }

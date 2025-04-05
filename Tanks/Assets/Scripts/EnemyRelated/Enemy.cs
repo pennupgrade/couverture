@@ -78,13 +78,16 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     protected IEnumerator stopMove(float length) {
         cSpeed = 0;
+        audioManager.Stop("Engine");
         yield return new WaitForSeconds(0.1f);
         if (moveStraightTimer != null) {
             cSpeed = speed;
+            audioManager.Play("Engine");
             yield break;
         }
         yield return new WaitForSeconds(length);
         cSpeed = speed;
+        audioManager.Play("Engine");
     }
     //----------------------------------bullet dodging--------------------------------------
     protected void turnTowardsVector(Vector3 v) {

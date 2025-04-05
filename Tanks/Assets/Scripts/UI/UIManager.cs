@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     private Canvas[] panels;
     public GameObject Gameplay_Panel;
     public GameObject Cat_Selection_Panel;
+    public GameObject Save_Load_Panel;
 
     private void Awake()
     {
@@ -20,6 +21,14 @@ public class UIManager : MonoBehaviour
         panels = GetComponentsInChildren<Canvas>();
         Debug.Log("len: " + panels.Length);
         StartGame();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Open_SaveLoadPanel_DuringGame();
+        }
     }
 
     public void StartGame()
@@ -41,6 +50,20 @@ public class UIManager : MonoBehaviour
         Cat_Selection_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
         GameManager.Instance.ResumeGame();
+    }
+
+    public void QuitFrom_SaveLoadPanel_DuringGame()
+    {
+        Save_Load_Panel.SetActive(false);
+        Gameplay_Panel.SetActive(true);
+        //GameManager.Instance.ResumeGame();
+    }
+
+    public void Open_SaveLoadPanel_DuringGame()
+    {
+        //GameManager.Instance.PauseGame();
+        Save_Load_Panel.SetActive(false);
+        Gameplay_Panel.SetActive(true);
     }
 
     public void Update_CatSelectionPanel_DuringGame()

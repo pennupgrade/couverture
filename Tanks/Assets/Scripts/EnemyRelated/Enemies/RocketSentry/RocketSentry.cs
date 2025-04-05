@@ -11,7 +11,7 @@ public class RocketSentry : ShieldedEnemy
     void Start()
     {
         //set enemy values
-        health = 400;
+        health = 500;
         gunRange = 9;
         sightRange = 10;
         FOV = 1.2f;

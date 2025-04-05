@@ -73,7 +73,7 @@ public class Bullet_Default : Projectile
         } else if (changeWhenBounce)
         {
             material.SetFloat("_Glowy", 1);
-            damage *= 3;
+            damage *= 5;
         }
 
         if (!destroyed) {
@@ -110,6 +110,17 @@ public class Bullet_Default : Projectile
         changeWhenBounce = true;
     }
 
+    public override void destruction() {
+        if (destroyed) return;
+        destroyed = true;
+        if (explosionPrefab != null) {
+            GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(expl, 2);
+        }
+
+        removeObjectFromGame();
+    }
+
     protected override void removeObjectFromGame()
     {
         animator.Play("DefaultBulletFadeOut");
@@ -121,7 +132,7 @@ public class Bullet_Default : Projectile
     }
 
     private IEnumerator RemoveCoroutine() {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.16f);
         PoolManager.bulletPool.Release(this);
     }
 }
