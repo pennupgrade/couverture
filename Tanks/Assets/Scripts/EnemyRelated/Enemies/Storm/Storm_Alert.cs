@@ -10,6 +10,8 @@ public class Storm_Alert : G2_Alert
         enemy.numBullets = enemy.magSize;
         leadPlayer = false;
         left = false;
+        ((Storm)enemy).toggleLaser();
+        enemy.playSound("Laser");
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -67,6 +69,7 @@ public class Storm_Alert : G2_Alert
                     enemy.StopCoroutine(enemy.reloadCor);
                     enemy.reloadCor = null;
                 }
+                ((Storm)enemy).toggleLaser();
                 return new Storm_Idle(enemy);
             }
         }
