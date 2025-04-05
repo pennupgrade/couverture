@@ -19,9 +19,8 @@ public class AbilityHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             bool success = tank.Ability();
-            if (tank.CharacterHasAbility() && success)
+            if (success)
             {
-                Debug.Log("Cooling Down");
                 UIManager.instance.Gameplay_Panel.
                     GetComponentInChildren<GameplayHUDManager>()
                     .StartFillAbilityBar(tank.character.getCoolDown());
