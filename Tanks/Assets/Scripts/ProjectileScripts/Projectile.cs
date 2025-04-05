@@ -7,6 +7,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected int damage;
     [SerializeField] protected float lifetime;
     [SerializeField] protected GameObject explosionPrefab;
+    [SerializeField] protected GameObject ricochetSoundPrefab;
     public float bulletSpeed;
     protected bool destroyed;
     public GameObject parent;
@@ -30,7 +31,6 @@ public abstract class Projectile : MonoBehaviour
     public virtual void destruction() {
         if (destroyed) return;
         destroyed = true;
-        audioManager.Play("Hit");
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 2);
@@ -58,7 +58,13 @@ public abstract class Projectile : MonoBehaviour
         if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) // hit a player
         {
             if ((startLifetime - lifetime) > dontDamageOnSpawnDelay || parent != collision.gameObject) {
-                if (!destroyed) d.takeDamage(damage);
+                if (!destroyed) {
+                    d.takeDamage(damage);
+                    if (damage > 200) {
+                        GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
+                        Destroy(sound, 2);
+                    }
+                }
                 destruction();
                 return true;
             }
