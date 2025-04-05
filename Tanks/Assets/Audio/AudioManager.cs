@@ -38,6 +38,7 @@ public partial class AudioManager : MonoBehaviour
             //GameObject newObj = Instantiate(new GameObject(), null);
 
             s.source = gameObject.AddComponent<AudioSource>();
+            s.source.playOnAwake = false;
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
