@@ -19,9 +19,14 @@ public class GameplayHUDManager : MonoBehaviour
         EnableAbilityBar(false);
     }
 
+    public void AbilityBarIsCasting()
+    {
+        abilityBarFill.fillAmount = 0;
+        readyTag.gameObject.SetActive(false);
+    }
+
     public void StartFillAbilityBar(float reloadTime)
     {
-        Debug.Log("FIlling ability bar: " + reloadTime);
         abilityBarFill.fillAmount = 0;
         readyTag.gameObject.SetActive(false);
         
