@@ -31,7 +31,6 @@ public abstract class Projectile : MonoBehaviour
     public virtual void destruction() {
         if (destroyed) return;
         destroyed = true;
-        audioManager.Play("Hit");
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 2);

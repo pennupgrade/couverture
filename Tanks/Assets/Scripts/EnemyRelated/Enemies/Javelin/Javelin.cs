@@ -16,7 +16,7 @@ public class Javelin : EnemyOmniMove
     {
         //set enemy values
         health = 300;
-        gunRange = 6.5f;
+        gunRange = 6f;
         sightRange = 9;
         FOV = 1.25f;
         rotSpeed = 90;

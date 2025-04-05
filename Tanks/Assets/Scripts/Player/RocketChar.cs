@@ -36,4 +36,9 @@ public class RocketChar : Character
     {
         return cooldown;
     }
+
+    public override bool isActive()
+    {
+        return false;
+    }
 }

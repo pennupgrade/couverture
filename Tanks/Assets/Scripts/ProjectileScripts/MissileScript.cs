@@ -46,7 +46,7 @@ public class MissileScript : MonoBehaviour
         gameObject.transform.position = startPosition;
 
         endLocation = endPosition;
-        targetZone.transform.position = endPosition;
+        targetZone.transform.position = endPosition + new Vector3(0f, 0.1f, 0f);
 
         secondsInAir = Mathf.Abs(secondsInAir); //avoid negative time
 

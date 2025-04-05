@@ -16,7 +16,7 @@ public class HomingRocket2 : Projectile
         base.Awake();
         disabled = true;
         bulletSpeed = 4f;
-        homingStr = 20;
+        homingStr = 30;
         Cturn = 0;
     }
     void Start()
@@ -34,7 +34,7 @@ public class HomingRocket2 : Projectile
             homingStr = 180;
             disabled = false;
         } else if (!disabled) {
-            bulletSpeed = Mathf.Max(bulletSpeed - Time.deltaTime, 3);
+            bulletSpeed = Mathf.Max(bulletSpeed - 2 * Time.deltaTime, 3);
         }
         
 

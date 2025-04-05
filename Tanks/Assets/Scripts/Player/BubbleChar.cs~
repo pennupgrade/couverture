@@ -17,8 +17,6 @@ public class BubbleChar : Character
 
     public override bool Ability(Tank tank)
     {
-        Debug.Log("Curr CD: " + currCD);
-        Debug.Log("Is active: " + active);
         if (!active && currCD <= 0)
         {   
             active = true;
