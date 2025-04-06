@@ -24,6 +24,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
     // Config Variables
     private bool invincible;
+    private bool disableMove;
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -104,22 +105,15 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void Freeze() {
-        TimedEffect effect = new(15.0f, 
-            (tank) => {
-                tank.moveSpeed *= 0.1f;
-            },
-            (tank) => {
-                tank.moveSpeed /= 0.1f;
-            }
-        );
-        addEffect(effect);
+        disableMove = true;
         invincible = true;
         //controls.Disable();
     }
 
     public void Unfreeze() {
+        disableMove = false;
         invincible = false;
-        controls.Enable();
+        //controls.Enable();
     }
 
     // Effects
@@ -148,7 +142,12 @@ public class Tank : MonoBehaviour, IDestroyable
         tankController.RayCastTank();
         tankController.GravityFall();
         bool wasIdle = tankState is TankIdleState;
-        tankState = tankState.HandleMovement(moveDir);
+
+        if (!disableMove)
+        {
+            tankState = tankState.HandleMovement(moveDir);
+        }
+
         if (wasIdle && tankState is TankMoveState) {
             audioManager.Play("Engine");
         } else if (!wasIdle && tankState is TankIdleState){
