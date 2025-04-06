@@ -1,97 +1,99 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SaveStateManagerGameObject : MonoBehaviour
 {
+    private const string SAVE_FILE_PREFIX = "save_data_";
     public static SaveStateManagerGameObject Instance = null;
 
-    private SaveStateManager stateManager;
+    private SaveStateManager stateManager = null;
 
-    [SerializeField]
-    public SaveStateManager.CharacterOption defaultTestingCat;
-
+    // TODO: should i optimize this (FindTank only at loadlevel)?
     private static Tank FindTank() {
         return FindObjectOfType<Tank>();
-    }
-
-
-    // THIS IS MEANT FOR TESTING, WILL AUTOMATICALLY UNLOCK AND USE THE CAT SPECIFIED IN defaultTestingCat!!!!
-    // TO HAVE THIS DO NOTHING, HAVE defaultCat set to NONE
-    void SetDefaultCat() {
-        if (defaultTestingCat != SaveStateManager.CharacterOption.NONE) {
-            Instance.stateManager.UnlockCharacter(defaultTestingCat);
-            Instance.stateManager.SwitchCharacter(FindTank(), defaultTestingCat);
-        }
     }
 
     void Awake() {
         if (Instance is null) {
             Instance = this;
-            LoadState();
+            Application.quitting += ExitCurrentSave;
             DontDestroyOnLoad(gameObject);
-            SetDefaultCat();
         } else {
-            SetDefaultCat();
             Destroy(gameObject);
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private static string GetSaveLocation(int saveNumber) {
+        return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public static SaveStateManager LoadSaveToManager(int saveNumber) {
+        return SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
     }
 
-
-    // Character setting/getting/unlocking
-    public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
-        if (Instance.stateManager.UnlockCharacter(c)) {
-            SaveState();
+    public static void LoadSave(int saveNumber) {
+        try {
+            Instance.stateManager = LoadSaveToManager(saveNumber);
+        } catch (FileNotFoundException) {
+            Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveNumber));
         }
+        // start the session
+        Instance.stateManager.BeginSession();
     }
 
-    public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
+    public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
+        Instance.stateManager.UnlockCharacter(c);
+    }
+
+    // load save data for level that is currently in
+    public static void LoadLevel(string levelName) {
+        Instance.stateManager.LoadLevel(levelName, FindTank());
+    }
+
+    public static void SwitchCharacter (SaveStateManager.CharacterOption c) {
         Instance.stateManager.SwitchCharacter(FindTank(), c);
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
-        HashSet<SaveStateManager.CharacterOption> outSet = new();
-        // recreates a new hashset, so that is a bit of extra computation, but it means things are better encapsulated
-        foreach (SaveStateManager.CharacterOption c in Instance.stateManager.unlockedCharList) {
-            outSet.Add(c);
-        }
-        return outSet;
+        return Instance.stateManager.GetUnlockedCharacters();
     }
 
-    // SAVE AND LOAD
-    public static void LoadState() {
-        Instance.stateManager = SaveStateManager.LoadInventory();
+    public static void FinishLevel(string nextLevelName) {
+        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(FindTank()));
     }
 
-    public static void SaveState() {
-        Instance.stateManager.SaveGameState();
+    public static void ExitLevel() {
+        Instance.stateManager.OnExitLevel();
     }
 
-    public static void SetCurrentCheckpoint(string levelName, int checkpointNum) {
-        Instance.stateManager.currCheckpointLevelName = levelName;
-        Instance.stateManager.currCheckpoint = checkpointNum;
-    }
-
-    public static void SetupCheckpointManager() {
-        // load checkpoint if correct scene and checkpoint exists
-        if (String.Equals(SceneManager.GetActiveScene().name, Instance.stateManager.currCheckpointLevelName) && Instance.stateManager.currCheckpoint != -1) {
-            CheckpointManager.ForceSetCurrentCheckpoint(Instance.stateManager.currCheckpoint);
+    // debug method so tests can be run from Unity editor from simply starting scene
+    public static void DebugLoadSave() {
+        if (Instance.stateManager is null) {
+            LoadSave(1);
         }
     }
+    
+    public static void CreateSave(int saveSlot) {
+        Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveSlot));
+    }
 
+    public static void ExitCurrentSave() {
+        if (Instance is null || Instance.stateManager is null) {
+            return;
+        }
+        Instance.stateManager.ExitSaveFile();
+        Instance.stateManager = null;
+    }
+
+    public static void PlayerDied() {
+        Instance.stateManager.OnPlayerDeath();
+    }
+
+    public static void DeleteSave(int saveNumber) {
+        SaveStateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
+    }
 }

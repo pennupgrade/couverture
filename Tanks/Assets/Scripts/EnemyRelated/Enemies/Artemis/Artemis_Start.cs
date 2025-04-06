@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Artemis_Start : MonoBehaviour
+public class Artemis_Start : EnemyStartState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Artemis_Start(Enemy enemy) : base(enemy) {}
+    protected override Enemy_State stateToTransitionTo(bool alert) {
+        enemy.audioManager.Play("Engine");
+        return (alert) ? new Artemis_Alert(enemy) : new Artemis_Idle(enemy);
     }
 }

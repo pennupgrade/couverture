@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 //Credit to Brackeys youtube tutorial on Audio managers, as the majority of this code and learning how to use it was made by him.
 
-
 public partial class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
@@ -36,14 +35,16 @@ public partial class AudioManager : MonoBehaviour
 
         foreach (Sound s in sounds)
         {
-            GameObject newObj = Instantiate(new GameObject(), null);
+            //GameObject newObj = Instantiate(new GameObject(), null);
 
-            s.source = newObj.AddComponent<AudioSource>();
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.playOnAwake = false;
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
             s.source.pitch = 1f;
             s.source.loop = s.loop;
+            s.source.spatialBlend = s.spatialBlend;
 
             if (s.playOnAwake)
             {
@@ -52,7 +53,7 @@ public partial class AudioManager : MonoBehaviour
 
             if (!s.source.loop && s.destroyOnComplete)
             {
-                Destroy(newObj, s.source.clip.length);
+                Destroy(s.source, s.source.clip.length);
             }
 
             if (s.pool)
@@ -91,8 +92,6 @@ public partial class AudioManager : MonoBehaviour
         }
 
         s.source.Play();
-
-        print(s.effects.Length);
 
         foreach (SoundEffect effect in s.effects)
         {

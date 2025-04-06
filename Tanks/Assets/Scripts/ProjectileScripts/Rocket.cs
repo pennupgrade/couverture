@@ -15,7 +15,7 @@ public class Rocket : Projectile
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
+        //GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
     }
 
     // Update is called once per frame
@@ -53,6 +53,7 @@ public class Rocket : Projectile
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
+        audioManager.Stop("Rocket");
 
         Destroy(gameObject, 0.25f);
     }

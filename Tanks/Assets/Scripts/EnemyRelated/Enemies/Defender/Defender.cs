@@ -12,7 +12,7 @@ public class Defender : ShieldedEnemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = 500;
         sightRange = 15;
         FOV = 1.2f;
         rotSpeed = 45;

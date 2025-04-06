@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Guardian3 : EnemyOmniMove
 {
-    public GameObject minePrefab;
     void Awake() {
         enemyState = new G3_Start(this);
     }
@@ -24,7 +23,7 @@ public class Guardian3 : EnemyOmniMove
         bulletSpeed = 3.2f;
         leadChance = 0.33f;
         speed = 1.6f;
-        turnSpeed = 150;
+        turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -70,16 +69,9 @@ public class Guardian3 : EnemyOmniMove
 
         //moving
         if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 8 * Time.fixedDeltaTime)) : 
-                                (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) : 
+                                (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
-    }
-    public IEnumerator deployMines() {
-        yield return new WaitForSeconds(4);
-        while (true) {
-            Object.Instantiate(minePrefab, transform.position - 0.15f * Vector3.up, Quaternion.identity);
-            yield return new WaitForSeconds(16);
-        }
     }
 }

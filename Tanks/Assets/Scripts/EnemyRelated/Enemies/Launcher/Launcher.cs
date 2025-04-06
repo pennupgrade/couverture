@@ -5,6 +5,7 @@ using UnityEngine;
 public class Launcher : Enemy
 {
     public float reloadValue;
+    public GameObject hitbox;
 
     void Awake() {
         enemyState = new Launcher_Idle(this);
@@ -25,7 +26,7 @@ public class Launcher : Enemy
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
-        rb = GetComponent<Rigidbody>();
+        rb = hitbox.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -36,5 +37,9 @@ public class Launcher : Enemy
         Vector3 playerPos = Vector3.zero;
         enemyState = enemyState.Patrol(playerPos);
         enemyState = enemyState.Shoot(playerPos);
+    }
+
+    public override void takeDamage(int dmg) {
+        
     }
 }

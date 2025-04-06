@@ -22,12 +22,10 @@ public class SceneJumper : MonoBehaviour
         Tank tank = playerCollider.gameObject.GetComponent<Tank>();
         if (tank)
         {
-            tank.Dissolve(transitionTime);
-            tank.moveSpeed = 0;
-            tank.health = 1000000; // i am just too lazy to make you invincible when you transition levels
+            tank.Freeze();
         }
         
-        GameManager.Instance.GoToSubLevel(transitionTime, nextScene);
+        GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
 
         StartCoroutine(SlideButtonDown());
         onCooldown = true; // debounce

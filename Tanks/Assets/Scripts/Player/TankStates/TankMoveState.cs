@@ -2,13 +2,24 @@ using UnityEngine;
 
 public class TankMoveState : TankState
 {
-    public TankMoveState(Tank tank) : base(tank) { }
+    private float cTurnSpeed;
+    public TankMoveState(Tank tank) : base(tank) { cTurnSpeed = 0;}
 
     public override TankState HandleMovement(Vector2 dir) {
-        var isAirborne = false;
-        //isAirborne = tank.tankProps.IsAirborne(); // TODO: When gravity gets added, consider this
+        if (dir.magnitude < 0.1f) return new TankIdleState(tank);
 
-        if (tank.stunned || (dir.magnitude < 0.1f && !isAirborne)) return new TankIdleState(tank);
+        Vector3 target = -dir.x * tank.forward + dir.y * tank.right;
+
+        float dot = Vector3.Dot(tank.Roomba.transform.right, target);
+        if (dot > 0.01f) {
+            cTurnSpeed = -400;
+        } else if (dot < -0.01f) {
+            cTurnSpeed = 400;
+        } else {
+            cTurnSpeed /= -100;
+        }
+        tank.Roomba.transform.localEulerAngles += cTurnSpeed * Time.deltaTime * Vector3.forward;
+
 
         // There is input, move tank
         tank.tankController.MoveTank(dir);

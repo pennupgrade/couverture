@@ -31,7 +31,7 @@ public class CheckpointManager : MonoBehaviour
     {
         // is this the right place to put this?
         SetUpCheckpoints();
-        SaveStateManagerGameObject.SetupCheckpointManager();
+        SaveStateManagerGameObjectOld.SetupCheckpointManager();
         Respawn();
     }
 
@@ -46,7 +46,7 @@ public class CheckpointManager : MonoBehaviour
         int checkpointNum = Instance.checkpointDict[checkpoint];
         if (Instance.currCheckpoint is null || checkpointNum > Instance.checkpointDict[Instance.currCheckpoint]) {
             Instance.currCheckpoint = checkpoint;
-            SaveStateManagerGameObject.SetCurrentCheckpoint(SceneManager.GetActiveScene().name, checkpointNum);
+            SaveStateManagerGameObjectOld.SetCurrentCheckpoint(SceneManager.GetActiveScene().name, checkpointNum);
         }
     }
 

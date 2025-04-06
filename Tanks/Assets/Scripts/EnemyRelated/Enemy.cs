@@ -24,6 +24,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public Rigidbody playerRB;
     [HideInInspector] public Tank pTank;
 
+    public AudioManager audioManager;
+
     // Damage related
     public delegate void OnDeath();
     public event OnDeath onDeath;
@@ -76,13 +78,16 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
     protected IEnumerator stopMove(float length) {
         cSpeed = 0;
+        audioManager.Stop("Engine");
         yield return new WaitForSeconds(0.1f);
         if (moveStraightTimer != null) {
             cSpeed = speed;
+            audioManager.Play("Engine");
             yield break;
         }
         yield return new WaitForSeconds(length);
         cSpeed = speed;
+        audioManager.Play("Engine");
     }
     //----------------------------------bullet dodging--------------------------------------
     protected void turnTowardsVector(Vector3 v) {
@@ -160,14 +165,16 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         alert();
         if (health <= 0 && !isDead) {
             die();
+        } else if (Random.value < 0.25f) {
+            ratSound();
         }
     }
     protected void die() {
-        isDead = true;
+        if (isDead) return;
         onDeath?.Invoke();
-
         destruction();
         onDeath = null;
+        isDead = true;
     }
     public void incapacitate(float time) {
         StartCoroutine(stunTimer(time));
@@ -211,6 +218,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
 
     protected virtual void destruction() {
+        dieSound();
         if (explosionPrefab != null) {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(expl, 5);
@@ -236,7 +244,28 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         if (usesDefaultBullet) {
             return PoolManager.bulletPool.Get().gameObject;
         } else {
-            return Object.Instantiate(bulletPrefab);
+            return Instantiate(bulletPrefab);
         }
     }
+
+    public void dieSound() {
+        audioManager.Play("Explosion");
+    }
+
+    public void ratSound() {
+        audioManager.Play("Rat");
+    }
+
+    public void fireSound() {
+        audioManager.Play("Fire");
+    }
+
+    public void bubbleSound() {
+        audioManager.Play("Pop");
+    }
+
+    public void playSound(string s) {
+        audioManager.Play(s);
+    }
+
 }

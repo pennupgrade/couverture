@@ -66,18 +66,21 @@ public class Phantom : Enemy
     }
     public IEnumerator activateCamo() {
         if (!camoOnStart) {
+            yield return new WaitForSeconds(1 + Random.value);
             damageFlash.CallDissolve(this, 2);
+            playSound("Ping");
+            yield return new WaitForSeconds(2);
         }
-        yield return new WaitForSeconds(2);
         while (true) {
-            yield return new WaitForSeconds(2.5f + Random.value);
+            yield return new WaitForSeconds(2 + 1.5f * Random.value);
             damageFlash.CallInvisFlicker(this, 0.5f);
+            playSound("Ping");
         }
     }
     public override void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallInvisFlicker(this, 0.8f);
-        damageFlash.CallInvisDamage(this, 0.4f);
+        damageFlash.CallInvisDamage(this, 0.6f);
         if (health <= 0 && !isDead) {
             die();
         }

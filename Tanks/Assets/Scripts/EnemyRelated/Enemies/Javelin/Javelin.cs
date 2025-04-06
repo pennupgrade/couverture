@@ -15,7 +15,7 @@ public class Javelin : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 200;
+        health = 300;
         gunRange = 6.5f;
         sightRange = 9;
         FOV = 1.25f;
@@ -77,25 +77,19 @@ public class Javelin : EnemyOmniMove
 
     public IEnumerator muzzleFlash() {
         flashParticles.GetComponent<ParticleSystem>().Play();
+        audioManager.Play("Charging");
         yield return new WaitForSeconds(1.3f);
+        audioManager.Stop("Charging");
         flashParticles.GetComponent<ParticleSystem>().Stop();
     }
     public void fireBeam(float dist) {
-        StartCoroutine(beamLineRenderer(dist));
+        fireSound();
+        RailgunLineScript ls = Instantiate(bulletPrefab).GetComponent<RailgunLineScript>();
+        ls.dist = dist;
+        ls.startPos = gunShotPos.position;
+        ls.dir = gun.transform.forward;
+        GameObject bulletExp = Instantiate(bulletExplosionPrefab, gunShotPos.position + dist * gun.transform.forward, Quaternion.identity);
+        Destroy(bulletExp, 2);
     }
-    private IEnumerator beamLineRenderer(float dist) {
-        LineRenderer lr = Instantiate(bulletPrefab).GetComponent<LineRenderer>();
-        lr.enabled = true;
-        lr.SetPosition(0, gunShotPos.position - 0.1f * gun.transform.forward);
-        lr.SetPosition(1, gunShotPos.position + dist * gun.transform.forward);
-        GameObject bulletExp = Instantiate(bulletExplosionPrefab, gunShotPos.position + dist * gun.transform.right, Quaternion.identity);
-        float fadeOutSpeed = 0;
-        while (fadeOutSpeed < 1) {
-            fadeOutSpeed += Time.deltaTime;
-            float m_color = Mathf.Lerp(1, 0, fadeOutSpeed);
-            lr.materials[0].SetFloat("_Transparency", m_color);
-            yield return null;
-        }
-        Destroy(lr.gameObject);
-    }
+
 }
