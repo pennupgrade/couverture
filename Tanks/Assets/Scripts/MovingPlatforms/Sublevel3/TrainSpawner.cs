@@ -21,7 +21,7 @@ public class TrainSpawner : MonoBehaviour
     {
     	for (int i = 0; i < count; i++)
     	{
-            GameObject trainCarCopy = Instantiate(trainCar);
+            GameObject trainCarCopy = Instantiate(trainCar, new Vector3(0,90,0), Quaternion.identity);
             trainCarCopy.SetActive(true);
 
             MovingPlatformRotating plat = trainCarCopy.GetComponentInChildren<MovingPlatformRotating>();
