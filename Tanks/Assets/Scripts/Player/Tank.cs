@@ -190,9 +190,8 @@ public class Tank : MonoBehaviour, IDestroyable
         if (enableGod || invincible) return;
 
         // manage bubbleshield
-        if (character.isActive() && character.GetType() == typeof(BubbleChar)) {
-            Destroy(((BubbleChar)character).obj);
-            ((BubbleChar)character).currCD = ((BubbleChar)character).cooldown;
+        if (character != null && character.isActive() && character.GetType() == typeof(BubbleChar)) {
+            ((BubbleChar)character).DestroyBubble();
             return;
         }
 

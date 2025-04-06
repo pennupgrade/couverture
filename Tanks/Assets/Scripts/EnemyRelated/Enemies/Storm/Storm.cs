@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Storm : EnemyOmniMove
 {
+    [SerializeField] GameObject laser;
+
     void Awake() {
         enemyState = new Storm_Start(this);
     }
@@ -78,5 +80,9 @@ public class Storm : EnemyOmniMove
         Vector3 rocketDir = Quaternion.AngleAxis(36 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(rocketDir));
         bulletPrefab.GetComponent<HomingRocket2>().player = player;
+    }
+
+    public void toggleLaser() {
+        laser.SetActive(!laser.activeSelf);
     }
 }
