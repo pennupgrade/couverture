@@ -56,6 +56,7 @@ public abstract class TankState
 
     public virtual TankState HandleShoot(Vector3 offsetVelocity)
     {
+        if (tank.disableFire) return this;
         if (tank.numBullets <= 0) {
             tank.audioManager.Play("Blank");
             return this;

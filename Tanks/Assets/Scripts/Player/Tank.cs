@@ -25,6 +25,10 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     private bool invincible;
     private bool disableMove;
+    public bool disableFire {
+        get;
+        private set;
+    }
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -104,16 +108,24 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    public void Freeze() {
+    public void FreezeEndOfLevel() {
+        StopCoroutine(reloadCoroutine);
         disableMove = true;
         invincible = true;
-        //controls.Disable();
+        disableFire = true;
     }
 
-    public void Unfreeze() {
+    public void FreezePauseLevel() {
+        Quaternion rot = transform.rotation;
+        invincible = true;
+        controls.Disable();
+        transform.rotation = rot;
+    }
+
+    public void UnfreezePauseLevel() {
         disableMove = false;
         invincible = false;
-        //controls.Enable();
+        controls.Enable();
     }
 
     // Effects
@@ -212,7 +224,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            Freeze();
+            FreezePauseLevel();
             GameManager.Instance.Respawn();
 
             var respawnTime = GameManager.Instance.GetRespawnTime();
