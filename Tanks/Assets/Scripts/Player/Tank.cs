@@ -108,21 +108,21 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    public void FreezeEndOfLevel() {
+    public void FreezeRotationAllowed() {
         StopCoroutine(reloadCoroutine);
         disableMove = true;
         invincible = true;
         disableFire = true;
     }
 
-    public void FreezePauseLevel() {
+    public void FreezeNoRotation() {
         Quaternion rot = transform.rotation;
         invincible = true;
         controls.Disable();
         transform.rotation = rot;
     }
 
-    public void UnfreezePauseLevel() {
+    public void UnfreezeNoRotation() {
         disableMove = false;
         invincible = false;
         controls.Enable();
@@ -158,6 +158,8 @@ public class Tank : MonoBehaviour, IDestroyable
         if (!disableMove)
         {
             tankState = tankState.HandleMovement(moveDir);
+        } else {
+            tankState = new TankIdleState(this);
         }
 
         if (wasIdle && tankState is TankMoveState) {
@@ -224,7 +226,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            FreezePauseLevel();
+            FreezeNoRotation();
             GameManager.Instance.Respawn();
 
             var respawnTime = GameManager.Instance.GetRespawnTime();
