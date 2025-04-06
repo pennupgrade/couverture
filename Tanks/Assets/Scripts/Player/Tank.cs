@@ -104,8 +104,17 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void Freeze() {
-        controls.Disable();
+        TimedEffect effect = new(15.0f, 
+            (tank) => {
+                tank.moveSpeed *= 0.1f;
+            },
+            (tank) => {
+                tank.moveSpeed /= 0.1f;
+            }
+        );
+        addEffect(effect);
         invincible = true;
+        //controls.Disable();
     }
 
     public void Unfreeze() {
