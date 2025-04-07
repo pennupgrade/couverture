@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6479376289912509084}
   - component: {fileID: 8069654865891419601}
   - component: {fileID: 4492300926052461221}
+  - component: {fileID: 2243663442160765436}
   m_Layer: 0
   m_Name: TankExplosion
   m_TagString: Untagged
@@ -134,6 +135,21 @@ MonoBehaviour:
     pool: 0
     source: {fileID: 0}
     spatialBlend: 1
-    effects: []
+    effects:
+    - {fileID: 2243663442160765436}
   singleton: 0
   playedSounds: []
+--- !u!114 &2243663442160765436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539902868303866272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b1c43ad7dd3524e8017b6cbbff18f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shiftDelta: 1.5
+  time: 0.5

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class TankStats {
@@ -24,7 +25,11 @@ public class TankStats {
         // handle transfering number of bullets
         t.numBullets = numBullets;
         if (numBullets < Tank.MAX_BULLETS) {
-            t.StartCoroutine(t.tankState.Reload());
+            if (t.reloadCoroutine != null) {
+                MonoBehaviour.print("Tank reloadCoroutine is not null!");
+                t.StopCoroutine(t.reloadCoroutine);
+            }
+            t.reloadCoroutine = t.StartCoroutine(t.tankState.Reload());
         }
     }
 }

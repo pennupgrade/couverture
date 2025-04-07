@@ -19,7 +19,7 @@ public class BulletBar : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
         startPosition = rect.anchoredPosition;
-        maxBulletCount = tank.numBullets;
+        maxBulletCount = Tank.MAX_BULLETS;
     }
 
     private void Update()
