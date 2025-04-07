@@ -60,7 +60,6 @@ public class Bomb : Enemy
         }
     }
     protected override void destruction() {
-        dieSound();
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLM);
         foreach (var hit in hitColliders) {
             if (hit.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {

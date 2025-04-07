@@ -62,6 +62,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     [HideInInspector] public float bulletSpeed;
     [HideInInspector] public float cooldownTime;
 
+    // Ricochet related
+    private bool isRicochetHit;
+
     protected void findPlayer() {
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) {
@@ -163,12 +166,22 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         health -= dmg;
         damageFlash.CallDamageFlash(this);
         alert();
+
         if (health <= 0 && !isDead) {
             die();
-        } else if (Random.value < 0.25f) {
+            return;
+        }
+        
+        if (Random.value < 1.0f) {
             ratSound();
         }
     }
+    
+    public virtual void setRicochet(bool status)
+    {
+        isRicochetHit = true;
+    }
+
     protected void die() {
         if (isDead) return;
         onDeath?.Invoke();
@@ -176,6 +189,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         onDeath = null;
         isDead = true;
     }
+
     public void incapacitate(float time) {
         StartCoroutine(stunTimer(time));
     }
@@ -198,13 +212,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public void spawnBulletBoom()
     {
         Vector3 pos = transform.position;
-
-        float randX = Random.Range(-1, 1f);
-        float randY = Random.Range(-1, 1f);
-        float randZ = Random.Range(-1, 1f);
-
-        Vector3 randPos = new Vector3(randX, randY, randZ);
-        randPos.Normalize();
+        Vector3 randPos = Random.insideUnitSphere;
 
         float range = 0.15f;
         randPos *= range;
@@ -218,11 +226,23 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     }
 
     protected virtual void destruction() {
-        dieSound();
-        if (explosionPrefab != null) {
+        if (!isRicochetHit)
+        {
+            dieSound();
+        }
+
+        if (explosionPrefab != null)
+        {
             GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+            if (isRicochetHit)
+            {
+                expl.GetComponent<AudioManager>().enabled = false;
+            }
+
             Destroy(expl, 5);
         }
+
         if (bulletExplosionPrefab != null)
         {
             // 4am code
@@ -231,6 +251,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
                 spawnBulletBoom();
             }
         }
+
         Destroy(gameObject);
     }
 

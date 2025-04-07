@@ -18,4 +18,9 @@ public class DefaultChar : Character
     {
         return 0;
     }
+
+    public override bool isActive()
+    {
+        return false;
+    }
 }

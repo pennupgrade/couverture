@@ -24,6 +24,11 @@ public class Tank : MonoBehaviour, IDestroyable
 
     // Config Variables
     private bool invincible;
+    private bool disableMove;
+    public bool disableFire {
+        get;
+        private set;
+    }
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
@@ -103,12 +108,22 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    public void Freeze() {
-        controls.Disable();
+    public void FreezeRotationAllowed() {
+        StopCoroutine(reloadCoroutine);
+        disableMove = true;
         invincible = true;
+        disableFire = true;
     }
 
-    public void Unfreeze() {
+    public void FreezeNoRotation() {
+        Quaternion rot = transform.rotation;
+        invincible = true;
+        controls.Disable();
+        transform.rotation = rot;
+    }
+
+    public void UnfreezeNoRotation() {
+        disableMove = false;
         invincible = false;
         controls.Enable();
     }
@@ -139,7 +154,14 @@ public class Tank : MonoBehaviour, IDestroyable
         tankController.RayCastTank();
         tankController.GravityFall();
         bool wasIdle = tankState is TankIdleState;
-        tankState = tankState.HandleMovement(moveDir);
+
+        if (!disableMove)
+        {
+            tankState = tankState.HandleMovement(moveDir);
+        } else {
+            tankState = new TankIdleState(this);
+        }
+
         if (wasIdle && tankState is TankMoveState) {
             audioManager.Play("Engine");
         } else if (!wasIdle && tankState is TankIdleState){
@@ -189,7 +211,13 @@ public class Tank : MonoBehaviour, IDestroyable
     public void takeDamage(int dmg) {
         if (enableGod || invincible) return;
 
-        health -= (dmg < 500) ? 100 : dmg;
+        // manage bubbleshield
+        if (character != null && character.isActive() && character.GetType() == typeof(BubbleChar)) {
+            ((BubbleChar)character).DestroyBubble();
+            return;
+        }
+
+        health -= (dmg < 600) ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {
@@ -198,7 +226,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            Freeze();
+            FreezeNoRotation();
             GameManager.Instance.Respawn();
 
             var respawnTime = GameManager.Instance.GetRespawnTime();
@@ -241,6 +269,11 @@ public class Tank : MonoBehaviour, IDestroyable
         if (character != null) {
             character.AbilityUpdate(this);
         }
+    }
+
+    public bool CharacterHasAbility()
+    {
+        return character.GetType() == typeof(RocketChar);
     }
 
     // spawn a base bullet, override if different base bullet

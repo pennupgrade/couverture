@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8043776762146704564}
   - component: {fileID: 9005661155617167368}
+  - component: {fileID: 3033533739282082836}
   m_Layer: 0
   m_Name: RicochetHit
   m_TagString: Untagged
@@ -46,14 +47,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: RicochetHit
-    clip: {fileID: 8300000, guid: 7feb0f26a9b78ca4fbe8ca9546e29c1c, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 8fc3c2716c36315488cafe72da550d6e, type: 3}
+    volume: 0.334
     loop: 0
     playOnAwake: 1
     destroyOnComplete: 0
     pool: 0
     source: {fileID: 0}
-    spatialBlend: 1
-    effects: []
+    spatialBlend: 0
+    effects:
+    - {fileID: 3033533739282082836}
   singleton: 0
   playedSounds: []
+--- !u!114 &3033533739282082836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8327127399722087480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b1c43ad7dd3524e8017b6cbbff18f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shiftDelta: 0.2
+  time: 0.5

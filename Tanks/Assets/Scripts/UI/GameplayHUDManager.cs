@@ -16,6 +16,14 @@ public class GameplayHUDManager : MonoBehaviour
     private void Start()
     {
         startPosition = abilityIcon.anchoredPosition;
+        EnableAbilityBar(false);
+    }
+
+    public void AbilityBarIsCasting(float stayTime, Character tank)
+    {
+        abilityBarFill.fillAmount = 0;
+        readyTag.gameObject.SetActive(false);
+        StartCoroutine(DrainAbilityBar(stayTime, tank));
     }
 
     public void StartFillAbilityBar(float reloadTime)
@@ -48,15 +56,45 @@ public class GameplayHUDManager : MonoBehaviour
         StartReadyTagAnim();
     }
 
-    private void ReadyTagBounceUp()
+    private IEnumerator DrainAbilityBar(float reloadTime, Character tank)
     {
-        LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true).setOnComplete(ReadyTagBounceDown).setDelay(0.25f);
+        abilityBarFill.fillMethod = Image.FillMethod.Vertical;
+        float elapsed = 0f;
+        readyTag.gameObject.SetActive(true);
+        readyTag.GetComponentInChildren<TMP_Text>().text = "Shielding...";
+        abilityBarFill.fillAmount = 1f;
+
+        while (elapsed < reloadTime)
+        {
+            if(tank.GetType() == typeof(BubbleChar))
+            {
+                if(((BubbleChar)tank).active == false)
+                {
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(0.05f);
+            elapsed += 0.05f;
+            abilityBarFill.fillAmount = 1 - elapsed / reloadTime;
+        }
+
+        abilityBarFill.fillAmount = 0f;
+        abilityBarFill.fillMethod = Image.FillMethod.Radial360;
+        readyTag.GetComponentInChildren<TMP_Text>().text = "Ready!";
+        readyTag.gameObject.SetActive(false);
+        StartReadyTagAnim();
     }
 
     private void StartReadyTagAnim()
     {
+        LeanTween.cancel(readyTag.gameObject);
         LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true)
             .setOnComplete(ReadyTagBounceDown);
+    }
+    
+    private void ReadyTagBounceUp()
+    {
+        LeanTween.moveY(readyTag, 16f, 0.25f).setEase(LeanTweenType.easeInQuart).setIgnoreTimeScale(true).setOnComplete(ReadyTagBounceDown).setDelay(0.25f);
     }
 
     private void ReadyTagBounceDown()
@@ -70,8 +108,8 @@ public class GameplayHUDManager : MonoBehaviour
         {
             abilityEnabled = true;
             abilityIcon.gameObject.SetActive(true);
-            LeanTween.moveY(abilityIcon, -50f, 0f);
-            LeanTween.moveY(abilityIcon, 45f, 0.6f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true);
+            LeanTween.moveY(abilityIcon, -100f, 0f);
+            LeanTween.moveY(abilityIcon, 45f, 0.5f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true).setDelay(0.2f);
         }
         else
         {

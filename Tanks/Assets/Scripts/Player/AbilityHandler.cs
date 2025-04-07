@@ -21,9 +21,18 @@ public class AbilityHandler : MonoBehaviour
             bool success = tank.Ability();
             if (success)
             {
-                UIManager.instance.Gameplay_Panel.
-                    GetComponentInChildren<GameplayHUDManager>()
-                    .StartFillAbilityBar(tank.character.getCoolDown());
+                if(tank.character.GetType() == typeof(BubbleChar))
+                {
+                    UIManager.instance.Gameplay_Panel.
+                        GetComponentInChildren<GameplayHUDManager>().
+                        AbilityBarIsCasting(((BubbleChar)(tank.character)).getStayTime(), (tank.character));
+                }
+                else if(tank.character.GetType() == typeof(RocketChar))
+                {
+                    UIManager.instance.Gameplay_Panel.
+                        GetComponentInChildren<GameplayHUDManager>()
+                        .StartFillAbilityBar(tank.character.getCoolDown());
+                }
             }
         }
     }
