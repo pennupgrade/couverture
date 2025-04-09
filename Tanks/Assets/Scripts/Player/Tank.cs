@@ -227,10 +227,16 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             FreezeNoRotation();
-            GameManager.Instance.Respawn();
+            if (RoomManager.Instance != null) {
+                //wii tanks mode
+                RoomManager.Instance.playerDeath();
+            } else {
+                //campaign mode
+                GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.GetRespawnTime();
-            Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
+                var respawnTime = GameManager.Instance.GetRespawnTime();
+                Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
+            }
 
             gameObject.SetActive(false);
         }
