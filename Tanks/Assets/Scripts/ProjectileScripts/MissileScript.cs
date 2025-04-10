@@ -34,6 +34,7 @@ public class MissileScript : MonoBehaviour
     private float explosionTime = 1f;
 
     private bool initialized = false;
+    private bool damageDealt;
 
     void Start()
     {
@@ -75,6 +76,7 @@ public class MissileScript : MonoBehaviour
         missileBody.transform.rotation = Quaternion.LookRotation(new Vector3(0, 1, 0)); //initially facing upward
 
         initialized = true;
+        damageDealt = false;
     }
 
     void Update()
@@ -115,7 +117,9 @@ public class MissileScript : MonoBehaviour
                 || flashingTimer > 0.975
                 )
             {
-                targetZoneRenderer.material.color = flashTargetZoneColor;
+                if (targetZoneRenderer != null) {
+                    targetZoneRenderer.material.color = flashTargetZoneColor;
+                }
             } else
             {
                 targetZoneRenderer.material.color = finalTargetZoneColor;
@@ -142,15 +146,19 @@ public class MissileScript : MonoBehaviour
      */
     public void handleAttack(Collider collider)
     {
+        if (damageDealt) return;
+
         if (collider.tag == "Player")
         {
             Tank player = collider.gameObject.GetComponent<Tank>();
             player.takeDamage(damage);
             player.incapacitate(1);
+            damageDealt = true;
 
         } else if (collider.tag == "Enemy") {
             Enemy e = collider.gameObject.GetComponent<Enemy>();
             e.takeDamage(damage);
+            damageDealt = true;
         }
     }
 
@@ -166,10 +174,12 @@ public class MissileScript : MonoBehaviour
         Destroy(missileBody);
         Destroy(targetZone);
 
+        yield return new WaitForSeconds(0.5f);
+
         damageZone.GetComponent<MeshRenderer>().enabled = false;
         damageZone.GetComponent<SphereCollider>().enabled = false;
 
-        yield return new WaitForSeconds(explosionTime);
+        yield return new WaitForSeconds(explosionTime - 0.5f);
 
         Destroy(gameObject);
     }
