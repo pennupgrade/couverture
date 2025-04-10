@@ -22,7 +22,7 @@ public class MissileScript : MonoBehaviour
 
     //visual and auditory effects
     private AudioSource explosionSound;
-    private ParticleSystem explosionParticles;
+    private ParticleSystem explosionParticles, explosion2;
     private Renderer targetZoneRenderer;
 
     private Color initialTargetZoneColor = new Color(1f, 0, 0, 0);
@@ -55,6 +55,7 @@ public class MissileScript : MonoBehaviour
         acceleration = new Vector3(0, g, 0);
         explosionSound = gameObject.GetComponent<AudioSource>();
         explosionParticles = damageZone.GetComponent<ParticleSystem>();
+        explosion2 = damageZone.transform.GetChild(0).GetComponent<ParticleSystem>();
 
         var particleSystemMain = explosionParticles.main;
         particleSystemMain.startLifetime = explosionTime;
@@ -133,6 +134,7 @@ public class MissileScript : MonoBehaviour
         damageZone.GetComponent<Renderer>().material.color = new Color(1f, 0, 0);
         explosionSound.Play();
         explosionParticles.Play();
+        explosion2.Play();
         StartCoroutine(DestroyObjects());
     }
 
