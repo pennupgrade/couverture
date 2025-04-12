@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class BossStateMachine : MonoBehaviour
 {
     // Basic State Information
-    private State currentState;
+    public State currentState;
     public Attack currentAttack;
 
     // Other Parameters
@@ -21,10 +21,14 @@ public class BossStateMachine : MonoBehaviour
     private const double TIME_BETWEEN_BULLETS = 0.5f;
     private const int MAX_NUMBER_SUMMONS = 2;
     private float chargeStartTime;
+
     // Attack Specific Parameters
     private int numBulletsShot;
     private List<List<GameObject>> enemies;
     private bool chargeHitAlready;
+    private float missileTimer;
+    private float missileCheckTime;
+    private const float missileShootProbability = 0.2f;
 
     public Tank playerTank;
 
@@ -45,12 +49,16 @@ public class BossStateMachine : MonoBehaviour
 
     private float startTime;
     private Vector3 lastPos;
+    [SerializeField] private Animator anim;
+    
 
     private void Awake()
     {
         currentState = State.Idle;
         currentAttack = Attack.None;
         timer = 0;
+        missileTimer = 0;
+        missileCheckTime = 3f;
         enemies = new List<List<GameObject>>();
         
 
@@ -80,13 +88,26 @@ public class BossStateMachine : MonoBehaviour
             lastPos = player.transform.position;
         }
 
-        if (wall.transform.position.y > -1.12)
+        print(wall.transform.position.y);
+        if (wall.transform.position.y > -2)
         {
+            print("WHAT");   
             timer += Time.deltaTime;
+            missileTimer += Time.deltaTime;
         }
         
         if (currentState == State.Idle)
         {
+            if (missileTimer > missileCheckTime)
+            {
+                float yScaleFactor = ((player.transform.position.y + 1.244195f) / (1.244f-0.4f)) * 2f + 1f;
+
+                if (UnityEngine.Random.Range(0f, 1f) <= missileShootProbability * yScaleFactor)
+                {
+                    boss.ShootMissile();
+                }
+                missileTimer = 0f;
+            }
             if (timer > timeUntilAttack)
             {
                 switchToState(State.Attacking);
@@ -134,6 +155,7 @@ public class BossStateMachine : MonoBehaviour
                 timeUntilAttack = UnityEngine.Random.Range(4, 6);
             } else {
                 timeUntilAttack = UnityEngine.Random.Range(3, 4);
+                missileCheckTime = 2f;
             }
             
             Debug.Log("Switching To Attack State");
@@ -155,8 +177,9 @@ public class BossStateMachine : MonoBehaviour
                         Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
                         rot.x = -90;
                         GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-                        ind.transform.localScale = new Vector3(1,chargeRange, 1);
+                        ind.transform.localScale = new Vector3(1,chargeRange + 0.5f, 1);
                         chargeStart = this.transform.position;
+                        anim.SetTrigger("Charge");
                     }
                 } else {
                     currentAttack = Attack.Shotgun;
@@ -185,8 +208,9 @@ public class BossStateMachine : MonoBehaviour
                         Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
                         rot.x = -90;
                         GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-                        ind.transform.localScale = new Vector3(1,chargeRange, 1);
+                        ind.transform.localScale = new Vector3(1,chargeRange + 0.5f, 1);
                         chargeStart = this.transform.position;
+                        anim.SetTrigger("Charge");
                     }
                 
                 } else {
@@ -214,7 +238,7 @@ public class BossStateMachine : MonoBehaviour
                     timer = 0;
                     boss.shootBullet();
                     numBulletsShot++;
-                    if (numBulletsShot >= 3)
+                    if (numBulletsShot >= 5)
                     {
                         switchToState(State.Idle);
                     }
@@ -231,8 +255,9 @@ public class BossStateMachine : MonoBehaviour
                 switchToState(State.Idle);
                 break;
             case Attack.Charge:
-                boss.Charge(chargeStartTime, chargeStart, chargeRange); 
-                if (Time.time > chargeStartTime + 3f ||
+                
+                //boss.Charge(chargeStartTime, chargeStart, chargeRange); 
+                if (Time.time > chargeStartTime + 2f ||
                     (this.transform.position - chargeStart).magnitude > chargeRange) {
                     switchToState(State.Idle);
                 }

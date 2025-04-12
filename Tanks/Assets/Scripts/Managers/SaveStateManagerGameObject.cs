@@ -96,4 +96,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static void DeleteSave(int saveNumber) {
         SaveStateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
     }
+
+    public static void UpdateClassicModeHighScore(int newScore) {
+        Instance.stateManager.UpdateClassicModeHighScore(newScore);
+    }
+
+    public static string GetLatestLevelName() {
+        return Instance.stateManager.GetLatestLevelName();
+    }
 }
