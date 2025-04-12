@@ -84,15 +84,16 @@ public class RoomManager : MonoBehaviour
     public void playerDeath() {
         // redirect to death screen showing level reached, leads to main menu
 
-        //temporary
-        LevelNum = 0;
-        roomTransition();
-
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
 
+        //temporary
+        LevelNum = 0;
+        roomTransition();
+
         destroyInstance();
+        EnemySpawner.reset(); // resets enemy counter
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
