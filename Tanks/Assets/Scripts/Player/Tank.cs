@@ -164,8 +164,16 @@ public class Tank : MonoBehaviour, IDestroyable
 
         if (wasIdle && tankState is TankMoveState) {
             audioManager.Play("Engine");
+
+            if (!spawningTracks)
+            {
+                StartCoroutine("SpawnTracks");
+            }
         } else if (!wasIdle && tankState is TankIdleState){
             audioManager.Stop("Engine");
+
+            StopCoroutine("SpawnTracks");
+            spawningTracks = false;
         }
         tankState = tankState.HandleGunRotation(gunRot);
 
@@ -199,6 +207,31 @@ public class Tank : MonoBehaviour, IDestroyable
         //     StartCoroutine(reloadMagazine());
         // }
     }
+
+    [Header("Tracks")]
+    public GameObject tracksDecal;
+
+    public Transform tracksParent;
+
+    bool spawningTracks;
+
+    public float trackOffset;
+
+    private IEnumerator SpawnTracks()
+    {
+        spawningTracks = true;
+
+        while(spawningTracks)
+        {
+            yield return new WaitForSeconds(trackOffset);
+
+            if (spawningTracks)
+            {
+                Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation);
+            }
+        }
+    }
+
 
     private void OnEnable() {
         controls.Enable();

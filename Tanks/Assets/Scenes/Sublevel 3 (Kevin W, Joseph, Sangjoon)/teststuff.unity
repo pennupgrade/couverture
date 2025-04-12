@@ -1482,6 +1482,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: trackOffset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: tracksDecal
+      value: 
+      objectReference: {fileID: 3960561861288539156, guid: 30eb5dad81d7c764b8563c5c31f99595, type: 3}
+    - target: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      propertyPath: tracksParent
+      value: 
+      objectReference: {fileID: 4038713802852719754}
     - target: {fileID: 1625949453626569755, guid: 59083ec85392f114a8d75ab290183618, type: 3}
       propertyPath: m_Name
       value: Player+Cam (1)
@@ -1528,7 +1540,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3654091792847907829, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4038713802852719754}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59083ec85392f114a8d75ab290183618, type: 3}
 --- !u!114 &585844811 stripped
@@ -5022,6 +5037,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 524141762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1705750517 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3654091792847907829, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+  m_PrefabInstance: {fileID: 585844810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1717553097
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,6 +5910,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7611551975137905497, guid: 9f8e7ba51ab34b047a1fb7208367c958, type: 3}
   m_PrefabInstance: {fileID: 371441361624668991}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3960561859878249815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4038713802852719754}
+  m_Layer: 0
+  m_Name: Tracks Decal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4038713802852719754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3960561859878249815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0087264655, y: 0.999962, z: -0, w: 0}
+  m_LocalPosition: {x: 0.000119455515, y: -0.00025472185, z: -0.0032594448}
+  m_LocalScale: {x: 0.0092592565, y: 0.009259261, z: 0.00925926}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1705750517}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1001 &7053061999575231899
 PrefabInstance:
   m_ObjectHideFlags: 0
