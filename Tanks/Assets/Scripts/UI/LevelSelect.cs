@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
+    [SerializeField] private string[] levels;
     [SerializeField] private int unlockedLevelCount;
     [SerializeField] private LevelSelectDisplay[] levelDisplays;
     [SerializeField] private RectTransform[] pages;
@@ -57,6 +58,8 @@ public class LevelSelect : MonoBehaviour
     
     public void SelectLevel(int level)
     {
-        Debug.Log("loading level " + level);
+        if (level >= levels.Length) return;
+        Debug.Log("loading level " + levels[level]);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(levels[level]);
     }
 }
