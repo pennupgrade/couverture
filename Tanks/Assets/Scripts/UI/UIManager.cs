@@ -50,7 +50,11 @@ public class UIManager : MonoBehaviour
         Cat_Selection_Panel.SetActive(false);
         Gameplay_Panel.SetActive(true);
         Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(true);
-        GameManager.Instance.ResumeGame();
+        if (GameManager.Instance != null) {
+            GameManager.Instance.ResumeGame();
+        } else {
+            RoomManager.Instance.ResumeGame();
+        }
     }
 
     public void QuitFrom_SaveLoadPanel_DuringGame()
@@ -75,7 +79,11 @@ public class UIManager : MonoBehaviour
 
     public void Open_CatSelectionPanel_DuringGame()
     {
-        GameManager.Instance.PauseGame();
+        if (GameManager.Instance != null) {
+            GameManager.Instance.PauseGame();
+        } else {
+            RoomManager.Instance.PauseGame();
+        }
         Cat_Selection_Panel.SetActive(true);
         Gameplay_Panel.SetActive(false);
     }
