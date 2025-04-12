@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 2500f;
+    [HideInInspector] public float health = 3000f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -32,6 +32,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
+    [SerializeField] private GameObject missilePrefab;
     
     private void Awake()
     {
@@ -105,7 +106,6 @@ public class Boss : MonoBehaviour, IDestroyable
 
         if (!unplugged) {
             foreach (WireDeath wd in wires) {
-                print(wd);
                 if (wd.gameObject.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
                 } else {
                     unplug();
@@ -184,5 +184,12 @@ public class Boss : MonoBehaviour, IDestroyable
         // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
         //     this.moveState = bmState.Idle;
         // }
+    }
+    public void ShootMissile()
+    {
+        Vector3 shootPosition = transform.position + new Vector3(0, 2, 0);
+        GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
+        MissileScript missileScript = missile.GetComponent<MissileScript>();
+        missileScript.initialize(shootPosition, player.transform.position);
     }
 }
