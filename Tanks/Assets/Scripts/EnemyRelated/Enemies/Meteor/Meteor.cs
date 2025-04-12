@@ -36,11 +36,13 @@ public class Meteor : Enemy
         gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }
 
-    public void fireMissile(Vector3 target) {
+    public bool fireMissile(Vector3 target) {
+        if (Mathf.Abs(target.y - transform.position.y) > 0.8f) return false;
         fireSound();
         GameObject missile = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(gunShotPos.position, target);
+        return true;
     }
 
 }

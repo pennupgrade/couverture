@@ -30,7 +30,7 @@ public class WaveSpawner : Activatable, IAlertableEnemy
         }
     }
 
-    public virtual void alert(bool alertState = false) {
+    public void alert(bool alertState = false) {
         if (!alertable) return;
         activate();
     }

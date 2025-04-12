@@ -32,8 +32,8 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
-
-
+    [SerializeField] private GameObject missilePrefab;
+    
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -174,16 +174,22 @@ public class Boss : MonoBehaviour, IDestroyable
     {
         exitWall.activate();
         Destroy(gameObject);
-    }    // public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
-        
-    //     // if (Time.time > chargeStartTime + 0.75f &&
-    //     // (this.transform.position - chargeStart).magnitude < chargeRange) {
-    //     //     rb.velocity = chargeSpeed * chargeDir; 
-    //     // }
-    //     //
-    //     // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-    //     //     this.moveState = bmState.Idle;
-    //     // }
-    // }
-
+    }
+    public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
+        if (Time.time > chargeStartTime + 0.75f &&
+        (this.transform.position - chargeStart).magnitude < chargeRange) {
+            rb.velocity = chargeSpeed * chargeDir; 
+        }
+        //
+        // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
+        //     this.moveState = bmState.Idle;
+        // }
+    }
+    public void ShootMissile()
+    {
+        Vector3 shootPosition = transform.position + new Vector3(0, 2, 0);
+        GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
+        MissileScript missileScript = missile.GetComponent<MissileScript>();
+        missileScript.initialize(shootPosition, player.transform.position);
+    }
 }

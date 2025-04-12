@@ -21,10 +21,14 @@ public class BossStateMachine : MonoBehaviour
     private const double TIME_BETWEEN_BULLETS = 0.5f;
     private const int MAX_NUMBER_SUMMONS = 2;
     private float chargeStartTime;
+
     // Attack Specific Parameters
     private int numBulletsShot;
     private List<List<GameObject>> enemies;
     private bool chargeHitAlready;
+    private float missileTimer;
+    private float missileCheckTime;
+    private const float missileShootProbability = 0.2f;
 
     public Tank playerTank;
 
@@ -53,6 +57,8 @@ public class BossStateMachine : MonoBehaviour
         currentState = State.Idle;
         currentAttack = Attack.None;
         timer = 0;
+        missileTimer = 0;
+        missileCheckTime = 3f;
         enemies = new List<List<GameObject>>();
         
 
@@ -87,10 +93,21 @@ public class BossStateMachine : MonoBehaviour
         {
             print("WHAT");   
             timer += Time.deltaTime;
+            missileTimer += Time.deltaTime;
         }
         
         if (currentState == State.Idle)
         {
+            if (missileTimer > missileCheckTime)
+            {
+                float yScaleFactor = ((player.transform.position.y + 1.244195f) / (1.244f-0.4f)) * 2f + 1f;
+
+                if (UnityEngine.Random.Range(0f, 1f) <= missileShootProbability * yScaleFactor)
+                {
+                    boss.ShootMissile();
+                }
+                missileTimer = 0f;
+            }
             if (timer > timeUntilAttack)
             {
                 switchToState(State.Attacking);
@@ -138,6 +155,7 @@ public class BossStateMachine : MonoBehaviour
                 timeUntilAttack = UnityEngine.Random.Range(4, 6);
             } else {
                 timeUntilAttack = UnityEngine.Random.Range(3, 4);
+                missileCheckTime = 2f;
             }
             
             Debug.Log("Switching To Attack State");
@@ -220,7 +238,7 @@ public class BossStateMachine : MonoBehaviour
                     timer = 0;
                     boss.shootBullet();
                     numBulletsShot++;
-                    if (numBulletsShot >= 3)
+                    if (numBulletsShot >= 5)
                     {
                         switchToState(State.Idle);
                     }

@@ -62,6 +62,7 @@ public class TankCharacterController
 
         // insert zach's code to rotate the body thing
 
-        tank.characterController.Move(tank.moveSpeed * direction * Time.deltaTime);
+        tank.Velocity = (tank.stunned ? 0.4f : 1) * tank.moveSpeed * direction;
+        tank.characterController.Move(tank.Velocity * Time.deltaTime);
     }
 }

@@ -10,6 +10,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     public bool straightLineAtStart;
     [Tooltip("Distance from player when tank is activated, if range = 0, tank is only activated when enemy goes into alert state.")]
     public float moveStartRange = 0;
+    public float gunRangeOverride = 0;
 
     // Object References
     public GameObject gun;
@@ -73,6 +74,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
             playerRB = player.GetComponent<Rigidbody>();
             pTank = player.GetComponent<Tank>();
         }
+        if (gunRangeOverride > 0.001f) gunRange = gunRangeOverride;
     }
     protected void agentSetup() {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();

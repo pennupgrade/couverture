@@ -164,8 +164,16 @@ public class Tank : MonoBehaviour, IDestroyable
 
         if (wasIdle && tankState is TankMoveState) {
             audioManager.Play("Engine");
+
+            if (!spawningTracks)
+            {
+                StartCoroutine("SpawnTracks");
+            }
         } else if (!wasIdle && tankState is TankIdleState){
             audioManager.Stop("Engine");
+
+            StopCoroutine("SpawnTracks");
+            spawningTracks = false;
         }
         tankState = tankState.HandleGunRotation(gunRot);
 
@@ -200,6 +208,31 @@ public class Tank : MonoBehaviour, IDestroyable
         // }
     }
 
+    [Header("Tracks")]
+    public GameObject tracksDecal;
+
+    public Transform tracksParent;
+
+    bool spawningTracks;
+
+    public float trackOffset;
+
+    private IEnumerator SpawnTracks()
+    {
+        spawningTracks = true;
+
+        while(spawningTracks)
+        {
+            yield return new WaitForSeconds(trackOffset);
+
+            if (spawningTracks)
+            {
+                Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation);
+            }
+        }
+    }
+
+
     private void OnEnable() {
         controls.Enable();
     }
@@ -208,8 +241,13 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.Disable();
     }
 
+    public CameraShake cameraShake;
+
+    public VignetteAnimation vignetteAnimation;
+
     public void takeDamage(int dmg) {
         if (enableGod || invincible) return;
+
 
         // manage bubbleshield
         if (character != null && character.isActive() && character.GetType() == typeof(BubbleChar)) {
@@ -227,15 +265,31 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             FreezeNoRotation();
-            GameManager.Instance.Respawn();
+            if (RoomManager.Instance != null) {
+                //wii tanks mode
+                RoomManager.Instance.playerDeath();
+            } else {
+                //campaign mode
+                GameManager.Instance.Respawn();
 
-            var respawnTime = GameManager.Instance.GetRespawnTime();
-            Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
+                var respawnTime = GameManager.Instance.GetRespawnTime();
+                Camera.main!.GetComponent<PlayerCamera>().Kill(respawnTime);
+            }
 
             gameObject.SetActive(false);
+
+
         }
-        else if (Random.value < 0.5f) {
-            audioManager.Play("Meow");
+        else {
+            if (Random.value < 0.5f)
+                audioManager.Play("Meow");
+
+            cameraShake.Shake(dmg);
+        }
+
+        if (health <= 100)
+        {
+            vignetteAnimation.EnableVignette();
         }
     }
 

@@ -109,7 +109,6 @@ public class Aegis_Shield : EnemyAlertState
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 fire(24);
                 enemy.numBullets--;
-                leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.cooldownTime);
             } else {
                 yield return new WaitForSeconds(0.16f);

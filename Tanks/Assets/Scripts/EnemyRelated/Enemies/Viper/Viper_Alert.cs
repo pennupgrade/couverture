@@ -101,7 +101,7 @@ public class Viper_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {   
-            if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
+            if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(getDist())) {
                 ((Viper)enemy).fireRocket();
                 enemy.numBullets = enemy.magSize - 4;
             } else {

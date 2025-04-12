@@ -9,8 +9,8 @@ public class FrontalShield : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shieldMat = GetComponent<MeshRenderer>().material;
-        StartCoroutine(startShield());
+        //shieldMat = GetComponent<MeshRenderer>().material;
+        //StartCoroutine(startShield());
     }
 
     private IEnumerator startShield() {
