@@ -14,14 +14,14 @@ public class Bullet_Default : Projectile
     private Vector3 lastVelocity;
     private Material material;
     private Animator animator;
-    private Collider collider;
+    private Collider theCollider;
     [NonSerialized] public MeshTrail meshTrail;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
         animator = GetComponent<Animator>();
-        collider = GetComponent<Collider>();
+        theCollider = GetComponent<Collider>();
         material = GetComponent<MeshRenderer>().material;
         meshTrail = GetComponent<MeshTrail>();
 
@@ -41,7 +41,7 @@ public class Bullet_Default : Projectile
     }
 
     public void StartBullet() {
-        collider.enabled = true;
+        theCollider.enabled = true;
         this.enabled = true;
         changeWhenBounce = false;
         material.SetFloat("_Glowy", 0);
