@@ -65,6 +65,8 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic1"));
         } else if (LevelNum == 2) {
             StartCoroutine(LoadAsyncScene("Classic2"));
+        } else if (LevelNum == 3) {
+            StartCoroutine(LoadAsyncScene("Classic3"));
         } else {
             if (LevelNum == 60) {
                 //game end screen, displays time taken, leads to main menu
