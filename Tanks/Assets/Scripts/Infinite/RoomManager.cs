@@ -8,6 +8,7 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance { get; private set;}
     public static int LevelNum { get; private set;}
     bool loading;
+    [SerializeField] int overrideLevel;
 
     //call at start
     public static void reset() {
@@ -20,6 +21,10 @@ public class RoomManager : MonoBehaviour
     }
     void Awake()
     {
+        if (overrideLevel > 0) {
+            LevelNum = overrideLevel;
+            overrideLevel = -1;
+        }
         if (Instance == null) {
             Instance = this;
         } else if (Instance != this) {
@@ -32,6 +37,7 @@ public class RoomManager : MonoBehaviour
         if (loading) return;
 
         LevelNum++;
+        Debug.Log("Loading Level" + LevelNum);
 
         //shader transition
         //level transition
