@@ -45,6 +45,8 @@ public class SaveStateManager {
     [SerializeField] private DateTimeSerializable lastPlayedTime;
 
     [SerializeField] private TimeSpanSerializable timePlayed;
+    [SerializeField] private int classicModeHighScore = 0;
+
 
 
 
@@ -213,5 +215,12 @@ public class SaveStateManager {
 
     public static void DeleteSaveFile(string file) {
         File.Delete(file);
+    }
+
+    public void UpdateClassicModeHighScore(int newScore) {
+        // checks if new score is larger than current max score
+        if (newScore > classicModeHighScore) {
+            classicModeHighScore = newScore;
+        }
     }
 }
