@@ -9,6 +9,7 @@ public class EnemySpawner : Activatable, IAlertableEnemy
     [SerializeField] int section;
     [SerializeField] int levelNumber;
     public GameObject[] enemies;
+    private float spawnDelay = 3;
 
     //call at start
     public static void reset() {
@@ -38,10 +39,11 @@ public class EnemySpawner : Activatable, IAlertableEnemy
             if (section == 2 && (RoomManager.LevelNum < 16 || RoomManager.LevelNum > 35)) return;
         }
 
-        spawn();
+        StartCoroutine(spawn());
     }
 
-    private void spawn() {
+    private IEnumerator spawn() {
+        yield return new WaitForSeconds(spawnDelay);
         int r = (int) Mathf.Floor(enemies.Length * Random.value);
         if (enemies[r].TryGetComponent<Enemy>(out Enemy e)) {
             enemiesRemaining++;

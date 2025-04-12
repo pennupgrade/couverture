@@ -27,11 +27,30 @@ public class RoomManager : MonoBehaviour
         }
         if (Instance == null) {
             Instance = this;
+            startScreen();
         } else if (Instance != this) {
+            Instance.startScreen();
             Destroy(this);
         }
         DontDestroyOnLoad(this);
     }
+
+    public void startScreen() {
+        StartCoroutine(startScreenCoroutine());
+    }
+    private IEnumerator startScreenCoroutine() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("RoomManager: Could not find player");
+        }
+        Tank pTank = player.GetComponent<Tank>();
+        pTank.FreezeNoRotation();
+
+        //display start screen
+
+        yield return new WaitForSeconds(3);
+        pTank.UnfreezeNoRotation();
+    } 
 
     public void roomTransition() {
         if (loading) return;
@@ -39,7 +58,7 @@ public class RoomManager : MonoBehaviour
         LevelNum++;
         Debug.Log("Loading Level" + LevelNum);
 
-        //shader transition
+        //level complete screen 
         //level transition
 
         if (LevelNum == 1) {
@@ -47,7 +66,7 @@ public class RoomManager : MonoBehaviour
         } else if (LevelNum == 2) {
             StartCoroutine(LoadAsyncScene("Classic2"));
         } else {
-            if (LevelNum == 3) {
+            if (LevelNum == 60) {
                 //game end screen, displays time taken, leads to main menu
 
                 //temporary

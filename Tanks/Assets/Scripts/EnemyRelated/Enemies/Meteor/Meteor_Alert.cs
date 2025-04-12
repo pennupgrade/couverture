@@ -53,8 +53,11 @@ public class Meteor_Alert : EnemyAlertState
                 if (Vector3.Distance(point, enemy.rb.position) < 4) {
                     yield return new WaitForSeconds(1);
                 } else if (Physics.Raycast(point + 5 * Vector3.up, -Vector3.up, out RaycastHit hit, 7, 1 << 3)){ 
-                    ((Meteor)enemy).fireMissile(hit.point);
-                    yield return new WaitForSeconds(enemy.reload + Random.value * 2);
+                    if (((Meteor)enemy).fireMissile(hit.point)) {
+                        yield return new WaitForSeconds(enemy.reload + Random.value * 2);
+                    } else {
+                       yield return new WaitForSeconds(2); 
+                    }
                 } else {
                     yield return new WaitForSeconds(1);
                 }
