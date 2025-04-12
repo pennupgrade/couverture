@@ -14,24 +14,7 @@ public class LevelSelect : MonoBehaviour
 
     private void Awake()
     {
-        string name = SaveStateManagerGameObject.GetLatestLevelName();
-        Debug.Log("Latestlevel: " + name);
-        if (name.Contains("1"))
-            unlockedLevelCount = 1;
-        else if (name.Contains("2"))
-            unlockedLevelCount = 2;
-        else if (name.Contains("3"))
-            unlockedLevelCount = 3;
-        else if (name.Contains("4"))
-            unlockedLevelCount = 4;
-        else if (name.Contains("5"))
-            unlockedLevelCount = 5;
-        else if (name.Contains("6"))
-            unlockedLevelCount = 6;
-        else
-        {
-            unlockedLevelCount = 1;
-        }
+        
     }
 
     private void Start()

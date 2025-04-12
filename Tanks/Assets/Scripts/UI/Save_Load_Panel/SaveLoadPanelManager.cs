@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SaveLoadPanelManager : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class SaveLoadPanelManager : MonoBehaviour
 
     public void exitButtonOnClick()
     {
-        UIManager.instance.QuitFrom_SaveLoadPanel_DuringGame();
+        //UIManager.instance.QuitFrom_SaveLoadPanel_DuringGame();
+        SceneManager.LoadScene("TitleScreen");
     }
 }
