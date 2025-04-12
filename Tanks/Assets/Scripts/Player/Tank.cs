@@ -208,8 +208,13 @@ public class Tank : MonoBehaviour, IDestroyable
         controls.Disable();
     }
 
+    public CameraShake cameraShake;
+
+    public VignetteAnimation vignetteAnimation;
+
     public void takeDamage(int dmg) {
         if (enableGod || invincible) return;
+
 
         // manage bubbleshield
         if (character != null && character.isActive() && character.GetType() == typeof(BubbleChar)) {
@@ -239,9 +244,19 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             gameObject.SetActive(false);
+
+
         }
-        else if (Random.value < 0.5f) {
-            audioManager.Play("Meow");
+        else {
+            if (Random.value < 0.5f)
+                audioManager.Play("Meow");
+
+            cameraShake.Shake(dmg);
+        }
+
+        if (health <= 100)
+        {
+            vignetteAnimation.EnableVignette();
         }
     }
 
