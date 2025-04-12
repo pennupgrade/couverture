@@ -23,7 +23,7 @@ public class BlastMark : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, lm))
         { 
-            Instantiate(bm, this.transform.position,  Quaternion.FromToRotation(Vector3.up, hit.normal));
+            Instantiate(bm, hit.point + 0.05f * Vector3.up,  Quaternion.FromToRotation(Vector3.up, hit.normal));
         }
     }
 }
