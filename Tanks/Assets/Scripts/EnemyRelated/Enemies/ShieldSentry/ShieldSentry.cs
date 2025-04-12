@@ -16,7 +16,7 @@ public class ShieldSentry : Enemy
         sightRange = 9;
         FOV = 1.4f;
         rotSpeed = 60;
-        reload = 1.25f;
+        reload = 1.5f;
         bulletSpeed = 2.6f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject);

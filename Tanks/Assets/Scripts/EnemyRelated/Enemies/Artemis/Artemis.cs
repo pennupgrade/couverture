@@ -68,7 +68,7 @@ public class Artemis : Enemy
 
     public bool hitPlayer() {
         //Debug.DrawRay(gunShotPos.position, gunShotPos.forward * 15, Color.red, 1); 
-        if (Physics.Raycast(gunShotPos.position, gunShotPos.forward, out RaycastHit hit, 15, 1 << 2))
+        if (Physics.Raycast(gunShotPos.position, gunShotPos.forward, out RaycastHit hit, 15, (1 << 2) | (1 << 8)))
         { 
             //Debug.Log("raycast hit");
             fireSound();
