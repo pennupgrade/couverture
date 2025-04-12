@@ -7,6 +7,7 @@ public class EnemySpawner : Activatable, IAlertableEnemy
     [SerializeField] bool toBeActivated;
     static int enemiesRemaining; // = 0;
     [SerializeField] int section;
+    [SerializeField] int levelNumber;
     public GameObject[] enemies;
 
     //call at start
@@ -29,9 +30,13 @@ public class EnemySpawner : Activatable, IAlertableEnemy
     void Start()
     {
         if (enemies.Length == 0 || toBeActivated) return;
-        if (section == 1 && RoomManager.LevelNum > 15) return;
-        if (section == 3 && RoomManager.LevelNum < 36) return;
-        if (section == 2 && (RoomManager.LevelNum < 16 || RoomManager.LevelNum > 35)) return;
+        if (levelNumber > 0) {
+            if (RoomManager.LevelNum != levelNumber) return;
+        } else {
+            if (section == 1 && RoomManager.LevelNum > 15) return;
+            if (section == 3 && RoomManager.LevelNum < 36) return;
+            if (section == 2 && (RoomManager.LevelNum < 16 || RoomManager.LevelNum > 35)) return;
+        }
 
         spawn();
     }
