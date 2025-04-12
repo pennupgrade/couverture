@@ -62,8 +62,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return Instance.stateManager.GetUnlockedCharacters();
     }
 
-    public static void FinishLevel(string nextLevelName) {
-        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(FindTank()));
+    public static void FinishLevel(string nextLevelName, bool toSave) {
+        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(FindTank()), toSave);
     }
 
     public static void ExitLevel() {
@@ -103,5 +103,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static string GetLatestLevelName() {
         return Instance.stateManager.GetLatestLevelName();
+    }
+
+    public static void SaveToFile() {
+        Instance.stateManager.SaveToFile();
     }
 }
