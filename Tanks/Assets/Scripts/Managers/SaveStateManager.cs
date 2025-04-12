@@ -151,6 +151,9 @@ public class SaveStateManager {
             currentLevel.LevelName = nextLevelName;
             currentLevel.Stats = t;
             currentLevel.CurrCharacter = currCharacter;
+            if (nextLevelName == latestLevel.LevelName) {
+                latestLevel = currentLevel;
+            }
         } else {
             latestLevel = new();
             latestLevel.LevelName = "ALL LEVELS UNLOCKED";
