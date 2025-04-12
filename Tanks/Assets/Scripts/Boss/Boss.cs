@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 2500f;
+    [HideInInspector] public float health = 3000f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -32,7 +32,8 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
-    
+
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -105,7 +106,6 @@ public class Boss : MonoBehaviour, IDestroyable
 
         if (!unplugged) {
             foreach (WireDeath wd in wires) {
-                print(wd);
                 if (wd.gameObject.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
                 } else {
                     unplug();
@@ -174,15 +174,16 @@ public class Boss : MonoBehaviour, IDestroyable
     {
         exitWall.activate();
         Destroy(gameObject);
-    }
-    public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
-        if (Time.time > chargeStartTime + 0.75f &&
-        (this.transform.position - chargeStart).magnitude < chargeRange) {
-            rb.velocity = chargeSpeed * chargeDir; 
-        }
-        //
-        // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-        //     this.moveState = bmState.Idle;
-        // }
-    }
+    }    // public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
+        
+    //     // if (Time.time > chargeStartTime + 0.75f &&
+    //     // (this.transform.position - chargeStart).magnitude < chargeRange) {
+    //     //     rb.velocity = chargeSpeed * chargeDir; 
+    //     // }
+    //     //
+    //     // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
+    //     //     this.moveState = bmState.Idle;
+    //     // }
+    // }
+
 }
