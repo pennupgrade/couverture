@@ -21,6 +21,11 @@ public class RoomManager : MonoBehaviour
     }
     void Awake()
     {
+        // start debug save if required
+        SaveStateManagerGameObject.DebugLoadSave();
+
+        // load level save stuff
+        SaveStateManagerGameObject.LoadLevel(SceneManager.GetActiveScene().name);
         if (overrideLevel > 0) {
             LevelNum = overrideLevel;
             overrideLevel = -1;
@@ -39,11 +44,7 @@ public class RoomManager : MonoBehaviour
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) {
-            Debug.Log("RoomManager: Could not find player");
-        }
-        Tank pTank = player.GetComponent<Tank>();
+        Tank pTank = FindPlayer();
         pTank.FreezeNoRotation();
 
         //display start screen
@@ -54,6 +55,8 @@ public class RoomManager : MonoBehaviour
 
     public void roomTransition() {
         if (loading) return;
+
+        SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
         LevelNum++;
         Debug.Log("Loading Level" + LevelNum);
@@ -84,9 +87,16 @@ public class RoomManager : MonoBehaviour
         //temporary
         LevelNum = 0;
         roomTransition();
+
+        // call exit level
+        SaveStateManagerGameObject.ExitLevel();
+        SaveStateManagerGameObject.SaveToFile();
+
+        destroyInstance();
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
+        SaveStateManagerGameObject.FinishLevel(sceneName, false);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         loading = true;
 
@@ -96,5 +106,21 @@ public class RoomManager : MonoBehaviour
             yield return null;
         }
         loading = false;
+    }
+
+    private Tank FindPlayer() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("RoomManager: Could not find player");
+        }
+        return player.GetComponent<Tank>();
+    }
+
+    public void PauseGame() {
+        FindPlayer().FreezeNoRotation();
+    }
+
+    public void ResumeGame() {
+        FindPlayer().UnfreezeNoRotation();
     }
 }
