@@ -83,6 +83,7 @@ public class RoomManager : MonoBehaviour
     }
     public void playerDeath() {
         // redirect to death screen showing level reached, leads to main menu
+
         //temporary
         LevelNum = 0;
         roomTransition();
@@ -97,6 +98,7 @@ public class RoomManager : MonoBehaviour
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
+        yield return new WaitForSeconds(1.5f);
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         loading = true;
