@@ -16,7 +16,6 @@ public class Wasp_Alert : EnemyAlertState
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
             enemy.destination = getRandomPoint(6);
-            Debug.Log(checkDestinationReachable(enemy.destination));
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVectorOmni(enemy.agent.desiredVelocity, 300);

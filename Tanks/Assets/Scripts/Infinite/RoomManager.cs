@@ -84,6 +84,32 @@ public class RoomManager : MonoBehaviour
                 playerDeath();
             } else {
                 //randomized level
+                /*
+                int r = Random.Range(1, 12);
+                if (r == 1) {
+                    StartCoroutine(LoadAsyncScene("ClassicA"));
+                } else if (r == 2) {
+                    StartCoroutine(LoadAsyncScene("ClassicB"));
+                } else if (r == 3) {
+                    StartCoroutine(LoadAsyncScene("ClassicC"));
+                } else if (r == 4) {
+                    StartCoroutine(LoadAsyncScene("ClassicD"));
+                } else if (r == 5) {
+                    StartCoroutine(LoadAsyncScene("ClassicE"));
+                } else if (r == 6) {
+                    StartCoroutine(LoadAsyncScene("ClassicF"));
+                } else if (r == 7) 
+                    StartCoroutine(LoadAsyncScene("ClassicG"));
+                } else if (r == 8) {
+                    StartCoroutine(LoadAsyncScene("ClassicH"));
+                } else if (r == 9) {
+                    StartCoroutine(LoadAsyncScene("ClassicI"));
+                } else if (r == 10) {
+                    StartCoroutine(LoadAsyncScene("ClassicJ"));
+                } else {
+                    StartCoroutine(LoadAsyncScene("ClassicMaze"));
+                }
+                */
             }
         }
     }
