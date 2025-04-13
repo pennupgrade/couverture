@@ -15,7 +15,7 @@ public class Lance : ShieldedEnemy
         health = 300;
         gunRange = 9;
         sightRange = 11;
-        FOV = 0.8f;
+        FOV = 1f;
         rotSpeed = 72;
         reload = 4;
         bulletSpeed = 5.2f;

@@ -15,7 +15,7 @@ public class Spearhead : Enemy
         health = 300;
         gunRange = 4.5f;
         sightRange = 8;
-        FOV = 0.9f;
+        FOV = 1f;
         rotSpeed = 90;
         reload = 5;
         cooldownTime = 0.4f;

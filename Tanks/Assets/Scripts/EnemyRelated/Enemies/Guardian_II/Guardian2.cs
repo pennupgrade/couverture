@@ -14,7 +14,7 @@ public class Guardian2 : ShieldedEnemy
         health = 500;
         gunRange = 9;
         sightRange = 10;
-        FOV = 0.9f;
+        FOV = 1f;
         rotSpeed = 60;
         cooldownTime = 0.6f;
         reload = 3;

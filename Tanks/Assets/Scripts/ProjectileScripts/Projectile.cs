@@ -66,7 +66,7 @@ public abstract class Projectile : MonoBehaviour
 
                     d.takeDamage(damage);
 
-                    if (isRicochet) {
+                    if (isRicochet && collision.gameObject.tag != "Player") {
                         GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
                         Destroy(sound, 2);
                     }
