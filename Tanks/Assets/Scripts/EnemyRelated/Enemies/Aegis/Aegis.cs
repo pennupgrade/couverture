@@ -15,7 +15,7 @@ public class Aegis : EnemyOmniMove
         gunRange = 8;
         sightRange = 9;
         FOV = 1;
-        rotSpeed = 75;
+        rotSpeed = 60;
         cooldownTime = 0.9f;
         reload = 3;
         magSize = 3;

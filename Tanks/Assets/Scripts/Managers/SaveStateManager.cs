@@ -141,7 +141,7 @@ public class SaveStateManager {
         }
     }
 
-    public void FinishLevel(string nextLevelName, TankStats t) {
+    public void FinishLevel(string nextLevelName, TankStats t, bool toSave) {
         // update unlockedCharList
         unlockedCharList.Clear();
         foreach (CharacterOption x in unlockedChars) {
@@ -151,11 +151,16 @@ public class SaveStateManager {
             currentLevel.LevelName = nextLevelName;
             currentLevel.Stats = t;
             currentLevel.CurrCharacter = currCharacter;
+            if (nextLevelName == latestLevel.LevelName) {
+                latestLevel = currentLevel;
+            }
         } else {
             latestLevel = new();
             latestLevel.LevelName = "ALL LEVELS UNLOCKED";
         }
-        WriteToSaveFile();
+        if (toSave) {
+            WriteToSaveFile();
+        }
     }
 
     public void OnPlayerDeath() {
@@ -222,5 +227,9 @@ public class SaveStateManager {
         if (newScore > classicModeHighScore) {
             classicModeHighScore = newScore;
         }
+    }
+
+    public void SaveToFile() {
+        WriteToSaveFile();
     }
 }

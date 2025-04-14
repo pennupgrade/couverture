@@ -17,7 +17,7 @@ public class Scout : PatrollingEnemy
         health = 200;
         gunRange = 8;
         sightRange = 9;
-        FOV = 1.2f;
+        FOV = 1.5f;
         rotSpeed = 120;
         reload = 3;
         bulletSpeed = 3.2f;

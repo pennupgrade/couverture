@@ -15,14 +15,14 @@ public class Viper : ShieldedEnemy
         health = 400;
         gunRange = 12;
         sightRange = 13;
-        FOV = 1f;
-        rotSpeed = 120;
+        FOV = 1.5f;
+        rotSpeed = 110;
         cooldownTime = 0.25f;
         magSize = 12;
         numBullets = magSize;
         speed = 1.2f;
         turnSpeed = 200;
-        dodgeChance = 0.7f;
+        dodgeChance = 1f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -59,7 +59,7 @@ public class Viper : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1f));
+            StartCoroutine(stopMove(0.7f));
         }
     }
     public void fireRocket() {

@@ -109,7 +109,9 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void FreezeRotationAllowed() {
-        StopCoroutine(reloadCoroutine);
+        if (reloadCoroutine != null) {
+            StopCoroutine(reloadCoroutine);
+        }
         disableMove = true;
         invincible = true;
         disableFire = true;

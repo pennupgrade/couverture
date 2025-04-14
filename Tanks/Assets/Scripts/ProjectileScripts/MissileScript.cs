@@ -153,8 +153,8 @@ public class MissileScript : MonoBehaviour
         if (collider.tag == "Player")
         {
             Tank player = collider.gameObject.GetComponent<Tank>();
-            player.takeDamage(damage);
             player.incapacitate(1);
+            player.takeDamage(damage);
             damageDealt = true;
 
         } else if (collider.tag == "Enemy") {

@@ -59,17 +59,25 @@ public abstract class Projectile : MonoBehaviour
         {
             if ((startLifetime - lifetime) > dontDamageOnSpawnDelay || parent != collision.gameObject) {
                 if (!destroyed) {
+
                     bool isRicochet = damage > 200;
 
                     Enemy enemy = (d as Enemy);
                     if (enemy && isRicochet) enemy.setRicochet(true);
 
-                    d.takeDamage(damage);
-
-                    if (isRicochet) {
-                        GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
-                        Destroy(sound, 2);
+                    if (isRicochet && collision.gameObject.tag != "Player") {
+                        if (collision.gameObject.TryGetComponent<ShieldedEnemy>(out ShieldedEnemy se)) {
+                            if (!se.getShieldActivated()) {
+                                GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
+                                Destroy(sound, 2);
+                            }
+                        } else {
+                            GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
+                            Destroy(sound, 2);
+                        }
                     }
+
+                    d.takeDamage(damage);
                 }
                 destruction();
                 return true;
