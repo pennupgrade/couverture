@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17590448, g: 0.22012886, b: 0.3024583, a: 1}
+  m_IndirectSpecularColor: {r: 0.17590402, g: 0.22012824, b: 0.30245653, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5583,7 +5583,7 @@ RectTransform:
   m_Father: {fileID: 264887991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7289,6 +7289,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 230503657371389893, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 230503657371389893, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1148554061907262753, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 918944176}
     - target: {fileID: 3944663123617855354, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
       propertyPath: tank
       value: 
@@ -7389,6 +7401,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6909790080901625879, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909790080901625879, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8432104238873072603, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -7396,6 +7416,10 @@ PrefabInstance:
     - target: {fileID: 8432104238873072603, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8885484161508443430, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14623,7 +14647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1662099028
 RectTransform:
   m_ObjectHideFlags: 0
