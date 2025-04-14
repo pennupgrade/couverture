@@ -15,7 +15,7 @@ public class Lance : ShieldedEnemy
         health = 300;
         gunRange = 9;
         sightRange = 11;
-        FOV = 1f;
+        FOV = 1.4f;
         rotSpeed = 72;
         reload = 4;
         bulletSpeed = 5.2f;
@@ -60,7 +60,7 @@ public class Lance : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1.5f));
+            StartCoroutine(stopMove(0.7f));
         }
     }
 }

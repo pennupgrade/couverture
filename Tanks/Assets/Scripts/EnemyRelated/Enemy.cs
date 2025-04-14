@@ -174,7 +174,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
             return;
         }
         
-        if (Random.value < 1.0f) {
+        if (Random.value < 0.5f) {
             ratSound();
         }
     }
