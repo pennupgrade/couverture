@@ -17,14 +17,14 @@ public class ClassicUIManager : MonoBehaviour
         // some transition that removes the start canvas
     }
     public void LevelCompleteScreenFadeIn(bool lvl60Complete) {
-        // fade in the level complete text
+        // fade in the level complete screen and text
         // if lvl60Complete then display the end game screen instead
     }
     public void LevelCompleteScreenTextFadeOut() {
-        // ade out the level complete text
+        // fade out the level complete text
     }
     public void DeathScreenFadeIn() {
-        // display the end game screen, showing _/60 levels beat
-        // whether it is a high score or not, return to menu button
+        // display the end game screen, showing _/60 levels beat,
+        // and whether it is a high score or not, return to menu button
     }
 }
