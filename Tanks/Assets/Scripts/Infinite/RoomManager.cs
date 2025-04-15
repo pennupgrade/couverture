@@ -142,6 +142,8 @@ public class RoomManager : MonoBehaviour
         uiManager.LevelCompleteScreenTextFadeOut();
 
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
+        // reset stats
+        SaveStateManagerGameObject.PlayerDied();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         loading = true;
 
