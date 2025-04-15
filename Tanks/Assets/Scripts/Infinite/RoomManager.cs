@@ -49,7 +49,7 @@ public class RoomManager : MonoBehaviour
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
-        Tank pTank = FindPlayer();
+        Tank pTank = Tank.FindPlayer();
         pTank.FreezeNoRotation();
         
         //fade in level number text
@@ -154,19 +154,11 @@ public class RoomManager : MonoBehaviour
         loading = false;
     }
 
-    private Tank FindPlayer() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) {
-            Debug.Log("RoomManager: Could not find player");
-        }
-        return player.GetComponent<Tank>();
-    }
-
     public void PauseGame() {
-        FindPlayer().FreezeNoRotation();
+        Tank.FindPlayer().FreezeNoRotation();
     }
 
     public void ResumeGame() {
-        FindPlayer().UnfreezeNoRotation();
+        Tank.FindPlayer().UnfreezeNoRotation();
     }
 }

@@ -14,7 +14,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     // TODO: should i optimize this (FindTank only at loadlevel)?
     private static Tank FindTank() {
-        return FindObjectOfType<Tank>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("SaveStateManagerGameObject: Could not find player");
+        }
+        return player.GetComponent<Tank>();
     }
 
     void Awake() {
@@ -51,11 +55,11 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     // load save data for level that is currently in
     public static void LoadLevel(string levelName) {
-        Instance.stateManager.LoadLevel(levelName, FindTank());
+        Instance.stateManager.LoadLevel(levelName, Tank.FindPlayer());
     }
 
     public static void SwitchCharacter (SaveStateManager.CharacterOption c) {
-        Instance.stateManager.SwitchCharacter(FindTank(), c);
+        Instance.stateManager.SwitchCharacter(Tank.FindPlayer(), c);
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() {
@@ -63,7 +67,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void FinishLevel(string nextLevelName, bool toSave) {
-        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(FindTank()), toSave);
+        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(Tank.FindPlayer()), toSave);
     }
 
     public static void ExitLevel() {

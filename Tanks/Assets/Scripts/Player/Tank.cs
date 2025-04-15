@@ -341,4 +341,12 @@ public class Tank : MonoBehaviour, IDestroyable
         currentPos = pos;
         print("RESET" + previousPos + " " + currentPos);
     }
+
+    public static Tank FindPlayer() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("Could not find player");
+        }
+        return player.GetComponent<Tank>();
+    }
 }
