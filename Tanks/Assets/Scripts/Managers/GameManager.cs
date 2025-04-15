@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToNextLevel(float transitionTime, string sceneName)
     {
-        SaveStateManagerGameObject.FinishLevel(sceneName);
+        SaveStateManagerGameObject.FinishLevel(sceneName, true);
         StartCoroutine(TimerToRestart(transitionTime, sceneName));
     }
 

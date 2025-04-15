@@ -10,6 +10,12 @@ public class HealthBar : MonoBehaviour
     [SerializeField] float healthSmoothTime;
     [SerializeField] float healthDelayTime;
     [SerializeField] private TMP_Text healthText;
+    [SerializeField] private float shakeAmount;
+
+    [Header("Boss")]
+    [SerializeField] private bool bossMode;
+    [SerializeField] private TMP_Text bossTitle;
+    [SerializeField] private Boss boss;
     
     private RectTransform rect;
     private Vector2 startPosition;
@@ -25,16 +31,24 @@ public class HealthBar : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
         startPosition = rect.anchoredPosition;
-        maxHealth = tank.maxHealth;
+        if (bossMode)
+            maxHealth = (int)boss.health;
+        else
+            maxHealth = tank.maxHealth;
     }
     
     private void Update()
     {
-        float newHealth = (float)tank.health / maxHealth;
+        float newHealth;
+        if (bossMode)
+            newHealth = (float)boss.health / maxHealth;
+        else
+            newHealth = (float)tank.health / maxHealth;
+            
         if (newHealth < targetHealth)
         {
             healthDelayTimer = healthDelayTime;
-            CauseThePlayersGonnaPlayPlayPlayPlayPlayAndTheHatersGonnaHateHateHateHateHateBabyImJustGonnaShakeShakeShakeShakeShakeIShakeItOffIShakeItOff();
+            ShakeBar();
         }
         targetHealth = newHealth;
         
@@ -46,16 +60,19 @@ public class HealthBar : MonoBehaviour
         slider.value = currentHealth;
         delaySlider.value = currentDelayHealth;
 
-        int displayHealth = Mathf.Max(0, tank.health) / 100;
-        healthText.text = $"{displayHealth}<size=\"14\">/{maxHealth / 100}</size>";
+        if (!bossMode)
+        {
+            int displayHealth = Mathf.Max(0, tank.health) / 100;
+            healthText.text = $"{displayHealth}<size=\"14\">/{maxHealth / 100}</size>";
+        }
     }
 
-    private void CauseThePlayersGonnaPlayPlayPlayPlayPlayAndTheHatersGonnaHateHateHateHateHateBabyImJustGonnaShakeShakeShakeShakeShakeIShakeItOffIShakeItOff()
+    private void ShakeBar()
     {
         LeanTween.cancel(gameObject);
         rect.anchoredPosition = startPosition;
-        LeanTween.moveX(rect, startPosition.x - 15f, 0.05f).setEaseInQuart().setIgnoreTimeScale(true);
-        LeanTween.moveX(rect, startPosition.x + 15f, 0.1f).setEaseInOutQuart().setIgnoreTimeScale(true).setDelay(0.05f);
+        LeanTween.moveX(rect, startPosition.x - shakeAmount, 0.05f).setEaseInQuart().setIgnoreTimeScale(true);
+        LeanTween.moveX(rect, startPosition.x + shakeAmount, 0.1f).setEaseInOutQuart().setIgnoreTimeScale(true).setDelay(0.05f);
         LeanTween.moveX(rect, startPosition.x, 0.05f).setEaseOutQuart().setIgnoreTimeScale(true).setDelay(0.15f);
     }
 }

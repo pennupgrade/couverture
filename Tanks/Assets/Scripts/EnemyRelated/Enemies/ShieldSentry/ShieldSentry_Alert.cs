@@ -47,7 +47,7 @@ public class ShieldSentry_Alert : EnemyAlertState
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {            
-            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange) {
+            if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(3)) {
                 fire(30);
                 yield return new WaitForSeconds(enemy.reload);
             } else {

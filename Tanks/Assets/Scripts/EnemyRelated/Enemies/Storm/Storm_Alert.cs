@@ -101,7 +101,7 @@ public class Storm_Alert : G2_Alert
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {   
-            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
+            if (enemy.numBullets > 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
                 ((Storm)enemy).fireRocket(left);
                 left = !left;
                 enemy.numBullets--;
