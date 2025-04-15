@@ -8,6 +8,8 @@ public class RoomManager : MonoBehaviour
     public static RoomManager Instance { get; private set;}
     public static int LevelNum { get; private set;}
     bool loading;
+    private ClassicUIManager uiManager;
+    private AudioManager audioManager;
     [SerializeField] int overrideLevel;
 
     //call at start
@@ -32,6 +34,8 @@ public class RoomManager : MonoBehaviour
         }
         if (Instance == null) {
             Instance = this;
+            uiManager = GetComponent<ClassicUIManager>();
+            audioManager = GetComponent<AudioManager>();
             startScreen();
         } else if (Instance != this) {
             Instance.startScreen();
@@ -41,16 +45,20 @@ public class RoomManager : MonoBehaviour
     }
 
     public void startScreen() {
+        //play opening sound effect
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
         Tank pTank = FindPlayer();
         pTank.FreezeNoRotation();
-
-        //display start screen
-
+        
+        //fade in level number text
+        uiManager.StartScreenTextFadeIn(LevelNum);
         yield return new WaitForSeconds(3);
         pTank.UnfreezeNoRotation();
+
+        // remove start screen, play BG music
+        uiManager.StartScreenFadeOut();
     } 
 
     public void roomTransition() {
@@ -61,9 +69,7 @@ public class RoomManager : MonoBehaviour
         LevelNum++;
         Debug.Log("Loading Level" + LevelNum);
 
-        //level complete screen 
-        //level transition
-
+        //scene transition
         if (LevelNum == 1) {
             StartCoroutine(LoadAsyncScene("Classic1"));
         } else if (LevelNum == 2) {
@@ -78,10 +84,11 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic6"));
         } else {
             if (LevelNum == 60) {
-                //game end screen, displays time taken, leads to main menu
+                //game end screen, displays time taken, button leads to main menu
+                uiManager.LevelCompleteScreenFadeIn(true);
+                //classic mode complete sound effect
 
-                //temporary
-                playerDeath();
+                
             } else {
                 //randomized level
                 /*
@@ -114,28 +121,30 @@ public class RoomManager : MonoBehaviour
         }
     }
     public void playerDeath() {
-        // redirect to death screen showing level reached, leads to main menu
-
-        //temporary
-        LevelNum = 0;
-        roomTransition();
+        // redirect to death screen showing level reached, button leads to main menu
+        uiManager.DeathScreenFadeIn();
+        //play sad sound
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
 
-        
         destroyInstance();
         EnemySpawner.reset(); // resets enemy counter
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
-        yield return new WaitForSeconds(1.5f);
+        //level complete screen
+        uiManager.LevelCompleteScreenFadeIn(false);
+        //play level complete sound
+        yield return new WaitForSeconds(2f);
+        //level complete screen fades out
+        uiManager.LevelCompleteScreenTextFadeOut();
+
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         loading = true;
 
-        // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
             yield return null;
