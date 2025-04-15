@@ -16,7 +16,12 @@ public class GameplayHUDManager : MonoBehaviour
     private void Start()
     {
         startPosition = abilityIcon.anchoredPosition;
-        EnableAbilityBar(false);
+        Tank t = Tank.FindPlayer();
+        if (t.character is null || t.character is DefaultChar) {
+            EnableAbilityBar(false);
+        } else {
+            EnableAbilityBar(true);
+        }
     }
 
     public void AbilityBarIsCasting(float stayTime, Character tank)
