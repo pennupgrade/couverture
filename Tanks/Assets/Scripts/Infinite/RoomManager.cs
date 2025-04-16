@@ -39,26 +39,31 @@ public class RoomManager : MonoBehaviour
             startScreen();
         } else if (Instance != this) {
             Instance.startScreen();
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
     }
 
     public void startScreen() {
         //play opening sound effect
+        audioManager.Play("StartSound");
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
+        uiManager.reset();
         Tank pTank = Tank.FindPlayer();
         pTank.FreezeNoRotation();
         
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
-        yield return new WaitForSeconds(3);
-        pTank.UnfreezeNoRotation();
+        yield return new WaitForSeconds(2);
 
         // remove start screen, play BG music
+        audioManager.Play("BGM");
         uiManager.StartScreenFadeOut();
+        yield return new WaitForSeconds(0.2f);
+        pTank.UnfreezeNoRotation();
+
     } 
 
     public void roomTransition() {
@@ -87,6 +92,8 @@ public class RoomManager : MonoBehaviour
                 //game end screen, displays time taken, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 //classic mode complete sound effect
+                audioManager.Stop("BGM");
+                audioManager.Play("WinSound");
 
                 
             } else {
@@ -124,6 +131,8 @@ public class RoomManager : MonoBehaviour
         // redirect to death screen showing level reached, button leads to main menu
         uiManager.DeathScreenFadeIn(LevelNum);
         //play sad sound
+        audioManager.Stop("BGM");
+        audioManager.Play("DeathSound");
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
@@ -134,12 +143,17 @@ public class RoomManager : MonoBehaviour
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
+        yield return new WaitForSeconds(1f);
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
+        Tank.FindPlayer().FreezeRotationAllowed();
         //play level complete sound
-        yield return new WaitForSeconds(2f);
+        audioManager.Stop("BGM");
+        audioManager.Play("CompleteSound");
+        yield return new WaitForSeconds(2.5f);
         //level complete screen fades out
         uiManager.LevelCompleteScreenTextFadeOut();
+        yield return new WaitForSeconds(1f);
 
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
         // reset stats

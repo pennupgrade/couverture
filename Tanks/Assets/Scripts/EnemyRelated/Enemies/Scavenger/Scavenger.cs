@@ -15,7 +15,7 @@ public class Scavenger : PatrollingEnemy
         health = 200;
         gunRange = 8;
         sightRange = 9;
-        FOV = 0.9f;
+        FOV = 1.3f;
         rotSpeed = 90;
         reload = 3.5f;
         bulletSpeed = 3;

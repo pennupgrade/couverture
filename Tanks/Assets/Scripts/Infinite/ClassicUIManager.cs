@@ -17,14 +17,20 @@ public class ClassicUIManager : MonoBehaviour
 
     private void Start()
     {
-        startScreen.alpha = 0;
+        reset();
+        backToHome.onClick.AddListener(ReturnToHome);
+    }
+    public void reset() {
+        startScreen.alpha = 1;
+        startScreen.gameObject.SetActive(true);
+        levelText.alpha = 0;
+        levelsBeatenText.alpha = 1;
         completeScreen.alpha = 0;
         completeScreen.gameObject.SetActive(false);
         endGameScreen.alpha = 0;
         endGameScreen.gameObject.SetActive(false);
         deathScreen.alpha = 0;
         deathScreen.gameObject.SetActive(false);
-        backToHome.onClick.AddListener(ReturnToHome);
     }
 
     public void ReturnToHome()
@@ -39,16 +45,36 @@ public class ClassicUIManager : MonoBehaviour
         //so its only the text that changes
         // make text display the current level number
         levelText.text = "Mission: " + levelNum;
-        StartCoroutine(Fade(startScreen, true)) ;
+        StartCoroutine(FadeText(levelText, true)) ;
+    }
+    public IEnumerator FadeText(TMP_Text text, bool fadeIn)
+    {
+        if (fadeIn) {
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime;
+                text.alpha = t / 1f;
+                yield return null;
+            }
+            text.alpha = 1f;
+        } else {
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime;
+                text.alpha = 1 - t / 1f;
+                yield return null;
+            }
+            text.alpha = 0f;
+        }
     }
 
     public IEnumerator Fade(CanvasGroup screen, bool fadeInorOut)
     {
-        Debug.Log(screen.gameObject.name + ": " + fadeInorOut);
         if (fadeInorOut)
         {
             screen.gameObject.SetActive(true);
-            Debug.Log("setactive is true");
             float t = 0f;
             while (t < 1f)
             {
@@ -61,10 +87,10 @@ public class ClassicUIManager : MonoBehaviour
         else
         {
             float t = 0f;
-            while (t < 2f)
+            while (t < 1f)
             {
                 t += Time.deltaTime;
-                screen.alpha = 1 - t / 2f;
+                screen.alpha = 1 - t / 1f;
                 yield return null;
             }
             screen.alpha = 0f;
@@ -95,7 +121,7 @@ public class ClassicUIManager : MonoBehaviour
 
     public void LevelCompleteScreenTextFadeOut() {
         // fade out the level complete text
-        StartCoroutine(Fade(completeScreen, false));
+        StartCoroutine(FadeText(levelsBeatenText, false));
     }
 
     public void DeathScreenFadeIn(int levelNum) {
@@ -104,7 +130,7 @@ public class ClassicUIManager : MonoBehaviour
         startScreen.gameObject.SetActive(false);
         completeScreen.gameObject.SetActive(false);
         endGameScreen.gameObject.SetActive(false);
-        levelsBeatenText.text = "Levels Beat: " + levelNum + "/60";
+        levelsBeatenText.text = "Levels Beat: " + (levelNum - 1) + "/60";
         StartCoroutine(Fade(deathScreen, true));
     }
 }

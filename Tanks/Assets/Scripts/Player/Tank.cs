@@ -129,6 +129,9 @@ public class Tank : MonoBehaviour, IDestroyable
         invincible = false;
         controls.Enable();
     }
+    public void setInvincible(bool noDamage) {
+        invincible = noDamage;
+    }
 
     // Effects
     ~Tank() {

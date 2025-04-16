@@ -68,7 +68,7 @@ public abstract class EnemyStartState : Enemy_State
         if (!alertState) {
             changeState = true;
         } else {
-            alertState = true;
+            this.alertState = true;
         }
     }
 }

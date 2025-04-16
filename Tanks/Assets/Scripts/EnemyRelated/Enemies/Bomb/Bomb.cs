@@ -58,7 +58,7 @@ public class Bomb : Enemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1));
+            StartCoroutine(stopMove(0.5f));
         }
     }
     

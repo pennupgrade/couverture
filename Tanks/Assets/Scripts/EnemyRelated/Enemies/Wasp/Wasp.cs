@@ -15,7 +15,7 @@ public class Wasp : PatrollingEnemyOmni
         health = 100;
         gunRange = 7;
         sightRange = 8;
-        FOV = 1.3f;
+        FOV = 1.6f;
         rotSpeed = 108;
         reload = 4.5f;
         bulletSpeed = 3.1f;

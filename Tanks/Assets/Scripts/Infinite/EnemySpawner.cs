@@ -9,7 +9,7 @@ public class EnemySpawner : Activatable, IAlertableEnemy
     [SerializeField] int section;
     [SerializeField] int levelNumber;
     public GameObject[] enemies;
-    private float spawnDelay = 3;
+    private float spawnDelay = 2f;
 
     //call at start
     public static void reset() {
@@ -71,9 +71,7 @@ public class EnemySpawner : Activatable, IAlertableEnemy
             }
             Tank pTank = player.GetComponent<Tank>();
             if (pTank.health > 0) {
-
-                pTank.FreezeRotationAllowed();
-
+                pTank.setInvincible(true);
                 //change level
                 RoomManager.Instance.roomTransition();
             }
