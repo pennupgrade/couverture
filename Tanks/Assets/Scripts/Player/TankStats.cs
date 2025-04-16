@@ -19,9 +19,6 @@ public class TankStats {
     }
 
     public void TransferStats(Tank t) {
-        //don't transfer for classic mode
-        if (RoomManager.Instance != null) return;
-
         t.health = health;
         t.moveSpeed = moveSpeed;
 

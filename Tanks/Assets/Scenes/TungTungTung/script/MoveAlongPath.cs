@@ -1,7 +1,7 @@
 using PathCreation;
 using UnityEngine;
 
-public class MoveAlongPath : MonoBehaviour
+public class MoveAlongPath2 : MonoBehaviour
 {
     public VertexPath vertexPath;
 
