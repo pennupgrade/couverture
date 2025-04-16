@@ -14,6 +14,7 @@ public class ClassicUIManager : MonoBehaviour
     public CanvasGroup endGameScreen;
     public CanvasGroup deathScreen;
     public Button backToHome;
+    public Button backToHome_fromDeath;
 
     private void Start()
     {
@@ -31,6 +32,8 @@ public class ClassicUIManager : MonoBehaviour
         endGameScreen.gameObject.SetActive(false);
         deathScreen.alpha = 0;
         deathScreen.gameObject.SetActive(false);
+        backToHome.onClick.AddListener(ReturnToHome);
+        backToHome_fromDeath.onClick.AddListener(ReturnToHome);
     }
 
     public void ReturnToHome()
