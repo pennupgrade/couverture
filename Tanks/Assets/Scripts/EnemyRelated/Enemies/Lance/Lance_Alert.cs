@@ -84,6 +84,7 @@ public class Lance_Alert : EnemyAlertState
         yield return new WaitForSeconds(0.16f);
         while (true) {            
             if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(6)) {
+                yield return new WaitForSeconds(0.05f);
                 fire(10);
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.reload);

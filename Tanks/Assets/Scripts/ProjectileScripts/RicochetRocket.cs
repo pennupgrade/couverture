@@ -36,6 +36,10 @@ public class RicochetRocket : Projectile
             audioManager.Play("Bounce");
         }
     }
+    public void reduceBounces()
+    {
+        bounces--;
+    }
 
     void OnCollisionEnter(Collision collision) {
         if (defaultCollisionChecks(collision)) return;
