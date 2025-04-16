@@ -26,6 +26,10 @@ public class ShieldedEnemy : Enemy
         damageFlash.CallDamageFlash(this);
         if (health <= 0 && !isDead) {
             die();
+            return;
+        }
+        if (Random.value < 0.5f) {
+            ratSound();
         }
     }
     protected IEnumerator activateShield() {

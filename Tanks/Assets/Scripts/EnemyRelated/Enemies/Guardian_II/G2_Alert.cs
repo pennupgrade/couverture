@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class G2_Alert : EnemyAlertState
 {
     protected bool playerGone, leadPlayer;
+
+    private float rayDist;
+    private Vector3 rayPos, rayDir;
     public G2_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = 5;
         enemy.speed = 1.6f;
@@ -110,8 +113,10 @@ public class G2_Alert : EnemyAlertState
     }
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
-        while (true) {   
-            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
+        bool LOS = false;
+        while (true) {
+            LOS = lineOfSightCheck();
+            if (enemy.numBullets > 0 && LOS && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(4)) {
                 if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.75f) {
                     int left = (Random.value) < 0.5f ? 1 : -1;
                     for (int i = 0; i < enemy.magSize; i++) {
@@ -128,9 +133,51 @@ public class G2_Alert : EnemyAlertState
                 } else {
                     yield return new WaitForSeconds(enemy.reload);
                 }
+            } else if (enemy.numBullets > 0 && !LOS && checkFriendlyFire(4)) {
+                //bouncing
+                for (int i = -32; i <= 32; i += 12) {
+                    if (calcBounce(Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward)) {
+                        fire(i, false);
+                        enemy.numBullets--;
+                        break;
+                    }
+                }
+                yield return new WaitForSeconds(enemy.cooldownTime);
             } else {
                 yield return new WaitForSeconds(0.16f);
             }
         }
+    }
+
+    protected bool calcBounce(Vector3 rayDirection) {
+        rayDist = 12;
+        rayPos = enemy.gun.transform.position;
+        rayDir = rayDirection;
+        for (int i = 0; i < 2; i++) {
+            RaycastHit hit;
+            if (Physics.Raycast(rayPos, rayDir, out hit, rayDist, 1 << 3)) {
+                //Debug.DrawRay(rayPos, Vector3.Distance(rayPos, hit.point) * rayDir.normalized, Color.red, 1);
+                if (Physics.Raycast(rayPos, rayDir, Vector3.Distance(rayPos, hit.point), 1 << 8)) {
+                    return false;
+                }
+                if (Physics.Raycast(rayPos, rayDir, Vector3.Distance(rayPos, hit.point), 1 << 2)) {
+                    return true;
+                }
+                rayDist -= Vector3.Distance(rayPos, hit.point);
+                if (rayDist <= 0) return false;
+                rayDir = Vector3.Reflect(rayDir, hit.normal);
+                rayPos = hit.point + 0.01f * rayDir;
+
+            } else {
+                if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 2)) {
+                    if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 8)) {
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }    
+        return false;
     }
 }

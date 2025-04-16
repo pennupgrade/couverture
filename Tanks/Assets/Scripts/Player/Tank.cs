@@ -129,6 +129,9 @@ public class Tank : MonoBehaviour, IDestroyable
         invincible = false;
         controls.Enable();
     }
+    public void setInvincible(bool noDamage) {
+        invincible = noDamage;
+    }
 
     // Effects
     ~Tank() {
@@ -340,5 +343,13 @@ public class Tank : MonoBehaviour, IDestroyable
         previousPos = pos;
         currentPos = pos;
         print("RESET" + previousPos + " " + currentPos);
+    }
+
+    public static Tank FindPlayer() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("Could not find player");
+        }
+        return player.GetComponent<Tank>();
     }
 }

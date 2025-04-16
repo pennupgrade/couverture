@@ -17,7 +17,7 @@ public class Scout : PatrollingEnemy
         health = 200;
         gunRange = 8;
         sightRange = 9;
-        FOV = 1.2f;
+        FOV = 1.8f;
         rotSpeed = 120;
         reload = 3;
         bulletSpeed = 3.2f;
@@ -60,7 +60,7 @@ public class Scout : PatrollingEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1.2f));
+            StartCoroutine(stopMove(0.6f));
         }
     }
 

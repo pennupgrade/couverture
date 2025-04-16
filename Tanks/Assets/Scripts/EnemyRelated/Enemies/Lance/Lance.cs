@@ -15,14 +15,14 @@ public class Lance : ShieldedEnemy
         health = 300;
         gunRange = 9;
         sightRange = 11;
-        FOV = 0.8f;
+        FOV = 1.6f;
         rotSpeed = 72;
-        reload = 4;
+        reload = 3.6f;
         bulletSpeed = 5.2f;
         leadChance = 0.5f;
         speed = 1.2f;
         turnSpeed = 180;
-        dodgeChance = 0.8f;
+        dodgeChance = 0.9f;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
@@ -60,7 +60,7 @@ public class Lance : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1.5f));
+            StartCoroutine(stopMove(0.4f));
         }
     }
 }
