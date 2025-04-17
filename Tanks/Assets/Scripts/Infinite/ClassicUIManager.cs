@@ -15,6 +15,7 @@ public class ClassicUIManager : MonoBehaviour
     public CanvasGroup deathScreen;
     public Button backToHome;
     public Button backToHome_fromDeath;
+    public TMP_Text missionComplete_Text;
 
     private void Start()
     {
@@ -52,6 +53,7 @@ public class ClassicUIManager : MonoBehaviour
     }
     public IEnumerator FadeText(TMP_Text text, bool fadeIn)
     {
+        Debug.Log("fading ig");
         if (fadeIn) {
             float t = 0f;
             while (t < 1f)
@@ -65,6 +67,7 @@ public class ClassicUIManager : MonoBehaviour
             float t = 0f;
             while (t < 1f)
             {
+
                 t += Time.deltaTime;
                 text.alpha = 1 - t / 1f;
                 yield return null;
@@ -124,7 +127,7 @@ public class ClassicUIManager : MonoBehaviour
 
     public void LevelCompleteScreenTextFadeOut() {
         // fade out the level complete text
-        StartCoroutine(FadeText(levelsBeatenText, false));
+        StartCoroutine(FadeText(missionComplete_Text, false));
     }
 
     public void DeathScreenFadeIn(int levelNum) {
