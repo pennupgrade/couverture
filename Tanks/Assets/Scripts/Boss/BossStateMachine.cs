@@ -204,7 +204,7 @@ public class BossStateMachine : MonoBehaviour
                             chargeDir.Normalize();
                             chargeDir.y = 0;
                             Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange / 2;
-                            boss.chargeDir = chargeDir;
+                            //boss.chargeDir = chargeDir;
                             Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
                             rot.x = -90;
                             GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
@@ -238,7 +238,7 @@ public class BossStateMachine : MonoBehaviour
                             chargeDir.Normalize();
                             chargeDir.y = 0;
                             Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange / 2;
-                            boss.chargeDir = chargeDir;
+                            //boss.chargeDir = chargeDir;
                             Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
                             rot.x = -90;
                             GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
