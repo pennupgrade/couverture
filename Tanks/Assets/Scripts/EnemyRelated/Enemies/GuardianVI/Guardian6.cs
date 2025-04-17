@@ -15,21 +15,23 @@ public class Guardian6 : EnemyOmniMove
         gunRange = 10;
         sightRange = 10;
         FOV = 1.8f;
-        rotSpeed = 120;
-        cooldownTime = 0.6f;
-        reload = 4;
+        rotSpeed = 130;
+        cooldownTime = 1.4f;
+        reload = 5.5f;
         magSize = 2;
         numBullets = magSize;
         bulletSpeed = 6.2f;
         leadChance = 0.5f;
-        speed = 1.8f;
+        speed = 2f;
         turnSpeed = 180;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
-        shieldSetup();
-        StartCoroutine(activateShield());
+        if (shieldEnabled) {
+            shieldSetup();
+            StartCoroutine(activateShield());
+        }
         rb = GetComponent<Rigidbody>();
     }
 
@@ -70,5 +72,21 @@ public class Guardian6 : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+
+    public void fire() {
+        fireSound();
+        GameObject bullet = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(10 * (Random.value - 0.5f), Vector3.up)
+         * (gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
+
+        bullet.GetComponent<Projectile>().parent = this.gameObject;
+        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+        bullet.GetComponent<RicochetRocket>().reduceBounces();
+    }
+
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(15);
+        StartCoroutine(activateShield());
     }
 }

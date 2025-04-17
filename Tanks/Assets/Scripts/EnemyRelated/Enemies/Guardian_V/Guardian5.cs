@@ -22,7 +22,7 @@ public class Guardian5 : EnemyOmniMove
         numBullets = magSize;
         bulletSpeed = 5.1f;
         leadChance = 0.5f;
-        speed = 1.7f;
+        speed = 1.8f;
         turnSpeed = 180;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
@@ -48,7 +48,7 @@ public class Guardian5 : EnemyOmniMove
         if (isStunned) return;
 
         //dodging
-        stopTurns = detectBullet(1.8f);
+        stopTurns = detectBullet(1.9f);
         if (stopTurns) {
             dodge();
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;

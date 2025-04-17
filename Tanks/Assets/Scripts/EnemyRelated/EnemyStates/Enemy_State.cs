@@ -122,6 +122,10 @@ public abstract class Enemy_State
 
         turnTurretVecMath();
     }
+    protected void turnTurretTowardPos(Vector3 pos) {
+        enemy.TargetDir = (pos - enemy.rb.position).normalized;
+        turnTurretVecMath();
+    }
     protected void turnTurretTowardPlayerTimeDelay(bool leadPlayer, float duration) {
         if (enemy.playerRB == null) {
             return;
