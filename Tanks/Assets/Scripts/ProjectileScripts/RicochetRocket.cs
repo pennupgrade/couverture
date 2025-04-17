@@ -11,7 +11,7 @@ public class RicochetRocket : Projectile
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
-        bulletSpeed = 5.5f;
+        bulletSpeed = 6f;
     }
     void Start()
     {
@@ -35,6 +35,10 @@ public class RicochetRocket : Projectile
         } else {
             audioManager.Play("Bounce");
         }
+    }
+    public void reduceBounces()
+    {
+        bounces--;
     }
 
     void OnCollisionEnter(Collision collision) {

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class ActivatorButton : MonoBehaviour
 {
-    [SerializeField] private Vector3 vOffset = new Vector3(0, -2, 0);
+    [SerializeField] protected Vector3 vOffset = new Vector3(0, -2, 0);
+    [SerializeField] protected float rotateDelta = 0;
+    [SerializeField] protected Vector3 rotateAxis = new Vector3(0, 0, 0);
+    [SerializeField] protected float pressSpeed = 0.8f;
+
     public bool reusable;
     protected bool onCooldown;
     public GameObject[] toChange;
@@ -29,23 +33,32 @@ public class ActivatorButton : MonoBehaviour
         }
 
         if (!reusable) {
-            StartCoroutine(slideButtonDown());
+            StartCoroutine(transformButton());
         } else {
             StartCoroutine(cooldownTimer());
         }
     }
-    private IEnumerator slideButtonDown() {
+
+    protected virtual IEnumerator transformButton() {
         onCooldown = true;
         float timer = 0;
         Vector3 startPos = transform.localPosition;
+        Quaternion originalRot = transform.localRotation;
+        Quaternion newRot = Quaternion.AngleAxis(rotateDelta * Mathf.PI / 180.0f, rotateAxis);
+
         while (timer <= 1) {
             transform.localPosition = Vector3.Lerp(startPos, 
                 startPos + vOffset, timer);
-            timer += Time.deltaTime * 0.8f;
+            transform.localRotation = Quaternion.Lerp(originalRot, newRot, timer);
+
+            timer += Time.deltaTime * pressSpeed;
             yield return null;
         }
-        gameObject.SetActive(false);
+
+        // gameObject.SetActive(false);
     }
+
+
     protected virtual IEnumerator cooldownTimer() {
         onCooldown = true;
         //change button appearance

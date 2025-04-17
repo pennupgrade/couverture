@@ -8,8 +8,10 @@ public class Bomb : Enemy
     [HideInInspector] public float explosionRadius;
     public LayerMask explosionLM;
     public Material glowMat;
+    private bool playerHit;
     void Awake() {
         enemyState = new Bomb_Start(this);
+        playerHit = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -56,21 +58,28 @@ public class Bomb : Enemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1));
+            StartCoroutine(stopMove(0.5f));
         }
     }
+    
     protected override void destruction() {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLM);
         foreach (var hit in hitColliders) {
-            if (hit.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
-                d.takeDamage(100);
+            if (hit.gameObject != this.gameObject && hit.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
+                if (gameObject.tag == "Enemy") {
+                    d.takeDamage(50);
+                } else if (!playerHit) {
+                    d.takeDamage(100);
+                    playerHit = true;
+                }
             }
         }
 
         base.destruction();
     }
+    
     public void boom() {
-        destruction();
+        die();
     }
 
     public void turnOnLight() {

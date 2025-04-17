@@ -109,7 +109,9 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public void FreezeRotationAllowed() {
-        StopCoroutine(reloadCoroutine);
+        if (reloadCoroutine != null) {
+            StopCoroutine(reloadCoroutine);
+        }
         disableMove = true;
         invincible = true;
         disableFire = true;
@@ -126,6 +128,9 @@ public class Tank : MonoBehaviour, IDestroyable
         disableMove = false;
         invincible = false;
         controls.Enable();
+    }
+    public void setInvincible(bool noDamage) {
+        invincible = noDamage;
     }
 
     // Effects
@@ -338,5 +343,13 @@ public class Tank : MonoBehaviour, IDestroyable
         previousPos = pos;
         currentPos = pos;
         print("RESET" + previousPos + " " + currentPos);
+    }
+
+    public static Tank FindPlayer() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) {
+            Debug.Log("Could not find player");
+        }
+        return player.GetComponent<Tank>();
     }
 }

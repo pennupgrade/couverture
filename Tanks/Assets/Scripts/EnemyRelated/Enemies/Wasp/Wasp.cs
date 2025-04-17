@@ -15,12 +15,12 @@ public class Wasp : PatrollingEnemyOmni
         health = 100;
         gunRange = 7;
         sightRange = 8;
-        FOV = 0.7f;
+        FOV = 1.6f;
         rotSpeed = 108;
         reload = 4.5f;
         bulletSpeed = 3.1f;
         leadChance = 0.25f;
-        speed = 2f;
+        speed = 2.5f;
         turnSpeed = 180;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

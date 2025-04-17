@@ -174,7 +174,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
             return;
         }
         
-        if (Random.value < 1.0f) {
+        if (Random.value < 0.5f) {
             ratSound();
         }
     }
@@ -207,6 +207,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
     public virtual void alert(bool alertState = false) {
         if (enemyState is EnemyStartState) {
+            Debug.Log("alert");
             ((EnemyStartState)enemyState).ChangeToIdle(alertState);
         }
     }
