@@ -25,11 +25,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private SlidingWall exitWall;
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
-    [SerializeField] private float chargeSpeed;
-    [SerializeField] private float chargeRange;
-    public Vector3 chargeDir;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private GameObject shield;
+   [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
@@ -97,11 +93,6 @@ public class Boss : MonoBehaviour, IDestroyable
 
     private void Update()
     {
-        // Move gun to point towards the player
-        // float GUN_DISTANCE = 1f;
-        // Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
-        // gun.transform.position = transform.position + movePos;
-        // gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
         gun.transform.LookAt(player.transform);
 
         if (!unplugged) {
@@ -112,10 +103,6 @@ public class Boss : MonoBehaviour, IDestroyable
                 }
             }
         }
-        // if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
-        // } else {
-        //     unplug();
-        // }
 
         if (unplugged && ind < wires.Length) {
             wires[ind].Kill();
@@ -174,16 +161,6 @@ public class Boss : MonoBehaviour, IDestroyable
     {
         exitWall.activate();
         Destroy(gameObject);
-    }
-    public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
-        if (Time.time > chargeStartTime + 0.75f &&
-        (this.transform.position - chargeStart).magnitude < chargeRange) {
-            rb.velocity = chargeSpeed * chargeDir; 
-        }
-        //
-        // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-        //     this.moveState = bmState.Idle;
-        // }
     }
     public void ShootMissile()
     {
