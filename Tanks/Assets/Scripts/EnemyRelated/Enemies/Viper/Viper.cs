@@ -20,7 +20,7 @@ public class Viper : ShieldedEnemy
         cooldownTime = 0.25f;
         magSize = 12;
         numBullets = magSize;
-        speed = 1.2f;
+        speed = 1.4f;
         turnSpeed = 200;
         dodgeChance = 1f;
         

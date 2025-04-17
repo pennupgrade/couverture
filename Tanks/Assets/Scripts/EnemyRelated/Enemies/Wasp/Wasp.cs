@@ -20,7 +20,7 @@ public class Wasp : PatrollingEnemyOmni
         reload = 4.5f;
         bulletSpeed = 3.1f;
         leadChance = 0.25f;
-        speed = 2f;
+        speed = 2.5f;
         turnSpeed = 180;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
