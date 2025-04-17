@@ -70,6 +70,7 @@ public class BossStateMachine : MonoBehaviour
         }
         chargeStartTime = 0f;
         playerIsStunned = false;
+        boss.setEnemies(enemies);
     }
 
     private void Start()
