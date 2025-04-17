@@ -33,6 +33,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
+    private List<List<GameObject>> enemies;
     
     private void Awake()
     {
@@ -43,6 +44,11 @@ public class Boss : MonoBehaviour, IDestroyable
         enemySpawned = null;
         df = new DamageFlash(this.gameObject);
         ind = 0;
+    }
+
+    public void setEnemies(List<List<GameObject>> enemies)
+    {
+        this.enemies = enemies;
     }
 
     public void shootBullet(int barrel = 0)
@@ -173,6 +179,13 @@ public class Boss : MonoBehaviour, IDestroyable
     public void Die()
     {
         exitWall.activate();
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            for (int j = 0; j < enemies[i].Count; j++)
+            {
+                enemies[i][j].GetComponent<Enemy>().takeDamage(9999999);
+            }
+        }
         Destroy(gameObject);
     }
     public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
