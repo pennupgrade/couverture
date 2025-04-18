@@ -151,7 +151,7 @@ public class RoomManager : MonoBehaviour
         //play level complete sound
         audioManager.Stop("BGM");
         audioManager.Play("CompleteSound");
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.8f);
         //level complete screen fades out
         uiManager.LevelCompleteScreenTextFadeOut();
         yield return new WaitForSeconds(1f);

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemySpawner : Activatable
 {
+    
+    [SerializeField] bool easyMode;
     [SerializeField] bool hardMode;
     static int enemiesRemaining; // = 0;
     [SerializeField] int section;
@@ -27,7 +29,9 @@ public class EnemySpawner : Activatable
     void Start()
     {
         if (enemies.Length == 0) return;
-        if (hardMode && !Tank.FindPlayer().CharacterHasAbility()) return;
+        bool rocket = Tank.FindPlayer().CharacterHasAbility();
+        if (easyMode && rocket) return;
+        if (hardMode && !rocket) return;
         if (levelNumber > 0) {
             if (RoomManager.LevelNum != levelNumber) return;
         } else {
