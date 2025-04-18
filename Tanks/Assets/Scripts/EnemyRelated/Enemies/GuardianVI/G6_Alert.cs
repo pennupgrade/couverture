@@ -6,8 +6,9 @@ using UnityEngine.AI;
 public class G6_Alert : EnemyAlertState
 {
     protected bool leadPlayer;
-    private float rayDist;
-    private Vector3 rayPos, rayDir;
+    private bool tryingBounce;
+    private Vector3 bouncePos;
+    private Coroutine bounceCor;
     public G6_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = enemy.magSize;
         leadPlayer = true;
@@ -54,7 +55,11 @@ public class G6_Alert : EnemyAlertState
     }
 
     public override Enemy_State RotateTurret(Vector3 _) {
-        turnTurretTowardPlayer(leadPlayer);
+        if (!tryingBounce) {
+            turnTurretTowardPlayer(leadPlayer);
+        } else {
+            turnTurretTowardPos(bouncePos);
+        }
         return this;
     }
     public override Enemy_State Shoot(Vector3 _) {
@@ -63,6 +68,10 @@ public class G6_Alert : EnemyAlertState
         }
         if (enemy.reloadCor == null) {
             enemy.reloadCor = enemy.StartCoroutine(reloader());
+        }
+        if (bounceCor == null) {
+            tryingBounce = false;
+            bounceCor = enemy.StartCoroutine(bounceCoroutine());
         }
         return this;
     }
@@ -73,21 +82,96 @@ public class G6_Alert : EnemyAlertState
                 yield return new WaitForSeconds(enemy.reload);
                 enemy.numBullets = enemy.magSize;
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
-        while (true) {   
-            if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
-                fire(13);
+        while (true) {
+            if (tryingBounce && enemy.numBullets > 0 && Vector3.Dot((bouncePos - enemy.gun.transform.position).normalized, enemy.gun.transform.forward) > 0.98f && checkFriendlyFire(5))  {
+                ((Guardian6)enemy).fire();
+                tryingBounce = false;
+                yield return new WaitForSeconds(enemy.cooldownTime);
+            } else if (!tryingBounce && enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
+                ((Guardian6)enemy).fire();
                 enemy.numBullets--;
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.cooldownTime);
             } else {
-                yield return new WaitForSeconds(0.16f);
+                yield return new WaitForSeconds(0.2f);
             }
         }
+    }
+
+    private IEnumerator bounceCoroutine() {
+        while (true) {
+            if (!tryingBounce) {
+                yield return new WaitForSeconds(enemy.cooldownTime);
+                if (calcAllBounces(out Vector3 shootPos)) {
+                    tryingBounce = true;
+                    bouncePos = shootPos;
+                }
+            } else {
+                yield return new WaitForSeconds(2 * enemy.cooldownTime);
+            }
+        }
+    }
+
+    private bool calcAllBounces(out Vector3 hitpos) {
+        //left
+        float dist = Vector3.Distance(enemy.gun.transform.position, enemy.gunShotPos.position);
+        Vector3 shootDir;
+        for (int i = -20; i <= -120; i -= 20) {
+            shootDir = Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward;
+            if (calcBounce(shootDir, enemy.gun.transform.position + dist * shootDir, out Vector3 hitPos)) {
+                hitpos = hitPos;
+                return true;
+            }
+        }
+        //right
+        for (int i = 20; i <= 120; i += 20) {
+            shootDir = Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward;
+            if (calcBounce(shootDir, enemy.gun.transform.position + dist * shootDir, out Vector3 hitPos)) {
+                hitpos = hitPos;
+                return true;
+            }
+        }
+        hitpos = Vector3.zero;
+        return false;
+    }
+
+    private bool calcBounce(Vector3 rayDir, Vector3 rayPos, out Vector3 hitPos) {
+        float rayDist = 10;
+        hitPos = Vector3.zero;
+        for (int i = 0; i < 2; i++) {
+            RaycastHit hit;
+            if (Physics.Raycast(rayPos, rayDir, out hit, rayDist, 1 << 3)) {
+                if (i == 0) {
+                    hitPos = hit.point;
+                } 
+                Debug.DrawRay(rayPos, Vector3.Distance(rayPos, hit.point) * rayDir.normalized, Color.red, 1);
+                if (Physics.Raycast(rayPos, rayDir, Vector3.Distance(rayPos, hit.point), 1 << 8)) {
+                    return false;
+                }
+                if (Physics.Raycast(rayPos, rayDir, Vector3.Distance(rayPos, hit.point), 1 << 2)) {
+                    return true;
+                }
+                rayDist -= Vector3.Distance(rayPos, hit.point);
+                if (rayDist <= 0) return false;
+                rayDir = Vector3.Reflect(rayDir, hit.normal);
+                rayPos = hit.point + 0.01f * rayDir;
+
+            } else {
+                if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 2)) {
+                    if (Physics.Raycast(rayPos, rayDir, rayDist, 1 << 8)) {
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }    
+        return false;
     }
 }

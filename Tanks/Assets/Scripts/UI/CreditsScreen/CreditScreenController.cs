@@ -1,0 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CreditScreenController : MonoBehaviour
+{
+    public ScrollRect scrollRect;
+    public float scrollSpeed = 20f;
+
+    void Update()
+    {
+        if (scrollRect.verticalNormalizedPosition > 0)
+        {
+            scrollRect.verticalNormalizedPosition -= scrollSpeed * Time.deltaTime / 100f;
+        }
+    }
+}
