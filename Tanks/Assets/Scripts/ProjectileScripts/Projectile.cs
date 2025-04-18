@@ -60,7 +60,7 @@ public abstract class Projectile : MonoBehaviour
             if ((startLifetime - lifetime) > dontDamageOnSpawnDelay || parent != collision.gameObject) {
                 if (!destroyed) {
 
-                    bool isRicochet = (this is Bullet_Default) && (damage > 200);
+                    bool isRicochet = (damage > 200);
 
                     Enemy enemy = (d as Enemy);
                     if (enemy && isRicochet) enemy.setRicochet(true);
