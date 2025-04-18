@@ -7,7 +7,7 @@ public class Bomb : Enemy
 {
     [HideInInspector] public float explosionRadius;
     public LayerMask explosionLM;
-    public Material glowMat;
+    public GameObject glowMatObj;
     private bool playerHit;
     void Awake() {
         enemyState = new Bomb_Start(this);
@@ -83,6 +83,6 @@ public class Bomb : Enemy
     }
 
     public void turnOnLight() {
-        glowMat.SetFloat("_Pulsing", 1);
+        glowMatObj.GetComponent<MeshRenderer>().material.SetFloat("_Pulsing", 1);
     }
 }

@@ -11,7 +11,7 @@ public class Hornet : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 200;
+        health = 100;
         gunRange = 8;
         sightRange = 10;
         FOV = 1.3f;
@@ -73,5 +73,10 @@ public class Hornet : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(12);
+        StartCoroutine(activateShield());
     }
 }

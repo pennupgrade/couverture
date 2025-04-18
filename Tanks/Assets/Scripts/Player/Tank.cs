@@ -286,9 +286,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
         }
         else {
-            if (Random.value < 0.5f)
-                audioManager.Play("Meow");
-
+            audioManager.Play("Meow");
             cameraShake.Shake(dmg);
         }
 

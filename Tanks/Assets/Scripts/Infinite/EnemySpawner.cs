@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : Activatable, IAlertableEnemy
+public class EnemySpawner : Activatable
 {
-    [SerializeField] bool toBeActivated;
+    
+    [SerializeField] bool easyMode;
+    [SerializeField] bool hardMode;
     static int enemiesRemaining; // = 0;
     [SerializeField] int section;
     [SerializeField] int levelNumber;
@@ -16,12 +18,8 @@ public class EnemySpawner : Activatable, IAlertableEnemy
         enemiesRemaining = 0;
     }
 
-    public void alert(bool alertState = false) {
-        activate();
-    }
-
     public override void activate() {
-        if (toBeActivated && !activated && enemiesRemaining > 0) {
+        if (!activated && enemiesRemaining > 0) {
             
             spawn();
             activated = true;
@@ -30,7 +28,10 @@ public class EnemySpawner : Activatable, IAlertableEnemy
 
     void Start()
     {
-        if (enemies.Length == 0 || toBeActivated) return;
+        if (enemies.Length == 0) return;
+        bool rocket = Tank.FindPlayer().CharacterHasAbility();
+        if (easyMode && rocket) return;
+        if (hardMode && !rocket) return;
         if (levelNumber > 0) {
             if (RoomManager.LevelNum != levelNumber) return;
         } else {
@@ -64,12 +65,8 @@ public class EnemySpawner : Activatable, IAlertableEnemy
         enemiesRemaining--;
         if (enemiesRemaining <= 0) {
             enemiesRemaining = 0;
-            
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) {
-                Debug.Log("EnemySpawner: Could not find player");
-            }
-            Tank pTank = player.GetComponent<Tank>();
+
+            Tank pTank = Tank.FindPlayer();
             if (pTank.health > 0) {
                 pTank.setInvincible(true);
                 //change level
