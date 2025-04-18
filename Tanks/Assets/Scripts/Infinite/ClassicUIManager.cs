@@ -28,6 +28,7 @@ public class ClassicUIManager : MonoBehaviour
         levelText.alpha = 0;
         levelsBeatenText.alpha = 1;
         completeScreen.alpha = 0;
+        missionComplete_Text.alpha = 1;
         completeScreen.gameObject.SetActive(false);
         endGameScreen.alpha = 0;
         endGameScreen.gameObject.SetActive(false);
@@ -53,7 +54,6 @@ public class ClassicUIManager : MonoBehaviour
     }
     public IEnumerator FadeText(TMP_Text text, bool fadeIn)
     {
-        Debug.Log("fading ig");
         if (fadeIn) {
             float t = 0f;
             while (t < 1f)

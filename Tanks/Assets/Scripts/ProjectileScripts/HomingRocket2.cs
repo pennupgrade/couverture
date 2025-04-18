@@ -7,7 +7,7 @@ public class HomingRocket2 : Projectile
     public GameObject player;
     private Rigidbody rb;
 
-    private bool disabled;
+    private bool disabled, stopHoming;
 
     private float homingStr, Cturn;
     
@@ -18,6 +18,7 @@ public class HomingRocket2 : Projectile
         bulletSpeed = 4f;
         homingStr = 30;
         Cturn = 0;
+        stopHoming = false;
     }
     void Start()
     {
@@ -35,6 +36,11 @@ public class HomingRocket2 : Projectile
             disabled = false;
         } else if (!disabled) {
             bulletSpeed = Mathf.Max(bulletSpeed - 2 * Time.deltaTime, 3);
+        }
+
+        if (!stopHoming && Vector3.Distance(player.transform.position, transform.position) < 0.9f) {
+            stopHoming = true;
+            homingStr = 20;
         }
         
 
