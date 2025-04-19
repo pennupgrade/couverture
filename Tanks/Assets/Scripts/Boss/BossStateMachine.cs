@@ -54,9 +54,11 @@ public class BossStateMachine : MonoBehaviour
     [SerializeField] private Animator anim;
 
     [SerializeField] private GameObject playerDummy;
+    [SerializeField] private GameObject damageZone;
     private PlayerCamera pc; 
     private Transform dummyTransform;
     private bool isAggro;
+
     
 
     private void Awake()
@@ -82,15 +84,21 @@ public class BossStateMachine : MonoBehaviour
 
     private void Update()
     {
+        if (!boss.isUnplugged()) {
+            chargeRange = 1f;
+        } else {
+            chargeRange = 3.5f;
+        }
         if (playerIsStunned) {
             if (dummyTransform.GetComponent<TankDummy>().StunOver()) {
-                player.SetActive(true);
+                
                 player.transform.position = dummyTransform.position;
                 Destroy(dummyTransform.gameObject);
                 playerTank.ResetPosition(dummyTransform.position);
                 pc.SetPlayer(player);
                 bm.SetPlayer(player);
-                playerTank.takeDamage(50);
+                playerTank.takeDamage(25);
+                playerTank.gameObject.SetActive(true);
                 playerTank.tankState.ResetReload();
                 playerIsStunned = false;
             }
@@ -186,12 +194,12 @@ public class BossStateMachine : MonoBehaviour
             else
             {
                 // Choose between summon, shoot, and charge
-                int rand = UnityEngine.Random.Range(0, 4);
-                if (enemies.Count < MAX_NUMBER_SUMMONS && rand == 0)
+                int rand = UnityEngine.Random.Range(0, 5);
+                if (enemies.Count < MAX_NUMBER_SUMMONS && rand <= 1)
                 {
                     currentAttack = Attack.Summon;
                 }
-                else if (Time.time > chargeStartTime + chargeCD && rand == 1)
+                else if (Time.time > chargeStartTime + chargeCD && rand == 2)
                 {
                     currentAttack = Attack.Charge;
                     if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 10f) {InitializeCharge();}
@@ -286,10 +294,15 @@ public class BossStateMachine : MonoBehaviour
             pc.SetPlayer(dummy);
             bm.SetPlayer(dummy);
             player.SetActive(false);
+            //playerTank.takeDamage(25);
 
             switchToState(State.Idle);
             chargeHitAlready = true;
         }
+        if (currentAttack == Attack.Charge && col.gameObject.tag == "Environment") {
+           anim.SetTrigger("Stun");
+        }
+
     }
     private void InitializeCharge() {
         chargeStart = this.transform.position;
