@@ -9,8 +9,6 @@ public class Storm_Alert : G2_Alert
     public Storm_Alert(Enemy enemy) : base(enemy) {
         enemy.numBullets = enemy.magSize;
         left = false;
-        ((Storm)enemy).toggleLaser();
-        enemy.playSound("Laser");
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -68,7 +66,6 @@ public class Storm_Alert : G2_Alert
                     enemy.StopCoroutine(enemy.reloadCor);
                     enemy.reloadCor = null;
                 }
-                ((Storm)enemy).toggleLaser();
                 return new Storm_Idle(enemy);
             }
         }
@@ -103,6 +100,7 @@ public class Storm_Alert : G2_Alert
         while (true) {   
             if (enemy.numBullets > 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
                 ((Storm)enemy).fireRocket(left);
+                if (enemy.numBullets == enemy.magSize) enemy.playSound("Laser");
                 left = !left;
                 enemy.numBullets--;
                 yield return new WaitForSeconds(enemy.cooldownTime);

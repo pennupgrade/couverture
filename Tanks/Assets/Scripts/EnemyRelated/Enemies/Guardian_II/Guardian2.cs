@@ -14,7 +14,7 @@ public class Guardian2 : ShieldedEnemy
         health = 500;
         gunRange = 9;
         sightRange = 10;
-        FOV = 1.3f;
+        FOV = 1.5f;
         rotSpeed = 60;
         cooldownTime = 0.6f;
         reload = 3;
@@ -61,7 +61,7 @@ public class Guardian2 : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(0.7f));
+            StartCoroutine(stopMove(0.4f));
         }
     }
 }

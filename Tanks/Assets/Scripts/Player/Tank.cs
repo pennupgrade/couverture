@@ -129,6 +129,9 @@ public class Tank : MonoBehaviour, IDestroyable
         invincible = false;
         controls.Enable();
     }
+    public void setInvincible(bool noDamage) {
+        invincible = noDamage;
+    }
 
     // Effects
     ~Tank() {
@@ -283,9 +286,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
         }
         else {
-            if (Random.value < 0.5f)
-                audioManager.Play("Meow");
-
+            audioManager.Play("Meow");
             cameraShake.Shake(dmg);
         }
 

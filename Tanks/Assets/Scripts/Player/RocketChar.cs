@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RocketChar : Character
 {
-    private float cooldown = 5;
+    private float cooldown = 10;
     private float currCD = 0;
     public GameObject rocketPrefab = Resources.Load<GameObject>("Rocket");
 
@@ -18,7 +18,9 @@ public class RocketChar : Character
                                                            bullet.GetComponent<Projectile>().bulletSpeed);
             bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
             bullet.GetComponent<Projectile>().parent = tank.gameObject;
+            bullet.GetComponent<Rocket>().damageIncrease();
             currCD = cooldown;
+            
             return true;
         }
         else

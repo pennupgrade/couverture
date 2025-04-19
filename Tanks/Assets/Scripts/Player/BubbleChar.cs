@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BubbleChar : Character
 {
-    public float cooldown = 8;
+    public float cooldown = 10;
     public float stayTime = 3;
     public float selfDestroyCD = 3;
     public float currCD = 0;

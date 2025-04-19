@@ -16,7 +16,7 @@ public class Bomb_Attack : EnemyAlertState
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            enemy.destination = getPlayerPoint(0);
+            enemy.destination = enemy.playerRB.position;
             enemy.agent.SetDestination(enemy.destination);
         }
         turnTowardsVector(enemy.agent.desiredVelocity, 300);
@@ -24,7 +24,7 @@ public class Bomb_Attack : EnemyAlertState
     }
     private IEnumerator recalcPath() {
         while (true) {
-            enemy.destination = getPlayerPoint(0);
+            enemy.destination = enemy.playerRB.position;
             enemy.agent.SetDestination(enemy.destination);
             yield return new WaitForSeconds(1.6f);
         }

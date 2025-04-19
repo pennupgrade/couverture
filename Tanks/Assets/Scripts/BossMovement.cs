@@ -132,21 +132,10 @@ public class BossMovement : MonoBehaviour
     public void Retreat() {
         Vector3 dir = player.transform.position - plugBase.transform.position;
         agent.destination = plugBase.transform.position + dir.normalized * (maxRange - 1);
-        
-        // dir.Normalize();
-        // if (rb.GetAccumulatedForce().magnitude < 25 && rb.velocity.magnitude < currMoveSpeed) {
-        //     rb.AddForce(dir * 3f, ForceMode.VelocityChange);
-        // }
     }
 
-    // public void Charge() {
-    //     if (Time.time > chargeStartTime + 1f) {
-    //         print(chargeDir);
-    //         rb.velocity = chargeSpeed * transform.forward; 
-    //     }
-    //     //
-    //     if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-    //         this.moveState = bmState.Idle;
-    //     }
-    // }
+    public void SetPlayer(GameObject g) { 
+        player = g;
+    }
+
 }

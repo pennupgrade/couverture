@@ -77,7 +77,7 @@ public abstract class Enemy_State
             return false;
         }
         //ensures player is not above or below
-        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 1.4f) {
+        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 0.2f) {
             return false;
         }
         //if distance under 4, only check if in LOS
@@ -120,6 +120,10 @@ public abstract class Enemy_State
             enemy.TargetDir = result;
         } else enemy.TargetDir = (enemy.playerRB.position - enemy.rb.position).normalized;
 
+        turnTurretVecMath();
+    }
+    protected void turnTurretTowardPos(Vector3 pos) {
+        enemy.TargetDir = (pos - enemy.rb.position).normalized;
         turnTurretVecMath();
     }
     protected void turnTurretTowardPlayerTimeDelay(bool leadPlayer, float duration) {

@@ -20,7 +20,7 @@ public class Viper : ShieldedEnemy
         cooldownTime = 0.25f;
         magSize = 12;
         numBullets = magSize;
-        speed = 1.2f;
+        speed = 1.4f;
         turnSpeed = 200;
         dodgeChance = 1f;
         
@@ -59,13 +59,13 @@ public class Viper : ShieldedEnemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(0.7f));
+            StartCoroutine(stopMove(0.3f));
         }
     }
     public void fireRocket() {
         fireSound();
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(gun.transform.forward));
-        bulletPrefab.GetComponent<HomingRocket>().player = player;
+        bulletPrefab.GetComponent<HomingRocket>().player = this.player;
     }
 
     public void toggleLaser() {

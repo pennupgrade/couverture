@@ -12,6 +12,7 @@ public class RoomManager : MonoBehaviour
     private AudioManager audioManager;
     [SerializeField] int overrideLevel;
 
+
     //call at start
     public static void reset() {
         LevelNum = 1;
@@ -39,26 +40,31 @@ public class RoomManager : MonoBehaviour
             startScreen();
         } else if (Instance != this) {
             Instance.startScreen();
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
     }
 
     public void startScreen() {
         //play opening sound effect
+        audioManager.Play("StartSound");
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
+        uiManager.reset();
         Tank pTank = Tank.FindPlayer();
         pTank.FreezeNoRotation();
         
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
-        yield return new WaitForSeconds(3);
-        pTank.UnfreezeNoRotation();
+        yield return new WaitForSeconds(2);
 
         // remove start screen, play BG music
+        audioManager.Play("BGM");
         uiManager.StartScreenFadeOut();
+        yield return new WaitForSeconds(0.2f);
+        pTank.UnfreezeNoRotation();
+
     } 
 
     public void roomTransition() {
@@ -72,22 +78,44 @@ public class RoomManager : MonoBehaviour
         //scene transition
         if (LevelNum == 1) {
             StartCoroutine(LoadAsyncScene("Classic1"));
-        } else if (LevelNum == 2) {
+        } else if (LevelNum == 2 || LevelNum == 18 || LevelNum == 36) {
             StartCoroutine(LoadAsyncScene("Classic2"));
-        } else if (LevelNum == 3) {
+        } else if (LevelNum == 3 || LevelNum == 20 || LevelNum == 23) {
             StartCoroutine(LoadAsyncScene("Classic3"));
-        } else if (LevelNum == 4) {
+        } else if (LevelNum == 4 || LevelNum == 17 || LevelNum == 39) {
             StartCoroutine(LoadAsyncScene("Classic4"));
-        } else if (LevelNum == 5) {
+        } else if (LevelNum == 5 || LevelNum == 19) {
             StartCoroutine(LoadAsyncScene("Classic5"));
-        } else if (LevelNum == 6) {
+        } else if (LevelNum == 6 || LevelNum == 35 || LevelNum == 40) {
             StartCoroutine(LoadAsyncScene("Classic6"));
+        } else if (LevelNum == 10 || LevelNum == 60) {
+            StartCoroutine(LoadAsyncScene("Classic10"));
+        } else if (LevelNum == 16 || LevelNum == 37) {
+            StartCoroutine(LoadAsyncScene("Classic16"));
+        } else if (LevelNum == 21 || LevelNum == 41) {
+            StartCoroutine(LoadAsyncScene("Classic21"));
+        } else if (LevelNum == 22 || LevelNum == 42) {
+            StartCoroutine(LoadAsyncScene("Classic22"));
+        } else if (LevelNum == 30 || LevelNum == 38 || LevelNum == 50) {
+            if ((LevelNum == 30 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 50) {
+                StartCoroutine(LoadAsyncScene("Classic30alt"));
+            } else {
+                StartCoroutine(LoadAsyncScene("Classic30"));
+            }
+
+        } else if (LevelNum == 43) {
+            StartCoroutine(LoadAsyncScene("Classic43"));
+        } else if (LevelNum == 55) {
+            StartCoroutine(LoadAsyncScene("Classic55"));
         } else {
-            if (LevelNum == 60) {
+            if (LevelNum == 61) {
                 //game end screen, displays time taken, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 //classic mode complete sound effect
-
+                destroyInstance();
+                EnemySpawner.reset(); // resets enemy counter
+                audioManager.Stop("BGM");
+                audioManager.Play("WinSound");
                 
             } else {
                 //randomized level
@@ -124,6 +152,8 @@ public class RoomManager : MonoBehaviour
         // redirect to death screen showing level reached, button leads to main menu
         uiManager.DeathScreenFadeIn(LevelNum);
         //play sad sound
+        audioManager.Stop("BGM");
+        audioManager.Play("DeathSound");
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
@@ -134,12 +164,17 @@ public class RoomManager : MonoBehaviour
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
+        yield return new WaitForSeconds(1f);
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
+        Tank.FindPlayer().FreezeRotationAllowed();
         //play level complete sound
-        yield return new WaitForSeconds(2f);
+        audioManager.Stop("BGM");
+        audioManager.Play("CompleteSound");
+        yield return new WaitForSeconds(1.8f);
         //level complete screen fades out
         uiManager.LevelCompleteScreenTextFadeOut();
+        yield return new WaitForSeconds(1f);
 
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
         // reset stats

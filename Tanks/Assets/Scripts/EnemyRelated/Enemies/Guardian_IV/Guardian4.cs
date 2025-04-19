@@ -16,7 +16,7 @@ public class Guardian4 : EnemyOmniMove
         health = 300;
         gunRange = 10;
         sightRange = 10;
-        FOV = 1.3f;
+        FOV = 1.8f;
         rotSpeed = 108;
         cooldownTime = 0.8f;
         reload = 4.8f;

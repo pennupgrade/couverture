@@ -11,7 +11,7 @@ public class Hornet : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 200;
+        health = 100;
         gunRange = 8;
         sightRange = 10;
         FOV = 1.3f;
@@ -22,7 +22,7 @@ public class Hornet : EnemyOmniMove
         numBullets = magSize;
         bulletSpeed = 3.2f;
         leadChance = 0.3f;
-        speed = 2f;
+        speed = 2.2f;
         turnSpeed = 200;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
@@ -73,5 +73,10 @@ public class Hornet : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 8 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(12);
+        StartCoroutine(activateShield());
     }
 }

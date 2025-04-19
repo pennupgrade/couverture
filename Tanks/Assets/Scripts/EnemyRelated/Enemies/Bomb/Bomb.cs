@@ -7,7 +7,7 @@ public class Bomb : Enemy
 {
     [HideInInspector] public float explosionRadius;
     public LayerMask explosionLM;
-    public Material glowMat;
+    public GameObject glowMatObj;
     private bool playerHit;
     void Awake() {
         enemyState = new Bomb_Start(this);
@@ -58,7 +58,7 @@ public class Bomb : Enemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(1));
+            StartCoroutine(stopMove(0.5f));
         }
     }
     
@@ -83,6 +83,6 @@ public class Bomb : Enemy
     }
 
     public void turnOnLight() {
-        glowMat.SetFloat("_Pulsing", 1);
+        glowMatObj.GetComponent<MeshRenderer>().material.SetFloat("_Pulsing", 1);
     }
 }

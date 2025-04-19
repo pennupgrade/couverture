@@ -25,14 +25,11 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private SlidingWall exitWall;
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
-    [SerializeField] private float chargeSpeed;
-    [SerializeField] private float chargeRange;
-    public Vector3 chargeDir;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private GameObject shield;
+   [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
+    private List<List<GameObject>> enemies;
     
     private void Awake()
     {
@@ -43,6 +40,11 @@ public class Boss : MonoBehaviour, IDestroyable
         enemySpawned = null;
         df = new DamageFlash(this.gameObject);
         ind = 0;
+    }
+
+    public void setEnemies(List<List<GameObject>> enemies)
+    {
+        this.enemies = enemies;
     }
 
     public void shootBullet(int barrel = 0)
@@ -97,11 +99,6 @@ public class Boss : MonoBehaviour, IDestroyable
 
     private void Update()
     {
-        // Move gun to point towards the player
-        // float GUN_DISTANCE = 1f;
-        // Vector3 movePos = (player.transform.position - transform.position).normalized * GUN_DISTANCE;
-        // gun.transform.position = transform.position + movePos;
-        // gun.transform.rotation = Quaternion.LookRotation(player.transform.position - gun.transform.position);
         gun.transform.LookAt(player.transform);
 
         if (!unplugged) {
@@ -112,10 +109,6 @@ public class Boss : MonoBehaviour, IDestroyable
                 }
             }
         }
-        // if (wirePlug.TryGetComponent<CharacterJoint>(out CharacterJoint c)) {
-        // } else {
-        //     unplug();
-        // }
 
         if (unplugged && ind < wires.Length) {
             wires[ind].Kill();
@@ -173,17 +166,14 @@ public class Boss : MonoBehaviour, IDestroyable
     public void Die()
     {
         exitWall.activate();
-        Destroy(gameObject);
-    }
-    public void Charge(float chargeStartTime, Vector3 chargeStart, float chargeRange) {
-        if (Time.time > chargeStartTime + 0.75f &&
-        (this.transform.position - chargeStart).magnitude < chargeRange) {
-            rb.velocity = chargeSpeed * chargeDir; 
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            for (int j = 0; j < enemies[i].Count; j++)
+            {
+                enemies[i][j].GetComponent<Enemy>().takeDamage(9999999);
+            }
         }
-        //
-        // if ((transform.position - chargeStart).magnitude > chargeRange || Time.time > chargeStartTime + 2f) { 
-        //     this.moveState = bmState.Idle;
-        // }
+        Destroy(gameObject);
     }
     public void ShootMissile()
     {

@@ -41,4 +41,9 @@ public class Defender : ShieldedEnemy
             gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
         }
     }
+
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(15);
+        StartCoroutine(activateShield());
+    }
 }
