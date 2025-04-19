@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        if (SceneTransition.I.IsAnimating) return;
+        
         if (Input.GetKeyDown(KeyCode.Escape)) {
             paused = !paused;
             
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
         
         // Wait on the max between duration and the scene transition duration
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSecondsRealtime(duration);
         yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
         operation.allowSceneActivation = true;
