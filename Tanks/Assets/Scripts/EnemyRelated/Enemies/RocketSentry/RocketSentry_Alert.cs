@@ -53,7 +53,7 @@ public class RocketSentry_Alert : EnemyAlertState
                 fire(8);
                 leadPlayer = Random.value < enemy.leadChance;
                 yield return new WaitForSeconds(enemy.reload);
-                enemy.reload = Mathf.Max(enemy.reload - 0.5f, 1.5f);
+                enemy.reload = Mathf.Max(enemy.reload - 1.2f, 1.5f);
             } else {
                 yield return new WaitForSeconds(0.2f);
             }

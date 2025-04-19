@@ -120,8 +120,10 @@ public class G2_Alert : EnemyAlertState
                 if (enemy.numBullets == enemy.magSize && getDist() < 5 && Random.value < 0.75f) {
                     int left = (Random.value) < 0.5f ? 1 : -1;
                     for (int i = 0; i < enemy.magSize; i++) {
+                        
                         fire(left * (-28 + 14 * i), false);
                         yield return new WaitForSeconds(0.42f);
+                        if (!lineOfSightCheck()) break;
                     }
                     yield return new WaitForSeconds(enemy.cooldownTime);
                     enemy.numBullets = 1;
@@ -138,7 +140,6 @@ public class G2_Alert : EnemyAlertState
                 for (int i = -32; i <= 32; i += 12) {
                     if (calcBounce(Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward)) {
                         fire(i, false);
-                        enemy.numBullets--;
                         break;
                     }
                 }

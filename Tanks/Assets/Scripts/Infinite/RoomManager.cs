@@ -88,14 +88,19 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic5"));
         } else if (LevelNum == 6) {
             StartCoroutine(LoadAsyncScene("Classic6"));
+        } else if (LevelNum == 10) {
+            StartCoroutine(LoadAsyncScene("Classic10"));
+        } else if (LevelNum == 16) {
+            StartCoroutine(LoadAsyncScene("Classic16"));
         } else {
-            if (LevelNum == 60) {
+            if (LevelNum == 61) {
                 //game end screen, displays time taken, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 //classic mode complete sound effect
+                destroyInstance();
+                EnemySpawner.reset(); // resets enemy counter
                 audioManager.Stop("BGM");
                 audioManager.Play("WinSound");
-
                 
             } else {
                 //randomized level

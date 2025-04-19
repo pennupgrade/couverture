@@ -46,7 +46,8 @@ public class MissileSentry : ShieldedEnemy
     public void fireRocket() {
         fireSound();
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(gun.transform.forward));
-        bulletPrefab.GetComponent<HomingRocket>().player = player;
+        bulletPrefab.GetComponent<HomingRocket>().player = this.player;
+
     }
 
     public void toggleLaser() {
