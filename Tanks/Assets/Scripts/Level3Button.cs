@@ -43,7 +43,7 @@ public class Level3Button : ActivatorButton
             manager.Play("Ding");
         }
 
-        blinker.transform.localPosition += new Vector3(0, 0, -0.5f);
+        blinker.GetComponent<BlinkerScript>().Activate();
     }
 
     protected override IEnumerator transformButton()
