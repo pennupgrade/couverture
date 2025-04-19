@@ -16,7 +16,6 @@ public class plug : MonoBehaviour, IDestroyable
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     void OnColliderEnter() {
@@ -24,10 +23,14 @@ public class plug : MonoBehaviour, IDestroyable
     }
     
     public void takeDamage(int dmg) {
-        HP -= dmg;
-        df.CallDamageFlash(this);
-        if (HP <= 0) {
-            b.unplug();
+        if (b != null && b.isStarted)
+        {
+            HP -= dmg;
+            df.CallDamageFlash(this);
+            if (HP <= 0)
+            {
+                b.unplug();
+            }
         }
     }
 
