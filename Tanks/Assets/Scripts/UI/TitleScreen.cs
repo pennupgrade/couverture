@@ -11,7 +11,7 @@ public class TitleScreen : MonoBehaviour
     }
 
     public void OpenOptions() {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("CreditsScreen");
     }
 
     public void Quit() => Application.Quit();
