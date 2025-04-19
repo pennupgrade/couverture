@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public float respawnTime;
     // public int totalLives;
     private Tank player;
-    private bool paused;
+    public bool paused;
 
     void Awake()
     {
@@ -30,13 +30,21 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        if (SceneTransition.I.IsAnimating) return;
+        
         if (Input.GetKeyDown(KeyCode.Escape)) {
             paused = !paused;
+            
+            // Only enable toggling pause if the cat selection panel isn't open
+            if (UIManager.instance.Cat_Selection_Panel.activeInHierarchy) return;
+                
             if (paused) {
                 PauseGame();
+                UIManager.instance.pauseMenu.ShowPanel();
             }
             else {
                 ResumeGame();
+                UIManager.instance.pauseMenu.HidePanel();
             }
         }
     }
@@ -72,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
         
         // Wait on the max between duration and the scene transition duration
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSecondsRealtime(duration);
         yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
         operation.allowSceneActivation = true;

@@ -105,8 +105,9 @@ public class BossStateMachine : MonoBehaviour
         } else {
             lastPos = player.transform.position;
         }
-        if (wall.transform.position.y > -2)
+        if (boss.isStarted || wall.transform.position.y > -2)
         {
+            boss.isStarted = true;
             if (!isAggro) {
                 isAggro = true;
                 startTime = Time.time;

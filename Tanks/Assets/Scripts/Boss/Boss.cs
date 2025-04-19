@@ -25,11 +25,12 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private SlidingWall exitWall;
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
-   [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
     private List<List<GameObject>> enemies;
+    public bool isStarted = false;
     
     private void Awake()
     {

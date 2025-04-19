@@ -77,7 +77,7 @@ public abstract class Enemy_State
             return false;
         }
         //ensures player is not above or below
-        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 0.2f) {
+        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 0.7f) {
             return false;
         }
         //if distance under 4, only check if in LOS

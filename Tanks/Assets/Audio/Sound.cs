@@ -22,6 +22,8 @@ public class Sound
 
     public bool pool;
 
+    public float pitch = 1.0f;
+
     [HideInInspector]
     public AudioSource source;
 
