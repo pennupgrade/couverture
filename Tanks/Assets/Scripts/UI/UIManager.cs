@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -9,6 +8,7 @@ public class UIManager : MonoBehaviour
     public GameObject Gameplay_Panel;
     public GameObject Cat_Selection_Panel;
     public GameObject Save_Load_Panel;
+    public PauseMenu pauseMenu;
     public bool characterJustSwitched;
 
     private void Awake()
@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        panels = GetComponentsInChildren<Canvas>();
-        Debug.Log("len: " + panels.Length);
+        // Disable all canvases except for the pause canvas
+        panels = GetComponentsInChildren<Canvas>().Where(c => c.gameObject.name != "Pause Menu Canvas").ToArray();
         StartGame();
     }
 
