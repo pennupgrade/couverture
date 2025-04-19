@@ -29,13 +29,7 @@ public class AnimalStation : MonoBehaviour
     }
 
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("Clicked");
-            Debug.Log(inRange);
-        }
-        
+    { 
         if(inRange && Input.GetKeyDown(KeyCode.E))
         {
             SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
