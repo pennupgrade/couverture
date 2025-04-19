@@ -94,10 +94,11 @@ public class G6_Alert : EnemyAlertState
                 tryingBounce = false;
                 yield return new WaitForSeconds(enemy.cooldownTime);
             } else if (!tryingBounce && enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
+                yield return new WaitForSeconds(0.06f);
                 ((Guardian6)enemy).fire();
                 enemy.numBullets--;
                 leadPlayer = Random.value < enemy.leadChance;
-                yield return new WaitForSeconds(enemy.cooldownTime);
+                yield return new WaitForSeconds(enemy.cooldownTime - 0.06f);
             } else {
                 yield return new WaitForSeconds(0.2f);
             }

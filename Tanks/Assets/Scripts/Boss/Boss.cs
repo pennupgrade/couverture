@@ -59,13 +59,15 @@ public class Boss : MonoBehaviour, IDestroyable
             startPos = shotgunBarrel3;
 
         // Shoot the bullet forwards
-        bool random = true;
+        bool random = false;
         float dispersion = 0.5f;
         GameObject bullet = PoolManager.bulletPool.Get().gameObject;
-        bullet.transform.position = startPos.position;
-        bullet.GetComponent<Rigidbody>().velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
+        bullet.transform.position = new Vector3(startPos.position.x, -1.055195f, startPos.position.z);
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        rb.velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * startPos.forward * bullet.GetComponent<Projectile>().bulletSpeed);
-        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        bullet.transform.rotation = Quaternion.LookRotation(rb.velocity);
     }
 
     // Shoots a bullet through all 3 barrels

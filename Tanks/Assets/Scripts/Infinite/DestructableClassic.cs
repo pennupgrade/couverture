@@ -6,7 +6,7 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
 {
     private DamageFlash damageFlash;
     public GameObject originalObj;
-    public GameObject fracturedObj;
+    public GameObject fracturedObjPrefab;
     public int hits;
     private bool isDead;
 
@@ -15,7 +15,7 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
     // Start is called before the first frame update
     void Start()
     {
-        damageFlash = new DamageFlash(this.gameObject);
+        damageFlash = new DamageFlash(originalObj);
         damageFlash._flashTime = 0.2f;
     }
 
@@ -24,7 +24,9 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
     void fracture()
     {
         originalObj.SetActive(false);
-        fractObj = Instantiate(fracturedObj) as GameObject;
+        GetComponent<Collider>().enabled = false;
+        if (fracturedObjPrefab == null) return;
+        fractObj = Instantiate(fracturedObjPrefab) as GameObject;
         foreach(Transform t in fractObj.transform) {
             var rb = t.GetComponent<Rigidbody>();
             rb.AddExplosionForce(0.5f, originalObj.transform.position, 1);

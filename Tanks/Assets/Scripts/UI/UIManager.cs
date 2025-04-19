@@ -23,14 +23,6 @@ public class UIManager : MonoBehaviour
         StartGame();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Open_SaveLoadPanel_DuringGame();
-        }
-    }
-
     public void StartGame()
     {
         CloseAllPanels();
@@ -57,20 +49,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void QuitFrom_SaveLoadPanel_DuringGame()
-    {
-        Save_Load_Panel.SetActive(false);
-        Gameplay_Panel.SetActive(true);
-        //GameManager.Instance.ResumeGame();
-    }
-
-    public void Open_SaveLoadPanel_DuringGame()
-    {
-        //GameManager.Instance.PauseGame();
-        Save_Load_Panel.SetActive(false);
-        Gameplay_Panel.SetActive(true);
-    }
-
     public void Update_CatSelectionPanel_DuringGame()
     {
         CatPFPManager PFPManager = Cat_Selection_Panel.GetComponent<CatPFPManager>();
@@ -80,8 +58,10 @@ public class UIManager : MonoBehaviour
     public void Open_CatSelectionPanel_DuringGame()
     {
         if (GameManager.Instance != null) {
+            // Campaign mode only
             GameManager.Instance.PauseGame();
         } else {
+            // Classic mode only
             RoomManager.Instance.PauseGame();
         }
         Cat_Selection_Panel.SetActive(true);

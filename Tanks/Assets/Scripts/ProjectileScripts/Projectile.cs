@@ -63,9 +63,9 @@ public abstract class Projectile : MonoBehaviour
                     bool isRicochet = (damage > 200);
 
                     Enemy enemy = (d as Enemy);
-                    if (enemy && isRicochet) enemy.setRicochet(true);
 
-                    if (isRicochet && collision.gameObject.tag != "Player") {
+                    if (enemy && isRicochet && collision.gameObject.tag != "Player") {
+                        enemy.setRicochet(true);
                         if (collision.gameObject.TryGetComponent<ShieldedEnemy>(out ShieldedEnemy se)) {
                             if (!se.getShieldActivated()) {
                                 GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);

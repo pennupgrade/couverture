@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -48,9 +49,14 @@ public class BossStateMachine : MonoBehaviour
     private Vector3 chargeStart;
     private Vector3 chargeDest;
 
-    private float startTime;
+    public float startTime;
     private Vector3 lastPos;
     [SerializeField] private Animator anim;
+
+    [SerializeField] private GameObject playerDummy;
+    private PlayerCamera pc; 
+    private Transform dummyTransform;
+    private bool isAggro;
     
 
     private void Awake()
@@ -61,8 +67,9 @@ public class BossStateMachine : MonoBehaviour
         missileTimer = 0;
         missileCheckTime = 3f;
         enemies = new List<List<GameObject>>();
-        
 
+        pc = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerCamera>();
+        
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
@@ -73,25 +80,29 @@ public class BossStateMachine : MonoBehaviour
         boss.setEnemies(enemies);
     }
 
-    private void Start()
-    {
-        startTime = Time.time;
-    }
-
     private void Update()
     {
-        if (Time.time > stunDur + stunStart && playerIsStunned) {
-            player.transform.position = lastPos;
-            playerTank.enabled = true;
-            player.GetComponent<Rigidbody>().isKinematic = true;
-            playerTank.ResetPosition(lastPos);
-            playerIsStunned = false;
+        if (playerIsStunned) {
+            if (dummyTransform.GetComponent<TankDummy>().StunOver()) {
+                player.SetActive(true);
+                player.transform.position = dummyTransform.position;
+                Destroy(dummyTransform.gameObject);
+                playerTank.ResetPosition(dummyTransform.position);
+                pc.SetPlayer(player);
+                bm.SetPlayer(player);
+                playerTank.takeDamage(50);
+                playerTank.tankState.ResetReload();
+                playerIsStunned = false;
+            }
         } else {
             lastPos = player.transform.position;
         }
         if (wall.transform.position.y > -2)
         {
-            print("WHAT");   
+            if (!isAggro) {
+                isAggro = true;
+                startTime = Time.time;
+            }
             timer += Time.deltaTime;
             missileTimer += Time.deltaTime;
         }
@@ -101,7 +112,6 @@ public class BossStateMachine : MonoBehaviour
             if (missileTimer > missileCheckTime)
             {
                 float yScaleFactor = ((player.transform.position.y + 1.244195f) / (1.244f-0.4f)) * 2f + 1f;
-
                 if (UnityEngine.Random.Range(0f, 1f) <= missileShootProbability * yScaleFactor)
                 {
                     boss.ShootMissile();
@@ -154,109 +164,47 @@ public class BossStateMachine : MonoBehaviour
             if (!boss.isUnplugged()) {
                 timeUntilAttack = UnityEngine.Random.Range(4, 6);
             } else {
-                timeUntilAttack = UnityEngine.Random.Range(3, 4);
+                timeUntilAttack = UnityEngine.Random.Range(2.5f, 3f);
                 missileCheckTime = 2f;
             }
             
             Debug.Log("Switching To Attack State");
-            if (firstAttack)
+            if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE)
             {
                 // Chose between shotgun and melee
                 int rand = UnityEngine.Random.Range(0, 2);
-                if (rand == 0 && Time.time > chargeStartTime + chargeCD) {
-                    currentAttack = Attack.Charge;
-                    if (Time.time > chargeStartTime + chargeCD) {
-                        chargeStart = this.transform.position;
-                        chargeStartTime = Time.time;
-
-                        Vector3 chargeDir = player.transform.position - transform.position;
-                        chargeDir.Normalize();
-                        chargeDir.y = 0;
-                        Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange/2;
-                        // boss.chargeDir = chargeDir;
-                        Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
-                        rot.x = -90;
-                        GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-                        ind.transform.localScale = new Vector3(1,chargeRange + 0.5f, 1);
-                        chargeStart = this.transform.position;
-                        anim.SetTrigger("Charge");
-                    }
-                } else {
-                    currentAttack = Attack.Shotgun;
-                }
-                
-            }
-            else
-            {
-                if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE && Time.time > startTime + 10f)
+                if (rand == 0 && Time.time > chargeStartTime + chargeCD)
                 {
-                    // Chose between shotgun and melee
-                    int rand = UnityEngine.Random.Range(0, 2);
-                    if (rand == 0 && Time.time > chargeStartTime + chargeCD)
-                    {
-                        currentAttack = Attack.Charge;
-                        if (Time.time > chargeStartTime + chargeCD)
-                        {
-                            chargeStart = this.transform.position;
-                            chargeStartTime = Time.time;
-
-                            Vector3 chargeDir = player.transform.position - transform.position;
-                            chargeDir.Normalize();
-                            chargeDir.y = 0;
-                            Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange / 2;
-                            //boss.chargeDir = chargeDir;
-                            Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
-                            rot.x = -90;
-                            GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-                            ind.transform.localScale = new Vector3(1, chargeRange + 0.5f, 1);
-                            chargeStart = this.transform.position;
-                            anim.SetTrigger("Charge");
-                        }
-                    }
-                    else
-                    {
-                        currentAttack = Attack.Shotgun;
-                    }
+                    currentAttack = Attack.Charge;
+                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 10f) {InitializeCharge();}
                 }
                 else
                 {
-                    // Choose between summon, shoot, and charge
-                    int rand = UnityEngine.Random.Range(0, 4);
-                    if (enemies.Count < MAX_NUMBER_SUMMONS && rand == 0)
-                    {
-                        currentAttack = Attack.Summon;
-                    }
-                    else if (Time.time > chargeStartTime + chargeCD && rand == 1 && Time.time > startTime + 10f)
-                    {
-                        currentAttack = Attack.Charge;
-                        if (Time.time > chargeStartTime + chargeCD)
-                        {
-                            chargeStart = this.transform.position;
-                            chargeStartTime = Time.time;
-
-                            Vector3 chargeDir = player.transform.position - transform.position;
-                            chargeDir.Normalize();
-                            chargeDir.y = 0;
-                            Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange / 2;
-                            //boss.chargeDir = chargeDir;
-                            Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
-                            rot.x = -90;
-                            GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
-                            ind.transform.localScale = new Vector3(1, chargeRange + 0.5f, 1);
-                            chargeStart = this.transform.position;
-                            anim.SetTrigger("Charge");
-                        }
-
-                    }
-                    else
-                    {
-                        currentAttack = Attack.Shoot;
-                        timer = TIME_BETWEEN_BULLETS;
-                        numBulletsShot = 0;
-                    }
+                    currentAttack = Attack.Shotgun;
+                }
+            }
+            else
+            {
+                // Choose between summon, shoot, and charge
+                int rand = UnityEngine.Random.Range(0, 4);
+                if (enemies.Count < MAX_NUMBER_SUMMONS && rand == 0)
+                {
+                    currentAttack = Attack.Summon;
+                }
+                else if (Time.time > chargeStartTime + chargeCD && rand == 1)
+                {
+                    currentAttack = Attack.Charge;
+                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 10f) {InitializeCharge();}
+                }
+                else
+                {
+                    currentAttack = Attack.Shoot;
+                    timer = TIME_BETWEEN_BULLETS;
+                    numBulletsShot = 0;
                 }
             }
         }
+        
     }
 
     private void doIdleState()
@@ -321,27 +269,41 @@ public class BossStateMachine : MonoBehaviour
     void OnCollisionEnter(Collision col) {
         Debug.Log("collided " + col.gameObject.tag + currentAttack + chargeHitAlready);
         if (currentAttack == Attack.Charge && col.gameObject.tag == "Player" && !chargeHitAlready && !playerIsStunned) {
-            
+            GameObject dummy = Instantiate(playerDummy, col.transform.position, col.transform.rotation);
+            dummyTransform = dummy.transform;
+
             Tank tank = col.gameObject.GetComponent<Tank>();
-            Vector3 diff = (player.transform.position - this.transform.position);
+            Vector3 diff = (player.transform.position - this.transform.position).normalized;
             Vector3 add = new Vector3(UnityEngine.Random.Range(0.5f, 1.5f), 1, UnityEngine.Random.Range(0.5f, 1.5f));
-            Vector3 knock = new Vector3(diff.x * add.x, 2.5f, diff.z * add.z) * 10000;
+            Vector3 knock = new Vector3(diff.x * add.x, 1f, diff.z * add.z) * 5;
+            //new Vector3(* 0.003f, 20f, diff.z * add.z * 0.003f);
+
+            dummy.GetComponent<Rigidbody>().AddForce(knock, ForceMode.Impulse);
 
             //print("DIFF" + diff + " add" + add + " KNOCK" + knock + " " + player.transform.position + " " + this.transform.position);
-            tank.takeDamage(50);
-            //playerTank.enabled = false;
             playerIsStunned = true;
             stunStart = Time.time;
-
+            pc.SetPlayer(dummy);
+            bm.SetPlayer(dummy);
             player.SetActive(false);
 
-            // col.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            // col.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
-            // col.gameObject.GetComponent<Rigidbody>().AddForce(knock, ForceMode.Impulse);
             switchToState(State.Idle);
-            
             chargeHitAlready = true;
         }
+    }
+    private void InitializeCharge() {
+        chargeStart = this.transform.position;
+        chargeStartTime = Time.time;
+        Vector3 chargeDir = player.transform.position - transform.position;
+        chargeDir.Normalize();
+        chargeDir.y = 0;
+        Vector3 indicatorLoc = this.transform.position + chargeDir * chargeRange/2 - chargeDir * 0.25f;
+        Vector3 rot = Quaternion.LookRotation(chargeDir).eulerAngles;
+        rot.x = -90;
+        GameObject ind = Instantiate(indicatorObject, indicatorLoc, Quaternion.Euler(rot));
+        ind.transform.localScale = new Vector3(1, chargeRange + 0.5f, 1);
+        chargeStart = this.transform.position;
+        anim.SetTrigger("Charge");
     }
 
 }

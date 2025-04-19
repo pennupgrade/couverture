@@ -22,7 +22,7 @@ public class SceneJumper : MonoBehaviour
         Tank tank = playerCollider.gameObject.GetComponent<Tank>();
         if (tank)
         {
-            tank.FreezeRotationAllowed();
+            tank.FreezeEndOfLevel();
         }
         
         GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
