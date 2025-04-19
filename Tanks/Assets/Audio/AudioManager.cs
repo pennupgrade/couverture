@@ -42,7 +42,7 @@ public partial class AudioManager : MonoBehaviour
             s.source.clip = s.clip;
 
             s.source.volume = s.volume;
-            s.source.pitch = 1f;
+            s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
 
@@ -61,14 +61,6 @@ public partial class AudioManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Play("Sound");
-            print("HI");
-        }
-    }
 
     public void Play(string name)
     {
