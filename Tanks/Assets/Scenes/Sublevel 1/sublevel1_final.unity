@@ -1877,6 +1877,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa07a792cfd4a141baf877c8b37d8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &585844812 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8857870588652832852, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+  m_PrefabInstance: {fileID: 585844810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &585844813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9012655128355125084, guid: 59083ec85392f114a8d75ab290183618, type: 3}
+  m_PrefabInstance: {fileID: 585844810}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac0eac1c5f80435f82c472c9994c344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &640958777 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6527334545339793797, guid: 482ccbbcf6e6cca49b99045bcbe4a668, type: 3}
@@ -2299,6 +2315,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5116026815163544667, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 585844812}
+    - target: {fileID: 5116026815163544667, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
+      propertyPath: playerTipTrigger
+      value: 
+      objectReference: {fileID: 585844813}
     - target: {fileID: 5606042677642534808, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
       propertyPath: tank
       value: 
@@ -5193,6 +5217,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -1.5, z: 0}
   activatesNeeded: 1
   speed: 1.5
+  useEaseOutQuint: 0
 --- !u!65 &1453070326
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7403,9 +7428,11 @@ MeshCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 585844810}
+  - {fileID: 1865609654}
+  - {fileID: 678273606}
   - {fileID: 705507995}
   - {fileID: 1659474660}
-  - {fileID: 585844810}
   - {fileID: 1121405101}
   - {fileID: 1162780349}
   - {fileID: 1732376914}
@@ -7421,8 +7448,6 @@ SceneRoots:
   - {fileID: 1040741391}
   - {fileID: 1146112945}
   - {fileID: 1820217636}
-  - {fileID: 1865609654}
-  - {fileID: 678273606}
   - {fileID: 1749172338}
   - {fileID: 1856070180}
   - {fileID: 719900480}
