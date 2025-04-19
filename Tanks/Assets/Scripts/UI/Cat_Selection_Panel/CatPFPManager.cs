@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CatPFPManager : MonoBehaviour
 {
@@ -41,7 +42,6 @@ public class CatPFPManager : MonoBehaviour
 
         HashSet<SaveStateManager.CharacterOption> characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
-        Debug.Log("# of characters: " + characters.Count);
         foreach (SaveStateManager.CharacterOption character in characters)
         {
             // DEFAULT_CAT has no ability, so why make it an option?
@@ -87,10 +87,20 @@ public class CatPFPManager : MonoBehaviour
 
     public void ConfirmBtnOnClick()
     {
-        if(currentPFP != null)
+        if (currentPFP != null)
         {
+            UIManager.instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().
+                    readyTag.gameObject.SetActive(true);
+            if (Tank.FindPlayer().character is BubbleChar)
+            {
+                Destroy(((BubbleChar)(Tank.FindPlayer().character)).obj);
+                UIManager.instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().
+                    readyTag.GetComponentInChildren<TMP_Text>().text = "Ready!";
+            }
+            UIManager.instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().
+                abilityBarFill.fillAmount = 1;
             SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
-            Debug.Log("selected: " + currentPFP.character.ToString());
+            UIManager.instance.characterJustSwitched = true;
         }
         UIManager.instance.QuitFrom_CatSelectionPanel_DuringGame();
     }
