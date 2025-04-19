@@ -35,14 +35,21 @@ public class CreditScreenController : MonoBehaviour
     public GameObject content;
     public TextAsset jsonFile;
 
+    private bool readyToScroll = false;
+
     private void Awake()
     {
+        GenerateCredits();
+        StartCoroutine(InitAndStartScroll());
+    }
+
+    private void GenerateCredits()
+    {
+        content.SetActive(true); // Must be active before building
         GameObject temp1 = Instantiate(prefab_SectionTitle, content.transform);
         temp1.GetComponent<TMP_Text>().text = "  ";
 
-
         CreditsData creditsData = JsonUtility.FromJson<CreditsData>(jsonFile.text);
-        content.SetActive(false);
         foreach (CreditSection section in creditsData.data)
         {
             GameObject sectionTitle = Instantiate(prefab_SectionTitle, content.transform);
@@ -50,7 +57,6 @@ public class CreditScreenController : MonoBehaviour
             foreach (CreditEntry entry in section.credits)
             {
                 GameObject block = Instantiate(prefab_CreditsBlock, content.transform);
-
                 TMP_Text[] texts = block.GetComponentsInChildren<TMP_Text>();
                 if (texts.Length >= 2)
                 {
@@ -59,13 +65,26 @@ public class CreditScreenController : MonoBehaviour
                 }
             }
         }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(content.GetComponent<RectTransform>());
-        content.SetActive(true);
     }
 
-    void Update()
+    private IEnumerator InitAndStartScroll()
     {
-        if (scrollRect.verticalNormalizedPosition > 0)
+        // Force layout rebuild
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(content.GetComponent<RectTransform>());
+
+        // Reset to top
+        scrollRect.verticalNormalizedPosition = 1f;
+
+        // Wait another frame
+        yield return null;
+
+        readyToScroll = true;
+    }
+
+    private void Update()
+    {
+        if (readyToScroll && scrollRect.verticalNormalizedPosition > 0)
         {
             scrollRect.verticalNormalizedPosition -= scrollSpeed * Time.deltaTime / 100f;
         }
