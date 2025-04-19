@@ -163,4 +163,8 @@ public class PlayerCamera : MonoBehaviour
         var newPosition = playerPos + Vector3.Normalize(cameraDirection) * distanceFromPlayer;
         mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, newPosition, 4*Time.deltaTime);
     }
+
+    public void SetPlayer(GameObject g) {
+        player = g;
+    }
 }
