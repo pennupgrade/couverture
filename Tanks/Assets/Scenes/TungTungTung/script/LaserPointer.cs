@@ -13,15 +13,16 @@ public class LaserPointer2 : MonoBehaviour
 
     public Transform endTransform;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        lineRenderer = GetComponent<LineRenderer>();
-    }
 
     // Update is called once per frame
     void Update()
     {
+        setPos();
+    }
+    public void setPos() {
+        if (lineRenderer == null) {
+            lineRenderer = GetComponent<LineRenderer>();
+        }
         lineRenderer.SetPosition(0, transform.position);
 
         RaycastHit hitInfo;
