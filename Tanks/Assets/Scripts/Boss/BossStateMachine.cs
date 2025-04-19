@@ -95,6 +95,7 @@ public class BossStateMachine : MonoBehaviour
                 pc.SetPlayer(player);
                 bm.SetPlayer(player);
                 playerTank.takeDamage(50);
+                playerTank.tankState.ResetReload();
                 playerIsStunned = false;
             }
         } else {

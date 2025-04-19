@@ -80,7 +80,7 @@ public abstract class TankState
         bullet.GetComponent<Rigidbody>().velocity += offsetVelocity;
 
         // Reload bullets if we're not already doing so
-        if (tank.reloadCoroutine == null) tank.reloadCoroutine = tank.StartCoroutine(Reload());
+        if (tank.reloadCoroutine == null) ResetReload();
         return this;
     }
 
@@ -138,5 +138,9 @@ public abstract class TankState
 
         tank.reloadCoroutine = null;
         yield return null;
+    }
+    
+    public void ResetReload() {
+        tank.reloadCoroutine = tank.StartCoroutine(Reload());
     }
 }
