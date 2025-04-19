@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -7,7 +8,11 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private TMP_Text currentStatus;
     
     public void ShowPanel() => panel.SetActive(true);
-    public void HidePanel() => panel.SetActive(false);
+    public void HidePanel() {
+        // Panel will be null if we're returning to level select UI
+        if (panel == null) return;
+        panel.SetActive(false);
+    }
 
     public void HandleResume() {
         if (GameManager.Instance != null) {
@@ -22,11 +27,21 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void HandleRestartLevel() {
+        if (GameManager.Instance != null) {
+            // Campaign mode
+            SceneTransition.I.RestartClickedFromPauseMenu = true;
+            GameManager.Instance.RestartLevel();
+        }
+    }
+
     public void HandleOptions() {
         Debug.LogWarning("HandleOptions(): TODO");
     }
 
     public void HandleQuitToLevelSelect() {
-        Debug.LogWarning("HandleQuitToLevelSelect(): TODO");
+        SaveStateManagerGameObject.ExitLevel();
+        SaveStateManagerGameObject.SaveToFile();
+        SceneManager.LoadScene("LevelSelect");
     }
 }

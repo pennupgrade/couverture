@@ -9,13 +9,16 @@ public class SceneTransition : MonoBehaviour
 {
     public static SceneTransition I;
     
+    // Incredible hack!
+    public bool RestartClickedFromPauseMenu { get; set; }
+    
     [SerializeField] private Image overlay;
     
-    private Material mat;
-
     private const float Init = 0f;
     private const float Final = 4.5f;
+    
     private string previousSceneName;
+    private Material mat;
     
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
@@ -40,12 +43,18 @@ public class SceneTransition : MonoBehaviour
     private void Start() => Disappear();
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        // This function should only run when we enter a new level
-        if (scene.name == previousSceneName) return;
+        // This function should only run when we enter a new level or when we pressed restart from the pause menu
+        if (scene.name == previousSceneName && !RestartClickedFromPauseMenu) return;
 
+        RestartClickedFromPauseMenu = false;
         previousSceneName = scene.name;
+        
         UpdatePosition();
         Disappear();
+        
+        // These don't do anything if the game isn't currently paused
+        UIManager.instance.pauseMenu.HidePanel();
+        GameManager.Instance.ResumeGame();
     }
 
     public void UpdatePosition() {
@@ -62,9 +71,9 @@ public class SceneTransition : MonoBehaviour
 
     public void Appear() => LeanTween.value(overlay.gameObject, value => {
         mat.SetFloat(SizeId, value);
-    }, Final, Init, 2f).setEaseInOutExpo();
+    }, Final, Init, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
     
     public void Disappear() =>LeanTween.value(overlay.gameObject, value => {
         mat.SetFloat(SizeId, value);
-    }, Init, Final, 2f).setEaseInOutExpo();
+    }, Init, Final, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
 }
