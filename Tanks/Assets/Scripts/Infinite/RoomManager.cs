@@ -47,7 +47,6 @@ public class RoomManager : MonoBehaviour
 
     public void startScreen() {
         //play opening sound effect
-        audioManager.Play("StartSound");
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
@@ -57,7 +56,10 @@ public class RoomManager : MonoBehaviour
         
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
+        audioManager.Play("StartSound");
+        yield return new WaitForSeconds(1.5f);
+
 
         // remove start screen, play BG music
         audioManager.Play("BGM");
