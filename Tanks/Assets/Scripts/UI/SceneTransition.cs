@@ -40,7 +40,10 @@ public class SceneTransition : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start() => Disappear();
+    private void Start() {
+        UIManager.instance.pauseMenu.SetStatus(SceneManager.GetActiveScene().name);
+        Disappear();
+    }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         // This function should only run when we enter a new level or when we pressed restart from the pause menu
@@ -54,6 +57,7 @@ public class SceneTransition : MonoBehaviour
         
         // These don't do anything if the game isn't currently paused
         UIManager.instance.pauseMenu.HidePanel();
+        UIManager.instance.pauseMenu.SetStatus(scene.name);
         GameManager.Instance.ResumeGame();
     }
 
