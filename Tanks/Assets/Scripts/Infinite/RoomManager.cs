@@ -78,20 +78,35 @@ public class RoomManager : MonoBehaviour
         //scene transition
         if (LevelNum == 1) {
             StartCoroutine(LoadAsyncScene("Classic1"));
-        } else if (LevelNum == 2) {
+        } else if (LevelNum == 2 || LevelNum == 18 || LevelNum == 36) {
             StartCoroutine(LoadAsyncScene("Classic2"));
-        } else if (LevelNum == 3) {
+        } else if (LevelNum == 3 || LevelNum == 20 || LevelNum == 23) {
             StartCoroutine(LoadAsyncScene("Classic3"));
-        } else if (LevelNum == 4) {
+        } else if (LevelNum == 4 || LevelNum == 17 || LevelNum == 39) {
             StartCoroutine(LoadAsyncScene("Classic4"));
-        } else if (LevelNum == 5) {
+        } else if (LevelNum == 5 || LevelNum == 19) {
             StartCoroutine(LoadAsyncScene("Classic5"));
-        } else if (LevelNum == 6) {
+        } else if (LevelNum == 6 || LevelNum == 35 || LevelNum == 40) {
             StartCoroutine(LoadAsyncScene("Classic6"));
-        } else if (LevelNum == 10) {
+        } else if (LevelNum == 10 || LevelNum == 60) {
             StartCoroutine(LoadAsyncScene("Classic10"));
-        } else if (LevelNum == 16) {
+        } else if (LevelNum == 16 || LevelNum == 37) {
             StartCoroutine(LoadAsyncScene("Classic16"));
+        } else if (LevelNum == 21 || LevelNum == 41) {
+            StartCoroutine(LoadAsyncScene("Classic21"));
+        } else if (LevelNum == 22 || LevelNum == 42) {
+            StartCoroutine(LoadAsyncScene("Classic22"));
+        } else if (LevelNum == 30 || LevelNum == 38 || LevelNum == 50) {
+            if ((LevelNum == 30 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 50) {
+                StartCoroutine(LoadAsyncScene("Classic30alt"));
+            } else {
+                StartCoroutine(LoadAsyncScene("Classic30"));
+            }
+
+        } else if (LevelNum == 43) {
+            StartCoroutine(LoadAsyncScene("Classic43"));
+        } else if (LevelNum == 55) {
+            StartCoroutine(LoadAsyncScene("Classic55"));
         } else {
             if (LevelNum == 61) {
                 //game end screen, displays time taken, button leads to main menu
