@@ -85,5 +85,6 @@ public class Artemis : Enemy
 
     public void toggleLaser() {
         laser.SetActive(!laser.activeSelf);
+        laser.GetComponent<LaserPointer2>().setPos();
     }
 }
