@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     private string currentLevel;
     public float respawnTime;
     // public int totalLives;
-    private Tank player; 
+    private Tank player;
+    private bool paused;
 
     void Awake()
     {
@@ -28,7 +29,16 @@ public class GameManager : MonoBehaviour
         SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
 
-    void Start() {
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            paused = !paused;
+            if (paused) {
+                PauseGame();
+            }
+            else {
+                ResumeGame();
+            }
+        }
     }
 
     public void GoToNextLevel(float transitionTime, string sceneName)
