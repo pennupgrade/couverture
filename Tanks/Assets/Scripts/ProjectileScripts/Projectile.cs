@@ -32,7 +32,7 @@ public abstract class Projectile : MonoBehaviour
         if (destroyed) return;
         destroyed = true;
         if (explosionPrefab != null) {
-            GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            GameObject expl = Instantiate(explosionPrefab, transform.position - 0.06f * transform.forward, Quaternion.identity);
             Destroy(expl, 2);
         }
         //first child should be a trail

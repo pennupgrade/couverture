@@ -22,6 +22,14 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void HandleRestartLevel() {
+        if (GameManager.Instance != null) {
+            // Campaign mode
+            SceneTransition.I.RestartClickedFromPauseMenu = true;
+            GameManager.Instance.RestartLevel();
+        }
+    }
+
     public void HandleOptions() {
         Debug.LogWarning("HandleOptions(): TODO");
     }
