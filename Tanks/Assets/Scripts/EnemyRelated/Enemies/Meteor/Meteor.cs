@@ -37,7 +37,7 @@ public class Meteor : Enemy
     }
 
     public bool fireMissile(Vector3 target) {
-        if (Mathf.Abs(target.y - transform.position.y) > 0.8f) return false;
+        if (Mathf.Abs(target.y - transform.position.y) > 0.5f) return false;
         fireSound();
         GameObject missile = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();

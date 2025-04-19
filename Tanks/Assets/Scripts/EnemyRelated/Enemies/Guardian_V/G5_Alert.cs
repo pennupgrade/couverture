@@ -100,10 +100,11 @@ public class G5_Alert : G2_Alert
         yield return new WaitForSeconds(0.16f);
         while (true) {   
             if (enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
-                fire(13);
+                yield return new WaitForSeconds(0.06f);
+                fire(10);
                 enemy.numBullets--;
                 leadPlayer = Random.value < enemy.leadChance;
-                yield return new WaitForSeconds(enemy.cooldownTime);
+                yield return new WaitForSeconds(enemy.cooldownTime - 0.06f);
             } else {
                 yield return new WaitForSeconds(0.16f);
             }
