@@ -24,6 +24,7 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
     void fracture()
     {
         originalObj.SetActive(false);
+        GetComponent<Collider>().enabled = false;
         if (fracturedObjPrefab == null) return;
         fractObj = Instantiate(fracturedObjPrefab) as GameObject;
         foreach(Transform t in fractObj.transform) {
