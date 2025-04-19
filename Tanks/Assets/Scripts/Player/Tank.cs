@@ -25,6 +25,7 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     private bool invincible;
     private bool disableMove;
+    private bool noRotation;
     public bool disableFire {
         get;
         private set;
@@ -108,27 +109,27 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    public void FreezeRotationAllowed() {
-        if (reloadCoroutine != null) {
-            StopCoroutine(reloadCoroutine);
-        }
+    public void Freeze(bool rotationAllowed) {
         disableMove = true;
         invincible = true;
         disableFire = true;
+        noRotation = !rotationAllowed;
     }
 
-    public void FreezeNoRotation() {
-        Quaternion rot = transform.rotation;
-        invincible = true;
-        controls.Disable();
-        transform.rotation = rot;
-    }
-
-    public void UnfreezeNoRotation() {
+    public void Unfreeze() {
         disableMove = false;
         invincible = false;
-        controls.Enable();
+        disableFire = false;
+        noRotation = false;
     }
+
+    public void FreezeEndOfLevel() {
+        if (reloadCoroutine != null) {
+            StopCoroutine(reloadCoroutine);
+        }
+        Freeze(true);
+    }
+
     public void setInvincible(bool noDamage) {
         invincible = noDamage;
     }
@@ -180,7 +181,9 @@ public class Tank : MonoBehaviour, IDestroyable
             StopCoroutine("SpawnTracks");
             spawningTracks = false;
         }
-        tankState = tankState.HandleGunRotation(gunRot);
+        if (!noRotation) {
+            tankState = tankState.HandleGunRotation(gunRot);
+        }
 
         for(int i = 0; i < effects.Count; i++) {
             if (!effects[i].enabled) {
@@ -269,7 +272,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            FreezeNoRotation();
+            Freeze(false);
             if (RoomManager.Instance != null) {
                 //wii tanks mode
                 RoomManager.Instance.playerDeath();
