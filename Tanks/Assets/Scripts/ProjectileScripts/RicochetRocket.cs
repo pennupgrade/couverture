@@ -16,7 +16,7 @@ public class RicochetRocket : Projectile
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.8f);
+        GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 0.1f);
     }
 
     void FixedUpdate () {

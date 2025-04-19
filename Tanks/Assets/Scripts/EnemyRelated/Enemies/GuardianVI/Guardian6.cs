@@ -75,9 +75,22 @@ public class Guardian6 : EnemyOmniMove
     }
 
     public void fire() {
+        Collider[] hitColliders = Physics.OverlapSphere(gunShotPos.position, 0.2f, (1 << 2) | (1 << 8));
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.tag == "Tank") {
+                return;
+            } else if (hit.gameObject.tag == "Player") {
+                fireSound();
+                pTank.takeDamage(300);
+                GameObject bExplode = GameObject.Instantiate(bulletExplosionPrefab, gunShotPos.position, Quaternion.identity);
+                GameObject.Destroy(bExplode, 3);
+                return;
+            }
+        }
+
         fireSound();
         GameObject bullet = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(10 * (Random.value - 0.5f), Vector3.up)
+        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(7 * (Random.value - 0.5f), Vector3.up)
          * (gun.transform.forward * bullet.GetComponent<Projectile>().bulletSpeed);
 
         bullet.GetComponent<Projectile>().parent = this.gameObject;
