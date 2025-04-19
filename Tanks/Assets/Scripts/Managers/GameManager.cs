@@ -90,11 +90,11 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame() {
         Time.timeScale = 0;
-        player.FreezeNoRotation();
+        player.Freeze(false);
     }
 
     public void ResumeGame() {
         Time.timeScale = 1;
-        player.UnfreezeNoRotation();
+        player.Unfreeze();
     }
 }

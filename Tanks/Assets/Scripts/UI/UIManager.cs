@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public GameObject Cat_Selection_Panel;
     public GameObject Save_Load_Panel;
     public PauseMenu pauseMenu;
+    public bool characterJustSwitched;
 
     private void Awake()
     {

@@ -11,6 +11,7 @@ public class GameplayHUDManager : MonoBehaviour
     public RectTransform readyTag;
     public Image abilityBarFill;
     private bool abilityEnabled;
+
     private Vector3 startPosition;
 
     private void Start()
@@ -33,6 +34,7 @@ public class GameplayHUDManager : MonoBehaviour
 
     public void StartFillAbilityBar(float reloadTime)
     {
+        Debug.Log("Here we are filling the ability bar: " + reloadTime);
         abilityBarFill.fillAmount = 0;
         readyTag.gameObject.SetActive(false);
         
@@ -51,6 +53,11 @@ public class GameplayHUDManager : MonoBehaviour
 
         while (elapsed < reloadTime)
         {
+            //if (UIManager.instance.characterJustSwitched)
+            //{
+            //    UIManager.instance.characterJustSwitched = false;
+            //    yield break;
+            //}
             yield return new WaitForSeconds(0.05f);
             elapsed += 0.05f;
             abilityBarFill.fillAmount = elapsed / reloadTime;
@@ -71,7 +78,12 @@ public class GameplayHUDManager : MonoBehaviour
 
         while (elapsed < reloadTime)
         {
-            if(tank.GetType() == typeof(BubbleChar))
+            //if (UIManager.instance.characterJustSwitched)
+            //{
+            //    UIManager.instance.characterJustSwitched = false;
+            //    yield break;
+            //}
+            if (tank.GetType() == typeof(BubbleChar))
             {
                 if(((BubbleChar)tank).active == false)
                 {

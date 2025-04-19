@@ -47,23 +47,25 @@ public class RoomManager : MonoBehaviour
 
     public void startScreen() {
         //play opening sound effect
-        audioManager.Play("StartSound");
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
         uiManager.reset();
         Tank pTank = Tank.FindPlayer();
-        pTank.FreezeNoRotation();
+        pTank.Freeze(false);
         
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
+        audioManager.Play("StartSound");
+        yield return new WaitForSeconds(1.5f);
+
 
         // remove start screen, play BG music
         audioManager.Play("BGM");
         uiManager.StartScreenFadeOut();
         yield return new WaitForSeconds(0.2f);
-        pTank.UnfreezeNoRotation();
+        pTank.Unfreeze();
 
     } 
 
@@ -167,7 +169,7 @@ public class RoomManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
-        Tank.FindPlayer().FreezeRotationAllowed();
+        Tank.FindPlayer().FreezeEndOfLevel();
         //play level complete sound
         audioManager.Stop("BGM");
         audioManager.Play("CompleteSound");
@@ -190,10 +192,10 @@ public class RoomManager : MonoBehaviour
     }
 
     public void PauseGame() {
-        Tank.FindPlayer().FreezeNoRotation();
+        Tank.FindPlayer().Freeze(false);
     }
 
     public void ResumeGame() {
-        Tank.FindPlayer().UnfreezeNoRotation();
+        Tank.FindPlayer().Unfreeze();
     }
 }
