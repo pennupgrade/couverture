@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18035275, g: 0.2257897, b: 0.30702734, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -252,17 +252,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92696f98c427c54ab8c1d342f56f961a, type: 3}
---- !u!114 &652802551 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6747714106144379689, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-  m_PrefabInstance: {fileID: 6124769053585765271}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1764828300
 GameObject:
   m_ObjectHideFlags: 0
@@ -3814,6 +3803,10 @@ MonoBehaviour:
   healthSmoothTime: 0.05
   healthDelayTime: 0.3
   healthText: {fileID: 2996104366931091928}
+  shakeAmount: 0
+  bossMode: 0
+  bossTitle: {fileID: 0}
+  boss: {fileID: 0}
 --- !u!114 &5619986875294289034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4307,10 +4300,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1405298827099093941, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: btn_Back
-      value: 
-      objectReference: {fileID: 652802551}
     - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4341,18 +4330,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2938248275185227626, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
@@ -4407,10 +4384,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Save_Load_Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5280420811919042053, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7418444758129850720, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4425,10 +4398,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7418444758129850720, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7609541524574123275, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7891187655408503718, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
@@ -4452,11 +4421,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5957160798797873466, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-    - {fileID: 4117746581364223260, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-    - {fileID: 6855759490379164143, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
-    - {fileID: 4567593722053550194, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfc954a6272ab42e7883f9918f21c6f9, type: 3}
