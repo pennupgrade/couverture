@@ -129,8 +129,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
         if (Instance.stateManager != null) { // only load classic mode save once
             return;
         }
-        if (!LoadSave(CLASSIC_MODE_SAVE_FILE)) { // if classic mode save file had to be created
-            Instance.stateManager.ForceUnlockCharacters((SaveStateManager.CharacterOption[]) Enum.GetValues(typeof(SaveStateManager.CharacterOption)));
+        LoadSave(CLASSIC_MODE_SAVE_FILE);
+        SaveStateManager.CharacterOption[] allChars = (SaveStateManager.CharacterOption[]) Enum.GetValues(typeof(SaveStateManager.CharacterOption));
+        if (!GetUnlockedCharacters().SetEquals(allChars)) { // if classic mode save file had to be created
+            Instance.stateManager.ForceUnlockCharacters(allChars);
             LoadLevel("NULL");
             ExitLevel();
         }
