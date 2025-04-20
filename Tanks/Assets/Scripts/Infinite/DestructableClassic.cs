@@ -38,7 +38,7 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
 
     private IEnumerator Shrink(Transform t, float delay) {
         yield return new WaitForSeconds(delay);
-        t.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+        t.gameObject.GetComponent<Collider>().enabled = false;
         Vector3 newScale = t.localScale;
         while (newScale.x > 0) {
             newScale -= new Vector3(10, 10, 10);
