@@ -104,6 +104,14 @@ public class SaveStateManager {
         return unlockedChars.Add(character);
     }
 
+    // force a character to be unlocked without having to complete a level, save to file
+    public void ForceUnlockCharacters(IEnumerable<CharacterOption> c) {
+        HashSet<CharacterOption> charSet = new(unlockedCharList);
+        charSet.UnionWith(c);
+        unlockedCharList = new(charSet);
+        SaveToFile();
+    }
+
     private Character CreateNewChar(CharacterOption characterId) {
         switch (characterId) {
             case CharacterOption.ROCKET_CAT:

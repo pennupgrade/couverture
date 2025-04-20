@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class SaveStateManagerGameObject : MonoBehaviour
 {
     private const string SAVE_FILE_PREFIX = "save_data_";
-    private const string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
+    public const string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
     public static SaveStateManagerGameObject Instance = null;
 
     private SaveStateManager stateManager = null;
@@ -40,14 +41,21 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return SaveStateManager.LoadInventory(saveLocation);
     }
 
-    private static void LoadSave(string saveLocation) {
+    // returns true if save was loaded, false if save was created
+    private static bool LoadSave(string saveLocation) {
+        if (Instance.stateManager != null) {
+            throw new InvalidOperationException("A Save State is Already Open!");
+        }
+        bool wasLoaded = true;
         try {
             Instance.stateManager = LoadSaveToManager(saveLocation);
         } catch (FileNotFoundException) {
             Instance.stateManager = SaveStateManager.CreateSave(saveLocation);
+            wasLoaded = false;
         }
         // start the session
         Instance.stateManager.BeginSession();
+        return wasLoaded;
     }
 
     public static void LoadSaveSlot(int saveNumber) {
@@ -123,6 +131,13 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void LoadClassicModeSave() {
-        LoadSave(CLASSIC_MODE_SAVE_FILE);
+        if (Instance.stateManager != null) { // only load classic mode save once
+            return;
+        }
+        if (!LoadSave(CLASSIC_MODE_SAVE_FILE)) { // if classic mode save file had to be created
+            Instance.stateManager.ForceUnlockCharacters((SaveStateManager.CharacterOption[]) Enum.GetValues(typeof(SaveStateManager.CharacterOption)));
+            LoadLevel("NULL");
+            ExitLevel();
+        }
     }
 }
