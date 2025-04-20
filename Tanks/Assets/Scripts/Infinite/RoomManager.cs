@@ -27,7 +27,7 @@ public class RoomManager : MonoBehaviour
     void Awake()
     {
         // start debug save if required
-        SaveStateManagerGameObject.DebugLoadSave();
+        SaveStateManagerGameObject.LoadClassicModeSave();
 
         // load level save stuff
         SaveStateManagerGameObject.LoadLevel(SceneManager.GetActiveScene().name);

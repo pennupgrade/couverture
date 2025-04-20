@@ -10,17 +10,9 @@ public class SaveStateMenuInfo
 
     private SaveStateManager[] saves = new SaveStateManager[NUMBER_OF_SAVES];
 
-    private static SaveStateManager TryLoadSaveState(int saveNumber) {
-        try {
-            return SaveStateManagerGameObject.LoadSaveToManager(SaveStateManagerGameObject.GetSaveLocation(saveNumber));
-        } catch (FileNotFoundException) {
-            return null;
-        }
-    }
-
     public SaveStateMenuInfo() {
         for (int i = 0; i < NUMBER_OF_SAVES; i++) {
-            saves[i] = TryLoadSaveState(i);
+            saves[i] = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
         }
     }
 
@@ -51,19 +43,5 @@ public class SaveStateMenuInfo
 
     public HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters(int saveNumber) {
         return saves[saveNumber].GetUnlockedCharacters();
-    }
-
-    public int GetClassicModeHighScore(int saveNumber) {
-        return saves[saveNumber].GetClassicModeHighScore();
-    }
-
-    public int GetMaxClassicModeHighScore(int saveNumber) {
-        int max = 0;
-        for (int i = 0; i < NUMBER_OF_SAVES; i++) {
-            if (DoesSaveExist(i)) {
-                max = Mathf.Max(max, GetClassicModeHighScore(i));
-            }
-        }
-        return max;
     }
 }

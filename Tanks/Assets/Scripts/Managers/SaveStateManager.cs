@@ -5,6 +5,15 @@ using System.IO;
 
 [Serializable]
 public class SaveStateManager {
+
+    public static SaveStateManager TryLoadSaveState(string saveFilePath) {
+        try {
+            return LoadInventory(saveFilePath);
+        } catch (FileNotFoundException) {
+            return null;
+        }
+    }
+
     public static SaveStateManager LoadInventory(string saveLocation) {
         SaveStateManager outManager;
         using (StreamReader reader = new(saveLocation)) {
@@ -102,6 +111,14 @@ public class SaveStateManager {
 
     public bool UnlockCharacter(CharacterOption character) {
         return unlockedChars.Add(character);
+    }
+
+    // force a character to be unlocked without having to complete a level, save to file
+    public void ForceUnlockCharacters(IEnumerable<CharacterOption> c) {
+        HashSet<CharacterOption> charSet = new(unlockedCharList);
+        charSet.UnionWith(c);
+        unlockedCharList = new(charSet);
+        SaveToFile();
     }
 
     private Character CreateNewChar(CharacterOption characterId) {
