@@ -44,13 +44,13 @@ public class SaveBlockController : MonoBehaviour
 
     public void delete()
     {
-        SaveStateManagerGameObject.DeleteSave(index);
+        SaveStateManagerGameObject.DeleteSaveSlot(index);
         parent.reloadPanel();
     }
 
     public void loadSave()
     {
-        SaveStateManagerGameObject.LoadSave(index);
+        SaveStateManagerGameObject.LoadSaveSlot(index);
         Debug.Log("Latest Level: " + state.GetLatestLevelName(index));
         SceneManager.LoadScene("LevelSelect");
     }

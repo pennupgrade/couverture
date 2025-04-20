@@ -16,7 +16,7 @@ public class NewSave : MonoBehaviour
 
     private void createNewSave()
     {
-        SaveStateManagerGameObject.LoadSave(index);
+        SaveStateManagerGameObject.LoadSaveSlot(index);
         Debug.Log("save created");
         parent.reloadPanel();
     }
