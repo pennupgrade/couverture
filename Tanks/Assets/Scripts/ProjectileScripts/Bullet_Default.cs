@@ -35,6 +35,12 @@ public class Bullet_Default : Projectile
     {
         rb = GetComponent<Rigidbody>();
     }
+    protected override void Update()
+    {
+        if (Vector3.Dot(rb.velocity, transform.forward) < 0.98f) destruction();
+        lifetime -= Time.deltaTime;
+        if (lifetime < 0) removeObjectFromGame();
+    }
 
     void FixedUpdate () {
         lastVelocity = rb.velocity;
