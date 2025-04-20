@@ -16,10 +16,12 @@ public class Bullet_Default : Projectile
     private Animator animator;
     private Collider theCollider;
     [NonSerialized] public MeshTrail meshTrail;
+    private int wallTouchCounter;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
+        wallTouchCounter = 0;
         animator = GetComponent<Animator>();
         theCollider = GetComponent<Collider>();
         material = GetComponent<MeshRenderer>().material;
@@ -35,12 +37,6 @@ public class Bullet_Default : Projectile
     {
         rb = GetComponent<Rigidbody>();
     }
-    protected override void Update()
-    {
-        if (Vector3.Dot(rb.velocity, transform.forward) < 0.98f) destruction();
-        lifetime -= Time.deltaTime;
-        if (lifetime < 0) removeObjectFromGame();
-    }
 
     void FixedUpdate () {
         lastVelocity = rb.velocity;
@@ -52,6 +48,7 @@ public class Bullet_Default : Projectile
         changeWhenBounce = false;
         material.SetFloat("_Glowy", 0);
         bulletSpeed = 3;
+        wallTouchCounter = 0;
         damage = originalDamage;
         bounces = startBounces;
         lifetime = startLifetime;
@@ -110,6 +107,13 @@ public class Bullet_Default : Projectile
             }
 
             ReflectBullet(bulletDir, wallNormal);
+        }
+    }
+    void OnCollisionStay(Collision collision) {
+        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
+        {
+            wallTouchCounter++;
+            if (wallTouchCounter > 10) destruction();
         }
     }
     public void addBounceChange() {
