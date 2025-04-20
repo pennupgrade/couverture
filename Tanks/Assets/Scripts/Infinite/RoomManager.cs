@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
-    public bool paused, noPause;
+    [HideInInspector] public bool paused, noPause;
     public static RoomManager Instance { get; private set;}
     public static int LevelNum { get; private set;}
     bool loading;
