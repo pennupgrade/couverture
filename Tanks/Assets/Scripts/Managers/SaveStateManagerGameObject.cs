@@ -133,7 +133,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         SaveStateManager.CharacterOption[] allChars = (SaveStateManager.CharacterOption[]) Enum.GetValues(typeof(SaveStateManager.CharacterOption));
         if (!GetUnlockedCharacters().SetEquals(allChars)) { // if classic mode save file had to be created
             Instance.stateManager.ForceUnlockCharacters(allChars);
-            LoadLevel("NULL");
+            LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
             ExitLevel();
         }
     }
