@@ -45,7 +45,7 @@ public class SaveStateManager {
     [SerializeField] private DateTimeSerializable lastPlayedTime;
 
     [SerializeField] private TimeSpanSerializable timePlayed;
-    [SerializeField] public int ClassicModeHighScore {get; private set;} = 0;
+    [SerializeField] private int classicModeHighScore = 0;
 
 
 
@@ -224,12 +224,16 @@ public class SaveStateManager {
 
     public void UpdateClassicModeHighScore(int newScore) {
         // checks if new score is larger than current max score
-        if (newScore > ClassicModeHighScore) {
-            ClassicModeHighScore = newScore;
+        if (newScore > classicModeHighScore) {
+            classicModeHighScore = newScore;
         }
     }
 
     public void SaveToFile() {
         WriteToSaveFile();
+    }
+
+    public int GetClassicModeHighScore() {
+        return classicModeHighScore;
     }
 }
