@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
@@ -59,7 +60,11 @@ public class LevelSelect : MonoBehaviour
     public void SelectLevel(int level)
     {
         if (level >= levels.Length) return;
-        Debug.Log("loading level " + levels[level]);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(levels[level]);
+        SceneManager.LoadScene(levels[level]);
+    }
+
+    public void ReturnToSaveSelectScreen() {
+        SaveStateManagerGameObject.SaveToFile();
+        SceneManager.LoadScene("Save Select");
     }
 }
