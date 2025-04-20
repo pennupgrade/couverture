@@ -183,9 +183,6 @@ public class RoomManager : MonoBehaviour
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
-
-        destroyIt();
-        EnemySpawner.reset(); // resets enemy counter
     }
 
     public void ResetToLevelOne() {

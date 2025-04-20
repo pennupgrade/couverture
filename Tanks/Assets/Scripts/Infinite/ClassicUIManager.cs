@@ -40,8 +40,8 @@ public class ClassicUIManager : MonoBehaviour
 
     public void ReturnToHome()
     {
-        Debug.Log("loading title screen");
-        gameObject.SetActive(false);
+        RoomManager.Instance.destroyIt();
+        EnemySpawner.reset();
         SceneManager.LoadScene("TitleScreen");
     }
 
