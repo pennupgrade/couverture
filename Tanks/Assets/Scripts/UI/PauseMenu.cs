@@ -52,7 +52,8 @@ public class PauseMenu : MonoBehaviour
         }
         else {
             // Classic mode
-            Debug.LogWarning("HandleResume(): Classic mode TODO");
+            HidePanel();
+            RoomManager.Instance.ResumeGame();
         }
     }
 
@@ -61,6 +62,9 @@ public class PauseMenu : MonoBehaviour
             // Campaign mode
             SceneTransition.I.RestartClickedFromPauseMenu = true;
             GameManager.Instance.RestartLevel();
+        } else {
+            // Classic does not have restart
+            Debug.LogWarning("HandleRestartLevel(): Cannot restart for Classic Mode");
         }
     }
 
@@ -71,6 +75,11 @@ public class PauseMenu : MonoBehaviour
     public void HandleQuitToLevelSelect() {
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
+
+        if (RoomManager.Instance != null) {
+            RoomManager.destroyInstance();
+            EnemySpawner.reset();
+        }
         SceneManager.LoadScene("LevelSelect");
     }
 }
