@@ -6,6 +6,8 @@ using System.IO;
 [Serializable]
 public class SaveStateManager {
 
+    private const string NULL_LEVEL_NAME = "NOT_A_LEVEL";
+
     public static SaveStateManager TryLoadSaveState(string saveFilePath) {
         try {
             return LoadInventory(saveFilePath);
@@ -73,8 +75,11 @@ public class SaveStateManager {
 
     // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
     public void CreateNewSave(string saveLocation) {
+        // set save location
         this.saveLocation = saveLocation;
         // initialize values
+        latestLevel = new();
+        latestLevel.LevelName = NULL_LEVEL_NAME;
         startTime = DateTimeSerializable.Now();
         lastPlayedTime = DateTimeSerializable.Now();
         timePlayed = new(TimeSpan.Zero);
@@ -135,7 +140,7 @@ public class SaveStateManager {
     }
 
     public void LoadLevel(string levelName, Tank t) {
-        if (latestLevel is null) {
+        if (latestLevel is null || latestLevel.LevelName == NULL_LEVEL_NAME) {
             latestLevel = new();
             latestLevel.LevelName = levelName;
         }
