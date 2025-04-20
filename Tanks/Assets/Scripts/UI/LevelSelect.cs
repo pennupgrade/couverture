@@ -64,7 +64,7 @@ public class LevelSelect : MonoBehaviour
     }
 
     public void ReturnToSaveSelectScreen() {
-        SaveStateManagerGameObject.SaveToFile();
+        SaveStateManagerGameObject.ExitCurrentSave();
         SceneManager.LoadScene("Save Select");
     }
 }
