@@ -54,7 +54,9 @@ public class MovingPlatformBackAndForth : MovingPlatform
         return Mathf.Clamp(equilibriumVelocity * Mathf.Sin(Mathf.PI * t / period)*Mathf.Sin(Mathf.PI * t / period) - (equilibriumVelocity - 1) / 2, 0f, 1f);
     }
 
-    void OnTriggerEnter(Collider other)
+    public Transform parent;
+
+    void OnTriggerStay(Collider other)
     {
         if (passengerList.Contains(other.transform))
         {
@@ -68,8 +70,9 @@ public class MovingPlatformBackAndForth : MovingPlatform
         {
             passengerList.Add(e.transform);
         }
+        if (parent != null)
+            other.transform.parent = parent;
     }
-
 
     void OnTriggerExit(Collider other)
     {
@@ -78,5 +81,8 @@ public class MovingPlatformBackAndForth : MovingPlatform
             return;
         }
         passengerList.Remove(other.transform);
+
+        if (other.transform.parent == parent && parent != null)
+            other.transform.parent = null;
     }
 }

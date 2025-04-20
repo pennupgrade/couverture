@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
+    public bool paused, noPause;
     public static RoomManager Instance { get; private set;}
     public static int LevelNum { get; private set;}
     bool loading;
@@ -44,12 +45,30 @@ public class RoomManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
     }
+    void Update() {
+        if (!noPause && Input.GetKeyDown(KeyCode.Escape)) {
+            paused = !paused;
+            
+            // Only enable toggling pause if the cat selection panel isn't open
+            if (UIManager.instance.Cat_Selection_Panel.activeInHierarchy) return;
+                
+            if (paused) {
+                PauseGame();
+                UIManager.instance.pauseMenu.ShowPanel();
+            }
+            else {
+                ResumeGame();
+                UIManager.instance.pauseMenu.HidePanel();
+            }
+        }
+    }
 
     public void startScreen() {
         //play opening sound effect
         StartCoroutine(startScreenCoroutine());
     }
     private IEnumerator startScreenCoroutine() {
+        noPause = true;
         uiManager.reset();
         Tank pTank = Tank.FindPlayer();
         pTank.Freeze(false);
@@ -62,10 +81,11 @@ public class RoomManager : MonoBehaviour
 
 
         // remove start screen, play BG music
-        audioManager.Play("BGM");
         uiManager.StartScreenFadeOut();
         yield return new WaitForSeconds(0.2f);
+        audioManager.Play("BGM");
         pTank.Unfreeze();
+        noPause = false;
 
     } 
 
@@ -156,6 +176,7 @@ public class RoomManager : MonoBehaviour
         //play sad sound
         audioManager.Stop("BGM");
         audioManager.Play("DeathSound");
+        noPause = true;
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
@@ -166,6 +187,8 @@ public class RoomManager : MonoBehaviour
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {
+        noPause = true;
+        loading = true;
         yield return new WaitForSeconds(1f);
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
@@ -182,7 +205,6 @@ public class RoomManager : MonoBehaviour
         // reset stats
         SaveStateManagerGameObject.PlayerDied();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        loading = true;
 
         while (!asyncLoad.isDone)
         {
@@ -193,9 +215,11 @@ public class RoomManager : MonoBehaviour
 
     public void PauseGame() {
         Tank.FindPlayer().Freeze(false);
+        Time.timeScale = 0;
     }
 
     public void ResumeGame() {
         Tank.FindPlayer().Unfreeze();
+        Time.timeScale = 1;
     }
 }

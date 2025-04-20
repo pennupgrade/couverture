@@ -235,7 +235,12 @@ public class Tank : MonoBehaviour, IDestroyable
 
             if (spawningTracks)
             {
-                Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation);
+                RaycastHit info;
+                if (Physics.Raycast(tracksParent.position, Vector3.down, out info, 1f))
+                {
+                    Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation, info.transform);
+
+                }
             }
         }
     }
