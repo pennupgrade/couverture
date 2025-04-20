@@ -77,7 +77,7 @@ public class SceneTransition : MonoBehaviour
         mat.SetFloat(SizeId, value);
     }, Final, Init, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
     
-    public void Disappear() =>LeanTween.value(overlay.gameObject, value => {
+    public void Disappear() => LeanTween.value(overlay.gameObject, value => {
         mat.SetFloat(SizeId, value);
     }, Init, Final, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
 }

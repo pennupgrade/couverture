@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveBlockController : MonoBehaviour
 {
+    [SerializeField] private TMP_Text highestUnlockedLevel;
     public TMP_Text totalPlayTime;
     public TMP_Text started;
     public TMP_Text lastPlayed;
@@ -24,6 +25,17 @@ public class SaveBlockController : MonoBehaviour
         this.state = state;
         this.index = i;
         this.parent = parent;
+
+        var latestLevelName = state.GetLatestLevelName(i);
+        if (latestLevelName == "NOT_A_LEVEL") {
+            // This means we haven't played any level yet i.e. just created the save.
+            // Set it to "Level 1" because it's unlocked by default
+            highestUnlockedLevel.text = "Level 1";
+        }
+        else {
+            highestUnlockedLevel.text = state.GetLatestLevelNameFormatted(i);
+        }
+        
         lastPlayed.text = state.GetLastPlayedTime(i).ToLongDateString();
         totalPlayTime.text = state.GetTimePlayed(i).ToString();
         started.text = state.GetStartTime(i).ToLongDateString();

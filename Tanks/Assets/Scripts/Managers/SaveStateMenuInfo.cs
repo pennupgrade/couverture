@@ -36,6 +36,30 @@ public class SaveStateMenuInfo
         return saves[saveNumber].GetLatestLevelName();
     }
 
+    public string GetLatestLevelNameFormatted(int saveNumber) {
+        var sceneName = saves[saveNumber].GetLatestLevelName();
+        var levelNumber = -1;
+
+        // TODO: duplicated code from SaveStateMenuInfo.GetLatestLevelNameFormatted()
+        if (sceneName.Contains('1')) {
+            levelNumber = 1;
+        } else if (sceneName.Contains('2')) {
+            levelNumber = 2;
+        } else if (sceneName.Contains('3')) {
+            levelNumber = 3;
+        } else if (sceneName.Contains('4')) {
+            levelNumber = 4;
+        } else if (sceneName.Contains('5')) {
+            levelNumber = 5;
+        } else if (sceneName.Contains('6')) {
+            levelNumber = 6;
+        } else {
+            Debug.LogWarning("GetLatestLevelNameFormatted(): could not find level number!");
+        }
+
+        return $"Level {levelNumber}";
+    }
+
     public bool DoesSaveExist(int saveNumber) {
         //return true;
         return saves[saveNumber] != null;
