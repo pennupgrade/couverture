@@ -27,7 +27,7 @@ public class RoomManager : MonoBehaviour
     void Awake()
     {
         // start debug save if required
-        SaveStateManagerGameObject.DebugLoadSave();
+        SaveStateManagerGameObject.LoadClassicModeSave();
 
         // load level save stuff
         SaveStateManagerGameObject.LoadLevel(SceneManager.GetActiveScene().name);
@@ -132,12 +132,10 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic55"));
         } else {
             if (LevelNum == 61) {
-                //game end screen, displays time taken, button leads to main menu
+                //game end screen, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
                 //classic mode complete sound effect
-                destroyIt();
-                EnemySpawner.reset(); // resets enemy counter
                 audioManager.Stop("BGM");
                 audioManager.Play("WinSound");
                 
@@ -183,9 +181,6 @@ public class RoomManager : MonoBehaviour
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
-
-        destroyIt();
-        EnemySpawner.reset(); // resets enemy counter
     }
 
     public void ResetToLevelOne() {
