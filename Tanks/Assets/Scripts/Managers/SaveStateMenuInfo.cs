@@ -10,21 +10,10 @@ public class SaveStateMenuInfo
 
     private SaveStateManager[] saves = new SaveStateManager[NUMBER_OF_SAVES];
 
-    private SaveStateManager classicModeSave;
-
-    private static SaveStateManager TryLoadSaveState(string saveFilePath) {
-        try {
-            return SaveStateManagerGameObject.LoadSaveToManager(saveFilePath);
-        } catch (FileNotFoundException) {
-            return null;
-        }
-    }
-
     public SaveStateMenuInfo() {
         for (int i = 0; i < NUMBER_OF_SAVES; i++) {
-            saves[i] = TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
+            saves[i] = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
         }
-        classicModeSave = TryLoadSaveState(SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE);
     }
 
     public DateTime GetStartTime(int saveNumber) {
@@ -54,12 +43,5 @@ public class SaveStateMenuInfo
 
     public HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters(int saveNumber) {
         return saves[saveNumber].GetUnlockedCharacters();
-    }
-
-    public int GetClassicModeHighScore() {
-        if (classicModeSave is null) {
-            return 0;
-        }
-        return classicModeSave.GetClassicModeHighScore();
     }
 }

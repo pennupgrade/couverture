@@ -5,6 +5,15 @@ using System.IO;
 
 [Serializable]
 public class SaveStateManager {
+
+    public static SaveStateManager TryLoadSaveState(string saveFilePath) {
+        try {
+            return LoadInventory(saveFilePath);
+        } catch (FileNotFoundException) {
+            return null;
+        }
+    }
+
     public static SaveStateManager LoadInventory(string saveLocation) {
         SaveStateManager outManager;
         using (StreamReader reader = new(saveLocation)) {

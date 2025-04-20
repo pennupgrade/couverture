@@ -37,19 +37,14 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
-    public static SaveStateManager LoadSaveToManager(string saveLocation) {
-        return SaveStateManager.LoadInventory(saveLocation);
-    }
-
     // returns true if save was loaded, false if save was created
     private static bool LoadSave(string saveLocation) {
         if (Instance.stateManager != null) {
             throw new InvalidOperationException("A Save State is Already Open!");
         }
         bool wasLoaded = true;
-        try {
-            Instance.stateManager = LoadSaveToManager(saveLocation);
-        } catch (FileNotFoundException) {
+        Instance.stateManager = SaveStateManager.TryLoadSaveState(saveLocation);
+        if (Instance.stateManager is null) {
             Instance.stateManager = SaveStateManager.CreateSave(saveLocation);
             wasLoaded = false;
         }
