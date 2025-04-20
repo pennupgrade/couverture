@@ -8,8 +8,8 @@ public class Tank : MonoBehaviour, IDestroyable
 {
     public Character character = null;
 
-    public const float RELOAD_TIME = 1.5f;
-    public const float COOLDOWN_TIME = 0.18f;
+    public const float RELOAD_TIME = 1.4f;
+    public const float COOLDOWN_TIME = 0.24f;
 
     // Base Items
     public Controls controls;
@@ -235,7 +235,12 @@ public class Tank : MonoBehaviour, IDestroyable
 
             if (spawningTracks)
             {
-                Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation);
+                RaycastHit info;
+                if (Physics.Raycast(tracksParent.position, Vector3.down, out info, 1f))
+                {
+                    Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation, info.transform);
+
+                }
             }
         }
     }

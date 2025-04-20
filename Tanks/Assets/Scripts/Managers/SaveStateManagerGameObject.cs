@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class SaveStateManagerGameObject : MonoBehaviour
 {
     private const string SAVE_FILE_PREFIX = "save_data_";
+    public const string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
     public static SaveStateManagerGameObject Instance = null;
 
     private SaveStateManager stateManager = null;
@@ -31,22 +33,28 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
     }
 
-    private static string GetSaveLocation(int saveNumber) {
+    public static string GetSaveLocation(int saveNumber) {
         return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
-    public static SaveStateManager LoadSaveToManager(int saveNumber) {
-        return SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
-    }
-
-    public static void LoadSave(int saveNumber) {
-        try {
-            Instance.stateManager = LoadSaveToManager(saveNumber);
-        } catch (FileNotFoundException) {
-            Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveNumber));
+    // returns true if save was loaded, false if save was created
+    private static bool LoadSave(string saveLocation) {
+        if (Instance.stateManager != null) {
+            throw new InvalidOperationException("A Save State is Already Open!");
+        }
+        bool wasLoaded = true;
+        Instance.stateManager = SaveStateManager.TryLoadSaveState(saveLocation);
+        if (Instance.stateManager is null) {
+            Instance.stateManager = SaveStateManager.CreateSave(saveLocation);
+            wasLoaded = false;
         }
         // start the session
         Instance.stateManager.BeginSession();
+        return wasLoaded;
+    }
+
+    public static void LoadSaveSlot(int saveNumber) {
+        LoadSave(GetSaveLocation(saveNumber));
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
@@ -77,12 +85,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // debug method so tests can be run from Unity editor from simply starting scene
     public static void DebugLoadSave() {
         if (Instance.stateManager is null) {
-            LoadSave(1);
+            LoadSaveSlot(1);
         }
     }
     
     public static void CreateSave(int saveSlot) {
-        Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveSlot));
+        SaveStateManager.CreateSave(GetSaveLocation(saveSlot)).SaveToFile();
     }
 
     public static void ExitCurrentSave() {
@@ -97,7 +105,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.OnPlayerDeath();
     }
 
-    public static void DeleteSave(int saveNumber) {
+    public static void DeleteSaveSlot(int saveNumber) {
         SaveStateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
     }
 
@@ -111,5 +119,22 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static void SaveToFile() {
         Instance.stateManager.SaveToFile();
+    }
+
+    public static int GetClassicModeHighScore() {
+        return Instance.stateManager.GetClassicModeHighScore();
+    }
+
+    public static void LoadClassicModeSave() {
+        if (Instance.stateManager != null) { // only load classic mode save once
+            return;
+        }
+        LoadSave(CLASSIC_MODE_SAVE_FILE);
+        SaveStateManager.CharacterOption[] allChars = (SaveStateManager.CharacterOption[]) Enum.GetValues(typeof(SaveStateManager.CharacterOption));
+        if (!GetUnlockedCharacters().SetEquals(allChars)) { // if unlocked characters arent all characters, won't handle updates that remove characters well
+            Instance.stateManager.ForceUnlockCharacters(allChars);
+            LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
+            ExitLevel();
+        }
     }
 }

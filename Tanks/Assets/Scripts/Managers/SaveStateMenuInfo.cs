@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using UnityEngine;
 
 public class SaveStateMenuInfo
 {
-    private SaveStateManager[] saves = new SaveStateManager[3];
+    const int NUMBER_OF_SAVES = 3;
 
-    private static SaveStateManager TryLoadSaveState(int saveNumber) {
-        try {
-            return SaveStateManagerGameObject.LoadSaveToManager(saveNumber);
-        } catch (FileNotFoundException) {
-            return null;
-        }
-    }
+    private SaveStateManager[] saves = new SaveStateManager[NUMBER_OF_SAVES];
 
     public SaveStateMenuInfo() {
-        for (int i = 0; i < 3; i++) {
-            saves[i] = TryLoadSaveState(i);
+        for (int i = 0; i < NUMBER_OF_SAVES; i++) {
+            saves[i] = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
         }
     }
 
@@ -39,6 +34,30 @@ public class SaveStateMenuInfo
     public string GetLatestLevelName(int saveNumber) {
         //return "hi";
         return saves[saveNumber].GetLatestLevelName();
+    }
+
+    public string GetLatestLevelNameFormatted(int saveNumber) {
+        var sceneName = saves[saveNumber].GetLatestLevelName();
+        var levelNumber = -1;
+
+        // TODO: duplicated code from SaveStateMenuInfo.GetLatestLevelNameFormatted()
+        if (sceneName.Contains('1')) {
+            levelNumber = 1;
+        } else if (sceneName.Contains('2')) {
+            levelNumber = 2;
+        } else if (sceneName.Contains('3')) {
+            levelNumber = 3;
+        } else if (sceneName.Contains('4')) {
+            levelNumber = 4;
+        } else if (sceneName.Contains('5')) {
+            levelNumber = 5;
+        } else if (sceneName.Contains('6')) {
+            levelNumber = 6;
+        } else {
+            Debug.LogWarning("GetLatestLevelNameFormatted(): could not find level number!");
+        }
+
+        return $"Level {levelNumber}";
     }
 
     public bool DoesSaveExist(int saveNumber) {

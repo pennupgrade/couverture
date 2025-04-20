@@ -5,8 +5,9 @@ using UnityEngine;
 public class DestructableClassic : MonoBehaviour, IDestroyable
 {
     private DamageFlash damageFlash;
+    [SerializeField] private float explosionForce;
     public GameObject originalObj;
-    public GameObject fracturedObjPrefab;
+    public GameObject fracturedObj;
     public int hits;
     private bool isDead;
 
@@ -25,21 +26,23 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
     {
         originalObj.SetActive(false);
         GetComponent<Collider>().enabled = false;
-        if (fracturedObjPrefab == null) return;
-        fractObj = Instantiate(fracturedObjPrefab) as GameObject;
-        foreach(Transform t in fractObj.transform) {
+        if (fracturedObj == null) return;
+        fracturedObj.SetActive(true);
+        foreach(Transform t in fracturedObj.transform) {
             var rb = t.GetComponent<Rigidbody>();
-            rb.AddExplosionForce(0.5f, originalObj.transform.position, 1);
-            StartCoroutine(Shrink(t, 2));
+            rb.AddExplosionForce(explosionForce, originalObj.transform.position, 2);
+            StartCoroutine(Shrink(t, 1.3f));
         }
-        Destroy(fractObj, 4);
+        Destroy(fracturedObj, 4);
     }
 
     private IEnumerator Shrink(Transform t, float delay) {
         yield return new WaitForSeconds(delay);
+        t.gameObject.GetComponent<Collider>().enabled = false;
         Vector3 newScale = t.localScale;
         while (newScale.x > 0) {
-            newScale -= new Vector3(1, 1, 1);
+            newScale -= new Vector3(10, 10, 10);
+            if (t == null) break;
             t.localScale = newScale;
             yield return new WaitForSeconds(0.05f);
         }
