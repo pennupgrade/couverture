@@ -232,4 +232,8 @@ public class SaveStateManager {
     public void SaveToFile() {
         WriteToSaveFile();
     }
+
+    public int GetClassicModeHighScore() {
+        return classicModeHighScore;
+    }
 }

@@ -112,4 +112,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static void SaveToFile() {
         Instance.stateManager.SaveToFile();
     }
+
+    public static int GetClassicModeHighScore() {
+        return Instance.stateManager.GetClassicModeHighScore();
+    }
 }
