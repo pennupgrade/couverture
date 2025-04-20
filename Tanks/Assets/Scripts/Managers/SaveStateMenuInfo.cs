@@ -54,7 +54,7 @@ public class SaveStateMenuInfo
     }
 
     public int GetClassicModeHighScore(int saveNumber) {
-        return saves[saveNumber].GetClassicModeHighScore();
+        return saves[saveNumber].ClassicModeHighScore;
     }
 
     public int GetMaxClassicModeHighScore(int saveNumber) {

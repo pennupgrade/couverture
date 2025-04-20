@@ -114,6 +114,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static int GetClassicModeHighScore() {
-        return Instance.stateManager.GetClassicModeHighScore();
+        return Instance.stateManager.ClassicModeHighScore;
     }
 }
