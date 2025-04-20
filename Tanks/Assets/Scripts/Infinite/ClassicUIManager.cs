@@ -40,7 +40,7 @@ public class ClassicUIManager : MonoBehaviour
 
     public void ReturnToHome()
     {
-        RoomManager.Instance.destroyIt();
+        if (RoomManager.Instance != null) RoomManager.Instance.destroyIt();
         EnemySpawner.reset();
         SceneManager.LoadScene("TitleScreen");
     }
