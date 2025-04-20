@@ -19,8 +19,9 @@ public class RoomManager : MonoBehaviour
         LevelNum = 1;
     }
     //call when exiting
-    public static void destroyInstance() {
-        Destroy(Instance);
+    public void destroyIt() {
+        reset();
+        Destroy(this.gameObject);
         Instance = null;
     }
     void Awake()
@@ -135,7 +136,7 @@ public class RoomManager : MonoBehaviour
                 uiManager.LevelCompleteScreenFadeIn(true);
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
                 //classic mode complete sound effect
-                destroyInstance();
+                destroyIt();
                 EnemySpawner.reset(); // resets enemy counter
                 audioManager.Stop("BGM");
                 audioManager.Play("WinSound");
@@ -183,8 +184,21 @@ public class RoomManager : MonoBehaviour
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
 
-        destroyInstance();
+        destroyIt();
         EnemySpawner.reset(); // resets enemy counter
+    }
+
+    public void ResetToLevelOne() {
+        Time.timeScale = 1;
+        noPause = true;
+        loading = true;
+        audioManager.Stop("BGM");
+
+        SaveStateManagerGameObject.ExitLevel();
+        SaveStateManagerGameObject.SaveToFile();
+        destroyIt();
+        EnemySpawner.reset();
+        SceneManager.LoadScene("Classic1");
     }
 
     IEnumerator LoadAsyncScene(string sceneName) {

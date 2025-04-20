@@ -6,7 +6,16 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private TMP_Text currentStatus;
+
+    [SerializeField] private TMP_Text restartButtonText;
+    [SerializeField] private TMP_Text quitButtonText;
     
+    void Start() {
+        if (RoomManager.Instance != null) {
+            restartButtonText.text = "Reset to Level 1";
+            quitButtonText.text = "Back to Main Menu";
+        }
+    }
     public void ShowPanel() => panel.SetActive(true);
     public void HidePanel() {
         // Panel will be null if we're returning to level select UI
@@ -64,7 +73,7 @@ public class PauseMenu : MonoBehaviour
             GameManager.Instance.RestartLevel();
         } else {
             // Classic does not have restart
-            Debug.LogWarning("HandleRestartLevel(): Cannot restart for Classic Mode");
+            RoomManager.Instance.ResetToLevelOne();
         }
     }
 
@@ -77,9 +86,12 @@ public class PauseMenu : MonoBehaviour
         SaveStateManagerGameObject.SaveToFile();
 
         if (RoomManager.Instance != null) {
-            RoomManager.destroyInstance();
+            RoomManager.Instance.destroyIt();
             EnemySpawner.reset();
+            SceneManager.LoadScene("TitleScreen");
+        } else {
+            SceneManager.LoadScene("LevelSelect");
         }
-        SceneManager.LoadScene("LevelSelect");
+        Time.timeScale = 1;
     }
 }
