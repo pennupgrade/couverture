@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Tank>();
         SaveStateManagerGameObject.DebugLoadSave();
         SaveStateManagerGameObject.LoadLevel(currentLevel);
+
+        AudioManager audioManager = GetComponent<AudioManager>();
+        audioManager.Play("Level Music");
     }
 
     private void Update() {
