@@ -67,7 +67,7 @@ public class EnemySpawner : Activatable
             enemiesRemaining = 0;
 
             Tank pTank = Tank.FindPlayer();
-            if (pTank.health > 0) {
+            if (pTank != null && pTank.health > 0) {
                 pTank.setInvincible(true);
                 //change level
                 RoomManager.Instance.roomTransition();
