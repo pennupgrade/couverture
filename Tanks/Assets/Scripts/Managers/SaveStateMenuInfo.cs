@@ -12,7 +12,7 @@ public class SaveStateMenuInfo
 
     private static SaveStateManager TryLoadSaveState(int saveNumber) {
         try {
-            return SaveStateManagerGameObject.LoadSaveToManager(saveNumber);
+            return SaveStateManagerGameObject.LoadSaveToManager(SaveStateManagerGameObject.GetSaveLocation(saveNumber));
         } catch (FileNotFoundException) {
             return null;
         }

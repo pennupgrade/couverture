@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class SaveStateManagerGameObject : MonoBehaviour
 {
     private const string SAVE_FILE_PREFIX = "save_data_";
+    private const string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
     public static SaveStateManagerGameObject Instance = null;
 
     private SaveStateManager stateManager = null;
@@ -31,22 +32,26 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
     }
 
-    private static string GetSaveLocation(int saveNumber) {
+    public static string GetSaveLocation(int saveNumber) {
         return SAVE_FILE_PREFIX + saveNumber + ".json";
     }
 
-    public static SaveStateManager LoadSaveToManager(int saveNumber) {
-        return SaveStateManager.LoadInventory(GetSaveLocation(saveNumber));
+    public static SaveStateManager LoadSaveToManager(string saveLocation) {
+        return SaveStateManager.LoadInventory(saveLocation);
     }
 
-    public static void LoadSave(int saveNumber) {
+    private static void LoadSave(string saveLocation) {
         try {
-            Instance.stateManager = LoadSaveToManager(saveNumber);
+            Instance.stateManager = LoadSaveToManager(saveLocation);
         } catch (FileNotFoundException) {
-            Instance.stateManager = SaveStateManager.CreateSave(GetSaveLocation(saveNumber));
+            Instance.stateManager = SaveStateManager.CreateSave(saveLocation);
         }
         // start the session
         Instance.stateManager.BeginSession();
+    }
+
+    public static void LoadSaveSlot(int saveNumber) {
+        LoadSave(GetSaveLocation(saveNumber));
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
@@ -77,7 +82,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // debug method so tests can be run from Unity editor from simply starting scene
     public static void DebugLoadSave() {
         if (Instance.stateManager is null) {
-            LoadSave(1);
+            LoadSaveSlot(1);
         }
     }
     
@@ -97,7 +102,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.OnPlayerDeath();
     }
 
-    public static void DeleteSave(int saveNumber) {
+    public static void DeleteSaveSlot(int saveNumber) {
         SaveStateManager.DeleteSaveFile(GetSaveLocation(saveNumber));
     }
 
@@ -115,5 +120,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static int GetClassicModeHighScore() {
         return Instance.stateManager.GetClassicModeHighScore();
+    }
+
+    public static void LoadClassicModeSave() {
+        LoadSave(CLASSIC_MODE_SAVE_FILE);
     }
 }
