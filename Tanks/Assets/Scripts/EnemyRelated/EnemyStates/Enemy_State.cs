@@ -274,10 +274,8 @@ public abstract class Enemy_State
         {
             case NavMeshPathStatus.PathComplete:
                 return true;
-                break;
             default:
                 return false;
-                break;
         }
     }
     protected bool hasReachedDest() {

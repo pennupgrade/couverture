@@ -133,6 +133,7 @@ public class RoomManager : MonoBehaviour
             if (LevelNum == 61) {
                 //game end screen, displays time taken, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
+                SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
                 //classic mode complete sound effect
                 destroyInstance();
                 EnemySpawner.reset(); // resets enemy counter

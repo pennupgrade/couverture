@@ -39,7 +39,7 @@ public class PauseMenu : MonoBehaviour
         }
         else {
             // Classic mode
-            Debug.LogWarning("SetStatus(): Classic mode TODO");
+            currentStatus.text = $"Level {RoomManager.LevelNum}";
         }
     }
 
