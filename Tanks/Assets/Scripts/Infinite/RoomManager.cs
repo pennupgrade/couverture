@@ -141,8 +141,8 @@ public class RoomManager : MonoBehaviour
                 
             } else {
                 //randomized level
-                /*
-                int r = Random.Range(1, 12);
+                
+                int r = Random.Range(1, 11);
                 if (r == 1) {
                     StartCoroutine(LoadAsyncScene("ClassicA"));
                 } else if (r == 2) {
@@ -155,7 +155,7 @@ public class RoomManager : MonoBehaviour
                     StartCoroutine(LoadAsyncScene("ClassicE"));
                 } else if (r == 6) {
                     StartCoroutine(LoadAsyncScene("ClassicF"));
-                } else if (r == 7) 
+                } else if (r == 7) {
                     StartCoroutine(LoadAsyncScene("ClassicG"));
                 } else if (r == 8) {
                     StartCoroutine(LoadAsyncScene("ClassicH"));
@@ -163,10 +163,10 @@ public class RoomManager : MonoBehaviour
                     StartCoroutine(LoadAsyncScene("ClassicI"));
                 } else if (r == 10) {
                     StartCoroutine(LoadAsyncScene("ClassicJ"));
-                } else {
+                } /*else {
                     StartCoroutine(LoadAsyncScene("ClassicMaze"));
-                }
-                */
+                }*/
+                
             }
         }
     }

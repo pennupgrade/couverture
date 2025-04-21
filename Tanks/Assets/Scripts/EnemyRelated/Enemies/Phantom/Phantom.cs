@@ -85,4 +85,5 @@ public class Phantom : Enemy
             die();
         }
     }
+    public override void alert(bool alertState = false) {}
 }

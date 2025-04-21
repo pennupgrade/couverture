@@ -33,7 +33,7 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
             rb.AddExplosionForce(explosionForce, originalObj.transform.position, 2);
             StartCoroutine(Shrink(t, 1.3f));
         }
-        Destroy(fracturedObj, 4);
+        Destroy(this.gameObject, 4);
     }
 
     private IEnumerator Shrink(Transform t, float delay) {
