@@ -8,6 +8,7 @@ public class ActivatorButton : MonoBehaviour
     [SerializeField] protected float rotateDelta = 0;
     [SerializeField] protected Vector3 rotateAxis = new Vector3(0, 0, 0);
     [SerializeField] protected float pressSpeed = 0.8f;
+    [SerializeField] protected bool disableRotation;
 
     public bool reusable;
     protected bool onCooldown;
@@ -49,7 +50,7 @@ public class ActivatorButton : MonoBehaviour
         while (timer <= 1) {
             transform.localPosition = Vector3.Lerp(startPos, 
                 startPos + vOffset, timer);
-            transform.localRotation = Quaternion.Lerp(originalRot, newRot, timer);
+            if (!disableRotation) transform.localRotation = Quaternion.Lerp(originalRot, newRot, timer);
 
             timer += Time.deltaTime * pressSpeed;
             yield return null;
