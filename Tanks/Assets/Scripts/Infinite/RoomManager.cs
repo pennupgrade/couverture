@@ -76,9 +76,9 @@ public class RoomManager : MonoBehaviour
         
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         audioManager.Play("StartSound");
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.7f);
 
 
         // remove start screen, play BG music

@@ -15,7 +15,7 @@ public class Guardian6 : EnemyOmniMove
         gunRange = 10;
         sightRange = 10;
         FOV = 1.8f;
-        rotSpeed = 130;
+        rotSpeed = 150;
         cooldownTime = 1.4f;
         reload = 5.5f;
         magSize = 2;
