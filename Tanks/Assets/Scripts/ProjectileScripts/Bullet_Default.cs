@@ -47,6 +47,7 @@ public class Bullet_Default : Projectile
         this.enabled = true;
         changeWhenBounce = false;
         material.SetFloat("_Glowy", 0);
+        material.SetInt("_Player", 0);
         bulletSpeed = 3;
         wallTouchCounter = 0;
         damage = originalDamage;
@@ -118,6 +119,7 @@ public class Bullet_Default : Projectile
     }
     public void addBounceChange() {
         changeWhenBounce = true;
+        material.SetInt("_Player", 1);
     }
 
     public override void destruction() {

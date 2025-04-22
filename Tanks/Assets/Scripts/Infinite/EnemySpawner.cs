@@ -35,9 +35,9 @@ public class EnemySpawner : Activatable
         if (levelNumber > 0) {
             if (RoomManager.LevelNum != levelNumber) return;
         } else {
-            if (section == 1 && RoomManager.LevelNum > 15) return;
-            if (section == 3 && RoomManager.LevelNum < 36) return;
-            if (section == 2 && (RoomManager.LevelNum < 16 || RoomManager.LevelNum > 35)) return;
+            if (section == 1 && RoomManager.LevelNum > 12) return;
+            if (section == 3 && RoomManager.LevelNum < 31) return;
+            if (section == 2 && (RoomManager.LevelNum < 13 || RoomManager.LevelNum > 30)) return;
         }
 
         StartCoroutine(spawn());
