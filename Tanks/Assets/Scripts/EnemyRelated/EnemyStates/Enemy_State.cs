@@ -159,7 +159,7 @@ public abstract class Enemy_State
                 return;
             } else if (hit.gameObject.tag == "Player") {
                 enemy.fireSound();
-                enemy.pTank.takeDamage(300);
+                enemy.pTank.takeDamage(700);
                 GameObject bExplode = GameObject.Instantiate(enemy.bulletExplosionPrefab, enemy.gunShotPos.position, Quaternion.identity);
                 GameObject.Destroy(bExplode, 3);
                 return;
