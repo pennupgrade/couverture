@@ -14,15 +14,15 @@ public class Guardian5 : EnemyOmniMove
         health = 400;
         gunRange = 10;
         sightRange = 10;
-        FOV = 1.8f;
+        FOV = 1.9f;
         rotSpeed = 108;
-        cooldownTime = 0.9f;
-        reload = 4;
-        magSize = 3;
+        cooldownTime = 0.7f;
+        reload = 4f;
+        magSize = 4;
         numBullets = magSize;
         bulletSpeed = 5.1f;
         leadChance = 0.5f;
-        speed = 1.8f;
+        speed = 1.9f;
         turnSpeed = 180;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
@@ -72,7 +72,7 @@ public class Guardian5 : EnemyOmniMove
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
     protected override IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(12);
         StartCoroutine(activateShield());
     }
 }
