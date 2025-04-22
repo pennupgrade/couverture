@@ -18,7 +18,7 @@ public class MissileSentry : ShieldedEnemy
         FOV = 1.4f;
         rotSpeed = 70;
         cooldownTime = 0.25f;
-        magSize = 14;
+        magSize = 9;
         numBullets = magSize;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject);
