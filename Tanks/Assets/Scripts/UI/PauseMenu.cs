@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
         if (RoomManager.Instance != null) {
             restartButtonText.text = "Reset to Level 1";
             quitButtonText.text = "Back to Main Menu";
+            currentStatus.text = $"Level {RoomManager.LevelNum}";
         }
     }
     public void ShowPanel() => panel.SetActive(true);
@@ -45,10 +46,6 @@ public class PauseMenu : MonoBehaviour
             }
 
             currentStatus.text = $"Level {levelNumber}";
-        }
-        else {
-            // Classic mode
-            currentStatus.text = $"Level {RoomManager.LevelNum}";
         }
     }
 
