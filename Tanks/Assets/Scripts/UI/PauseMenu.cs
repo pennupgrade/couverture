@@ -9,50 +9,55 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private TMP_Text restartButtonText;
     [SerializeField] private TMP_Text quitButtonText;
-    
-    void Start() {
+
+    private void Start() {
         if (RoomManager.Instance != null) {
             restartButtonText.text = "Reset to Level 1";
             quitButtonText.text = "Back to Main Menu";
             currentStatus.text = $"Level {RoomManager.LevelNum}";
         }
     }
+
     public void ShowPanel() => panel.SetActive(true);
-    public void HidePanel() {
-        // Panel will be null if we're returning to level select UI
-        if (panel == null) return;
-        panel.SetActive(false);
-    }
+
+    public void HidePanel() => panel.SetActive(false);
 
     public void SetStatus(string sceneName) {
-        if (GameManager.Instance != null) {
-            // Campaign mode
-            var levelNumber = -1;
-            if (sceneName.Contains('1')) {
-                levelNumber = 1;
-            } else if (sceneName.Contains('2')) {
-                levelNumber = 2;
-            } else if (sceneName.Contains('3')) {
-                levelNumber = 3;
-            } else if (sceneName.Contains('4')) {
-                levelNumber = 4;
-            } else if (sceneName.Contains('5')) {
-                levelNumber = 5;
-            } else if (sceneName.Contains('6')) {
-                levelNumber = 6;
-            }
-            else {
-                Debug.LogWarning("SetStatus(): could not find level number!");
-            }
+        if (GameManager.Instance == null) return;
 
-            currentStatus.text = $"Level {levelNumber}";
+        // Campaign mode only
+        var levelNumber = -1;
+
+        // TODO: duplicated code from SaveStateMenuInfo.GetLatestLevelNameFormatted()
+        if (sceneName.Contains('1')) {
+            levelNumber = 1;
         }
+        else if (sceneName.Contains('2')) {
+            levelNumber = 2;
+        }
+        else if (sceneName.Contains('3')) {
+            levelNumber = 3;
+        }
+        else if (sceneName.Contains('4')) {
+            levelNumber = 4;
+        }
+        else if (sceneName.Contains('5')) {
+            levelNumber = 5;
+        }
+        else if (sceneName.Contains('6')) {
+            levelNumber = 6;
+        }
+        else {
+            Debug.LogWarning("SetStatus(): could not find level number!");
+        }
+
+        currentStatus.text = $"Level {levelNumber}";
     }
 
     public void HandleResume() {
         if (GameManager.Instance != null) {
             // Campaign mode
-            GameManager.Instance.paused = false;
+            GameManager.Instance.IsPaused = false;
             GameManager.Instance.ResumeGame();
             HidePanel();
         }
@@ -66,9 +71,9 @@ public class PauseMenu : MonoBehaviour
     public void HandleRestartLevel() {
         if (GameManager.Instance != null) {
             // Campaign mode
-            SceneTransition.I.RestartClickedFromPauseMenu = true;
             GameManager.Instance.RestartLevel();
-        } else {
+        }
+        else {
             // Classic does not have restart
             RoomManager.Instance.ResetToLevelOne();
         }
@@ -86,9 +91,11 @@ public class PauseMenu : MonoBehaviour
             RoomManager.Instance.destroyIt();
             EnemySpawner.reset();
             SceneManager.LoadScene("TitleScreen");
-        } else {
+        }
+        else {
             SceneManager.LoadScene("LevelSelect");
         }
+
         Time.timeScale = 1;
     }
 }

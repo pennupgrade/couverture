@@ -1,32 +1,32 @@
 using System.Collections;
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 public class RoomManager : MonoBehaviour
 {
     [HideInInspector] public bool paused, noPause;
-    public static RoomManager Instance { get; private set;}
-    public static int LevelNum { get; private set;}
-    bool loading;
+    public static RoomManager Instance { get; private set; }
+    public static int LevelNum { get; private set; }
+    private bool loading;
     private ClassicUIManager uiManager;
     private AudioManager audioManager;
-    [SerializeField] int overrideLevel;
-
+    [SerializeField] private int overrideLevel;
 
     //call at start
     public static void reset() {
         LevelNum = 1;
     }
+
     //call when exiting
     public void destroyIt() {
         reset();
-        Destroy(this.gameObject);
+        Destroy(gameObject);
         Instance = null;
     }
-    void Awake()
-    {
+
+    private void Awake() {
         // start debug save if required
         SaveStateManagerGameObject.LoadClassicModeSave();
 
@@ -36,32 +36,36 @@ public class RoomManager : MonoBehaviour
             LevelNum = overrideLevel;
             overrideLevel = -1;
         }
+
         if (Instance == null) {
             Instance = this;
             uiManager = GetComponent<ClassicUIManager>();
             audioManager = GetComponent<AudioManager>();
             randomLevelIndex = 10;
             startScreen();
-        } else if (Instance != this) {
-            Instance.startScreen();
-            Destroy(this.gameObject);
         }
+        else if (Instance != this) {
+            Instance.startScreen();
+            Destroy(gameObject);
+        }
+
         DontDestroyOnLoad(this);
     }
-    void Update() {
+
+    private void Update() {
         if (!noPause && Input.GetKeyDown(KeyCode.Escape)) {
             paused = !paused;
-            
+
             // Only enable toggling pause if the cat selection panel isn't open
-            if (UIManager.instance.Cat_Selection_Panel.activeInHierarchy) return;
-                
+            if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
+
             if (paused) {
                 PauseGame();
-                UIManager.instance.pauseMenu.ShowPanel();
+                UIManager.Instance.pauseMenu.ShowPanel();
             }
             else {
                 ResumeGame();
-                UIManager.instance.pauseMenu.HidePanel();
+                UIManager.Instance.pauseMenu.HidePanel();
             }
         }
     }
@@ -70,12 +74,13 @@ public class RoomManager : MonoBehaviour
         //play opening sound effect
         StartCoroutine(startScreenCoroutine());
     }
+
     private IEnumerator startScreenCoroutine() {
         noPause = true;
         uiManager.reset();
-        Tank pTank = Tank.FindPlayer();
+        var pTank = Tank.FindPlayer();
         pTank.Freeze(false);
-        
+
         //fade in level number text
         uiManager.StartScreenTextFadeIn(LevelNum);
         yield return new WaitForSeconds(0.3f);
@@ -89,8 +94,7 @@ public class RoomManager : MonoBehaviour
         changeBGM(true);
         pTank.Unfreeze();
         noPause = false;
-
-    } 
+    }
 
     public void roomTransition() {
         if (loading) return;
@@ -103,55 +107,70 @@ public class RoomManager : MonoBehaviour
         //scene transition
         if (LevelNum == 1) {
             StartCoroutine(LoadAsyncScene("Classic1"));
-        } else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 31) {
+        }
+        else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 31) {
             StartCoroutine(LoadAsyncScene("Classic2"));
-        } else if (LevelNum == 3 || LevelNum == 17 || LevelNum == 20) {
+        }
+        else if (LevelNum == 3 || LevelNum == 17 || LevelNum == 20) {
             StartCoroutine(LoadAsyncScene("Classic3"));
-        } else if (LevelNum == 4 || LevelNum == 14 || LevelNum == 34) {
+        }
+        else if (LevelNum == 4 || LevelNum == 14 || LevelNum == 34) {
             StartCoroutine(LoadAsyncScene("Classic4"));
-        } else if (LevelNum == 5 || LevelNum == 16) {
+        }
+        else if (LevelNum == 5 || LevelNum == 16) {
             StartCoroutine(LoadAsyncScene("Classic5"));
-        } else if (LevelNum == 6 || LevelNum == 30 || LevelNum == 35) {
+        }
+        else if (LevelNum == 6 || LevelNum == 30 || LevelNum == 35) {
             StartCoroutine(LoadAsyncScene("Classic6"));
-        } else if (LevelNum == 12 || LevelNum == 50) {
+        }
+        else if (LevelNum == 12 || LevelNum == 50) {
             StartCoroutine(LoadAsyncScene("Classic12"));
-        } else if (LevelNum == 13 || LevelNum == 32) {
+        }
+        else if (LevelNum == 13 || LevelNum == 32) {
             StartCoroutine(LoadAsyncScene("Classic13"));
-        } else if (LevelNum == 18 || LevelNum == 36) {
+        }
+        else if (LevelNum == 18 || LevelNum == 36) {
             StartCoroutine(LoadAsyncScene("Classic18"));
-        } else if (LevelNum == 19 || LevelNum == 37) {
+        }
+        else if (LevelNum == 19 || LevelNum == 37) {
             StartCoroutine(LoadAsyncScene("Classic19"));
-        } else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
+        }
+        else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
             if ((LevelNum == 25 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 40) {
                 StartCoroutine(LoadAsyncScene("Classic25alt"));
-            } else {
+            }
+            else {
                 StartCoroutine(LoadAsyncScene("Classic25"));
             }
-
-        } else if (LevelNum == 38) {
+        }
+        else if (LevelNum == 38) {
             StartCoroutine(LoadAsyncScene("Classic38"));
-        } else if (LevelNum == 45) {
+        }
+        else if (LevelNum == 45) {
             StartCoroutine(LoadAsyncScene("Classic45"));
-        } else {
+        }
+        else {
             if (LevelNum == 51) {
                 //game end screen, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
+
                 //classic mode complete sound effect
                 changeBGM(false);
                 audioManager.Play("WinSound");
-                
-            } else {
+            }
+            else {
                 //randomized level
-                
+
                 randomizedSceneLoader();
-                
             }
         }
     }
+
     public void playerDeath() {
         // redirect to death screen showing level reached, button leads to main menu
         uiManager.DeathScreenFadeIn(LevelNum);
+
         //play sad sound
         changeBGM(false);
         audioManager.Play("DeathSound");
@@ -175,37 +194,42 @@ public class RoomManager : MonoBehaviour
         SceneManager.LoadScene("Classic1");
     }
 
-    IEnumerator LoadAsyncScene(string sceneName) {
+    private IEnumerator LoadAsyncScene(string sceneName) {
         noPause = true;
         loading = true;
         yield return new WaitForSeconds(1f);
+
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
         Tank.FindPlayer().FreezeEndOfLevel();
+
         //play level complete sound
         changeBGM(false);
         audioManager.Play("CompleteSound");
         yield return new WaitForSeconds(1.8f);
+
         //level complete screen fades out
         uiManager.LevelCompleteScreenTextFadeOut();
         yield return new WaitForSeconds(1f);
 
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
+
         // reset stats
         SaveStateManagerGameObject.PlayerDied();
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        var asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
-        while (!asyncLoad.isDone)
-        {
+        while (!asyncLoad.isDone) {
             yield return null;
         }
+
         loading = false;
     }
 
     private void changeBGM(bool play) {
         if (play) {
             audioManager.Play("BGM");
-        } else {
+        }
+        else {
             audioManager.Stop("BGM");
         }
     }
@@ -221,41 +245,49 @@ public class RoomManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Create random permutation of numbers 1 to 10 to select levels from
+    ///     Create random permutation of numbers 1 to 10 to select levels from
     /// </summary>
-
     private int[] randomNumbers;
     private int randomLevelIndex;
 
     private void randomizedSceneLoader() {
         if (randomLevelIndex > 9) {
             randomLevelIndex = 0;
-            System.Random rnd = new System.Random();
-            int[] numbers = new int[] { 1,2,3,4,5,6,7,8,9,10 };
+            var rnd = new Random();
+            var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             randomNumbers = numbers.OrderBy(x => rnd.Next()).ToArray();
         }
 
-        int r = randomNumbers[randomLevelIndex];
+        var r = randomNumbers[randomLevelIndex];
         randomLevelIndex++;
         if (r == 1) {
             StartCoroutine(LoadAsyncScene("ClassicA"));
-        } else if (r == 2) {
+        }
+        else if (r == 2) {
             StartCoroutine(LoadAsyncScene("ClassicB"));
-        } else if (r == 3) {
+        }
+        else if (r == 3) {
             StartCoroutine(LoadAsyncScene("ClassicC"));
-        } else if (r == 4) {
+        }
+        else if (r == 4) {
             StartCoroutine(LoadAsyncScene("ClassicD"));
-        } else if (r == 5) {
+        }
+        else if (r == 5) {
             StartCoroutine(LoadAsyncScene("ClassicE"));
-        } else if (r == 6) {
+        }
+        else if (r == 6) {
             StartCoroutine(LoadAsyncScene("ClassicF"));
-        } else if (r == 7) {
+        }
+        else if (r == 7) {
             StartCoroutine(LoadAsyncScene("ClassicG"));
-        } else if (r == 8) {
+        }
+        else if (r == 8) {
             StartCoroutine(LoadAsyncScene("ClassicH"));
-        } else if (r == 9) {
+        }
+        else if (r == 9) {
             StartCoroutine(LoadAsyncScene("ClassicI"));
-        } else if (r == 10) {
+        }
+        else if (r == 10) {
             StartCoroutine(LoadAsyncScene("ClassicJ"));
         }
     }
