@@ -30,7 +30,6 @@ public class CheckpointManagerV2 : MonoBehaviour
         SetUpCheckpoints();
 
         if (GetCurrentCheckpointLocation() is Vector3 loc) {
-            print("HERE");
             GameObject p = GameObject.FindWithTag("Player+Camera");
             p.transform.position = loc + p.transform.position - Tank.FindPlayer().transform.position;
         }
@@ -41,7 +40,6 @@ public class CheckpointManagerV2 : MonoBehaviour
             throw new InvalidOperationException();
         }
         SaveStateManagerGameObject.UnlockCheckpoint(Instance.checkpointDict[c]);
-        print("UNLOCKED CHECKPOINT");
     }
 
     public static Vector3? GetCurrentCheckpointLocation() {

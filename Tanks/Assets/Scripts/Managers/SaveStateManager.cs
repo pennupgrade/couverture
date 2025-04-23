@@ -177,6 +177,7 @@ public class SaveStateManager {
         } else if (currentLevel == null || currentLevel.LevelName != levelName) {
             // If currentLevel data is not applicable, wipe it and create new data
             currentLevel = new();
+            currentLevel.LevelName = levelName;
         }
         // load currentlevel
         currCharacter = currentLevel.CurrCharacter;
