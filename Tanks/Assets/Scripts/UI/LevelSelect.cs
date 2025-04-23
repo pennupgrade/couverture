@@ -16,7 +16,7 @@ public class LevelSelect : MonoBehaviour
 
     private void Awake() {
         var sceneName = SaveStateManagerGameObject.GetLatestLevelName();
-        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(sceneName);
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(sceneName);
         unlockedLevelCount = levelNumber != -1 ? levelNumber : 1;
     }
 

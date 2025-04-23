@@ -53,7 +53,7 @@ public class SceneTransition : MonoBehaviour
         nowEntering = nowEnteringObj.GetComponent<RectTransform>();
         nowEnteringCg = nowEnteringObj.GetComponent<CanvasGroup>();
 
-        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(SceneManager.GetActiveScene().name);
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(SceneManager.GetActiveScene().name);
         levelNumberText.text = $"Level {levelNumber}";
 
         SceneManager.sceneLoaded += OnSceneLoaded;

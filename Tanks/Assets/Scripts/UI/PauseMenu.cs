@@ -59,7 +59,7 @@ public class PauseMenu : MonoBehaviour
         // Campaign mode only
         if (GameManager.Instance == null) return;
 
-        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(sceneName);
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(sceneName);
         currentStatus.text = $"Level {levelNumber}";
     }
 

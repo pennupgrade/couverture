@@ -22,7 +22,7 @@ public class SaveStateMenuInfo
 
     public string GetLatestLevelNameFormatted(int saveNumber) {
         var sceneName = saves[saveNumber].GetLatestLevelName();
-        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(sceneName);
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(sceneName);
 
         return $"Level {levelNumber}";
     }
