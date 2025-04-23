@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -93,9 +94,20 @@ public class PauseMenu : MonoBehaviour
             SceneManager.LoadScene("TitleScreen");
         }
         else {
-            SceneManager.LoadScene("LevelSelect");
+            StartCoroutine(HandleQuitToLevelSelectFromCampaign());
         }
 
         Time.timeScale = 1;
+    }
+
+    private static IEnumerator HandleQuitToLevelSelectFromCampaign() {
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
+
+        var operation = SceneManager.LoadSceneAsync("LevelSelect")!;
+        operation.allowSceneActivation = false;
+
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
     }
 }
