@@ -82,7 +82,7 @@ public class Phantom : Enemy
         if (health <= 0 && !isDead) {
             die();
         } else {
-            damageFlash.CallInvisDamage(this, 0.2f);
+            damageFlash.CallInvisDamage(this, 0.3f);
         }
     }
     public override void alert(bool alertState = false) {}

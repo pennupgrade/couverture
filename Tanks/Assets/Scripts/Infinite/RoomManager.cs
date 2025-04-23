@@ -84,7 +84,7 @@ public class RoomManager : MonoBehaviour
         // remove start screen, play BG music
         uiManager.StartScreenFadeOut();
         yield return new WaitForSeconds(0.2f);
-        audioManager.Play("BGM");
+        changeBGM(true);
         pTank.Unfreeze();
         noPause = false;
 
@@ -101,42 +101,42 @@ public class RoomManager : MonoBehaviour
         //scene transition
         if (LevelNum == 1) {
             StartCoroutine(LoadAsyncScene("Classic1"));
-        } else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 36) {
+        } else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 31) {
             StartCoroutine(LoadAsyncScene("Classic2"));
         } else if (LevelNum == 3 || LevelNum == 17 || LevelNum == 20) {
             StartCoroutine(LoadAsyncScene("Classic3"));
-        } else if (LevelNum == 4 || LevelNum == 14 || LevelNum == 39) {
+        } else if (LevelNum == 4 || LevelNum == 14 || LevelNum == 34) {
             StartCoroutine(LoadAsyncScene("Classic4"));
         } else if (LevelNum == 5 || LevelNum == 16) {
             StartCoroutine(LoadAsyncScene("Classic5"));
-        } else if (LevelNum == 6 || LevelNum == 35 || LevelNum == 40) {
+        } else if (LevelNum == 6 || LevelNum == 30 || LevelNum == 35) {
             StartCoroutine(LoadAsyncScene("Classic6"));
-        } else if (LevelNum == 10 || LevelNum == 50) {
-            StartCoroutine(LoadAsyncScene("Classic10"));
-        } else if (LevelNum == 13 || LevelNum == 37) {
-            StartCoroutine(LoadAsyncScene("Classic16"));
-        } else if (LevelNum == 18 || LevelNum == 41) {
-            StartCoroutine(LoadAsyncScene("Classic21"));
-        } else if (LevelNum == 19 || LevelNum == 42) {
-            StartCoroutine(LoadAsyncScene("Classic22"));
-        } else if (LevelNum == 30 || LevelNum == 38 || LevelNum == 50) {
-            if ((LevelNum == 30 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 50) {
-                StartCoroutine(LoadAsyncScene("Classic30alt"));
+        } else if (LevelNum == 12 || LevelNum == 50) {
+            StartCoroutine(LoadAsyncScene("Classic12"));
+        } else if (LevelNum == 13 || LevelNum == 32) {
+            StartCoroutine(LoadAsyncScene("Classic13"));
+        } else if (LevelNum == 18 || LevelNum == 36) {
+            StartCoroutine(LoadAsyncScene("Classic18"));
+        } else if (LevelNum == 19 || LevelNum == 37) {
+            StartCoroutine(LoadAsyncScene("Classic19"));
+        } else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
+            if ((LevelNum == 25 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 40) {
+                StartCoroutine(LoadAsyncScene("Classic25alt"));
             } else {
-                StartCoroutine(LoadAsyncScene("Classic30"));
+                StartCoroutine(LoadAsyncScene("Classic25"));
             }
 
-        } else if (LevelNum == 43) {
-            StartCoroutine(LoadAsyncScene("Classic43"));
+        } else if (LevelNum == 38) {
+            StartCoroutine(LoadAsyncScene("Classic38"));
         } else if (LevelNum == 45) {
-            StartCoroutine(LoadAsyncScene("Classic55"));
+            StartCoroutine(LoadAsyncScene("Classic45"));
         } else {
             if (LevelNum == 51) {
                 //game end screen, button leads to main menu
                 uiManager.LevelCompleteScreenFadeIn(true);
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
                 //classic mode complete sound effect
-                audioManager.Stop("BGM");
+                changeBGM(false);
                 audioManager.Play("WinSound");
                 
             } else {
@@ -174,7 +174,7 @@ public class RoomManager : MonoBehaviour
         // redirect to death screen showing level reached, button leads to main menu
         uiManager.DeathScreenFadeIn(LevelNum);
         //play sad sound
-        audioManager.Stop("BGM");
+        changeBGM(false);
         audioManager.Play("DeathSound");
         noPause = true;
 
@@ -187,7 +187,7 @@ public class RoomManager : MonoBehaviour
         Time.timeScale = 1;
         noPause = true;
         loading = true;
-        audioManager.Stop("BGM");
+        changeBGM(false);
 
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
@@ -204,7 +204,7 @@ public class RoomManager : MonoBehaviour
         uiManager.LevelCompleteScreenFadeIn(false);
         Tank.FindPlayer().FreezeEndOfLevel();
         //play level complete sound
-        audioManager.Stop("BGM");
+        changeBGM(false);
         audioManager.Play("CompleteSound");
         yield return new WaitForSeconds(1.8f);
         //level complete screen fades out
@@ -221,6 +221,14 @@ public class RoomManager : MonoBehaviour
             yield return null;
         }
         loading = false;
+    }
+
+    private void changeBGM(bool play) {
+        if (play) {
+            audioManager.Play("BGM");
+        } else {
+            audioManager.Stop("BGM");
+        }
     }
 
     public void PauseGame() {
