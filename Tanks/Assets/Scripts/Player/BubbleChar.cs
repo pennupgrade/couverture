@@ -52,7 +52,7 @@ public class BubbleChar : Character
     public void DestroyBubble() {
         currCD = cooldown;
         selfDestroyCD = stayTime;
-        GameObject.Destroy(obj);
+        obj.GetComponent<Bubble>().destroyShield();
         UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>()
                  .StartFillAbilityBar(getCoolDown());
     }
