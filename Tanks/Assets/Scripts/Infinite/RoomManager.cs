@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,6 +40,7 @@ public class RoomManager : MonoBehaviour
             Instance = this;
             uiManager = GetComponent<ClassicUIManager>();
             audioManager = GetComponent<AudioManager>();
+            randomLevelIndex = 10;
             startScreen();
         } else if (Instance != this) {
             Instance.startScreen();
@@ -142,30 +144,7 @@ public class RoomManager : MonoBehaviour
             } else {
                 //randomized level
                 
-                int r = Random.Range(1, 11);
-                if (r == 1) {
-                    StartCoroutine(LoadAsyncScene("ClassicA"));
-                } else if (r == 2) {
-                    StartCoroutine(LoadAsyncScene("ClassicB"));
-                } else if (r == 3) {
-                    StartCoroutine(LoadAsyncScene("ClassicC"));
-                } else if (r == 4) {
-                    StartCoroutine(LoadAsyncScene("ClassicD"));
-                } else if (r == 5) {
-                    StartCoroutine(LoadAsyncScene("ClassicE"));
-                } else if (r == 6) {
-                    StartCoroutine(LoadAsyncScene("ClassicF"));
-                } else if (r == 7) {
-                    StartCoroutine(LoadAsyncScene("ClassicG"));
-                } else if (r == 8) {
-                    StartCoroutine(LoadAsyncScene("ClassicH"));
-                } else if (r == 9) {
-                    StartCoroutine(LoadAsyncScene("ClassicI"));
-                } else if (r == 10) {
-                    StartCoroutine(LoadAsyncScene("ClassicJ"));
-                } /*else {
-                    StartCoroutine(LoadAsyncScene("ClassicMaze"));
-                }*/
+                randomizedSceneLoader();
                 
             }
         }
@@ -239,5 +218,45 @@ public class RoomManager : MonoBehaviour
     public void ResumeGame() {
         Tank.FindPlayer().Unfreeze();
         Time.timeScale = 1;
+    }
+
+    /// <summary>
+    /// Create random permutation of numbers 1 to 10 to select levels from
+    /// </summary>
+
+    private int[] randomNumbers;
+    private int randomLevelIndex;
+
+    private void randomizedSceneLoader() {
+        if (randomLevelIndex > 9) {
+            randomLevelIndex = 0;
+            System.Random rnd = new System.Random();
+            int[] numbers = new int[] { 1,2,3,4,5,6,7,8,9,10 };
+            randomNumbers = numbers.OrderBy(x => rnd.Next()).ToArray();
+        }
+
+        int r = randomNumbers[randomLevelIndex];
+        randomLevelIndex++;
+        if (r == 1) {
+            StartCoroutine(LoadAsyncScene("ClassicA"));
+        } else if (r == 2) {
+            StartCoroutine(LoadAsyncScene("ClassicB"));
+        } else if (r == 3) {
+            StartCoroutine(LoadAsyncScene("ClassicC"));
+        } else if (r == 4) {
+            StartCoroutine(LoadAsyncScene("ClassicD"));
+        } else if (r == 5) {
+            StartCoroutine(LoadAsyncScene("ClassicE"));
+        } else if (r == 6) {
+            StartCoroutine(LoadAsyncScene("ClassicF"));
+        } else if (r == 7) {
+            StartCoroutine(LoadAsyncScene("ClassicG"));
+        } else if (r == 8) {
+            StartCoroutine(LoadAsyncScene("ClassicH"));
+        } else if (r == 9) {
+            StartCoroutine(LoadAsyncScene("ClassicI"));
+        } else if (r == 10) {
+            StartCoroutine(LoadAsyncScene("ClassicJ"));
+        }
     }
 }
