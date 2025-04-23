@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SaveStateMenuInfo
 {
@@ -23,29 +22,7 @@ public class SaveStateMenuInfo
 
     public string GetLatestLevelNameFormatted(int saveNumber) {
         var sceneName = saves[saveNumber].GetLatestLevelName();
-        var levelNumber = -1;
-
-        if (sceneName.Contains('1')) {
-            levelNumber = 1;
-        }
-        else if (sceneName.Contains('2')) {
-            levelNumber = 2;
-        }
-        else if (sceneName.Contains('3')) {
-            levelNumber = 3;
-        }
-        else if (sceneName.Contains('4')) {
-            levelNumber = 4;
-        }
-        else if (sceneName.Contains('5')) {
-            levelNumber = 5;
-        }
-        else if (sceneName.Contains('6')) {
-            levelNumber = 6;
-        }
-        else {
-            Debug.LogWarning("GetLatestLevelNameFormatted(): could not find level number!");
-        }
+        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(sceneName);
 
         return $"Level {levelNumber}";
     }

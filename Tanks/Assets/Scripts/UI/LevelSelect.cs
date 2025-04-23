@@ -16,29 +16,8 @@ public class LevelSelect : MonoBehaviour
 
     private void Awake() {
         var sceneName = SaveStateManagerGameObject.GetLatestLevelName();
-
-        // TODO: semi-duplicated code from SaveStateMenuInfo.GetLatestLevelNameFormatted()
-        if (sceneName.Contains("1")) {
-            unlockedLevelCount = 1;
-        }
-        else if (sceneName.Contains("2")) {
-            unlockedLevelCount = 2;
-        }
-        else if (sceneName.Contains("3")) {
-            unlockedLevelCount = 3;
-        }
-        else if (sceneName.Contains("4")) {
-            unlockedLevelCount = 4;
-        }
-        else if (sceneName.Contains("5")) {
-            unlockedLevelCount = 5;
-        }
-        else if (sceneName.Contains("6")) {
-            unlockedLevelCount = 6;
-        }
-        else {
-            unlockedLevelCount = 1;
-        }
+        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(sceneName);
+        unlockedLevelCount = levelNumber != -1 ? levelNumber : 1;
     }
 
     private void Start() {
@@ -62,7 +41,7 @@ public class LevelSelect : MonoBehaviour
     }
 
     public void SelectLevel(int level) {
-        if (level >= levels.Length) return;
+        if (level < 0 || level >= levels.Length) return;
 
         StartCoroutine(_SelectLevel(level));
     }
@@ -71,7 +50,7 @@ public class LevelSelect : MonoBehaviour
         var rt = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>();
 
         SceneTransition.I.UpdateIrisPosition(rt.position.x / Screen.width, rt.position.y / Screen.height);
-        SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Level, level + 1);
 
         var operation = SceneManager.LoadSceneAsync(levels[level])!;
         operation.allowSceneActivation = false;
