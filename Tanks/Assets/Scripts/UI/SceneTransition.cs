@@ -77,7 +77,7 @@ public class SceneTransition : MonoBehaviour
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, 4.5f, 0f, 3f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 4.5f, 0f, 6f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:
@@ -92,13 +92,13 @@ public class SceneTransition : MonoBehaviour
         case TransitionType.Fade:
             LeanTween.value(fadeOverlay.gameObject, value => {
                 fadeOverlay.alpha = value;
-            }, 1f, 0f, 0.3f).setEaseInExpo().setIgnoreTimeScale(true);
+            }, 1f, 0f, 2f).setEaseInExpo().setIgnoreTimeScale(true);
             break;
 
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, 0f, 4.5f, 3f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 0f, 4.5f, 6f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:

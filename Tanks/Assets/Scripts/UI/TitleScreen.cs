@@ -27,7 +27,18 @@ public class TitleScreen : MonoBehaviour
         SceneManager.LoadScene("Classic1");
     }
 
-    public void OpenOptions() => SceneManager.LoadScene("CreditsScreen");
+    public void OpenOptions() => StartCoroutine(_OpenOptions());
+
+    private IEnumerator _OpenOptions() {
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
+
+        var operation = SceneManager.LoadSceneAsync("CreditsScreen")!;
+        operation.allowSceneActivation = false;
+
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
+    }
 
     public void Quit() => Application.Quit();
 }
