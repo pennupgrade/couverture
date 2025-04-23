@@ -24,13 +24,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
-        if (SceneTransition.I.IsAnimating) return;
+        if (SceneTransition.I.IsAnimating || UIManager.Instance.pauseMenu.IsAnimating) return;
+
+        // Only enable toggling pause if the cat selection panel isn't open
+        if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             IsPaused = !IsPaused;
-
-            // Only enable toggling pause if the cat selection panel isn't open
-            if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
 
             if (IsPaused) {
                 PauseGame();
