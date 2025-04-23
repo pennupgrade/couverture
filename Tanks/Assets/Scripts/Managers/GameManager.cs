@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private static IEnumerator _GoToNextLevel(float duration, string nextSceneName) {
         SaveStateManagerGameObject.FinishLevel(nextSceneName, true);
 
-        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(nextSceneName);
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(nextSceneName);
         SceneTransition.I.Appear(SceneTransition.TransitionType.Level, levelNumber);
 
         var operation = SceneManager.LoadSceneAsync(nextSceneName)!;
