@@ -137,4 +137,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
             ExitLevel();
         }
     }
+
+    public static void UnlockCheckpoint(int i) {
+        Instance.stateManager.UnlockCheckpoint(i, new(Tank.FindPlayer()));
+    }
 }
