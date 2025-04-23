@@ -58,13 +58,13 @@ public class GameManager : MonoBehaviour
     }
 
     // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
-    private static IEnumerator TimerToRestart(float duration, string sceneName, bool respawn = false) {
+    private IEnumerator TimerToRestart(float duration, string sceneName, bool respawn = false) {
         var operation = SceneManager.LoadSceneAsync(sceneName)!;
         operation.allowSceneActivation = false;
 
         // Only do scene transition if we're not respawning (aka we're entering new level)
         if (!respawn) {
-            SceneTransition.I.UpdateTankScreenSpacePosition();
+            SceneTransition.I.UpdateIrisPosition(player.gameObject);
             SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
         }
 

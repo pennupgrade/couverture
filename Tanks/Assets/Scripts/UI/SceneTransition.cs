@@ -42,7 +42,7 @@ public class SceneTransition : MonoBehaviour
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         // If we're currently in a campaign level
         if (UIManager.Instance != null) {
-            UpdateTankScreenSpacePosition();
+            UpdateIrisPosition(GameObject.FindGameObjectWithTag("Player"));
             UIManager.Instance.pauseMenu.SetStatus(scene.name);
 
             // These calls have no effect if the game isn't currently paused
@@ -53,12 +53,16 @@ public class SceneTransition : MonoBehaviour
         Disappear(type);
     }
 
-    public void UpdateTankScreenSpacePosition() {
-        var tankObj = GameObject.FindGameObjectWithTag("Player");
-        var viewportPos = Camera.main!.WorldToViewportPoint(tankObj.transform.position);
+    public void UpdateIrisPosition(GameObject obj) {
+        var viewportPos = Camera.main!.WorldToViewportPoint(obj.transform.position);
 
         irisMat.SetFloat(PositionXId, Mathf.Clamp01(viewportPos.x));
         irisMat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
+    }
+
+    public void UpdateIrisPosition(float x, float y) {
+        irisMat.SetFloat(PositionXId, Mathf.Clamp01(x));
+        irisMat.SetFloat(PositionYId, Mathf.Clamp01(y));
     }
 
     public bool IsAnimating =>
@@ -77,7 +81,7 @@ public class SceneTransition : MonoBehaviour
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, 4.5f, 0f, 6f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 4.5f, 0f, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:
@@ -92,13 +96,13 @@ public class SceneTransition : MonoBehaviour
         case TransitionType.Fade:
             LeanTween.value(fadeOverlay.gameObject, value => {
                 fadeOverlay.alpha = value;
-            }, 1f, 0f, 2f).setEaseInExpo().setIgnoreTimeScale(true);
+            }, 1f, 0f, 0.3f).setEaseInExpo().setIgnoreTimeScale(true);
             break;
 
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, 0f, 4.5f, 6f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 0f, 4.5f, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:

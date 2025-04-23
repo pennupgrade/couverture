@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -62,7 +63,22 @@ public class LevelSelect : MonoBehaviour
 
     public void SelectLevel(int level) {
         if (level >= levels.Length) return;
-        SceneManager.LoadScene(levels[level]);
+
+        StartCoroutine(_SelectLevel(level));
+    }
+
+    private IEnumerator _SelectLevel(int level) {
+        var rt = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>();
+
+        SceneTransition.I.UpdateIrisPosition(rt.position.x / Screen.width, rt.position.y / Screen.height);
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
+
+        var operation = SceneManager.LoadSceneAsync(levels[level])!;
+        operation.allowSceneActivation = false;
+
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
     }
 
     public void ReturnToSaveSelectScreen() => StartCoroutine(_ReturnToSaveSelectScreen());
