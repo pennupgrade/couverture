@@ -292,4 +292,11 @@ public class SaveStateManager {
         }
         return successfulCheckpoint;
     }
+
+    public int? GetCurrentCheckpoint() {
+        if (currentLevel.CheckpointIndex == -1) {
+            return null;
+        }
+        return currentLevel.CheckpointIndex;
+    }
 }
