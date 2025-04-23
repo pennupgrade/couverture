@@ -43,9 +43,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GoToNextLevel(float transitionTime, string sceneName) {
-        SaveStateManagerGameObject.FinishLevel(sceneName, true);
-        StartCoroutine(TimerToRestart(transitionTime, sceneName));
+    public void GoToNextLevel(float transitionTime, string nextSceneName) =>
+        StartCoroutine(_GoToNextLevel(transitionTime, nextSceneName));
+
+    private static IEnumerator _GoToNextLevel(float duration, string nextSceneName) {
+        SaveStateManagerGameObject.FinishLevel(nextSceneName, true);
+
+        var levelNumber = SaveStateManager.GetLevelNumberFromSceneName(nextSceneName);
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Level, levelNumber);
+
+        var operation = SceneManager.LoadSceneAsync(nextSceneName)!;
+        operation.allowSceneActivation = false;
+
+        // Wait on the max between duration and the scene transition duration
+        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
     }
 
     public void Respawn() {
