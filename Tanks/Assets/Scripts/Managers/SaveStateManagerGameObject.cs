@@ -145,4 +145,34 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static int? GetCurrentCheckpoint() {
         return Instance.stateManager.GetCurrentCheckpoint();
     }
+
+
+    // helper function
+    public static int GetLevelNumberFromSceneName(string sceneName) {
+        if (sceneName.Contains('1')) {
+            return 1;
+        }
+
+        if (sceneName.Contains('2')) {
+            return 2;
+        }
+
+        if (sceneName.Contains('3')) {
+            return 3;
+        }
+
+        if (sceneName.Contains('4')) {
+            return 4;
+        }
+
+        if (sceneName.Contains('5')) {
+            return 5;
+        }
+
+        if (sceneName.Contains('6')) {
+            return 6;
+        }
+
+        return -1;
+    }
 }

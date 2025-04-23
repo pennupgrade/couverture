@@ -151,17 +151,15 @@ public class SaveStateManager
 
     private Character CreateNewChar(CharacterOption characterId) {
         switch (characterId) {
-        case CharacterOption.ROCKET_CAT:
-            return new RocketChar();
-        case CharacterOption.BUBBLE_CAT:
-            return new BubbleChar();
-        case CharacterOption.DEFAULT_CAT:
-            return new DefaultChar();
-        default:
-            throw new ArgumentException();
-        }
-
-        ;
+            case CharacterOption.ROCKET_CAT:
+                return new RocketChar();
+            case CharacterOption.BUBBLE_CAT:
+                return new BubbleChar();
+            case CharacterOption.DEFAULT_CAT:
+                return new DefaultChar();
+            default:
+                throw new ArgumentException();
+        };
     }
 
     public void LoadLevel(string levelName, Tank t) {
@@ -288,36 +286,9 @@ public class SaveStateManager
 
     public int GetClassicModeHighScore() => classicModeHighScore;
 
-    public static int GetLevelNumberFromSceneName(string sceneName) {
-        if (sceneName.Contains('1')) {
-            return 1;
-        }
-
-        if (sceneName.Contains('2')) {
-            return 2;
-        }
-
-        if (sceneName.Contains('3')) {
-            return 3;
-        }
-
-        if (sceneName.Contains('4')) {
-            return 4;
-        }
-
-        if (sceneName.Contains('5')) {
-            return 5;
-        }
-
-        if (sceneName.Contains('6')) {
-            return 6;
-        }
-
-        return -1;
-    }
 
     public bool UnlockCheckpoint(int i, TankStats t) {
-        var successfulCheckpoint = currentLevel.CheckpointIndex < i;
+        bool successfulCheckpoint = currentLevel.CheckpointIndex < i;
         if (successfulCheckpoint) {
             currentLevel.Save(t, currCharacter, i, new List<CharacterOption>(unlockedChars));
             if (currentLevel.LevelName == latestLevel.LevelName) {
