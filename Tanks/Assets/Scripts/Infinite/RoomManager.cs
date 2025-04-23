@@ -109,6 +109,7 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic1"));
         }
         else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 31) {
+
             StartCoroutine(LoadAsyncScene("Classic2"));
         }
         else if (LevelNum == 3 || LevelNum == 17 || LevelNum == 20) {
@@ -121,6 +122,9 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic5"));
         }
         else if (LevelNum == 6 || LevelNum == 30 || LevelNum == 35) {
+            if (LevelNum == 30) {
+                randomizeSceneArray();
+            }
             StartCoroutine(LoadAsyncScene("Classic6"));
         }
         else if (LevelNum == 12 || LevelNum == 50) {
@@ -249,13 +253,16 @@ public class RoomManager : MonoBehaviour
     /// </summary>
     private int[] randomNumbers;
     private int randomLevelIndex;
+    private void randomizeSceneArray() {
+        randomLevelIndex = 0;
+        var rnd = new Random();
+        var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        randomNumbers = numbers.OrderBy(x => rnd.Next()).ToArray();
+    }
 
     private void randomizedSceneLoader() {
         if (randomLevelIndex > 9) {
-            randomLevelIndex = 0;
-            var rnd = new Random();
-            var numbers = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            randomNumbers = numbers.OrderBy(x => rnd.Next()).ToArray();
+            randomizeSceneArray();
         }
 
         var r = randomNumbers[randomLevelIndex];
