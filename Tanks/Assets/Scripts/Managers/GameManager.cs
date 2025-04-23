@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
         // Only do scene transition if we're not respawning (aka we're entering new level)
         if (!respawn) {
-            SceneTransition.I.UpdatePosition();
+            SceneTransition.I.UpdateTankScreenSpacePosition();
             SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
         }
 

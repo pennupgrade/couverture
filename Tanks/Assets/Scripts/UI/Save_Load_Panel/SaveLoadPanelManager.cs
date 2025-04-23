@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +14,7 @@ public class SaveLoadPanelManager : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start() {
-        btn_Back.onClick.AddListener(exitButtonOnClick);
+        btn_Back.onClick.AddListener(ExitButtonOnClick);
         reloadPanel();
     }
 
@@ -44,5 +45,16 @@ public class SaveLoadPanelManager : MonoBehaviour
         }
     }
 
-    public void exitButtonOnClick() => SceneManager.LoadScene("TitleScreen");
+    private void ExitButtonOnClick() => StartCoroutine(_ExitButtonOnClick());
+
+    private static IEnumerator _ExitButtonOnClick() {
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
+
+        var operation = SceneManager.LoadSceneAsync("TitleScreen")!;
+        operation.allowSceneActivation = false;
+
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
+    }
 }

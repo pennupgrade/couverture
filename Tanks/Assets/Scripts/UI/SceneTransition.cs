@@ -18,9 +18,6 @@ public class SceneTransition : MonoBehaviour
     private Image irisOverlay;
     private Material irisMat;
 
-    private const float IrisInitSize = 0f;
-    private const float IrisFinalSize = 4.5f;
-
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
     private static readonly int PositionYId = Shader.PropertyToID("_Position_Y");
@@ -32,6 +29,7 @@ public class SceneTransition : MonoBehaviour
         }
         else {
             Destroy(gameObject);
+            return;
         }
 
         fadeOverlay = transform.Find("Fade Overlay").GetComponent<CanvasGroup>();
@@ -41,15 +39,10 @@ public class SceneTransition : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnDestroy() {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        Debug.Log($"Scene loaded: {scene.name}");
-
-        if (IsInACampaignLevel) {
-            UpdatePosition();
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        // If we're currently in a campaign level
+        if (UIManager.Instance != null) {
+            UpdateTankScreenSpacePosition();
             UIManager.Instance.pauseMenu.SetStatus(scene.name);
 
             // These calls have no effect if the game isn't currently paused
@@ -60,7 +53,7 @@ public class SceneTransition : MonoBehaviour
         Disappear(type);
     }
 
-    public void UpdatePosition() {
+    public void UpdateTankScreenSpacePosition() {
         var tankObj = GameObject.FindGameObjectWithTag("Player");
         var viewportPos = Camera.main!.WorldToViewportPoint(tankObj.transform.position);
 
@@ -68,21 +61,23 @@ public class SceneTransition : MonoBehaviour
         irisMat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
     }
 
-    public bool IsAnimating => LeanTween.isTweening(irisOverlay.gameObject);
-    public static bool IsInACampaignLevel => UIManager.Instance != null;
+    public bool IsAnimating =>
+        LeanTween.isTweening(irisOverlay.gameObject) || LeanTween.isTweening(fadeOverlay.gameObject);
 
     public void Appear(TransitionType newType) {
         type = newType;
 
         switch (type) {
         case TransitionType.Fade:
-            Debug.Log("TODO fade appear!");
+            LeanTween.value(fadeOverlay.gameObject, value => {
+                fadeOverlay.alpha = value;
+            }, 0f, 1f, 0.2f).setIgnoreTimeScale(true);
             break;
 
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, IrisFinalSize, IrisInitSize, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 4.5f, 0f, 3f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:
@@ -95,13 +90,15 @@ public class SceneTransition : MonoBehaviour
 
         switch (type) {
         case TransitionType.Fade:
-            Debug.Log("TODO fade disappear!");
+            LeanTween.value(fadeOverlay.gameObject, value => {
+                fadeOverlay.alpha = value;
+            }, 1f, 0f, 0.3f).setEaseInExpo().setIgnoreTimeScale(true);
             break;
 
         case TransitionType.Iris:
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
-            }, IrisInitSize, IrisFinalSize, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            }, 0f, 4.5f, 3f).setEaseInOutExpo().setIgnoreTimeScale(true);
             break;
 
         default:
