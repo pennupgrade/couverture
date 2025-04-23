@@ -29,7 +29,7 @@ public class TitleScreen : MonoBehaviour
 
     public void OpenOptions() => StartCoroutine(_OpenOptions());
 
-    private IEnumerator _OpenOptions() {
+    private static IEnumerator _OpenOptions() {
         SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
 
         var operation = SceneManager.LoadSceneAsync("CreditsScreen")!;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HomingRocket : Projectile
@@ -10,7 +8,7 @@ public class HomingRocket : Projectile
     private bool disabled;
 
     private float homingStr, Cturn, turnTimer;
-    
+
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
@@ -18,14 +16,14 @@ public class HomingRocket : Projectile
         turnTimer = 0.1f;
         homingStr = 160;
         disabled = false;
-        Cturn = (Random.value < 0.5f) ? 50 : -50;
+        Cturn = Random.value < 0.5f ? 50 : -50;
     }
-    void Start()
-    {
+
+    private void Start() {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update() {
+    protected override void Update() {
         lifetime -= Time.deltaTime;
         if (lifetime < 0) Destroy(gameObject);
 
@@ -33,7 +31,8 @@ public class HomingRocket : Projectile
 
         if (disabled) {
             bulletSpeed += Time.deltaTime * 2;
-        } else {
+        }
+        else {
             bulletSpeed += Time.deltaTime * 0.33f;
         }
 
@@ -42,13 +41,17 @@ public class HomingRocket : Projectile
             disabled = true;
             return;
         }
-        
 
-        if (turnTimer < 0.01f){
-            Vector3 v = player.transform.position - transform.position;
-            if (Vector3.Dot(transform.right, (new Vector3(v.x, 0, v.z)).normalized) > 0){
+
+        if (turnTimer < 0.01f) {
+            var v = player.transform.position - transform.position;
+            if (Vector3.Dot(transform.right, new Vector3(v.x, 0, v.z).normalized) > 0) {
                 Cturn = homingStr;
-            } else Cturn = -homingStr;
+            }
+            else {
+                Cturn = -homingStr;
+            }
+
             turnTimer = 0.3f;
         }
 
@@ -56,25 +59,23 @@ public class HomingRocket : Projectile
     }
 
     // Update is called once per frame
-    void FixedUpdate() {
+    private void FixedUpdate() {
         transform.eulerAngles += Cturn * Time.fixedDeltaTime * Vector3.up;
-        rb.MovePosition(rb.position + (Time.fixedDeltaTime * bulletSpeed * transform.forward));
+        rb.MovePosition(rb.position + Time.fixedDeltaTime * bulletSpeed * transform.forward);
     }
 
-    void OnCollisionEnter(Collision collision) {
+    private void OnCollisionEnter(Collision collision) {
         if (defaultCollisionChecks(collision)) return;
 
-        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
-        {
+        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged") {
             destruction();
             return;
         }
-        
-        Vector3 wallNormal = collision.contacts[0].normal;
-        Vector3 bulletDir = rb.velocity.normalized;
 
-        if (collision.gameObject.tag == "OneWay")
-        {
+        var wallNormal = collision.contacts[0].normal;
+        var bulletDir = rb.velocity.normalized;
+
+        if (collision.gameObject.tag == "OneWay") {
             if (Vector3.Dot(bulletDir, wallNormal) > 0) // Angle check to see if bullet is behind wall
             {
                 return;
@@ -84,24 +85,22 @@ public class HomingRocket : Projectile
         }
     }
 
-    protected override void removeObjectFromGame()
-    {
+    protected override void removeObjectFromGame() {
         GetComponent<Animator>().Play("DefaultBulletFadeOut");
         rb.velocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
-        this.enabled = false;
+        enabled = false;
         audioManager.Stop("Rocket");
 
         Destroy(gameObject, 0.25f);
     }
 
-    private float TimerF(float val)
-    {
-        if (val > 0)
-        {
+    private float TimerF(float val) {
+        if (val > 0) {
             val -= Time.deltaTime;
             if (val <= 0) val = 0;
         }
+
         return val;
     }
 }
