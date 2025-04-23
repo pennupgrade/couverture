@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -58,14 +59,15 @@ public class SaveStateManager
 
         public void ResetData() {
             LevelName = null;
-            Stats = new();
+            Stats = new TankStats();
             CurrCharacter = CharacterOption.DEFAULT_CAT;
             CheckpointIndex = -1;
-            AdditionalUnlockedChars = new();
+            AdditionalUnlockedChars = new List<CharacterOption>();
         }
     }
 
-    public enum CharacterOption {
+    public enum CharacterOption
+    {
         DEFAULT_CAT,
         ROCKET_CAT,
         BUBBLE_CAT
@@ -174,9 +176,10 @@ public class SaveStateManager
             // if loading latest level, replace currentlevel with latestlevel
             currentLevel = latestLevel;
             unlockedChars.AddRange(currentLevel.AdditionalUnlockedChars);
-        } else if (currentLevel == null || currentLevel.LevelName != levelName) {
+        }
+        else if (currentLevel == null || currentLevel.LevelName != levelName) {
             // If currentLevel data is not applicable, wipe it and create new data
-            currentLevel = new();
+            currentLevel = new LevelSaveData();
             currentLevel.LevelName = levelName;
         }
 
@@ -200,14 +203,15 @@ public class SaveStateManager
         }
 
         if (nextLevelName != null) {
-            currentLevel.Save(t, currCharacter, -1, new());
+            currentLevel.Save(t, currCharacter, -1, new List<CharacterOption>());
             currentLevel.LevelName = nextLevelName;
             if (nextLevelName == latestLevel.LevelName) {
                 latestLevel = currentLevel;
             }
-        } else {
-            latestLevel = new();
-            latestLevel.Save(t, currCharacter, -1, new());
+        }
+        else {
+            latestLevel = new LevelSaveData();
+            latestLevel.Save(t, currCharacter, -1, new List<CharacterOption>());
             latestLevel.LevelName = "ALL LEVELS UNLOCKED";
         }
 
@@ -309,18 +313,19 @@ public class SaveStateManager
             return 6;
         }
 
-        Debug.LogWarning("GetLevelNumberFromSceneName(): could not parse valid level number!");
         return -1;
     }
 
     public bool UnlockCheckpoint(int i, TankStats t) {
-        bool successfulCheckpoint = currentLevel.CheckpointIndex < i;
+        var successfulCheckpoint = currentLevel.CheckpointIndex < i;
         if (successfulCheckpoint) {
-            currentLevel.Save(t, currCharacter, i, new(unlockedChars));
-            if (currentLevel.LevelName == latestLevel.LevelName) { // prevent unnecessary writes
+            currentLevel.Save(t, currCharacter, i, new List<CharacterOption>(unlockedChars));
+            if (currentLevel.LevelName == latestLevel.LevelName) {
+                // prevent unnecessary writes
                 WriteToSaveFile();
             }
         }
+
         return successfulCheckpoint;
     }
 
@@ -328,24 +333,7 @@ public class SaveStateManager
         if (currentLevel.CheckpointIndex == -1) {
             return null;
         }
-        return currentLevel.CheckpointIndex;
-    }
 
-    public bool UnlockCheckpoint(int i, TankStats t) {
-        bool successfulCheckpoint = currentLevel.CheckpointIndex < i;
-        if (successfulCheckpoint) {
-            currentLevel.Save(t, currCharacter, i, new(unlockedChars));
-            if (currentLevel.LevelName == latestLevel.LevelName) { // prevent unnecessary writes
-                WriteToSaveFile();
-            }
-        }
-        return successfulCheckpoint;
-    }
-
-    public int? GetCurrentCheckpoint() {
-        if (currentLevel.CheckpointIndex == -1) {
-            return null;
-        }
         return currentLevel.CheckpointIndex;
     }
 }
