@@ -8,7 +8,8 @@ public class SceneTransition : MonoBehaviour
     public enum TransitionType
     {
         Iris,
-        Fade
+        Fade,
+        None
     }
 
     public static SceneTransition I;
@@ -68,6 +69,8 @@ public class SceneTransition : MonoBehaviour
     public bool IsAnimating =>
         LeanTween.isTweening(irisOverlay.gameObject) || LeanTween.isTweening(fadeOverlay.gameObject);
 
+    public void SetType(TransitionType newType) => type = newType;
+    
     public void Appear(TransitionType newType) {
         type = newType;
 
@@ -82,6 +85,9 @@ public class SceneTransition : MonoBehaviour
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
             }, 4.5f, 0f, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.None:
             break;
 
         default:
@@ -103,6 +109,9 @@ public class SceneTransition : MonoBehaviour
             LeanTween.value(irisOverlay.gameObject, value => {
                 irisMat.SetFloat(SizeId, value);
             }, 0f, 4.5f, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.None:
             break;
 
         default:

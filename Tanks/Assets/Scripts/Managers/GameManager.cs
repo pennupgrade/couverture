@@ -62,8 +62,11 @@ public class GameManager : MonoBehaviour
         var operation = SceneManager.LoadSceneAsync(sceneName)!;
         operation.allowSceneActivation = false;
 
-        // Only do scene transition if we're not respawning (aka we're entering new level)
-        if (!respawn) {
+        if (respawn) {
+            SceneTransition.I.SetType(SceneTransition.TransitionType.None);
+        }
+        else {
+            // Only do scene transition if we're not respawning (aka we're entering new level)
             SceneTransition.I.UpdateIrisPosition(player.gameObject);
             SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
         }
