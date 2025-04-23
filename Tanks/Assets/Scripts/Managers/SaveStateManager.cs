@@ -21,7 +21,7 @@ public class SaveStateManager
     public static SaveStateManager LoadInventory(string saveLocation) {
         SaveStateManager outManager;
         using (StreamReader reader = new(saveLocation)) {
-            var jsonData = reader.ReadToEnd();
+            string jsonData = reader.ReadToEnd();
             outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
             outManager.SetSaveLocation(saveLocation);
         }
@@ -196,7 +196,7 @@ public class SaveStateManager
     public void FinishLevel(string nextLevelName, TankStats t, bool toSave) {
         // update unlockedCharList
         unlockedCharList.Clear();
-        foreach (var x in unlockedChars) {
+        foreach (CharacterOption x in unlockedChars) {
             unlockedCharList.Add(x);
         }
 
@@ -242,7 +242,7 @@ public class SaveStateManager
 
     private void WriteToSaveFile() {
         // calculate last played time and total play time
-        var now = DateTime.Now;
+        DateTime now = DateTime.Now;
 
         // TODO: could have issues if crossing between time zones
         lastPlayedTime = new DateTimeSerializable(now);
