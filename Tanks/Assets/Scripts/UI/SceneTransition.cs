@@ -1,83 +1,107 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneTransition : MonoBehaviour
 {
+    public enum TransitionType
+    {
+        Iris,
+        Fade
+    }
+
     public static SceneTransition I;
-    
-    // Incredible hack!
-    public bool RestartClickedFromPauseMenu { get; set; }
-    
-    [SerializeField] private Image overlay;
-    
-    private const float Init = 0f;
-    private const float Final = 4.5f;
-    
-    private string previousSceneName;
-    private Material mat;
-    
+    public TransitionType type;
+
+    private CanvasGroup fadeOverlay;
+    private Image irisOverlay;
+    private Material irisMat;
+
+    private const float IrisInitSize = 0f;
+    private const float IrisFinalSize = 4.5f;
+
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
     private static readonly int PositionYId = Shader.PropertyToID("_Position_Y");
 
     private void Awake() {
-        if (I == null)
-        {
+        if (I == null) {
             I = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
         }
-        
-        mat = overlay.material;
-        previousSceneName = SceneManager.GetActiveScene().name;
+
+        fadeOverlay = transform.Find("Fade Overlay").GetComponent<CanvasGroup>();
+        irisOverlay = transform.Find("Iris Overlay").GetComponent<Image>();
+        irisMat = irisOverlay.material;
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start() {
-        UIManager.instance.pauseMenu.SetStatus(SceneManager.GetActiveScene().name);
-        Disappear();
-    }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        // This function should only run when we enter a new level or when we pressed restart from the pause menu
-        if (scene.name == previousSceneName && !RestartClickedFromPauseMenu) return;
+        Debug.Log($"Scene loaded: {scene.name}");
 
-        RestartClickedFromPauseMenu = false;
-        previousSceneName = scene.name;
-        
-        UpdatePosition();
-        Disappear();
-        
-        // These don't do anything if the game isn't currently paused
-        UIManager.instance.pauseMenu.HidePanel();
-        UIManager.instance.pauseMenu.SetStatus(scene.name);
-        GameManager.Instance.ResumeGame();
+        if (IsInACampaignLevel) {
+            UpdatePosition();
+            UIManager.Instance.pauseMenu.SetStatus(scene.name);
+
+            // These calls have no effect if the game isn't currently paused
+            UIManager.Instance.pauseMenu.HidePanel();
+            GameManager.Instance.ResumeGame();
+        }
+
+        Disappear(type);
     }
 
     public void UpdatePosition() {
         var tankObj = GameObject.FindGameObjectWithTag("Player");
+        var viewportPos = Camera.main!.WorldToViewportPoint(tankObj.transform.position);
 
-        if (tankObj != null) {
-            var viewportPos = Camera.main!.WorldToViewportPoint(tankObj.transform.position);
-            mat.SetFloat(PositionXId, Mathf.Clamp01(viewportPos.x));
-            mat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
+        irisMat.SetFloat(PositionXId, Mathf.Clamp01(viewportPos.x));
+        irisMat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
+    }
+
+    public bool IsAnimating => LeanTween.isTweening(irisOverlay.gameObject);
+    public static bool IsInACampaignLevel => UIManager.Instance != null;
+
+    public void Appear(TransitionType newType) {
+        type = newType;
+
+        switch (type) {
+        case TransitionType.Fade:
+            Debug.Log("TODO fade appear!");
+            break;
+
+        case TransitionType.Iris:
+            LeanTween.value(irisOverlay.gameObject, value => {
+                irisMat.SetFloat(SizeId, value);
+            }, IrisFinalSize, IrisInitSize, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(type.ToString());
         }
     }
-    
-    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject);
 
-    public void Appear() => LeanTween.value(overlay.gameObject, value => {
-        mat.SetFloat(SizeId, value);
-    }, Final, Init, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
-    
-    public void Disappear() => LeanTween.value(overlay.gameObject, value => {
-        mat.SetFloat(SizeId, value);
-    }, Init, Final, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+    public void Disappear(TransitionType newType) {
+        type = newType;
+
+        switch (type) {
+        case TransitionType.Fade:
+            Debug.Log("TODO fade disappear!");
+            break;
+
+        case TransitionType.Iris:
+            LeanTween.value(irisOverlay.gameObject, value => {
+                irisMat.SetFloat(SizeId, value);
+            }, IrisInitSize, IrisFinalSize, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(type.ToString());
+        }
+    }
 }
