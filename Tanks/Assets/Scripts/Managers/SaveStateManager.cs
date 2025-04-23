@@ -151,17 +151,15 @@ public class SaveStateManager
 
     private Character CreateNewChar(CharacterOption characterId) {
         switch (characterId) {
-        case CharacterOption.ROCKET_CAT:
-            return new RocketChar();
-        case CharacterOption.BUBBLE_CAT:
-            return new BubbleChar();
-        case CharacterOption.DEFAULT_CAT:
-            return new DefaultChar();
-        default:
-            throw new ArgumentException();
-        }
-
-        ;
+            case CharacterOption.ROCKET_CAT:
+                return new RocketChar();
+            case CharacterOption.BUBBLE_CAT:
+                return new BubbleChar();
+            case CharacterOption.DEFAULT_CAT:
+                return new DefaultChar();
+            default:
+                throw new ArgumentException();
+        };
     }
 
     public void LoadLevel(string levelName, Tank t) {
