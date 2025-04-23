@@ -289,7 +289,9 @@ public class SaveStateManager {
         bool successfulCheckpoint = currentLevel.CheckpointIndex < i;
         if (successfulCheckpoint) {
             currentLevel.Save(t, currCharacter, i, new(unlockedChars));
-            WriteToSaveFile();
+            if (currentLevel.LevelName == latestLevel.LevelName) { // prevent unnecessary writes
+                WriteToSaveFile();
+            }
         }
         return successfulCheckpoint;
     }
