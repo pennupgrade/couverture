@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         else {
             // Only do scene transition if we're not respawning (aka we're entering new level)
             SceneTransition.I.UpdateIrisPosition(player.gameObject);
-            SceneTransition.I.Appear(SceneTransition.TransitionType.Iris);
+            SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
         }
 
         // Wait on the max between duration and the scene transition duration
