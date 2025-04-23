@@ -41,6 +41,10 @@ public class SceneTransition : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         Debug.Log($"Scene loaded: {scene.name}");
 
