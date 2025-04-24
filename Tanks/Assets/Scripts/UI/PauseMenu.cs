@@ -15,7 +15,7 @@ public class PauseMenu : MonoBehaviour
     private RectTransform panelRt;
     private CanvasGroup panelCg;
 
-    private const float AnimationTime = 0.35f;
+    private const float PanelAnimTime = 0.35f;
 
     private void Awake() {
         panelRt = panel.GetComponent<RectTransform>();
@@ -38,19 +38,19 @@ public class PauseMenu : MonoBehaviour
         LeanTween.value(panel, value => {
             panelCg.alpha = value;
             overlay.alpha = value;
-        }, 0f, 1f, AnimationTime).setEaseOutExpo().setIgnoreTimeScale(true);
+        }, 0f, 1f, PanelAnimTime).setEaseOutExpo().setIgnoreTimeScale(true);
 
         LeanTween.moveY(panelRt, -200f, 0f).setIgnoreTimeScale(true);
-        LeanTween.moveY(panelRt, 0f, AnimationTime).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveY(panelRt, 0f, PanelAnimTime).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
     public void HidePanel() {
         LeanTween.value(panel, value => {
             panelCg.alpha = value;
             overlay.alpha = value;
-        }, 1f, 0f, AnimationTime).setEaseInExpo().setIgnoreTimeScale(true);
+        }, 1f, 0f, PanelAnimTime).setEaseInExpo().setIgnoreTimeScale(true);
 
-        LeanTween.moveY(panelRt, -200f, AnimationTime).setEaseInExpo()
+        LeanTween.moveY(panelRt, -200f, PanelAnimTime).setEaseInExpo()
                  .setIgnoreTimeScale(true)
                  .setOnComplete(() => panel.SetActive(false));
     }
@@ -80,7 +80,8 @@ public class PauseMenu : MonoBehaviour
     public void HandleRestartLevel() {
         if (GameManager.Instance != null) {
             // Campaign mode
-            GameManager.Instance.RestartLevel();
+            UIManager.Instance.pauseMenu.HidePanel();
+            GameManager.Instance.RestartLevel(PanelAnimTime + 0.01f);
         }
         else {
             // Classic does not have restart

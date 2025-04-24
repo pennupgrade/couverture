@@ -86,9 +86,7 @@ public class SceneTransition : MonoBehaviour
     }
 
     public bool IsAnimating =>
-        LeanTween.isTweening(irisOverlay.gameObject) || LeanTween.isTweening(fadeOverlay.gameObject) ||
-        LeanTween.isTweening(nowEntering) || LeanTween.isTweening(levelNumberRt) ||
-        LeanTween.isTweening(nowEntering.gameObject);
+        LeanTween.isTweening(irisOverlay.gameObject) || LeanTween.isTweening(fadeOverlay.gameObject);
 
     private void IrisAppear() => LeanTween.value(irisOverlay.gameObject, value => {
         irisMat.SetFloat(SizeId, value);
@@ -120,8 +118,8 @@ public class SceneTransition : MonoBehaviour
         case TransitionType.Level:
             IrisAppear();
 
-            nowEnteringCg.alpha = 1;
-            levelNumberCg.alpha = 1;
+            nowEnteringCg.alpha = 1f;
+            levelNumberCg.alpha = 1f;
             LeanTween.moveY(nowEntering, 300f, 0f).setIgnoreTimeScale(true);
             LeanTween.moveY(levelNumberRt, 300f, 0f).setIgnoreTimeScale(true);
 

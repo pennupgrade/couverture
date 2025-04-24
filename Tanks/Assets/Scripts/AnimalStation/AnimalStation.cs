@@ -6,21 +6,22 @@ public class AnimalStation : MonoBehaviour
 
     private bool inRange;
 
-    private void Start() { }
-
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player") {
+        if (other.CompareTag("Player")) {
             inRange = true;
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.tag == "Player") {
+        if (other.CompareTag("Player")) {
             inRange = false;
         }
     }
 
     private void Update() {
+        // Prevent opening again if already open
+        if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
+
         if (inRange && Input.GetKeyDown(KeyCode.E)) {
             SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
             UIManager.Instance.Update_CatSelectionPanel_DuringGame();

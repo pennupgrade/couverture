@@ -49,8 +49,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_GoToNextLevel(transitionTime, nextSceneName, transitionType));
 
     private static IEnumerator _GoToNextLevel(float duration, string nextSceneName,
-                                              TransitionType transitionType)
-    {
+                                              TransitionType transitionType) {
         SaveStateManagerGameObject.FinishLevel(nextSceneName, true);
 
         var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(nextSceneName);
@@ -76,7 +75,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TimerToRestart(respawnTime, currentLevel));
     }
 
-    // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
+    public void RestartLevel(float duration) => StartCoroutine(TimerToRestart(duration, currentLevel));
+
     private IEnumerator TimerToRestart(float duration, string sceneName, bool respawn = false) {
         var operation = SceneManager.LoadSceneAsync(sceneName)!;
         operation.allowSceneActivation = false;
@@ -90,8 +90,11 @@ public class GameManager : MonoBehaviour
             SceneTransition.I.Appear(TransitionType.Fade);
         }
 
+        // Duration should be at least 0.1 seconds (necessary for PlayerCamera.SmoothMoveCamera)
+        var actualDuration = Mathf.Max(0.1f, duration);
+
         // Wait on the max between duration and the scene transition duration
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSecondsRealtime(actualDuration);
         yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
         operation.allowSceneActivation = true;
