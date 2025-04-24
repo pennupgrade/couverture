@@ -11,10 +11,10 @@ public class TankMoveState : TankState
         Vector3 target = -dir.x * tank.forward + dir.y * tank.right;
 
         float dot = Vector3.Dot(tank.Roomba.transform.right, target);
-        if (dot > 0.0015) {
-            cTurnSpeed = -400;
-        } else if (dot < -0.0015f) {
-            cTurnSpeed = 400;
+        if (dot > 0.006f) {
+            cTurnSpeed = -2 * dot * 250;
+        } else if (dot < -0.006f) {
+            cTurnSpeed = -2 * dot * 250;
         } else {
             cTurnSpeed /= -100;
         }
