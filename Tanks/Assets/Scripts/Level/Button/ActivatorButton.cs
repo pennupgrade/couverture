@@ -23,7 +23,9 @@ public class ActivatorButton : MonoBehaviour
         }
     }
     protected void buttonPressed() {
-        audioManager.Play("Press");
+        if (audioManager != null) {
+            audioManager.Play("Press");
+        }
         foreach (GameObject g in toChange) {
             if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
                 aObj.activate();

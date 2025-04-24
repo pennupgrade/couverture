@@ -93,6 +93,7 @@ public class RoomManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         changeBGM(true);
         pTank.Unfreeze();
+        yield return new WaitForSeconds(0.9f);
         noPause = false;
     }
 
