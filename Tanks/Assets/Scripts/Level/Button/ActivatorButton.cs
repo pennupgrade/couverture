@@ -20,10 +20,10 @@ public class ActivatorButton : MonoBehaviour
         if (!onCooldown && other.transform.tag == "Player")
         {
             buttonPressed();
-            audioManager.Play("Press");
         }
     }
     protected void buttonPressed() {
+        audioManager.Play("Press");
         foreach (GameObject g in toChange) {
             if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
                 aObj.activate();
