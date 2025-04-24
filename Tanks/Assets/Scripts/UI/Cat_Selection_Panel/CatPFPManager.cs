@@ -19,8 +19,6 @@ public class CatPFPManager : MonoBehaviour
 
     private readonly List<CatPFP> pfps = new();
     private CatPFP currentPFP;
-    
-    public CanvasGroup canvasGroup;
 
     private void Awake() {
         instance = this;
@@ -92,26 +90,6 @@ public class CatPFPManager : MonoBehaviour
             SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
         }
 
-        FadeInSelectionPanel(false);
-        UIManager.Instance.QuitFrom_CatSelectionPanel_DuringGame(Tank.FindPlayer().character is not DefaultChar);
-    }
-
-    public void FadeInSelectionPanel(bool enabled)
-    {
-        if (enabled)
-        {
-            canvasGroup.alpha = 0f;
-            LeanTween.alphaCanvas(canvasGroup, 1f, 0.15f).setIgnoreTimeScale(true);
-        }
-        else
-        {
-            canvasGroup.alpha = 1f;
-            LeanTween.alphaCanvas(canvasGroup, 0f, 0.15f).setIgnoreTimeScale(true).setOnComplete(FinishFadeOutSelectionPanel);
-        }
-    }
-
-    public void FinishFadeOutSelectionPanel()
-    {
-        UIManager.Instance.FinishAnimateOutSelectionPanel();
+        UIManager.Instance.QuitFrom_CatSelectionPanel_DuringGame();
     }
 }

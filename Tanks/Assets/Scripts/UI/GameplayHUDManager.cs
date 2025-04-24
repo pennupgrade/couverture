@@ -100,20 +100,13 @@ public class GameplayHUDManager : MonoBehaviour
 
     public void EnableAbilityBar(bool enable) {
         if (enable) {
-            abilityIcon.gameObject.SetActive(false);
+            abilityIcon.gameObject.SetActive(true);
             LeanTween.moveY(abilityIcon, -100f, 0f);
-            StartCoroutine(EnableAbilityIconAnimation());
+            LeanTween.moveY(abilityIcon, 45f, 0.5f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true)
+                     .setDelay(0.2f);
         }
         else {
             abilityIcon.gameObject.SetActive(false);
         }
-    }
-
-    private IEnumerator EnableAbilityIconAnimation()
-    {
-        yield return new WaitForSeconds(0.1f);
-        LeanTween.moveY(abilityIcon, 45f, 0.5f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true)
-            .setDelay(0.2f);
-        abilityIcon.gameObject.SetActive(true);
     }
 }
