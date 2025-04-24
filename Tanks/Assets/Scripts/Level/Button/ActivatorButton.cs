@@ -20,7 +20,7 @@ public class ActivatorButton : MonoBehaviour
         if (!onCooldown && other.transform.tag == "Player")
         {
             buttonPressed();
-            audioManager.Play("Press");
+            audioManager?.Play("Press");
         }
     }
     protected void buttonPressed() {
