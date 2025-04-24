@@ -26,7 +26,7 @@ public class EnemySpawner : Activatable
 
     //call at start
     public static void reset() {
-        EnemiesRemaining = 0;
+        enemiesRemaining = 0;
     }
 
     public override void activate() {
