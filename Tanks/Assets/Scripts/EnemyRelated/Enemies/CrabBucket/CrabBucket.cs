@@ -13,8 +13,8 @@ public class CrabBucket : MonoBehaviour
 
     private CrabBucketAttack attackScript;
     private ParticleSystem attackEffects;
-    [SerializeField] private AudioSource sound;
-    [SerializeField] private AudioSource blockedSound;
+    //[SerializeField] private AudioSource sound;
+    //[SerializeField] private AudioSource blockedSound;
 
     [SerializeField] private GameObject sphere_indicator;
     [SerializeField] private LayerMask obstacleLayer;
@@ -26,6 +26,8 @@ public class CrabBucket : MonoBehaviour
         attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
         attackWaitTimeCounter = attackWaitTime;
     }
+
+    public AudioManager audioManager;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -94,25 +96,31 @@ public class CrabBucket : MonoBehaviour
                     BubbleChar bc = (BubbleChar)(player.GetComponent<Tank>().character);
                     if(bc!= null && bc.active)
                     {
-                        bc.obj.GetComponent<Bubble>().takeDamage(1);
                         Debug.Log("Attack Blocked by Shield");
-                        blockedSound.Play();
+
+                        audioManager.Play("Block Attack Sound");
+
+                        //blockedSound.Play();
                         return;
                     }
                 }
 
                     player.GetComponent<Tank>().takeDamage(damage);
-                sound.Play();
+                //sound.Play();
+
+                audioManager.Play("Attack Sound");
             }
             else
             {
                 Debug.Log("Attack Blocked by Obstacle");
-                blockedSound.Play();
+                audioManager.Play("Block Attack Sound");
             }
         }
         else
         {
             Debug.Log("Missed");
+            //audioManager.Play("Block Attack Sound");
+
         }
     }
 }

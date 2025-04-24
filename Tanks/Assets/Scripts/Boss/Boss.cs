@@ -25,11 +25,12 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private SlidingWall exitWall;
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
-   [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
     private List<List<GameObject>> enemies;
+    public bool isStarted = false;
     
     private void Awake()
     {
@@ -59,13 +60,15 @@ public class Boss : MonoBehaviour, IDestroyable
             startPos = shotgunBarrel3;
 
         // Shoot the bullet forwards
-        bool random = true;
+        bool random = false;
         float dispersion = 0.5f;
         GameObject bullet = PoolManager.bulletPool.Get().gameObject;
-        bullet.transform.position = startPos.position;
-        bullet.GetComponent<Rigidbody>().velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
+        bullet.transform.position = new Vector3(startPos.position.x, -1.055195f, startPos.position.z);
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        rb.velocity = (Quaternion.AngleAxis(dispersion * ((random) ? (Random.value - 0.5f) : 1), Vector3.up)
          * startPos.forward * bullet.GetComponent<Projectile>().bulletSpeed);
-        bullet.transform.rotation = Quaternion.LookRotation(bullet.GetComponent<Rigidbody>().velocity);
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        bullet.transform.rotation = Quaternion.LookRotation(rb.velocity);
     }
 
     // Shoots a bullet through all 3 barrels
@@ -177,7 +180,7 @@ public class Boss : MonoBehaviour, IDestroyable
     }
     public void ShootMissile()
     {
-        Vector3 shootPosition = transform.position + new Vector3(0, 2, 0);
+        Vector3 shootPosition = transform.position + new Vector3(0, 0, 0);
         GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(shootPosition, player.transform.position);

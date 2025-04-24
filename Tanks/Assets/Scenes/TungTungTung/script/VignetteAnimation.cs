@@ -23,9 +23,9 @@ public class VignetteAnimation : MonoBehaviour
     {
         volume.profile.TryGet(out vignette);
 
-        baseIntensity = vignette.intensity.value;
+        baseIntensity = vignette.intensity.value + 0.293f;
 
-        volume.weight = 0f;
+        //volume.weight = 0f;
         vignetteEnabled = false;
     }
 
@@ -44,7 +44,7 @@ public class VignetteAnimation : MonoBehaviour
 
             if (volume.weight < 1f)
             {
-                volume.weight += 1f / enableTime * Time.deltaTime;
+                //volume.weight += 1f / enableTime * Time.deltaTime;
             }
 
             vignette.intensity.value = Mathf.Sin(animCurve.Evaluate(Time.time % 1)) * animationIntensity + baseIntensity;

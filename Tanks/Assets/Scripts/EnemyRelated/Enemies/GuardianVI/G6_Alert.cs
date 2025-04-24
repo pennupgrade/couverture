@@ -95,9 +95,11 @@ public class G6_Alert : EnemyAlertState
                 yield return new WaitForSeconds(enemy.cooldownTime);
             } else if (!tryingBounce && enemy.numBullets > 0 && lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
                 yield return new WaitForSeconds(0.06f);
+                
                 ((Guardian6)enemy).fire();
                 enemy.numBullets--;
                 leadPlayer = Random.value < enemy.leadChance;
+                
                 yield return new WaitForSeconds(enemy.cooldownTime - 0.06f);
             } else {
                 yield return new WaitForSeconds(0.2f);
@@ -110,8 +112,10 @@ public class G6_Alert : EnemyAlertState
             if (!tryingBounce) {
                 yield return new WaitForSeconds(enemy.cooldownTime);
                 if (calcAllBounces(out Vector3 shootPos)) {
-                    tryingBounce = true;
-                    bouncePos = shootPos;
+                    if (Vector3.Distance(shootPos, enemy.rb.position) > 1.8f) {
+                        tryingBounce = true;
+                        bouncePos = shootPos;
+                    }
                 }
             } else {
                 yield return new WaitForSeconds(2 * enemy.cooldownTime);
@@ -123,18 +127,18 @@ public class G6_Alert : EnemyAlertState
         //left
         float dist = Vector3.Distance(enemy.gun.transform.position, enemy.gunShotPos.position);
         Vector3 shootDir;
-        for (int i = -20; i <= -120; i -= 20) {
+        //right
+        for (int i = 20; i <= 120; i += 20) {
+            //right
             shootDir = Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward;
             if (calcBounce(shootDir, enemy.gun.transform.position + dist * shootDir, out Vector3 hitPos)) {
                 hitpos = hitPos;
                 return true;
             }
-        }
-        //right
-        for (int i = 20; i <= 120; i += 20) {
-            shootDir = Quaternion.AngleAxis(i, Vector3.up) * enemy.gun.transform.forward;
-            if (calcBounce(shootDir, enemy.gun.transform.position + dist * shootDir, out Vector3 hitPos)) {
-                hitpos = hitPos;
+            //left
+            shootDir = Quaternion.AngleAxis(-i, Vector3.up) * enemy.gun.transform.forward;
+            if (calcBounce(shootDir, enemy.gun.transform.position + dist * shootDir, out Vector3 hitPos2)) {
+                hitpos = hitPos2;
                 return true;
             }
         }

@@ -123,7 +123,7 @@ public class MissileScript : MonoBehaviour
                 }
             } else
             {
-                targetZoneRenderer.material.color = finalTargetZoneColor;
+                if (targetZoneRenderer != null) targetZoneRenderer.material.color = finalTargetZoneColor;
             }
         }
     }

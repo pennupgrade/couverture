@@ -77,7 +77,7 @@ public abstract class Enemy_State
             return false;
         }
         //ensures player is not above or below
-        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 0.2f) {
+        if (Mathf.Abs(enemy.rb.position.y - enemy.playerRB.position.y) > 0.7f) {
             return false;
         }
         //if distance under 4, only check if in LOS
@@ -153,15 +153,17 @@ public abstract class Enemy_State
         }
     }
     protected void fire(float dispersion, bool random = true) {
-        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.2f, (1 << 2) | (1 << 8));
+        Collider[] hitColliders = Physics.OverlapSphere(enemy.gunShotPos.position, 0.2f, (1 << 2) | (1 << 8) | (1 << 3));
         foreach (var hit in hitColliders) {
             if (hit.gameObject.tag == "Tank") {
                 return;
             } else if (hit.gameObject.tag == "Player") {
                 enemy.fireSound();
-                enemy.pTank.takeDamage(300);
+                enemy.pTank.takeDamage(700);
                 GameObject bExplode = GameObject.Instantiate(enemy.bulletExplosionPrefab, enemy.gunShotPos.position, Quaternion.identity);
                 GameObject.Destroy(bExplode, 3);
+                return;
+            } else {
                 return;
             }
         }
@@ -274,10 +276,8 @@ public abstract class Enemy_State
         {
             case NavMeshPathStatus.PathComplete:
                 return true;
-                break;
             default:
                 return false;
-                break;
         }
     }
     protected bool hasReachedDest() {

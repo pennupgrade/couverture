@@ -10,7 +10,7 @@ public class Scout_Alert : EnemyAlertState
         leadPlayer = false;
         if (!((Scout)enemy).warningSent) {
             ((Scout)enemy).warningSent = true;
-            enemy.StartCoroutine(sendWarning());
+            ((Scout)enemy).signalFlare();
         }
     }
     private IEnumerator sendWarning() {

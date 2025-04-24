@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeterminePlayerOcclusion : MonoBehaviour
 {
-    Tank player;
-    bool isVisible = false;
+    private Tank player;
 
-    MeshRenderer meshRenderer;
-    Material material;
+    private MeshRenderer meshRenderer;
+    private Material material;
 
-    void Start()
-    {
+    private void Start() {
         player = FindObjectOfType<Tank>();
         meshRenderer = GetComponent<MeshRenderer>();
 
@@ -21,11 +17,9 @@ public class DeterminePlayerOcclusion : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    private void Update() {
         // Send raycasts
-        if (player && material)
-        {
+        if (player && material) {
             material.SetVector("_PlayerPos", player.transform.position);
             material.SetVector("_Camera", Camera.main.transform.position);
         }

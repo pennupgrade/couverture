@@ -1,46 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimalStation : MonoBehaviour
 {
     [SerializeField] public SaveStateManager.CharacterOption characterToUnlock;
 
-    private bool inRange = false;
+    private bool inRange;
 
-    void Start()
-    {
-        
-    }
+    private void Start() { }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player")
-        {
+    private void OnTriggerEnter(Collider other) {
+        if (other.tag == "Player") {
             inRange = true;
         }
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
+
+    private void OnTriggerExit(Collider other) {
+        if (other.tag == "Player") {
             inRange = false;
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("Clicked");
-            Debug.Log(inRange);
-        }
-        
-        if(inRange && Input.GetKeyDown(KeyCode.E))
-        {
+    private void Update() {
+        if (inRange && Input.GetKeyDown(KeyCode.E)) {
             SaveStateManagerGameObject.UnlockCharacter(characterToUnlock);
-            UIManager.instance.Update_CatSelectionPanel_DuringGame();
-            UIManager.instance.Open_CatSelectionPanel_DuringGame();
+            UIManager.Instance.Update_CatSelectionPanel_DuringGame();
+            UIManager.Instance.Open_CatSelectionPanel_DuringGame();
         }
     }
 }

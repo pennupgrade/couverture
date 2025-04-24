@@ -7,11 +7,14 @@ public class RicochetRocket : Projectile
     [SerializeField] private int bounces;
     private Rigidbody rb;
     private Vector3 lastVelocity;
+    private int wallTouchCounter;
     
     // Start is called before the first frame update
     protected override void Awake() {
         base.Awake();
+        dontDamageOnSpawnDelay = 0;
         bulletSpeed = 6f;
+        wallTouchCounter = 0;
     }
     void Start()
     {
@@ -61,6 +64,13 @@ public class RicochetRocket : Projectile
             }
 
             ReflectBullet(bulletDir, wallNormal);
+        }
+    }
+    void OnCollisionStay(Collision collision) {
+        if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
+        {
+            wallTouchCounter++;
+            if (wallTouchCounter > 10) destruction();
         }
     }
 }

@@ -83,7 +83,11 @@ public class PlayerCamera : MonoBehaviour
     }
 
     public void Kill(float duration) {
-        StartCoroutine(SmoothMoveCamera(ogCamPos, duration));
+        Vector3 endPos = ogCamPos;
+        if (CheckpointManagerV2.GetCurrentCheckpointLocation() is Vector3 vec) {
+            endPos = vec + cameraDirection * distanceFromPlayer;
+        }
+        StartCoroutine(SmoothMoveCamera(endPos, duration));
         isDead = true;
     }
 

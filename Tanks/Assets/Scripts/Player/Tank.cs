@@ -8,8 +8,8 @@ public class Tank : MonoBehaviour, IDestroyable
 {
     public Character character = null;
 
-    public const float RELOAD_TIME = 1.5f;
-    public const float COOLDOWN_TIME = 0.18f;
+    public const float RELOAD_TIME = 1.35f;
+    public const float COOLDOWN_TIME = 0.4f;
 
     // Base Items
     public Controls controls;
@@ -25,6 +25,7 @@ public class Tank : MonoBehaviour, IDestroyable
     // Config Variables
     private bool invincible;
     private bool disableMove;
+    private bool noRotation;
     public bool disableFire {
         get;
         private set;
@@ -83,15 +84,6 @@ public class Tank : MonoBehaviour, IDestroyable
         characterController = GetComponent<CharacterController>();
         // tankCollider = GetComponent<BoxCollider>();
 
-        controls.TankControls.Shoot.performed += _ => {
-            //If player is moving, bullet speed can be affected
-            Vector3 deltaPos = currentPos - previousPos;
-
-            //Debug.Log(platformSpeed);
-
-            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
-        };
-
         numBullets = MAX_BULLETS;
         maxHealth = health;
 
@@ -108,27 +100,27 @@ public class Tank : MonoBehaviour, IDestroyable
         // addEffect(effect);
     }
 
-    public void FreezeRotationAllowed() {
-        if (reloadCoroutine != null) {
-            StopCoroutine(reloadCoroutine);
-        }
+    public void Freeze(bool rotationAllowed) {
         disableMove = true;
         invincible = true;
         disableFire = true;
+        noRotation = !rotationAllowed;
     }
 
-    public void FreezeNoRotation() {
-        Quaternion rot = transform.rotation;
-        invincible = true;
-        controls.Disable();
-        transform.rotation = rot;
-    }
-
-    public void UnfreezeNoRotation() {
+    public void Unfreeze() {
         disableMove = false;
         invincible = false;
-        controls.Enable();
+        disableFire = false;
+        noRotation = false;
     }
+
+    public void FreezeEndOfLevel() {
+        if (reloadCoroutine != null) {
+            StopCoroutine(reloadCoroutine);
+        }
+        Freeze(true);
+    }
+
     public void setInvincible(bool noDamage) {
         invincible = noDamage;
     }
@@ -160,6 +152,15 @@ public class Tank : MonoBehaviour, IDestroyable
         tankController.GravityFall();
         bool wasIdle = tankState is TankIdleState;
 
+        if (controls.TankControls.Shoot.IsPressed()){
+            //If player is moving, bullet speed can be affected
+            Vector3 deltaPos = currentPos - previousPos;
+
+            //Debug.Log(platformSpeed);
+
+            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
+        };
+
         if (!disableMove)
         {
             tankState = tankState.HandleMovement(moveDir);
@@ -180,7 +181,9 @@ public class Tank : MonoBehaviour, IDestroyable
             StopCoroutine("SpawnTracks");
             spawningTracks = false;
         }
-        tankState = tankState.HandleGunRotation(gunRot);
+        if (!noRotation) {
+            tankState = tankState.HandleGunRotation(gunRot);
+        }
 
         for(int i = 0; i < effects.Count; i++) {
             if (!effects[i].enabled) {
@@ -232,7 +235,12 @@ public class Tank : MonoBehaviour, IDestroyable
 
             if (spawningTracks)
             {
-                Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation);
+                RaycastHit info;
+                if (Physics.Raycast(tracksParent.position, Vector3.down, out info, 1f))
+                {
+                    Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation, info.transform);
+
+                }
             }
         }
     }
@@ -269,7 +277,7 @@ public class Tank : MonoBehaviour, IDestroyable
                 Destroy(expl, 2);
             }
 
-            FreezeNoRotation();
+            Freeze(false);
             if (RoomManager.Instance != null) {
                 //wii tanks mode
                 RoomManager.Instance.playerDeath();

@@ -13,6 +13,7 @@ public class DamageFlash
     private Material[] materials;
     private Coroutine _damageFlashCorountine;
     private Coroutine invisFlickerCor;
+    private Coroutine invisDamageCor;
 
     public DamageFlash()
     {
@@ -47,7 +48,9 @@ public class DamageFlash
     }
     public void CallInvisDamage(MonoBehaviour mono, float duration)
     {
-        mono.StartCoroutine(InvisDamage(duration));
+        if (invisDamageCor == null) {
+            invisDamageCor = mono.StartCoroutine(InvisDamage(duration));
+        }
     }
     public void CallElectricity(MonoBehaviour mono, float duration)
     {
@@ -84,15 +87,26 @@ public class DamageFlash
     }
     private IEnumerator InvisDamage(float duration)
     {
-        yield return new WaitForSeconds(0.1f);
+        SetFloatUniform("_Electricity", 1f);
+        SetFloatUniform("_Dissolve", 0.2f);
+        yield return new WaitForSeconds(duration);
+        SetFloatUniform("_Electricity", 0f);
+
         float elapsedTime = 0f;
-        while (elapsedTime < duration)
+        float reducedDissolveTime = 0.3f;
+
+        while (elapsedTime < reducedDissolveTime - 0.02f)
         {
             elapsedTime += Time.deltaTime;
-            float amount = Mathf.Lerp(1f, 0f, (elapsedTime) / duration);
-            SetFloatUniform("_OutlineDamage", amount);
+
+            float dissolveAmount = Mathf.Lerp(0.2f, 1f, (elapsedTime) / reducedDissolveTime);
+            SetFloatUniform("_Dissolve", dissolveAmount);
+
             yield return null;
         }
+
+        SetFloatUniform("_Dissolve", 1.0f);
+        invisDamageCor = null;
     }
 
     private IEnumerator Dissolve(float dissolveTime)

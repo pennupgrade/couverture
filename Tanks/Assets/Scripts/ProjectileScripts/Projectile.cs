@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
@@ -12,84 +10,88 @@ public abstract class Projectile : MonoBehaviour
     protected bool destroyed;
     public GameObject parent;
 
-    public float dontDamageOnSpawnDelay=0.08f;
+    public float dontDamageOnSpawnDelay = 0.08f;
 
     protected float startLifetime;
 
     public AudioManager audioManager;
 
-    protected virtual void Awake()
-    {
+    protected virtual void Awake() {
         startLifetime = lifetime;
     }
 
-    protected virtual void Update()
-    {
+    protected virtual void Update() {
         lifetime -= Time.deltaTime;
         if (lifetime < 0) removeObjectFromGame();
     }
+
     public virtual void destruction() {
         if (destroyed) return;
         destroyed = true;
         if (explosionPrefab != null) {
-            GameObject expl = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            var expl = Instantiate(explosionPrefab, transform.position - 0.06f * transform.forward,
+                                   Quaternion.identity);
             Destroy(expl, 2);
         }
+
         //first child should be a trail
         if (transform.childCount != 0) {
-            if (transform.GetChild(0).gameObject.TryGetComponent<ParticleSystem>(out ParticleSystem ps)){
+            if (transform.GetChild(0).gameObject.TryGetComponent(out ParticleSystem ps)) {
                 ps.Stop();
+
                 //for rocket
                 transform.GetChild(0).localScale = 1 / transform.localScale.x * transform.GetChild(0).localScale;
                 Destroy(transform.GetChild(0).gameObject, 2.5f);
             }
+
             transform.GetChild(0).parent = null;
         }
 
         removeObjectFromGame();
     }
 
-    protected virtual void removeObjectFromGame()
-    {
+    protected virtual void removeObjectFromGame() {
         Destroy(gameObject);
     }
 
     protected bool defaultCollisionChecks(Collision collision) {
-        if (collision.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) // hit a player
+        if (collision.gameObject.TryGetComponent(out IDestroyable d)) // hit a player
         {
-            if ((startLifetime - lifetime) > dontDamageOnSpawnDelay || parent != collision.gameObject) {
+            if (startLifetime - lifetime > dontDamageOnSpawnDelay || parent != collision.gameObject) {
                 if (!destroyed) {
+                    var isRicochet = damage > 200;
 
-                    bool isRicochet = (damage > 200);
-
-                    Enemy enemy = (d as Enemy);
+                    var enemy = d as Enemy;
 
                     if (enemy && isRicochet && collision.gameObject.tag != "Player") {
                         enemy.setRicochet(true);
-                        if (collision.gameObject.TryGetComponent<ShieldedEnemy>(out ShieldedEnemy se)) {
+                        if (collision.gameObject.TryGetComponent(out ShieldedEnemy se)) {
                             if (!se.getShieldActivated()) {
-                                GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
+                                var sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
                                 Destroy(sound, 2);
                             }
-                        } else {
-                            GameObject sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
+                        }
+                        else {
+                            var sound = Instantiate(ricochetSoundPrefab, transform.position, Quaternion.identity);
                             Destroy(sound, 2);
                         }
                     }
 
                     d.takeDamage(damage);
                 }
+
                 destruction();
                 return true;
             }
         }
 
-        if (collision.gameObject.tag == "Projectile" || collision.gameObject.tag == "NoBounce") // Parry other projectile or no bounce
+        if (collision.gameObject.tag == "Projectile" ||
+            collision.gameObject.tag == "NoBounce") // Parry other projectile or no bounce
         {
             destruction();
             return true;
         }
+
         return false;
     }
-
 }

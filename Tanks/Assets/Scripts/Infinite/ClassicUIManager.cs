@@ -40,8 +40,8 @@ public class ClassicUIManager : MonoBehaviour
 
     public void ReturnToHome()
     {
-        Debug.Log("loading title screen");
-        gameObject.SetActive(false);
+        if (RoomManager.Instance != null) RoomManager.Instance.destroyIt();
+        EnemySpawner.reset();
         SceneManager.LoadScene("TitleScreen");
     }
 
@@ -136,7 +136,7 @@ public class ClassicUIManager : MonoBehaviour
         startScreen.gameObject.SetActive(false);
         completeScreen.gameObject.SetActive(false);
         endGameScreen.gameObject.SetActive(false);
-        levelsBeatenText.text = "Levels Beat: " + (levelNum - 1) + "/60";
+        levelsBeatenText.text = "Levels Beat: " + (levelNum - 1) + "/50";
         StartCoroutine(Fade(deathScreen, true));
     }
 }

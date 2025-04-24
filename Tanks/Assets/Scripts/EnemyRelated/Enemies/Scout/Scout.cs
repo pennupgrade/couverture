@@ -7,6 +7,7 @@ public class Scout : PatrollingEnemy
 {
     public bool warningSent;
     public GameObject signalPrefab;
+    public GameObject glowMatObj;
     void Awake() {
         enemyState = new Scout_Start(this);
     }
@@ -65,8 +66,20 @@ public class Scout : PatrollingEnemy
     }
 
     public void signalFlare() {
+        StartCoroutine(signalFlareCor());
+    }
+    private IEnumerator signalFlareCor() {
+        glowMatObj.GetComponent<MeshRenderer>().material.SetFloat("_Pulsing", 1);
+        yield return new WaitForSeconds(6);
         playSound("Flare");
         GameObject flare = Instantiate(signalPrefab, transform.position + 0.2f * Vector3.up, Quaternion.identity);
         Destroy(flare, 10);
+        yield return new WaitForSeconds(0.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 12, 1 << 8);
+        foreach (var hit in hitColliders) {
+            if (hit.gameObject.TryGetComponent<IAlertableEnemy>(out IAlertableEnemy e)) {
+                e.alert(true);
+            }
+        }
     }
 }
