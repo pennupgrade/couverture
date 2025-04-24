@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 298320362757039111}
   - component: {fileID: 6796100927424449103}
   - component: {fileID: 6785006641282383433}
+  - component: {fileID: 3006939029249961768}
   m_Layer: 10
   m_Name: Button
   m_TagString: Untagged
@@ -203,8 +204,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vOffset: {x: 0.25, y: 0, z: 0}
+  rotateDelta: 0
+  rotateAxis: {x: 0, y: 0, z: 0}
+  pressSpeed: 0.8
+  disableRotation: 0
   reusable: 0
   toChange: []
+  audioManager: {fileID: 3006939029249961768}
+--- !u!114 &3006939029249961768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4244054636152681792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Press
+    clip: {fileID: 8300000, guid: 65787ed2147d14c48ad60379148381ae, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    pitch: 0
+    source: {fileID: 0}
+    spatialBlend: 0
+    effects: []
+  singleton: 0
+  playedSounds: []
 --- !u!1 &7461007574875108725
 GameObject:
   m_ObjectHideFlags: 0
