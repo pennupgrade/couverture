@@ -1,9 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using TransitionType = SceneTransition.TransitionType;
 
 public class SceneJumper : MonoBehaviour
 {
     [SerializeField] private Vector3 vOffset = new(0, -0.4f, 0);
+    [SerializeField] private TransitionType transitionTypeToUse = TransitionType.Level;
+
     private bool onCooldown;
 
     public float transitionTime;
@@ -21,7 +24,7 @@ public class SceneJumper : MonoBehaviour
             tank.FreezeEndOfLevel();
         }
 
-        GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
+        GameManager.Instance.GoToNextLevel(transitionTime, nextScene, transitionTypeToUse);
 
         StartCoroutine(SlideButtonDown());
         onCooldown = true; // debounce

@@ -19,25 +19,31 @@ public class CatPFPManager : MonoBehaviour
 
     private readonly List<CatPFP> pfps = new();
     private CatPFP currentPFP;
+    public CanvasGroup canvasGroup;
 
-    private void Awake() {
+    private void Awake()
+    {
         instance = this;
     }
 
     // Start is called before the first frame update
-    private void Start() {
+    private void Start()
+    {
         LoadPFP();
     }
 
-    public void LoadPFP() {
+    public void LoadPFP()
+    {
         // optimize later
-        foreach (Transform child in CatsPFPPanel) {
+        foreach (Transform child in CatsPFPPanel)
+        {
             Destroy(child.gameObject);
         }
 
         var characters =
             SaveStateManagerGameObject.GetUnlockedCharacters();
-        foreach (var character in characters) {
+        foreach (var character in characters)
+        {
             // DEFAULT_CAT has no ability, so why make it an option?
             // - Anthony
             if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) continue;
@@ -51,23 +57,30 @@ public class CatPFPManager : MonoBehaviour
         btn_Confirm.onClick.AddListener(ConfirmBtnOnClick);
     }
 
-    private void setPFP(SaveStateManager.CharacterOption character, CatPFP catPFP) {
-        if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) {
+    private void setPFP(SaveStateManager.CharacterOption character, CatPFP catPFP)
+    {
+        if (character == SaveStateManager.CharacterOption.DEFAULT_CAT)
+        {
             catPFP.init("Orange Cat", sprite_OrangeCat, character);
         }
-        else if (character == SaveStateManager.CharacterOption.BUBBLE_CAT) {
+        else if (character == SaveStateManager.CharacterOption.BUBBLE_CAT)
+        {
             catPFP.init("Bubble Cat", sprite_BubbleCat, character);
         }
-        else if (character == SaveStateManager.CharacterOption.ROCKET_CAT) {
+        else if (character == SaveStateManager.CharacterOption.ROCKET_CAT)
+        {
             catPFP.init("Rocket Cat", sprite_RocketCat, character);
         }
-        else {
+        else
+        {
             catPFP.init("Orange Cat", sprite_OrangeCat, character);
         }
     }
 
-    public void OnSelectionMade(CatPFP newCat) {
-        if (currentPFP != null) {
+    public void OnSelectionMade(CatPFP newCat)
+    {
+        if (currentPFP != null)
+        {
             currentPFP.Reset();
         }
 
@@ -75,11 +88,14 @@ public class CatPFPManager : MonoBehaviour
         currentPFP = newCat;
     }
 
-    public void ConfirmBtnOnClick() {
-        if (currentPFP != null) {
+    public void ConfirmBtnOnClick()
+    {
+        if (currentPFP != null)
+        {
             UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().readyTag.gameObject
                      .SetActive(true);
-            if (Tank.FindPlayer().character is BubbleChar) {
+            if (Tank.FindPlayer().character is BubbleChar)
+            {
                 Destroy(((BubbleChar)Tank.FindPlayer().character).obj);
                 UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().readyTag
                          .GetComponentInChildren<TMP_Text>().text = "Ready!";
@@ -90,6 +106,26 @@ public class CatPFPManager : MonoBehaviour
             SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
         }
 
-        UIManager.Instance.QuitFrom_CatSelectionPanel_DuringGame();
+        FadeInSelectionPanel(false);
+        UIManager.Instance.QuitFrom_CatSelectionPanel_DuringGame(Tank.FindPlayer().character is not DefaultChar);
+    }
+
+    public void FadeInSelectionPanel(bool enabled)
+    {
+        if (enabled)
+        {
+            canvasGroup.alpha = 0f;
+            LeanTween.alphaCanvas(canvasGroup, 1f, 0.15f).setIgnoreTimeScale(true);
+        }
+        else
+        {
+            canvasGroup.alpha = 1f;
+            LeanTween.alphaCanvas(canvasGroup, 0f, 0.15f).setIgnoreTimeScale(true).setOnComplete(FinishFadeOutSelectionPanel);
+        }
+    }
+
+    public void FinishFadeOutSelectionPanel()
+    {
+        UIManager.Instance.FinishAnimateOutSelectionPanel();
     }
 }

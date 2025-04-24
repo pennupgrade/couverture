@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TransitionType = SceneTransition.TransitionType;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,14 +44,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GoToNextLevel(float transitionTime, string nextSceneName) =>
-        StartCoroutine(_GoToNextLevel(transitionTime, nextSceneName));
+    public void GoToNextLevel(float transitionTime, string nextSceneName,
+                              TransitionType transitionType = TransitionType.Level) =>
+        StartCoroutine(_GoToNextLevel(transitionTime, nextSceneName, transitionType));
 
-    private static IEnumerator _GoToNextLevel(float duration, string nextSceneName) {
+    private static IEnumerator _GoToNextLevel(float duration, string nextSceneName,
+                                              TransitionType transitionType)
+    {
         SaveStateManagerGameObject.FinishLevel(nextSceneName, true);
 
         var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(nextSceneName);
-        SceneTransition.I.Appear(SceneTransition.TransitionType.Level, levelNumber);
+
+        SceneTransition.I.Appear(transitionType, levelNumber);
 
         var operation = SceneManager.LoadSceneAsync(nextSceneName)!;
         operation.allowSceneActivation = false;
@@ -77,12 +82,12 @@ public class GameManager : MonoBehaviour
         operation.allowSceneActivation = false;
 
         if (respawn) {
-            SceneTransition.I.SetType(SceneTransition.TransitionType.None);
+            SceneTransition.I.SetType(TransitionType.None);
         }
         else {
             // Only do scene transition if we're not respawning (aka we're entering new level)
             SceneTransition.I.UpdateIrisPosition(player.gameObject);
-            SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
+            SceneTransition.I.Appear(TransitionType.Fade);
         }
 
         // Wait on the max between duration and the scene transition duration
