@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using TransitionType = SceneTransition.TransitionType;
 
 public class SceneJumper : MonoBehaviour
 {
     [SerializeField] private Vector3 vOffset = new(0, -0.4f, 0);
-    private bool onCooldown;
+    [SerializeField] private TransitionType transitionTypeToUse = TransitionType.Level;
 
     public float transitionTime;
     public string nextScene;
+
+    private bool onCooldown;
 
     protected void OnTriggerEnter(Collider other) {
         if (!onCooldown && other.transform.CompareTag("Player")) {
@@ -21,7 +24,7 @@ public class SceneJumper : MonoBehaviour
             tank.FreezeEndOfLevel();
         }
 
-        GameManager.Instance.GoToNextLevel(transitionTime, nextScene);
+        GameManager.Instance.GoToNextLevel(transitionTime, nextScene, transitionTypeToUse);
 
         StartCoroutine(SlideButtonDown());
         onCooldown = true; // debounce
