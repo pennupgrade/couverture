@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 
 namespace PathCreation
@@ -25,19 +25,19 @@ public class VertexPath : MonoBehaviour
     }
 
     public void ResetPath() {
-        Undo.RecordObject(this, "Reset Path");
+        //Undo.RecordObject(this, "Reset Path");
         vertices.Clear();
     }
 
     #region Getters Setters
 
     public void AddVertex(Vector3 v) {
-        Undo.RecordObject(this, "Added Vertex");
+        //Undo.RecordObject(this, "Added Vertex");
         vertices.Add(new Vertex(v));
     }
 
     public void RemoveVertex(int i) {
-        Undo.RecordObject(this, "Removed Vertex");
+        //Undo.RecordObject(this, "Removed Vertex");
         vertices.Remove(vertices[i]);
     }
 
@@ -55,9 +55,9 @@ public class VertexPath : MonoBehaviour
     }
 
     public void SetMainPos(int index, Vector3 pos, bool record) {
-        if (record) {
-            Undo.RecordObject(this, "Moved Main Vertex");
-        }
+        //if (record) {
+        //    Undo.RecordObject(this, "Moved Main Vertex");
+        //}
 
         var change = pos - vertices[index].mainPos;
         vertices[index].controlPoint1 += change;
@@ -71,9 +71,9 @@ public class VertexPath : MonoBehaviour
     }
 
     public void SetControlPos(int index, int control, Vector3 pos, int modeInt, bool record) {
-        if (record) {
-            Undo.RecordObject(this, "Moved Control Vertex");
-        }
+        //if (record) {
+        //    Undo.RecordObject(this, "Moved Control Vertex");
+        //}
 
         var center = GetMainPos(index);
         var vectorToCenter = pos - center;
@@ -131,9 +131,9 @@ public class VertexPath : MonoBehaviour
         control == 1 ? vertices[index].controlPoint1 : vertices[index].controlPoint2;
 
     public void RotateVertex(int i, Quaternion q, bool record) {
-        if (record) {
-            Undo.RecordObject(this, "Rotated Vertex");
-        }
+        //if (record) {
+        //    Undo.RecordObject(this, "Rotated Vertex");
+        //}
 
         vertices[i].rotation *= q;
 
@@ -150,9 +150,9 @@ public class VertexPath : MonoBehaviour
     }
 
     public void ScaleVertex(int i, Vector3 deltaScale, bool record) {
-        if (record) {
-            Undo.RecordObject(this, "Scaled Vertex");
-        }
+        //if (record) {
+        //    Undo.RecordObject(this, "Scaled Vertex");
+        //}
 
         // scale it out
         var pivot = GetMainPos(i);

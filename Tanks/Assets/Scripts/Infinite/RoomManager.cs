@@ -201,7 +201,7 @@ public class RoomManager : MonoBehaviour
     private IEnumerator LoadAsyncScene(string sceneName) {
         noPause = true;
         loading = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
 
         //level complete screen
         uiManager.LevelCompleteScreenFadeIn(false);
@@ -210,7 +210,7 @@ public class RoomManager : MonoBehaviour
         //play level complete sound
         changeBGM(false);
         audioManager.Play("CompleteSound");
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.4f);
 
         //level complete screen fades out
         uiManager.LevelCompleteScreenTextFadeOut();
