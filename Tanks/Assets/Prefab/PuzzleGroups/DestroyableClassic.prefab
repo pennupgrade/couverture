@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3229274866781095759}
   - component: {fileID: 1275942644335806197}
   - component: {fileID: 905902481657374883}
+  - component: {fileID: 7044182203987642024}
   m_Layer: 3
   m_Name: DestroyableClassic
   m_TagString: Environment
@@ -47,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799cbbd054654544188e8378675d8469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 4500
+  explosionForce: 2000
   originalObj: {fileID: 6710766610075817170}
   fracturedObj: {fileID: 4260218688260560879}
   hits: 2
@@ -72,6 +73,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &7044182203987642024
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447975088396497586}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6710766610075817170
 GameObject:
   m_ObjectHideFlags: 0

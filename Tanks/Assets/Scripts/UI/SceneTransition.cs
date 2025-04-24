@@ -1,83 +1,173 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneTransition : MonoBehaviour
 {
+    public enum TransitionType
+    {
+        Iris,
+        Fade,
+        Level,
+        None
+    }
+
     public static SceneTransition I;
-    
-    // Incredible hack!
-    public bool RestartClickedFromPauseMenu { get; set; }
-    
-    [SerializeField] private Image overlay;
-    
-    private const float Init = 0f;
-    private const float Final = 4.5f;
-    
-    private string previousSceneName;
-    private Material mat;
-    
+    public TransitionType type;
+
+    private CanvasGroup fadeOverlay;
+    private Image irisOverlay;
+    private Material irisMat;
+    private RectTransform nowEntering;
+    private CanvasGroup nowEnteringCg;
+    private RectTransform levelNumberRt;
+    private TMP_Text levelNumberText;
+    private CanvasGroup levelNumberCg;
+
     private static readonly int SizeId = Shader.PropertyToID("_Size");
     private static readonly int PositionXId = Shader.PropertyToID("_Position_X");
     private static readonly int PositionYId = Shader.PropertyToID("_Position_Y");
 
     private void Awake() {
-        if (I == null)
-        {
+        if (I == null) {
             I = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
+            return;
         }
-        
-        mat = overlay.material;
-        previousSceneName = SceneManager.GetActiveScene().name;
+
+        fadeOverlay = transform.Find("Fade Overlay").GetComponent<CanvasGroup>();
+        irisOverlay = transform.Find("Iris Overlay").GetComponent<Image>();
+        irisMat = irisOverlay.material;
+
+        var levelNumberObj = transform.Find("Level Number");
+        levelNumberRt = levelNumberObj.GetComponent<RectTransform>();
+        levelNumberText = levelNumberObj.GetComponent<TMP_Text>();
+        levelNumberCg = levelNumberObj.GetComponent<CanvasGroup>();
+
+        var nowEnteringObj = transform.Find("Now Entering");
+        nowEntering = nowEnteringObj.GetComponent<RectTransform>();
+        nowEnteringCg = nowEnteringObj.GetComponent<CanvasGroup>();
+
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(SceneManager.GetActiveScene().name);
+        levelNumberText.text = $"Level {levelNumber}";
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start() {
-        UIManager.instance.pauseMenu.SetStatus(SceneManager.GetActiveScene().name);
-        Disappear();
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        // If we're currently in a campaign level
+        if (UIManager.Instance != null) {
+            UpdateIrisPosition(GameObject.FindGameObjectWithTag("Player"));
+            UIManager.Instance.pauseMenu.SetStatus(scene.name);
+
+            // These calls have no effect if the game isn't currently paused
+            UIManager.Instance.pauseMenu.HidePanel();
+            GameManager.Instance.ResumeGame();
+        }
+
+        Disappear(type);
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        // This function should only run when we enter a new level or when we pressed restart from the pause menu
-        if (scene.name == previousSceneName && !RestartClickedFromPauseMenu) return;
+    public void UpdateIrisPosition(GameObject obj) {
+        var viewportPos = Camera.main!.WorldToViewportPoint(obj.transform.position);
 
-        RestartClickedFromPauseMenu = false;
-        previousSceneName = scene.name;
-        
-        UpdatePosition();
-        Disappear();
-        
-        // These don't do anything if the game isn't currently paused
-        UIManager.instance.pauseMenu.HidePanel();
-        UIManager.instance.pauseMenu.SetStatus(scene.name);
-        GameManager.Instance.ResumeGame();
+        irisMat.SetFloat(PositionXId, Mathf.Clamp01(viewportPos.x));
+        irisMat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
     }
 
-    public void UpdatePosition() {
-        var tankObj = GameObject.FindGameObjectWithTag("Player");
+    public void UpdateIrisPosition(float x, float y) {
+        irisMat.SetFloat(PositionXId, Mathf.Clamp01(x));
+        irisMat.SetFloat(PositionYId, Mathf.Clamp01(y));
+    }
 
-        if (tankObj != null) {
-            var viewportPos = Camera.main!.WorldToViewportPoint(tankObj.transform.position);
-            mat.SetFloat(PositionXId, Mathf.Clamp01(viewportPos.x));
-            mat.SetFloat(PositionYId, Mathf.Clamp01(viewportPos.y));
+    public bool IsAnimating =>
+        LeanTween.isTweening(irisOverlay.gameObject) || LeanTween.isTweening(fadeOverlay.gameObject) ||
+        LeanTween.isTweening(nowEntering) || LeanTween.isTweening(levelNumberRt) ||
+        LeanTween.isTweening(nowEntering.gameObject);
+
+    private void IrisAppear() => LeanTween.value(irisOverlay.gameObject, value => {
+        irisMat.SetFloat(SizeId, value);
+    }, 4.5f, 0f, 0.8f).setEaseOutExpo().setIgnoreTimeScale(true);
+
+    private void IrisDisappear() => LeanTween.value(irisOverlay.gameObject, value => {
+        irisMat.SetFloat(SizeId, value);
+    }, 0f, 4.5f, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+
+    public void SetType(TransitionType newType) => type = newType;
+
+    public void Appear(TransitionType newType) => Appear(newType, -1);
+
+    public void Appear(TransitionType newType, int levelNumber) {
+        type = newType;
+        levelNumberText.text = $"Level {levelNumber}";
+
+        switch (type) {
+        case TransitionType.Fade:
+            LeanTween.value(fadeOverlay.gameObject, value => {
+                fadeOverlay.alpha = value;
+            }, 0f, 1f, 0.2f).setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.Iris:
+            IrisAppear();
+            break;
+
+        case TransitionType.Level:
+            IrisAppear();
+
+            nowEnteringCg.alpha = 1;
+            levelNumberCg.alpha = 1;
+            LeanTween.moveY(nowEntering, 300f, 0f).setIgnoreTimeScale(true);
+            LeanTween.moveY(levelNumberRt, 300f, 0f).setIgnoreTimeScale(true);
+
+            LeanTween.moveY(nowEntering, -360f, 1.2f).setDelay(0.3f).setEaseOutExpo().setIgnoreTimeScale(true);
+            LeanTween.moveY(levelNumberRt, -250f, 1.2f).setDelay(0.55f).setEaseOutExpo().setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.None:
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(type.ToString());
         }
     }
-    
-    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject);
 
-    public void Appear() => LeanTween.value(overlay.gameObject, value => {
-        mat.SetFloat(SizeId, value);
-    }, Final, Init, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
-    
-    public void Disappear() =>LeanTween.value(overlay.gameObject, value => {
-        mat.SetFloat(SizeId, value);
-    }, Init, Final, 2f).setEaseInOutExpo().setIgnoreTimeScale(true);
+    public void Disappear(TransitionType newType) {
+        type = newType;
+
+        switch (type) {
+        case TransitionType.Fade:
+            LeanTween.value(fadeOverlay.gameObject, value => {
+                fadeOverlay.alpha = value;
+            }, 1f, 0f, 0.3f).setEaseInExpo().setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.Iris:
+            IrisDisappear();
+            break;
+
+        case TransitionType.Level:
+            IrisDisappear();
+
+            LeanTween.moveY(nowEntering, -360f, 0f).setIgnoreTimeScale(true);
+            LeanTween.moveY(levelNumberRt, -250f, 0f).setIgnoreTimeScale(true);
+
+            LeanTween.value(nowEntering.gameObject, value => {
+                nowEnteringCg.alpha = value;
+                levelNumberCg.alpha = value;
+            }, 1f, 0f, 2f).setDelay(1f).setIgnoreTimeScale(true);
+            break;
+
+        case TransitionType.None:
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException(type.ToString());
+        }
+    }
 }

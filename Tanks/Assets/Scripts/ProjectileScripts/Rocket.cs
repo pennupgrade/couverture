@@ -18,6 +18,7 @@ public class Rocket : Projectile
     }
     public void damageIncrease() {
         damage = 600;
+        GetComponent<MeshRenderer>().material.SetInt("_Player", 1);
         GetComponent<MeshRenderer>().material.SetFloat("_Glowy", 1);
     }
 

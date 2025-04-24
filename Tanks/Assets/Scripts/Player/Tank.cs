@@ -8,8 +8,8 @@ public class Tank : MonoBehaviour, IDestroyable
 {
     public Character character = null;
 
-    public const float RELOAD_TIME = 1.5f;
-    public const float COOLDOWN_TIME = 0.18f;
+    public const float RELOAD_TIME = 1.35f;
+    public const float COOLDOWN_TIME = 0.4f;
 
     // Base Items
     public Controls controls;
@@ -84,15 +84,6 @@ public class Tank : MonoBehaviour, IDestroyable
         characterController = GetComponent<CharacterController>();
         // tankCollider = GetComponent<BoxCollider>();
 
-        controls.TankControls.Shoot.performed += _ => {
-            //If player is moving, bullet speed can be affected
-            Vector3 deltaPos = currentPos - previousPos;
-
-            //Debug.Log(platformSpeed);
-
-            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
-        };
-
         numBullets = MAX_BULLETS;
         maxHealth = health;
 
@@ -160,6 +151,15 @@ public class Tank : MonoBehaviour, IDestroyable
         tankController.RayCastTank();
         tankController.GravityFall();
         bool wasIdle = tankState is TankIdleState;
+
+        if (controls.TankControls.Shoot.IsPressed()){
+            //If player is moving, bullet speed can be affected
+            Vector3 deltaPos = currentPos - previousPos;
+
+            //Debug.Log(platformSpeed);
+
+            tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
+        };
 
         if (!disableMove)
         {

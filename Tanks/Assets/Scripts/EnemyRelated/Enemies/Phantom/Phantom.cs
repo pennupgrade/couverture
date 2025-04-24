@@ -15,7 +15,7 @@ public class Phantom : Enemy
         health = 300;
         gunRange = 8;
         sightRange = 10;
-        FOV = 1.2f;
+        FOV = 1.3f;
         rotSpeed = 108;
         cooldownTime = 0.7f;
         reload = 4;
@@ -61,7 +61,7 @@ public class Phantom : Enemy
     void OnCollisionEnter(Collision collision) {
         if ((collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Tank")
              && cSpeed > 0.01f){
-            StartCoroutine(stopMove(0.6f));
+            StartCoroutine(stopMove(0.3f));
         }
     }
     public IEnumerator activateCamo() {
@@ -79,10 +79,11 @@ public class Phantom : Enemy
     }
     public override void takeDamage(int dmg) {
         health -= dmg;
-        damageFlash.CallInvisFlicker(this, 0.8f);
-        damageFlash.CallInvisDamage(this, 0.6f);
         if (health <= 0 && !isDead) {
             die();
+        } else {
+            damageFlash.CallInvisDamage(this, 0.3f);
         }
     }
+    public override void alert(bool alertState = false) {}
 }

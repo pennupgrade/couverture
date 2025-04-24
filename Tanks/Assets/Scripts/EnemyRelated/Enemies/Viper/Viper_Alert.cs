@@ -103,7 +103,7 @@ public class Viper_Alert : EnemyAlertState
         while (true) {   
             if (enemy.numBullets <= 0 && lineOfSightCheck() && getDist() < enemy.gunRange && checkFriendlyFire(getDist())) {
                 ((Viper)enemy).fireRocket();
-                enemy.numBullets = enemy.magSize - 4;
+                enemy.numBullets = enemy.magSize - 3;
             } else {
                 yield return new WaitForSeconds(0.16f);
             }

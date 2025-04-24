@@ -18,7 +18,7 @@ public class Viper : ShieldedEnemy
         FOV = 1.5f;
         rotSpeed = 110;
         cooldownTime = 0.25f;
-        magSize = 12;
+        magSize = 8;
         numBullets = magSize;
         speed = 1.4f;
         turnSpeed = 200;
@@ -51,7 +51,7 @@ public class Viper : ShieldedEnemy
         if (!stopTurns && moveStraightTimer == null) {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= 0.5f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= 0.9f * cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
         }
         //moving
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;

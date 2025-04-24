@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class G5_Alert : G2_Alert
 {
     public G5_Alert(Enemy enemy) : base(enemy) {
-        enemy.numBullets = 3;
+        enemy.numBullets = enemy.magSize;
         leadPlayer = true;
     }
 
@@ -86,13 +86,17 @@ public class G5_Alert : G2_Alert
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
-                if (enemy.getHealth() < 300) {
+                if (enemy.getHealth() < 400) {
                     enemy.numBullets += 3;
                 } else {
-                    enemy.numBullets++;
+                    if (Random.value < 0.22f) {
+                        enemy.numBullets += 3;
+                    } else {
+                        enemy.numBullets++;
+                    }
                 }
             } else {
-                yield return null;
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }

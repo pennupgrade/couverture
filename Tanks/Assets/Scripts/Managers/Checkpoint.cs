@@ -7,7 +7,7 @@ public class Checkpoint : MonoBehaviour
     void OnTriggerEnter(Collider c) {
         Tank t = c.gameObject.GetComponent<Tank>();
         if (t is not null) {
-            CheckpointManager.CheckpointActivated(this);
+            CheckpointManagerV2.CheckpointActivated(this);
         }
     }
 }

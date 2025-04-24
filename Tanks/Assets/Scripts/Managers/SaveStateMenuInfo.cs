@@ -1,52 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System;
+using System.Collections.Generic;
 
 public class SaveStateMenuInfo
 {
-    private SaveStateManager[] saves = new SaveStateManager[3];
-
-    private static SaveStateManager TryLoadSaveState(int saveNumber) {
-        try {
-            return SaveStateManagerGameObject.LoadSaveToManager(saveNumber);
-        } catch (FileNotFoundException) {
-            return null;
-        }
-    }
+    private const int NUMBER_OF_SAVES = 3;
+    private readonly SaveStateManager[] saves = new SaveStateManager[NUMBER_OF_SAVES];
 
     public SaveStateMenuInfo() {
-        for (int i = 0; i < 3; i++) {
-            saves[i] = TryLoadSaveState(i);
+        for (var i = 0; i < NUMBER_OF_SAVES; i++) {
+            saves[i] = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
         }
     }
 
-    public DateTime GetStartTime(int saveNumber) {
-        //return new DateTime(1, 1, 1);
-        return saves[saveNumber].GetStartTime();
+    public DateTime GetStartTime(int saveNumber) => saves[saveNumber].GetStartTime();
+
+    public DateTime GetLastPlayedTime(int saveNumber) => saves[saveNumber].GetLastPlayedTime();
+
+    public TimeSpan GetTimePlayed(int saveNumber) => saves[saveNumber].GetTimePlayed();
+
+    public string GetLatestLevelName(int saveNumber) => saves[saveNumber].GetLatestLevelName();
+
+    public string GetLatestLevelNameFormatted(int saveNumber) {
+        var sceneName = saves[saveNumber].GetLatestLevelName();
+        var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(sceneName);
+
+        return $"Level {levelNumber}";
     }
 
-    public DateTime GetLastPlayedTime(int saveNumber) {
-        //return new DateTime(1, 1, 1);
-        return saves[saveNumber].GetLastPlayedTime();
-    }
+    public bool DoesSaveExist(int saveNumber) => saves[saveNumber] != null;
 
-    public TimeSpan GetTimePlayed(int saveNumber) {
-        //return TimeSpan.FromDays(1);
-        return saves[saveNumber].GetTimePlayed();
-    }
-
-    public string GetLatestLevelName(int saveNumber) {
-        //return "hi";
-        return saves[saveNumber].GetLatestLevelName();
-    }
-
-    public bool DoesSaveExist(int saveNumber) {
-        //return true;
-        return saves[saveNumber] != null;
-    }
-
-    public HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters(int saveNumber) {
-        return saves[saveNumber].GetUnlockedCharacters();
-    }
+    public HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters(int saveNumber) =>
+        saves[saveNumber].GetUnlockedCharacters();
 }

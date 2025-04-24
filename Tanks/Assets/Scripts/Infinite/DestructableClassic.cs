@@ -31,13 +31,14 @@ public class DestructableClassic : MonoBehaviour, IDestroyable
         foreach(Transform t in fracturedObj.transform) {
             var rb = t.GetComponent<Rigidbody>();
             rb.AddExplosionForce(explosionForce, originalObj.transform.position, 2);
-            StartCoroutine(Shrink(t, 2));
+            StartCoroutine(Shrink(t, 1.3f));
         }
-        Destroy(fracturedObj, 4);
+        Destroy(this.gameObject, 4);
     }
 
     private IEnumerator Shrink(Transform t, float delay) {
         yield return new WaitForSeconds(delay);
+        t.gameObject.GetComponent<Collider>().enabled = false;
         Vector3 newScale = t.localScale;
         while (newScale.x > 0) {
             newScale -= new Vector3(10, 10, 10);

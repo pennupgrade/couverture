@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Sentry : Enemy
 {
+    public bool dummy;
+
     void Awake() {
         enemyState = new Sentry_Idle(this);
     }
@@ -11,7 +13,7 @@ public class Sentry : Enemy
     void Start()
     {
         //set enemy values
-        health = 300;
+        health = dummy ? 100 : 300;
         gunRange = 8;
         sightRange = 8;
         FOV = 0.6f;
@@ -33,7 +35,8 @@ public class Sentry : Enemy
         Vector3 playerPos = player.transform.position;
         enemyState = enemyState.Patrol(playerPos);
         enemyState = enemyState.RotateTurret(playerPos);
-        enemyState = enemyState.Shoot(playerPos);
+
+        if (!dummy) enemyState = enemyState.Shoot(playerPos);
 
         gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }

@@ -96,7 +96,6 @@ public class CrabBucket : MonoBehaviour
                     BubbleChar bc = (BubbleChar)(player.GetComponent<Tank>().character);
                     if(bc!= null && bc.active)
                     {
-                        bc.obj.GetComponent<Bubble>().takeDamage(1);
                         Debug.Log("Attack Blocked by Shield");
 
                         audioManager.Play("Block Attack Sound");
