@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class ClassicUIManager : MonoBehaviour
 {
+    public TMP_Text enemyCountText;
+
     public CanvasGroup startScreen;
     public TMP_Text levelText;
     public TMP_Text levelsBeatenText;
@@ -108,12 +110,18 @@ public class ClassicUIManager : MonoBehaviour
     public void StartScreenFadeOut() {
         // some transition that removes the start canvas
         StartCoroutine(Fade(startScreen, false));
+        StartCoroutine(FadeText(enemyCountText, true));
+    }
+
+    public void displayEnemyCount(int count) {
+        enemyCountText.text = "Enemies: " + count;
     }
 
 
     public void LevelCompleteScreenFadeIn(bool lvl60Complete) {
         // fade in the level complete screen and text
         // if lvl60Complete then display the end game screen instead
+        StartCoroutine(FadeText(enemyCountText, false));
         if (lvl60Complete)
         {
             StartCoroutine(Fade(endGameScreen, true));

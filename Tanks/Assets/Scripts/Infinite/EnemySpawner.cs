@@ -7,7 +7,18 @@ public class EnemySpawner : Activatable
     
     [SerializeField] bool easyMode;
     [SerializeField] bool hardMode;
-    static int enemiesRemaining; // = 0;
+
+    public static int EnemiesRemaining {
+        get {
+            return enemiesRemaining;
+        }
+        set {
+            enemiesRemaining = value;
+            //update UI
+            RoomManager.Instance.changeEnemyCountUI();
+        }
+    }
+    private static int enemiesRemaining; // = 0;
     [SerializeField] int section;
     [SerializeField] int levelNumber;
     public GameObject[] enemies;
@@ -15,7 +26,7 @@ public class EnemySpawner : Activatable
 
     //call at start
     public static void reset() {
-        enemiesRemaining = 0;
+        EnemiesRemaining = 0;
     }
 
     public override void activate() {
@@ -47,14 +58,20 @@ public class EnemySpawner : Activatable
         yield return new WaitForSeconds(spawnDelay);
         int r = (int) Mathf.Floor(enemies.Length * Random.value);
         if (enemies[r].TryGetComponent<Enemy>(out Enemy e)) {
-            enemiesRemaining++;
+            EnemiesRemaining++;
             enemies[r].SetActive(true);
+            if (e is Sentry) {
+                e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+            }
             e.onDeath += enemyDestroyed;
         } else {
             for (int i = 0; i < enemies[r].transform.childCount; ++i) {
                 if (enemies[r].transform.GetChild(i).gameObject.TryGetComponent<Enemy>(out Enemy enemy)) {
-                    enemiesRemaining++;
-                    enemies[r].transform.GetChild(i).gameObject.SetActive(true);
+                    EnemiesRemaining++;
+                    enemy.gameObject.SetActive(true);
+                    if (enemy is Sentry) {
+                        enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                    }
                     enemy.onDeath += enemyDestroyed;
                 }
             }
@@ -62,9 +79,9 @@ public class EnemySpawner : Activatable
     }
 
     public void enemyDestroyed() {
-        enemiesRemaining--;
-        if (enemiesRemaining <= 0) {
-            enemiesRemaining = 0;
+        EnemiesRemaining--;
+        if (EnemiesRemaining <= 0) {
+            EnemiesRemaining = 0;
 
             Tank pTank = Tank.FindPlayer();
             if (pTank != null && pTank.health > 0) {

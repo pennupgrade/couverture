@@ -237,6 +237,10 @@ public class RoomManager : MonoBehaviour
             audioManager.Stop("BGM");
         }
     }
+    public void changeEnemyCountUI() {
+        if (LevelNum != 50)
+        uiManager.displayEnemyCount(EnemySpawner.EnemiesRemaining);
+    }
 
     public void PauseGame() {
         Tank.FindPlayer().Freeze(false);
