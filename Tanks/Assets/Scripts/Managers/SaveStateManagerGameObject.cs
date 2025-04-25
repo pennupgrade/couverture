@@ -147,7 +147,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static SaveStateManager.CharacterOption GetCurrentCharacter() {
-        return Instance.stateManager.GetCurrentCharacter();
+        return Instance.stateManager.CurrCharacter;
     }
 
 

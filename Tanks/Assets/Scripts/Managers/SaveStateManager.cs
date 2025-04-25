@@ -87,7 +87,7 @@ public class SaveStateManager
 
     private string saveLocation;
     private LevelSaveData currentLevel;
-    private CharacterOption currCharacter;
+    public CharacterOption CurrCharacter {get; private set;}
     private HashSet<CharacterOption> unlockedChars;
     private DateTime startOfSession;
 
@@ -132,7 +132,7 @@ public class SaveStateManager
         // shouldn't ever be an issue since DEFAULT CAT should always be in the list, but its good to be safe
         if (unlockedChars.Contains(changeTo) || changeTo == CharacterOption.DEFAULT_CAT) {
             t.character = CreateNewChar(changeTo);
-            currCharacter = changeTo;
+            CurrCharacter = changeTo;
         }
         else {
             throw new InvalidOperationException("Player has not unlocked that character!");
@@ -182,7 +182,7 @@ public class SaveStateManager
         }
 
         // load currentlevel
-        currCharacter = currentLevel.CurrCharacter;
+        CurrCharacter = currentLevel.CurrCharacter;
 
         // load current character
         SwitchCharacter(t, currentLevel.CurrCharacter);
@@ -201,7 +201,7 @@ public class SaveStateManager
         }
 
         if (nextLevelName != null) {
-            currentLevel.Save(t, currCharacter, -1, new List<CharacterOption>());
+            currentLevel.Save(t, CurrCharacter, -1, new List<CharacterOption>());
             currentLevel.LevelName = nextLevelName;
             if (nextLevelName == latestLevel.LevelName) {
                 latestLevel = currentLevel;
@@ -209,7 +209,7 @@ public class SaveStateManager
         }
         else {
             latestLevel = new LevelSaveData();
-            latestLevel.Save(t, currCharacter, -1, new List<CharacterOption>());
+            latestLevel.Save(t, CurrCharacter, -1, new List<CharacterOption>());
             latestLevel.LevelName = "ALL LEVELS UNLOCKED";
         }
 
@@ -290,7 +290,7 @@ public class SaveStateManager
     public bool UnlockCheckpoint(int i, TankStats t) {
         bool successfulCheckpoint = currentLevel.CheckpointIndex < i;
         if (successfulCheckpoint) {
-            currentLevel.Save(t, currCharacter, i, new List<CharacterOption>(unlockedChars));
+            currentLevel.Save(t, CurrCharacter, i, new List<CharacterOption>(unlockedChars));
             if (currentLevel.LevelName == latestLevel.LevelName) {
                 // prevent unnecessary writes
                 WriteToSaveFile();
@@ -309,7 +309,4 @@ public class SaveStateManager
     }
 
     // return the current character.  this should always be correct because all character changes go through the savestatemanager
-    public CharacterOption GetCurrentCharacter() {
-        return currCharacter;
-    }
 }
