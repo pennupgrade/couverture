@@ -40,9 +40,14 @@ public class EnemySpawner : Activatable
     void Start()
     {
         if (enemies.Length == 0) return;
-        bool rocket = Tank.FindPlayer().CharacterHasAbility();
-        if (easyMode && rocket) return;
-        if (hardMode && !rocket) return;
+        Tank pTank = Tank.FindPlayer();
+        bool rocket = pTank.CharacterHasAbility();
+        bool bubble = pTank.character.GetType() == typeof(BubbleChar);
+        if (easyMode && (rocket || (bubble && RoomManager.LevelNum % 5 == 0))) return;
+        if (hardMode) {
+            if (bubble && RoomManager.LevelNum % 5 != 0) return;
+            if (!rocket && !bubble) return;
+        }
         if (levelNumber > 0) {
             if (RoomManager.LevelNum != levelNumber) return;
         } else {

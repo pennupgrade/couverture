@@ -139,7 +139,8 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic19"));
         }
         else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
-            if ((LevelNum == 25 && Tank.FindPlayer().CharacterHasAbility()) || LevelNum == 40) {
+            Tank pTank = Tank.FindPlayer();
+            if ((LevelNum == 25 && (pTank.CharacterHasAbility() || pTank.character.GetType() == typeof(BubbleChar))) || LevelNum == 40) {
                 StartCoroutine(LoadAsyncScene("Classic25alt"));
             }
             else {
