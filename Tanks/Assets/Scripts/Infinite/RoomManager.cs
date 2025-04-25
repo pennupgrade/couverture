@@ -187,19 +187,20 @@ public class RoomManager : MonoBehaviour
     public void ResetToLevelOne() => StartCoroutine(_ResetToLevelOne());
 
     private IEnumerator _ResetToLevelOne() {
+        noPause = true;
+        loading = true;
+
         UIManager.Instance.pauseMenu.HidePanel();
 
         Time.timeScale = 1;
-        noPause = true;
-        loading = true;
         changeBGM(false);
 
-        uiManager.Restart();
+        var restartQuit = uiManager.Restart();
 
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
 
-        yield return new WaitWhile(() => uiManager.IsAnimating);
+        yield return new WaitWhile(() => restartQuit.IsAnimating);
 
         DestroyIt();
         EnemySpawner.reset();
@@ -319,10 +320,11 @@ public class RoomManager : MonoBehaviour
     public void ReturnToMainMenu() => StartCoroutine(_ReturnToMainMenu());
 
     private IEnumerator _ReturnToMainMenu() {
-        uiManager.QuitClassicMode();
+        noPause = true;
+        var restartQuit = uiManager.Quit();
 
-        yield return new WaitForSeconds(0.2f);
-        yield return new WaitWhile(() => uiManager.IsAnimating);
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitWhile(() => restartQuit.IsAnimating);
 
         DestroyIt();
         EnemySpawner.reset();

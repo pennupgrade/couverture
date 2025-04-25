@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ClassicUIManager : MonoBehaviour
 {
     [SerializeField] private RectTransform overlay;
+    [SerializeField] private RectTransform secondOverlay;
+    [SerializeField] private GameObject restartQuitCanvasPrefab;
     [SerializeField] private RectTransform missionPanel;
     [SerializeField] private TMP_Text missionText;
     [SerializeField] private RectTransform enemyCountBar;
@@ -41,27 +43,6 @@ public class ClassicUIManager : MonoBehaviour
         deathScreen.gameObject.SetActive(false);
         backToHome.onClick.AddListener(ReturnToHome);
         backToHome_fromDeath.onClick.AddListener(ReturnToHome);
-    }
-
-    public void Restart() {
-        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
-        LeanTween.moveX(overlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
-        LeanTween.moveY(enemyCountBar, 700f, 1f).setEaseInExpo().setIgnoreTimeScale(true);
-    }
-
-    public void QuitClassicMode() {
-        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
-        LeanTween.moveX(overlay, 0f, 1.1f).setEaseOutExpo().setIgnoreTimeScale(true);
-        LeanTween.moveY(enemyCountBar, 700f, 1.1f).setEaseInExpo().setIgnoreTimeScale(true);
-
-        var brown = new Color32(78, 63, 56, 255);
-        var cream = new Color32(255, 238, 229, 255);
-        var images = overlay.GetComponentsInChildren<Image>();
-        LeanTween.value(overlay.gameObject, value => {
-            foreach (var image in images) {
-                image.color = value;
-            }
-        }, cream, brown, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
     public void ReturnToHome() {
@@ -138,5 +119,23 @@ public class ClassicUIManager : MonoBehaviour
         endGameScreen.gameObject.SetActive(false);
         levelsBeatenText.text = "Levels Beat: " + (levelNum - 1) + "/50";
         StartCoroutine(Fade(deathScreen, true));
+    }
+
+    public ClassicRestartQuitCanvas Restart() {
+        var obj = Instantiate(restartQuitCanvasPrefab);
+        var restartQuit = obj.GetComponent<ClassicRestartQuitCanvas>();
+
+        restartQuit.Restart();
+
+        return restartQuit;
+    }
+
+    public ClassicRestartQuitCanvas Quit() {
+        var obj = Instantiate(restartQuitCanvasPrefab);
+        var restartQuit = obj.GetComponent<ClassicRestartQuitCanvas>();
+
+        restartQuit.Quit();
+
+        return restartQuit;
     }
 }
