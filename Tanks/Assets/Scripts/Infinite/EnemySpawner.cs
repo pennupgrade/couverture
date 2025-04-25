@@ -40,9 +40,14 @@ public class EnemySpawner : Activatable
     void Start()
     {
         if (enemies.Length == 0) return;
-        bool rocket = Tank.FindPlayer().CharacterHasAbility();
-        if (easyMode && rocket) return;
-        if (hardMode && !rocket) return;
+        Tank pTank = Tank.FindPlayer();
+        bool rocket = pTank.CharacterHasAbility();
+        bool bubble = pTank.character.GetType() == typeof(BubbleChar);
+        if (easyMode && (rocket || (bubble && RoomManager.LevelNum % 5 == 0))) return;
+        if (hardMode) {
+            if (bubble && RoomManager.LevelNum % 5 != 0) return;
+            if (!rocket && !bubble) return;
+        }
         if (levelNumber > 0) {
             if (RoomManager.LevelNum != levelNumber) return;
         } else {
@@ -61,7 +66,7 @@ public class EnemySpawner : Activatable
             yield return new WaitForSeconds(spawnDelay);
             enemies[r].SetActive(true);
             if (e is Sentry) {
-                e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             }
             e.onDeath += enemyDestroyed;
         } else {
@@ -71,7 +76,7 @@ public class EnemySpawner : Activatable
                 if (enemies[r].transform.GetChild(i).gameObject.TryGetComponent<Enemy>(out Enemy enemy)) {
                     enemy.gameObject.SetActive(true);
                     if (enemy is Sentry) {
-                        enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                        enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     }
                     enemy.onDeath += enemyDestroyed;
                 }
