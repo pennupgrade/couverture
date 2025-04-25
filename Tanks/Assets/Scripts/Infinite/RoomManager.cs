@@ -53,11 +53,14 @@ public class RoomManager : MonoBehaviour
     }
 
     private void Update() {
-        if (!noPause && Input.GetKeyDown(KeyCode.Escape)) {
-            paused = !paused;
+        if (noPause || UIManager.Instance.pauseMenu.IsAnimating) return;
 
-            // Only enable toggling pause if the cat selection panel isn't open
-            if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
+        // Only enable toggling pause if the cat selection panel isn't open
+        if (UIManager.Instance.Cat_Selection_Panel.activeInHierarchy) return;
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            paused = !paused;
+            Debug.LogFormat("BEFORE: {0}, AFTER: {1}", !paused, paused);
 
             if (paused) {
                 PauseGame();
@@ -67,6 +70,8 @@ public class RoomManager : MonoBehaviour
                 ResumeGame();
                 UIManager.Instance.pauseMenu.HidePanel();
             }
+
+            Debug.LogFormat("AFTER RUNNING: {0}\n", paused);
         }
     }
 
@@ -110,7 +115,6 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic1"));
         }
         else if (LevelNum == 2 || LevelNum == 15 || LevelNum == 31) {
-
             StartCoroutine(LoadAsyncScene("Classic2"));
         }
         else if (LevelNum == 3 || LevelNum == 17 || LevelNum == 20) {
@@ -126,6 +130,7 @@ public class RoomManager : MonoBehaviour
             if (LevelNum == 30) {
                 randomizeSceneArray();
             }
+
             StartCoroutine(LoadAsyncScene("Classic6"));
         }
         else if (LevelNum == 12 || LevelNum == 50) {
@@ -238,9 +243,11 @@ public class RoomManager : MonoBehaviour
             audioManager.Stop("BGM");
         }
     }
+
     public void changeEnemyCountUI() {
-        if (LevelNum != 50)
-        uiManager.displayEnemyCount(EnemySpawner.EnemiesRemaining);
+        if (LevelNum != 50) {
+            uiManager.displayEnemyCount(EnemySpawner.EnemiesRemaining);
+        }
     }
 
     public void PauseGame() {
@@ -258,6 +265,7 @@ public class RoomManager : MonoBehaviour
     /// </summary>
     private int[] randomNumbers;
     private int randomLevelIndex;
+
     private void randomizeSceneArray() {
         randomLevelIndex = 0;
         var rnd = new Random();

@@ -24,9 +24,14 @@ public class PauseMenu : MonoBehaviour
 
     private void Start() {
         if (RoomManager.Instance != null) {
-            restartButtonText.text = "Reset to Level 1";
-            quitButtonText.text = "Back to Main Menu";
-            currentStatus.text = $"Level {RoomManager.LevelNum}";
+            restartButtonText.text = "Restart from Mission 1";
+
+            var rt = restartButtonText.gameObject.transform.parent.GetComponent<RectTransform>();
+            var initSizeDelta = rt.sizeDelta;
+            rt.sizeDelta = new Vector2(290f, initSizeDelta.y);
+
+            quitButtonText.text = "Back to main menu";
+            currentStatus.text = $"Mission {RoomManager.LevelNum}";
         }
     }
 
@@ -68,13 +73,14 @@ public class PauseMenu : MonoBehaviour
             // Campaign mode
             GameManager.Instance.IsPaused = false;
             GameManager.Instance.ResumeGame();
-            HidePanel();
         }
         else {
             // Classic mode
-            HidePanel();
+            RoomManager.Instance.paused = false;
             RoomManager.Instance.ResumeGame();
         }
+
+        HidePanel();
     }
 
     public void HandleRestartLevel() {
