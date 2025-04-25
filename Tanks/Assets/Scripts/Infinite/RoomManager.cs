@@ -60,7 +60,6 @@ public class RoomManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             paused = !paused;
-            Debug.LogFormat("BEFORE: {0}, AFTER: {1}", !paused, paused);
 
             if (paused) {
                 PauseGame();
@@ -70,8 +69,6 @@ public class RoomManager : MonoBehaviour
                 ResumeGame();
                 UIManager.Instance.pauseMenu.HidePanel();
             }
-
-            Debug.LogFormat("AFTER RUNNING: {0}\n", paused);
         }
     }
 
