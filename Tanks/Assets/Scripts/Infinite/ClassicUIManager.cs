@@ -132,7 +132,7 @@ public class ClassicUIManager : MonoBehaviour
         enemyCountText.text = $"Enemies left <b>\u00d7 {count}</b>";
     }
 
-    public void DeathScreenFadeIn(int levelNum) {
+    public void DeathScreenEnter(int levelNum) {
         // display the end game screen, showing _/60 levels beat,
         // and whether it is a high score or not, return to menu button
         endGameScreen.gameObject.SetActive(false);

@@ -172,7 +172,7 @@ public class RoomManager : MonoBehaviour
 
     public void playerDeath() {
         // redirect to death screen showing level reached, button leads to main menu
-        uiManager.DeathScreenFadeIn(LevelNum);
+        uiManager.DeathScreenEnter(LevelNum);
 
         //play sad sound
         changeBGM(false);
