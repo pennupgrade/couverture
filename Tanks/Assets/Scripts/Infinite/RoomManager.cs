@@ -42,10 +42,10 @@ public class RoomManager : MonoBehaviour
             uiManager = GetComponent<ClassicUIManager>();
             audioManager = GetComponent<AudioManager>();
             randomLevelIndex = 10;
-            startScreen();
+            StartMission();
         }
         else if (Instance != this) {
-            Instance.startScreen();
+            Instance.StartMission();
             Destroy(gameObject);
         }
 
@@ -72,30 +72,31 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    public void startScreen() {
-        //play opening sound effect
-        StartCoroutine(startScreenCoroutine());
-    }
+    private void StartMission() => StartCoroutine(_StartMission());
 
-    private IEnumerator startScreenCoroutine() {
+    private IEnumerator _StartMission() {
         noPause = true;
-        uiManager.reset();
+
+        uiManager.Reset();
         var pTank = Tank.FindPlayer();
         pTank.Freeze(false);
 
-        //fade in level number text
-        uiManager.StartScreenTextFadeIn(LevelNum);
+        uiManager.StartScreenEnter(LevelNum);
         yield return new WaitForSeconds(0.3f);
+
+        // Play opening sound effect
         audioManager.Play("StartSound");
         yield return new WaitForSeconds(1.7f);
 
-
-        // remove start screen, play BG music
-        uiManager.StartScreenFadeOut();
+        // Remove start screen, play BG music
+        uiManager.StartScreenLeave();
         yield return new WaitForSeconds(0.2f);
+
         changeBGM(true);
         pTank.Unfreeze();
-        yield return new WaitForSeconds(0.9f);
+
+        yield return new WaitWhile(() => uiManager.IsAnimating);
+
         noPause = false;
     }
 
@@ -159,7 +160,7 @@ public class RoomManager : MonoBehaviour
         else {
             if (LevelNum == 51) {
                 //game end screen, button leads to main menu
-                uiManager.LevelCompleteScreenFadeIn(true);
+                uiManager.MissionCompleteEnter(true);
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
                 //classic mode complete sound effect
@@ -204,10 +205,14 @@ public class RoomManager : MonoBehaviour
     private IEnumerator LoadAsyncScene(string sceneName) {
         noPause = true;
         loading = true;
+
+        var operation = SceneManager.LoadSceneAsync(sceneName)!;
+        operation.allowSceneActivation = false;
+
         yield return new WaitForSeconds(0.7f);
 
         //level complete screen
-        uiManager.LevelCompleteScreenFadeIn(false);
+        uiManager.MissionCompleteEnter(false);
         Tank.FindPlayer().FreezeEndOfLevel();
 
         //play level complete sound
@@ -216,19 +221,17 @@ public class RoomManager : MonoBehaviour
         yield return new WaitForSeconds(1.4f);
 
         //level complete screen fades out
-        uiManager.LevelCompleteScreenTextFadeOut();
+        uiManager.MissionCompleteLeave();
         yield return new WaitForSeconds(1f);
 
         SaveStateManagerGameObject.FinishLevel(sceneName, false);
 
         // reset stats
         SaveStateManagerGameObject.PlayerDied();
-        var asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
-        while (!asyncLoad.isDone) {
-            yield return null;
-        }
+        yield return new WaitWhile(() => uiManager.IsAnimating);
 
+        operation.allowSceneActivation = true;
         loading = false;
     }
 
@@ -243,7 +246,7 @@ public class RoomManager : MonoBehaviour
 
     public void changeEnemyCountUI() {
         if (LevelNum != 50) {
-            uiManager.displayEnemyCount(EnemySpawner.EnemiesRemaining);
+            uiManager.UpdateEnemyCount(EnemySpawner.EnemiesRemaining);
         }
     }
 
