@@ -61,7 +61,7 @@ public class EnemySpawner : Activatable
             yield return new WaitForSeconds(spawnDelay);
             enemies[r].SetActive(true);
             if (e is Sentry) {
-                e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             }
             e.onDeath += enemyDestroyed;
         } else {
@@ -71,7 +71,7 @@ public class EnemySpawner : Activatable
                 if (enemies[r].transform.GetChild(i).gameObject.TryGetComponent<Enemy>(out Enemy enemy)) {
                     enemy.gameObject.SetActive(true);
                     if (enemy is Sentry) {
-                        enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                        enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     }
                     enemy.onDeath += enemyDestroyed;
                 }
