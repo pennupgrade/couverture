@@ -20,25 +20,20 @@ public class UIManager : MonoBehaviour
         StartGame();
     }
 
-    public void StartGame() {
+    private void StartGame() {
         CloseAllPanels();
         Gameplay_Panel.SetActive(true);
-        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(CheckPlayerHasAbility());
+        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>()
+                      .EnableAbilityBar(Tank.FindPlayer().character is not DefaultChar);
     }
 
-    public bool CheckPlayerHasAbility()
-    {
-        return Tank.FindPlayer().character is not DefaultChar;
-    }
-
-    public void CloseAllPanels() {
+    private void CloseAllPanels() {
         for (var i = 1; i < panels.Length; i++) {
             panels[i].gameObject.SetActive(false);
         }
     }
 
-    public void QuitFrom_CatSelectionPanel_DuringGame(bool hasAbility)
-    {
+    public void QuitFrom_CatSelectionPanel_DuringGame(bool hasAbility) {
         Gameplay_Panel.SetActive(true);
         Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(hasAbility);
         if (GameManager.Instance != null) {
@@ -50,12 +45,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void Update_CatSelectionPanel_DuringGame() {
-        var PFPManager = Cat_Selection_Panel.GetComponent<CatPFPManager>();
-        PFPManager.LoadPFP();
-    }
-    public void FinishAnimateOutSelectionPanel()
-    {
-        Cat_Selection_Panel.SetActive(false);
+        Cat_Selection_Panel.GetComponent<CatPFPManager>().LoadPFP();
     }
 
     public void Open_CatSelectionPanel_DuringGame() {

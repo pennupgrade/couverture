@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,13 +11,12 @@ public class CatPFPManager : MonoBehaviour
     public GameObject CatPFP_obj;
     public Button btn_Confirm;
     public Transform CatsPFPPanel;
+    [SerializeField] private TMP_Text confirmationText;
+    [SerializeField] private CanvasGroup confirmBtnCg;
 
-    public Sprite sprite_OrangeCat;
     public Sprite sprite_BubbleCat;
     public Sprite sprite_RocketCat;
-    public Sprite sprite_UnknownCat;
 
-    private readonly List<CatPFP> pfps = new();
     private CatPFP currentPFP;
 
     // NOTE: this Canvas Group references the overlay from the Pause Menu Canvas!!
@@ -38,35 +37,39 @@ public class CatPFPManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var characters =
-            SaveStateManagerGameObject.GetUnlockedCharacters();
-        foreach (var character in characters) {
-            // DEFAULT_CAT has no ability, so why make it an option?
-            // - Anthony
-            if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) continue;
+        var unlockedCharacters = SaveStateManagerGameObject.GetUnlockedCharacters();
+        var currentCharacter = SaveStateManagerGameObject.GetCurrentCharacterOption();
+
+        foreach (var character in unlockedCharacters) {
+            // DEFAULT_CAT has no ability, so why make it an option? - Anthony
+            if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) {
+                OnSelectionMade(null);
+                continue;
+            }
 
             var catPFP = Instantiate(CatPFP_obj, CatsPFPPanel);
             var pfp = catPFP.GetComponent<CatPFP>();
-            setPFP(character, pfp);
-            pfps.Add(pfp);
+
+            switch (character) {
+            case SaveStateManager.CharacterOption.BUBBLE_CAT:
+                pfp.Init("Bubble Cat", sprite_BubbleCat, character);
+                break;
+
+            case SaveStateManager.CharacterOption.ROCKET_CAT:
+                pfp.Init("Rocket Cat", sprite_RocketCat, character);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException($"{character} is not handled!");
+            }
+
+            // Pre-select the current tank character
+            if (character == currentCharacter) {
+                OnSelectionMade(pfp);
+            }
         }
 
         btn_Confirm.onClick.AddListener(ConfirmBtnOnClick);
-    }
-
-    private void setPFP(SaveStateManager.CharacterOption character, CatPFP catPFP) {
-        if (character == SaveStateManager.CharacterOption.DEFAULT_CAT) {
-            catPFP.init("Orange Cat", sprite_OrangeCat, character);
-        }
-        else if (character == SaveStateManager.CharacterOption.BUBBLE_CAT) {
-            catPFP.init("Bubble Cat", sprite_BubbleCat, character);
-        }
-        else if (character == SaveStateManager.CharacterOption.ROCKET_CAT) {
-            catPFP.init("Rocket Cat", sprite_RocketCat, character);
-        }
-        else {
-            catPFP.init("Orange Cat", sprite_OrangeCat, character);
-        }
     }
 
     public void OnSelectionMade(CatPFP newCat) {
@@ -74,22 +77,37 @@ public class CatPFPManager : MonoBehaviour
             currentPFP.Reset();
         }
 
-        newCat.Select();
         currentPFP = newCat;
+        btn_Confirm.interactable = newCat != null;
+
+        if (newCat == null) {
+            confirmationText.text = "You haven't selected a cat yet.";
+            confirmBtnCg.alpha = 0.5f;
+            return;
+        }
+
+        confirmBtnCg.alpha = 1;
+        newCat.Select();
+
+        // Default cat should not be selectable
+        confirmationText.text = currentPFP.character switch {
+            SaveStateManager.CharacterOption.ROCKET_CAT => "You've locked in the <b>Rocket Cat!</b>",
+            SaveStateManager.CharacterOption.BUBBLE_CAT => "You've locked in the <b>Bubble Cat!</b>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
-    public void ConfirmBtnOnClick() {
+    private void ConfirmBtnOnClick() {
         if (currentPFP != null) {
-            UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().readyTag.gameObject
-                     .SetActive(true);
+            var gameplayHudManager = UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>();
+            gameplayHudManager.readyTag.gameObject.SetActive(true);
+
             if (Tank.FindPlayer().character is BubbleChar) {
                 Destroy(((BubbleChar)Tank.FindPlayer().character).obj);
-                UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().readyTag
-                         .GetComponentInChildren<TMP_Text>().text = "Ready!";
+                gameplayHudManager.readyTag.GetComponentInChildren<TMP_Text>().text = "Ready!";
             }
 
-            UIManager.Instance.Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>().abilityBarFill.fillAmount =
-                1;
+            gameplayHudManager.abilityBarFill.fillAmount = 1;
             SaveStateManagerGameObject.SwitchCharacter(currentPFP.character);
         }
 
@@ -97,19 +115,15 @@ public class CatPFPManager : MonoBehaviour
         UIManager.Instance.QuitFrom_CatSelectionPanel_DuringGame(Tank.FindPlayer().character is not DefaultChar);
     }
 
-    public void FadeInSelectionPanel(bool enabled) {
-        if (enabled) {
+    public void FadeInSelectionPanel(bool newEnabled) {
+        if (newEnabled) {
             canvasGroup.alpha = 0f;
             LeanTween.alphaCanvas(canvasGroup, 1f, 0.15f).setIgnoreTimeScale(true);
         }
         else {
             canvasGroup.alpha = 1f;
             LeanTween.alphaCanvas(canvasGroup, 0f, 0.15f).setIgnoreTimeScale(true)
-                     .setOnComplete(FinishFadeOutSelectionPanel);
+                     .setOnComplete(() => UIManager.Instance.Cat_Selection_Panel.SetActive(false));
         }
-    }
-
-    public void FinishFadeOutSelectionPanel() {
-        UIManager.Instance.FinishAnimateOutSelectionPanel();
     }
 }

@@ -110,6 +110,10 @@ public class PauseMenu : MonoBehaviour
     }
 
     private static IEnumerator HandleQuitToLevelSelectFromCampaign() {
+        UIManager.Instance.pauseMenu.HidePanel();
+
+        yield return new WaitForSecondsRealtime(PanelAnimTime);
+
         SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
 
         var operation = SceneManager.LoadSceneAsync("LevelSelect")!;
