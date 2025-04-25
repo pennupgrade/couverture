@@ -139,8 +139,9 @@ public class RoomManager : MonoBehaviour
             StartCoroutine(LoadAsyncScene("Classic19"));
         }
         else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
-            Tank pTank = Tank.FindPlayer();
-            if ((LevelNum == 25 && (pTank.CharacterHasAbility() || pTank.character.GetType() == typeof(BubbleChar))) || LevelNum == 40) {
+            var pTank = Tank.FindPlayer();
+            if ((LevelNum == 25 && (pTank.CharacterHasAbility() || pTank.character.GetType() == typeof(BubbleChar))) ||
+                LevelNum == 40) {
                 StartCoroutine(LoadAsyncScene("Classic25alt"));
             }
             else {
@@ -171,14 +172,19 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    public void playerDeath() {
+    public void PlayerDeath() => StartCoroutine(_PlayerDeath());
+
+    private IEnumerator _PlayerDeath() {
+        noPause = true;
+
         // redirect to death screen showing level reached, button leads to main menu
         uiManager.DeathScreenEnter(LevelNum);
 
         //play sad sound
         changeBGM(false);
         audioManager.Play("DeathSound");
-        noPause = true;
+
+        yield return new WaitWhile(() => uiManager.IsAnimating);
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();

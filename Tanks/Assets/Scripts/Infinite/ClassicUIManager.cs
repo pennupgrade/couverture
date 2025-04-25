@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,7 +6,13 @@ using UnityEngine.UI;
 
 public class ClassicUIManager : MonoBehaviour
 {
+    [Header("Overlay")]
     [SerializeField] private RectTransform overlay;
+    [SerializeField] private Image overlayImage;
+    [SerializeField] private Image leftWaveImage;
+    [SerializeField] private Image rightWaveImage;
+
+    [Header("Other stuff")]
     [SerializeField] private RectTransform secondOverlay;
     [SerializeField] private GameObject restartQuitCanvasPrefab;
     [SerializeField] private RectTransform missionPanel;
@@ -16,16 +21,13 @@ public class ClassicUIManager : MonoBehaviour
     [SerializeField] private TMP_Text enemyCountText;
     [SerializeField] private RectTransform missionCompleteBar;
     [SerializeField] private RectTransform[] stickers;
-
-    public TMP_Text levelsBeatenText;
-    public CanvasGroup endGameScreen;
-    public CanvasGroup deathScreen;
-    public Button backToHome;
-    public Button backToHome_fromDeath;
+    [SerializeField] private RectTransform missionFailed;
+    [SerializeField] private TMP_Text missionsBeatenText;
+    [SerializeField] private RectTransform missionsBeatenRt;
+    [SerializeField] private RectTransform optionsPanel;
 
     private void Start() {
         Reset();
-        backToHome.onClick.AddListener(ReturnToHome);
     }
 
     public bool IsAnimating {
@@ -33,7 +35,8 @@ public class ClassicUIManager : MonoBehaviour
             var stickersAreTweening = stickers.Aggregate(false, (acc, sticker) => acc || LeanTween.isTweening(sticker));
 
             return LeanTween.isTweening(missionPanel) || LeanTween.isTweening(overlay) ||
-                   LeanTween.isTweening(enemyCountBar) || LeanTween.isTweening(secondOverlay) || stickersAreTweening;
+                   LeanTween.isTweening(enemyCountBar) || LeanTween.isTweening(secondOverlay) ||
+                   LeanTween.isTweening(missionFailed) || LeanTween.isTweening(optionsPanel) || stickersAreTweening;
         }
     }
 
@@ -43,14 +46,6 @@ public class ClassicUIManager : MonoBehaviour
         LeanTween.moveY(enemyCountBar, 159f, 0f).setIgnoreTimeScale(true);
         LeanTween.scale(enemyCountBar, new Vector3(0.5f, 0.5f, 0.5f), 0f).setIgnoreTimeScale(true);
         LeanTween.moveX(missionCompleteBar, 2100f, 0f).setIgnoreTimeScale(true);
-
-        levelsBeatenText.alpha = 1;
-        endGameScreen.alpha = 0;
-        endGameScreen.gameObject.SetActive(false);
-        deathScreen.alpha = 0;
-        deathScreen.gameObject.SetActive(false);
-        backToHome.onClick.AddListener(ReturnToHome);
-        backToHome_fromDeath.onClick.AddListener(ReturnToHome);
     }
 
     public void ReturnToHome() {
@@ -74,10 +69,12 @@ public class ClassicUIManager : MonoBehaviour
         LeanTween.scale(enemyCountBar, new Vector3(0.35f, 0.35f, 0.35f), 1f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
+    private void WinScreenEnter() { }
+
     public void MissionCompleteEnter(bool beatClassicMode) {
         if (beatClassicMode) {
             // if lvl 50 complete then display the end game screen instead
-            StartCoroutine(Fade(endGameScreen, true));
+            WinScreenEnter();
             return;
         }
 
@@ -109,41 +106,22 @@ public class ClassicUIManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Fade(CanvasGroup screen, bool fadeInorOut) {
-        if (fadeInorOut) {
-            screen.gameObject.SetActive(true);
-            var t = 0f;
-            while (t < 1f) {
-                t += Time.deltaTime;
-                screen.alpha = t / 1f;
-                yield return null;
-            }
-
-            screen.alpha = 1f;
-        }
-        else {
-            var t = 0f;
-            while (t < 1f) {
-                t += Time.deltaTime;
-                screen.alpha = 1 - t / 1f;
-                yield return null;
-            }
-
-            screen.alpha = 0f;
-            screen.gameObject.SetActive(false);
-        }
-    }
-
     public void UpdateEnemyCount(int count) {
         enemyCountText.text = $"Enemies left <b>\u00d7 {count}</b>";
     }
 
     public void DeathScreenEnter(int levelNum) {
-        // display the end game screen, showing _/60 levels beat,
-        // and whether it is a high score or not, return to menu button
-        endGameScreen.gameObject.SetActive(false);
-        levelsBeatenText.text = "Levels Beat: " + (levelNum - 1) + "/50";
-        StartCoroutine(Fade(deathScreen, true));
+        missionsBeatenText.text = $"Reached Mission {levelNum} out of 50";
+
+        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
+        overlayImage.color = CatPFP.Brown;
+        leftWaveImage.color = CatPFP.Brown;
+        rightWaveImage.color = CatPFP.Brown;
+
+        LeanTween.moveX(overlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(missionFailed, 0f, 1f).setDelay(0.15f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(missionsBeatenRt, 0f, 1f).setDelay(0.30f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(optionsPanel, 0f, 1f).setDelay(0.45f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
     public ClassicRestartQuitCanvas Restart() {

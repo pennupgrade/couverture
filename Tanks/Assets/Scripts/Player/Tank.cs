@@ -26,15 +26,12 @@ public class Tank : MonoBehaviour, IDestroyable
     private bool invincible;
     private bool disableMove;
     private bool noRotation;
-    public bool disableFire {
-        get;
-        private set;
-    }
+    public bool disableFire { get; private set; }
     public float moveSpeed;
     public float rotSpeed;
     public float groundMargin;
     public float wheelMaxDist;
-    public bool enableGod = false;
+    public bool enableGod;
 
     // Object References
     public GameObject explosionPrefab;
@@ -67,7 +64,7 @@ public class Tank : MonoBehaviour, IDestroyable
     public Coroutine reloadCoroutine, cooldownCoroutine;
 
     //effects
-    private List<TimedEffect> effects = new();
+    private readonly List<TimedEffect> effects = new();
 
     //--------------------------- HOUSEKEEPING ---------------------------------------------
 
@@ -82,6 +79,7 @@ public class Tank : MonoBehaviour, IDestroyable
 
         rb = GetComponent<Rigidbody>();
         characterController = GetComponent<CharacterController>();
+
         // tankCollider = GetComponent<BoxCollider>();
 
         numBullets = MAX_BULLETS;
@@ -118,6 +116,7 @@ public class Tank : MonoBehaviour, IDestroyable
         if (reloadCoroutine != null) {
             StopCoroutine(reloadCoroutine);
         }
+
         Freeze(true);
     }
 
@@ -130,19 +129,16 @@ public class Tank : MonoBehaviour, IDestroyable
         effects.ForEach(x => x.Kill(this));
     }
 
-
-    public void addEffect(TimedEffect timedEffect) {    
+    public void addEffect(TimedEffect timedEffect) {
         effects.Add(timedEffect);
         timedEffect.Start(this);
     }
 
     // Platform Velocity Funcs
-    public void SetPlatformSpeed(float delta)
-    {
+    public void SetPlatformSpeed(float delta) {
         platformSpeed = Mathf.Clamp(platformSpeed + delta, 0.0f, 1.1f); // temp clamp
-        Debug.Log("Change: platformSpeed: " + (platformSpeed));
+        Debug.Log("Change: platformSpeed: " + platformSpeed);
     }
-
 
     private void Update() {
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
@@ -150,56 +146,59 @@ public class Tank : MonoBehaviour, IDestroyable
 
         tankController.RayCastTank();
         tankController.GravityFall();
-        bool wasIdle = tankState is TankIdleState;
+        var wasIdle = tankState is TankIdleState;
 
-        if (controls.TankControls.Shoot.IsPressed()){
+        if (controls.TankControls.Shoot.IsPressed()) {
             //If player is moving, bullet speed can be affected
-            Vector3 deltaPos = currentPos - previousPos;
+            var deltaPos = currentPos - previousPos;
 
             //Debug.Log(platformSpeed);
 
             tankState = tankState.HandleShoot(platformSpeed * deltaPos / Time.deltaTime);
-        };
+        }
 
-        if (!disableMove)
-        {
+        ;
+
+        if (!disableMove) {
             tankState = tankState.HandleMovement(moveDir);
-        } else {
+        }
+        else {
             tankState = new TankIdleState(this);
         }
 
         if (wasIdle && tankState is TankMoveState) {
             audioManager.Play("Engine");
 
-            if (!spawningTracks)
-            {
+            if (!spawningTracks) {
                 StartCoroutine("SpawnTracks");
             }
-        } else if (!wasIdle && tankState is TankIdleState){
+        }
+        else if (!wasIdle && tankState is TankIdleState) {
             audioManager.Stop("Engine");
 
             StopCoroutine("SpawnTracks");
             spawningTracks = false;
         }
+
         if (!noRotation) {
             tankState = tankState.HandleGunRotation(gunRot);
         }
 
-        for(int i = 0; i < effects.Count; i++) {
+        for (var i = 0; i < effects.Count; i++) {
             if (!effects[i].enabled) {
                 effects.RemoveAt(i);
             }
         }
 
-        previousPos = currentPos;//this gives them a single-tick of delta difference
+        previousPos = currentPos; //this gives them a single-tick of delta difference
         currentPos = transform.position;
-        
+
         // FOR TESTING PURPOSES, SHOULD BE REMOVED
         /*if(Input.GetKeyDown(KeyCode.Z)) {
             Debug.Log("Adding Speed");
 
             //Temporary TimedEffect
-            TimedEffect effect = new(15.0f, 
+            TimedEffect effect = new(15.0f,
                 (tank) => {
                     tank.moveSpeed *= 2.0f;
                 },
@@ -221,30 +220,24 @@ public class Tank : MonoBehaviour, IDestroyable
 
     public Transform tracksParent;
 
-    bool spawningTracks;
+    private bool spawningTracks;
 
     public float trackOffset;
 
-    private IEnumerator SpawnTracks()
-    {
+    private IEnumerator SpawnTracks() {
         spawningTracks = true;
 
-        while(spawningTracks)
-        {
+        while (spawningTracks) {
             yield return new WaitForSeconds(trackOffset);
 
-            if (spawningTracks)
-            {
+            if (spawningTracks) {
                 RaycastHit info;
-                if (Physics.Raycast(tracksParent.position, Vector3.down, out info, 1f))
-                {
+                if (Physics.Raycast(tracksParent.position, Vector3.down, out info, 1f)) {
                     Instantiate(tracksDecal, tracksParent.position, tracksParent.transform.rotation, info.transform);
-
                 }
             }
         }
     }
-
 
     private void OnEnable() {
         controls.Enable();
@@ -268,7 +261,7 @@ public class Tank : MonoBehaviour, IDestroyable
             return;
         }
 
-        health -= (dmg < 600) ? 100 : dmg;
+        health -= dmg < 600 ? 100 : dmg;
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {
@@ -280,8 +273,9 @@ public class Tank : MonoBehaviour, IDestroyable
             Freeze(false);
             if (RoomManager.Instance != null) {
                 //wii tanks mode
-                RoomManager.Instance.playerDeath();
-            } else {
+                RoomManager.Instance.PlayerDeath();
+            }
+            else {
                 //campaign mode
                 GameManager.Instance.Respawn();
 
@@ -290,22 +284,18 @@ public class Tank : MonoBehaviour, IDestroyable
             }
 
             gameObject.SetActive(false);
-
-
         }
         else {
             audioManager.Play("Meow");
             cameraShake.Shake(dmg);
         }
 
-        if (health <= 100)
-        {
+        if (health <= 100) {
             vignetteAnimation.EnableVignette();
         }
     }
 
-    public void Dissolve(float dissolveTime)
-    {
+    public void Dissolve(float dissolveTime) {
         damageFlash.CallDissolve(this, dissolveTime);
     }
 
@@ -325,26 +315,21 @@ public class Tank : MonoBehaviour, IDestroyable
         if (character != null) {
             return character.Ability(this);
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
+
     public void AbilityUpdate() {
         if (character != null) {
             character.AbilityUpdate(this);
         }
     }
 
-    public bool CharacterHasAbility()
-    {
-        return character.GetType() == typeof(RocketChar);
-    }
+    public bool CharacterHasAbility() => character.GetType() == typeof(RocketChar);
 
     // spawn a base bullet, override if different base bullet
-    public GameObject SpawnBullet() {
-        return PoolManager.bulletPool.Get().gameObject;
-    }
+    public GameObject SpawnBullet() => PoolManager.bulletPool.Get().gameObject;
+
     public void ResetPosition(Vector3 pos) {
         previousPos = pos;
         currentPos = pos;
@@ -352,10 +337,11 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     public static Tank FindPlayer() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        var player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) {
             Debug.Log("Could not find player");
         }
+
         return player.GetComponent<Tank>();
     }
 }

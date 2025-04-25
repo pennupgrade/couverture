@@ -12,8 +12,8 @@ public class CatPFP : MonoBehaviour
     public TMP_Text catName;
     public Button btn;
 
-    private static readonly Color32 Cream = new(255, 238, 229, 255);
-    private static readonly Color32 Brown = new(78, 63, 58, 255);
+    public static readonly Color32 Cream = new(255, 238, 229, 255);
+    public static readonly Color32 Brown = new(78, 63, 58, 255);
     private static readonly Color32 Green = new(134, 186, 135, 255);
 
     private bool selected;
