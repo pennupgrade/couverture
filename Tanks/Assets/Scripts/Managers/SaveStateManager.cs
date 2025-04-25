@@ -307,4 +307,9 @@ public class SaveStateManager
 
         return currentLevel.CheckpointIndex;
     }
+
+    // return the current character.  this should always be correct because all character changes go through the savestatemanager
+    public CharacterOption GetCurrentCharacter() {
+        return currCharacter;
+    }
 }

@@ -146,6 +146,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return Instance.stateManager.GetCurrentCheckpoint();
     }
 
+    public static SaveStateManager.CharacterOption GetCurrentCharacter() {
+        return Instance.stateManager.GetCurrentCharacter();
+    }
+
 
     // helper function
     public static int GetLevelNumberFromSceneName(string sceneName) {
