@@ -235,6 +235,7 @@ public class RoomManager : MonoBehaviour
         SaveStateManagerGameObject.PlayerDied();
 
         yield return new WaitWhile(() => uiManager.IsAnimating);
+        yield return new WaitForSecondsRealtime(0.15f);
 
         operation.allowSceneActivation = true;
         loading = false;
