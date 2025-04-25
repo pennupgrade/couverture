@@ -92,8 +92,9 @@ public abstract class TankState
         tank.cooldownProgress = 0f;
         //tank.cannonAnimator.SetTrigger("Fire");
         tank.StartCoroutine(AnimationCooldown());
+        float cdTime = Tank.COOLDOWN_TIME +  (tank.numBullets <= 3 ? 0.16f : 0);
 
-        while (tank.cooldownProgress <= Tank.COOLDOWN_TIME)
+        while (tank.cooldownProgress <= cdTime)
         {
             tank.cooldownProgress += Time.deltaTime;
             yield return null;
