@@ -14,14 +14,9 @@ public class RoomManager : MonoBehaviour
     private AudioManager audioManager;
     [SerializeField] private int overrideLevel;
 
-    //call at start
-    public static void reset() {
-        LevelNum = 1;
-    }
-
     //call when exiting
-    public void destroyIt() {
-        reset();
+    public void DestroyIt() {
+        LevelNum = 1;
         Destroy(gameObject);
         Instance = null;
     }
@@ -189,15 +184,24 @@ public class RoomManager : MonoBehaviour
         SaveStateManagerGameObject.SaveToFile();
     }
 
-    public void ResetToLevelOne() {
+    public void ResetToLevelOne() => StartCoroutine(_ResetToLevelOne());
+
+    private IEnumerator _ResetToLevelOne() {
+        UIManager.Instance.pauseMenu.HidePanel();
+
         Time.timeScale = 1;
         noPause = true;
         loading = true;
         changeBGM(false);
 
+        uiManager.Restart();
+
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
-        destroyIt();
+
+        yield return new WaitWhile(() => uiManager.IsAnimating);
+
+        DestroyIt();
         EnemySpawner.reset();
         SceneManager.LoadScene("Classic1");
     }
@@ -310,5 +314,18 @@ public class RoomManager : MonoBehaviour
         else if (r == 10) {
             StartCoroutine(LoadAsyncScene("ClassicJ"));
         }
+    }
+
+    public void ReturnToMainMenu() => StartCoroutine(_ReturnToMainMenu());
+
+    private IEnumerator _ReturnToMainMenu() {
+        uiManager.QuitClassicMode();
+
+        yield return new WaitForSeconds(0.2f);
+        yield return new WaitWhile(() => uiManager.IsAnimating);
+
+        DestroyIt();
+        EnemySpawner.reset();
+        SceneManager.LoadScene("TitleScreen");
     }
 }

@@ -104,9 +104,8 @@ public class PauseMenu : MonoBehaviour
         SaveStateManagerGameObject.SaveToFile();
 
         if (RoomManager.Instance != null) {
-            RoomManager.Instance.destroyIt();
-            EnemySpawner.reset();
-            SceneManager.LoadScene("TitleScreen");
+            UIManager.Instance.pauseMenu.HidePanel();
+            RoomManager.Instance.ReturnToMainMenu();
         }
         else {
             StartCoroutine(HandleQuitToLevelSelectFromCampaign());

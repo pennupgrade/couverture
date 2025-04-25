@@ -43,8 +43,29 @@ public class ClassicUIManager : MonoBehaviour
         backToHome_fromDeath.onClick.AddListener(ReturnToHome);
     }
 
+    public void Restart() {
+        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveX(overlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveY(enemyCountBar, 700f, 1f).setEaseInExpo().setIgnoreTimeScale(true);
+    }
+
+    public void QuitClassicMode() {
+        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveX(overlay, 0f, 1.1f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveY(enemyCountBar, 700f, 1.1f).setEaseInExpo().setIgnoreTimeScale(true);
+
+        var brown = new Color32(78, 63, 56, 255);
+        var cream = new Color32(255, 238, 229, 255);
+        var images = overlay.GetComponentsInChildren<Image>();
+        LeanTween.value(overlay.gameObject, value => {
+            foreach (var image in images) {
+                image.color = value;
+            }
+        }, cream, brown, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
+    }
+
     public void ReturnToHome() {
-        if (RoomManager.Instance != null) RoomManager.Instance.destroyIt();
+        if (RoomManager.Instance != null) RoomManager.Instance.DestroyIt();
         EnemySpawner.reset();
         SceneManager.LoadScene("TitleScreen");
     }
@@ -53,7 +74,7 @@ public class ClassicUIManager : MonoBehaviour
         missionText.text = "Mission " + missionNum;
 
         LeanTween.moveX(missionPanel, 0f, 1f).setDelay(0.05f).setEaseOutExpo().setIgnoreTimeScale(true);
-        LeanTween.moveX(enemyCountBar, 0f, 1f).setDelay(0.20f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(enemyCountBar, 0f, 1f).setDelay(0.4f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
     public void StartScreenLeave() {
