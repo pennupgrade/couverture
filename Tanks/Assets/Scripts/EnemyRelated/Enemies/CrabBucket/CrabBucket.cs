@@ -12,7 +12,7 @@ public class CrabBucket : MonoBehaviour
     int damage = 100;
 
     private CrabBucketAttack attackScript;
-    private ParticleSystem attackEffects;
+    [SerializeField] private ParticleSystem attackEffects;
     //[SerializeField] private AudioSource sound;
     //[SerializeField] private AudioSource blockedSound;
 
@@ -23,7 +23,7 @@ public class CrabBucket : MonoBehaviour
     void Start()
     {
         attackScript = gameObject.GetComponentInChildren<CrabBucketAttack>();
-        attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
+        //attackEffects = gameObject.GetComponentInChildren<ParticleSystem>();
         attackWaitTimeCounter = attackWaitTime;
     }
 

@@ -180,7 +180,7 @@ public class Boss : MonoBehaviour, IDestroyable
     }
     public void ShootMissile()
     {
-        Vector3 shootPosition = transform.position + new Vector3(0, 0, 0);
+        Vector3 shootPosition = gun.transform.position + new Vector3(0, 0, 0);
         GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(shootPosition, player.transform.position);

@@ -31,6 +31,7 @@ public class BossMovement : MonoBehaviour
     public BossStateMachine bossState;
     public NavMeshAgent agent; 
     public float lastDestTime;
+    public GameObject top;
     public float destCD;
     // Start is called before the first frame update
     void Start()
@@ -49,7 +50,7 @@ public class BossMovement : MonoBehaviour
         if (bossState.currentAttack != BossStateMachine.Attack.Charge) {
             Vector3 newtarget = player.transform.position;
             newtarget.y = transform.position.y;
-            transform.LookAt(newtarget);
+            top.transform.LookAt(newtarget);
             currMoveSpeed = moveSpeed;
             agent.enabled = true;
             agent.speed = moveSpeed;
