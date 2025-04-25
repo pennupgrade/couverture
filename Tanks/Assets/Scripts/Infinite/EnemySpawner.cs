@@ -55,19 +55,20 @@ public class EnemySpawner : Activatable
     }
 
     private IEnumerator spawn() {
-        yield return new WaitForSeconds(spawnDelay);
         int r = (int) Mathf.Floor(enemies.Length * Random.value);
         if (enemies[r].TryGetComponent<Enemy>(out Enemy e)) {
             EnemiesRemaining++;
+            yield return new WaitForSeconds(spawnDelay);
             enemies[r].SetActive(true);
             if (e is Sentry) {
                 e.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
             }
             e.onDeath += enemyDestroyed;
         } else {
+            EnemiesRemaining += enemies[r].transform.childCount;
+            yield return new WaitForSeconds(spawnDelay);
             for (int i = 0; i < enemies[r].transform.childCount; ++i) {
                 if (enemies[r].transform.GetChild(i).gameObject.TryGetComponent<Enemy>(out Enemy enemy)) {
-                    EnemiesRemaining++;
                     enemy.gameObject.SetActive(true);
                     if (enemy is Sentry) {
                         enemy.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
