@@ -90,11 +90,13 @@ public class CatPFPManager : MonoBehaviour
         newCat.Select();
 
         // Default cat should not be selectable
-        confirmationText.text = currentPFP.character switch {
-            SaveStateManager.CharacterOption.ROCKET_CAT => "You've locked in the <b>Rocket Cat!</b>",
-            SaveStateManager.CharacterOption.BUBBLE_CAT => "You've locked in the <b>Bubble Cat!</b>",
+        var catName = currentPFP.character switch {
+            SaveStateManager.CharacterOption.ROCKET_CAT => "Rocket Cat",
+            SaveStateManager.CharacterOption.BUBBLE_CAT => "Bubble Cat",
             _ => throw new ArgumentOutOfRangeException()
         };
+
+        confirmationText.text = $"You've selected the <b>{catName}</b>!";
     }
 
     private void ConfirmBtnOnClick() {
