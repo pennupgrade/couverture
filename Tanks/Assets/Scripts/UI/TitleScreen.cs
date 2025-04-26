@@ -66,9 +66,9 @@ public class TitleScreen : MonoBehaviour
         operation.allowSceneActivation = true;
     }
 
-    public void OpenOptions() => StartCoroutine(_OpenOptions());
+    public void OpenCredits() => StartCoroutine(_OpenCredits());
 
-    private static IEnumerator _OpenOptions() {
+    private static IEnumerator _OpenCredits() {
         SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
 
         var operation = SceneManager.LoadSceneAsync("CreditsScreen")!;

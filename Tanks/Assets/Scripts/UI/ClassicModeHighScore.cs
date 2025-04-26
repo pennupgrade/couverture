@@ -9,6 +9,6 @@ public class ClassicModeHighScore : MonoBehaviour
     // Start is called before the first frame update
     private void Start() {
         ClassicModeInfo info = new();
-        scoreText.text = $"{prefix} {info.GetClassicModeHighScore()}";
+        scoreText.text = $"{prefix} {Mathf.Clamp(info.GetClassicModeHighScore(), 1, 50)}";
     }
 }

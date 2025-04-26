@@ -156,8 +156,11 @@ public class RoomManager : MonoBehaviour
         }
         else {
             if (LevelNum == 51) {
-                //game end screen, button leads to main menu
-                uiManager.MissionCompleteEnter(true);
+                noPause = true;
+                Tank.FindPlayer().FreezeEndOfLevel();
+
+                uiManager.WinScreenEnter();
+
                 SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
                 //classic mode complete sound effect
@@ -172,9 +175,7 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    public void PlayerDeath() => StartCoroutine(_PlayerDeath());
-
-    private IEnumerator _PlayerDeath() {
+    public void PlayerDeath() {
         noPause = true;
 
         // redirect to death screen showing level reached, button leads to main menu
@@ -183,8 +184,6 @@ public class RoomManager : MonoBehaviour
         //play sad sound
         changeBGM(false);
         audioManager.Play("DeathSound");
-
-        yield return new WaitWhile(() => uiManager.IsAnimating);
 
         // call exit level
         SaveStateManagerGameObject.ExitLevel();
@@ -196,8 +195,6 @@ public class RoomManager : MonoBehaviour
     private IEnumerator _ResetToLevelOne() {
         noPause = true;
         loading = true;
-
-        UIManager.Instance.pauseMenu.HidePanel();
 
         Time.timeScale = 1;
         changeBGM(false);
@@ -224,7 +221,7 @@ public class RoomManager : MonoBehaviour
         yield return new WaitForSeconds(0.7f);
 
         //level complete screen
-        uiManager.MissionCompleteEnter(false);
+        uiManager.MissionCompleteEnter();
         Tank.FindPlayer().FreezeEndOfLevel();
 
         //play level complete sound
@@ -336,6 +333,9 @@ public class RoomManager : MonoBehaviour
 
         DestroyIt();
         EnemySpawner.reset();
+
+        SaveStateManagerGameObject.ExitLevel();
+        SaveStateManagerGameObject.SaveToFile();
         SceneManager.LoadScene("TitleScreen");
     }
 }
