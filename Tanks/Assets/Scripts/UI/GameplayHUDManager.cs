@@ -7,19 +7,36 @@ public class GameplayHUDManager : MonoBehaviour
 {
     public RectTransform abilityIcon;
     public RectTransform readyTag;
-    public Image abilityBarFill;
+    public Image rocketAbilityIcon;
+    public Image bubbleAbilityIcon;
+    [HideInInspector] public Image abilityBarFill;
 
-    private Vector3 startPosition;
+    private Vector3 abilityIconStartPosition;
 
-    private void Start() {
-        startPosition = abilityIcon.anchoredPosition;
-        var t = Tank.FindPlayer();
-        if (t.character is null || t.character is DefaultChar) {
+    private void Start()
+    {
+        abilityIconStartPosition = abilityIcon.anchoredPosition;
+    }
+
+    public void ActivateAbilityIcon()
+    {
+        SaveStateManager.CharacterOption characterOption = SaveStateManagerGameObject.GetCurrentCharacterOption();
+        if (characterOption == SaveStateManager.CharacterOption.DEFAULT_CAT)
+        {
             EnableAbilityBar(false);
         }
-        else {
+        else
+        {
+            SetAbilityIcon(characterOption == SaveStateManager.CharacterOption.BUBBLE_CAT);
             EnableAbilityBar(true);
         }
+    }
+
+    private void SetAbilityIcon(bool bubbleCat)
+    {
+        abilityBarFill = bubbleCat ? bubbleAbilityIcon : rocketAbilityIcon;
+        rocketAbilityIcon.gameObject.SetActive(!bubbleCat);
+        bubbleAbilityIcon.gameObject.SetActive(bubbleCat);
     }
 
     public void AbilityBarIsCasting(float stayTime, Character tank) {
@@ -34,9 +51,9 @@ public class GameplayHUDManager : MonoBehaviour
         readyTag.gameObject.SetActive(false);
 
         LeanTween.cancel(gameObject);
-        abilityIcon.anchoredPosition = startPosition;
-        LeanTween.moveY(abilityIcon, startPosition.y - 30f, 0.12f).setEaseOutCubic().setIgnoreTimeScale(true);
-        LeanTween.moveY(abilityIcon, startPosition.y, 0.18f).setEaseOutQuart().setIgnoreTimeScale(true).setDelay(0.12f);
+        abilityIcon.anchoredPosition = abilityIconStartPosition;
+        LeanTween.moveY(abilityIcon, abilityIconStartPosition.y - 30f, 0.12f).setEaseOutCubic().setIgnoreTimeScale(true);
+        LeanTween.moveY(abilityIcon, abilityIconStartPosition.y, 0.18f).setEaseOutQuart().setIgnoreTimeScale(true).setDelay(0.12f);
 
         StartCoroutine(FillAbilityBar(reloadTime));
     }
@@ -57,10 +74,9 @@ public class GameplayHUDManager : MonoBehaviour
     }
 
     private IEnumerator DrainAbilityBar(float reloadTime, Character tank) {
-        abilityBarFill.fillMethod = Image.FillMethod.Vertical;
         var elapsed = 0f;
         readyTag.gameObject.SetActive(true);
-        readyTag.GetComponentInChildren<TMP_Text>().text = "Shielding...";
+        readyTag.GetComponentInChildren<TMP_Text>().text = "Active!";
         abilityBarFill.fillAmount = 1f;
 
         while (elapsed < reloadTime) {
@@ -76,7 +92,6 @@ public class GameplayHUDManager : MonoBehaviour
         }
 
         abilityBarFill.fillAmount = 0f;
-        abilityBarFill.fillMethod = Image.FillMethod.Radial360;
         readyTag.GetComponentInChildren<TMP_Text>().text = "Ready!";
         readyTag.gameObject.SetActive(false);
         StartReadyTagAnim();
@@ -98,10 +113,10 @@ public class GameplayHUDManager : MonoBehaviour
                  .setOnComplete(ReadyTagBounceUp);
     }
 
-    public void EnableAbilityBar(bool enable) {
+    private void EnableAbilityBar(bool enable) {
         if (enable) {
             abilityIcon.gameObject.SetActive(false);
-            LeanTween.moveY(abilityIcon, -100f, 0f);
+            LeanTween.moveY(abilityIcon, -250f, 0f);
             StartCoroutine(EnableAbilityIconAnimation());
         }
         else {
@@ -112,8 +127,7 @@ public class GameplayHUDManager : MonoBehaviour
     private IEnumerator EnableAbilityIconAnimation()
     {
         yield return new WaitForSeconds(0.1f);
-        LeanTween.moveY(abilityIcon, 45f, 0.5f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true)
-            .setDelay(0.2f);
+        LeanTween.moveY(abilityIcon, 45f, 1f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true);
         abilityIcon.gameObject.SetActive(true);
     }
 }
