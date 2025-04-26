@@ -10,16 +10,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     private SaveStateManager stateManager;
 
-    // TODO: should i optimize this (FindTank only at loadlevel)?
-    private static Tank FindTank() {
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) {
-            Debug.Log("SaveStateManagerGameObject: Could not find player");
-        }
-
-        return player.GetComponent<Tank>();
-    }
-
     private void Awake() {
         if (Instance is null) {
             Instance = this;
@@ -139,14 +129,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.UnlockCheckpoint(i, new TankStats(Tank.FindPlayer()));
     }
 
-    public static int? GetCurrentCheckpoint() {
-        return Instance.stateManager.GetCurrentCheckpoint();
-    }
+    public static int? GetCurrentCheckpoint() => Instance.stateManager.GetCurrentCheckpoint();
 
-    public static SaveStateManager.CharacterOption GetCurrentCharacter() {
-        return Instance.stateManager.CurrCharacter;
-    }
-
+    public static SaveStateManager.CharacterOption GetCurrentCharacter() => Instance.stateManager.CurrCharacter;
 
     public static int GetLevelNumberFromSceneName(string sceneName) {
         if (sceneName.Contains('1')) {

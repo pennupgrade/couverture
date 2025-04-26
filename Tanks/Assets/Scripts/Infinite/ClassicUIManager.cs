@@ -1,7 +1,6 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ClassicUIManager : MonoBehaviour
@@ -12,18 +11,26 @@ public class ClassicUIManager : MonoBehaviour
     [SerializeField] private Image leftWaveImage;
     [SerializeField] private Image rightWaveImage;
 
-    [Header("Other stuff")]
-    [SerializeField] private RectTransform secondOverlay;
-    [SerializeField] private GameObject restartQuitCanvasPrefab;
-    [SerializeField] private RectTransform missionPanel;
-    [SerializeField] private TMP_Text missionText;
-    [SerializeField] private RectTransform enemyCountBar;
-    [SerializeField] private TMP_Text enemyCountText;
+    [Header("Mission complete")]
     [SerializeField] private RectTransform missionCompleteBar;
     [SerializeField] private RectTransform[] stickers;
+    [SerializeField] private RectTransform missionPanel;
+    [SerializeField] private TMP_Text missionText;
+
+    [Header("Lose screen")]
     [SerializeField] private RectTransform missionFailed;
     [SerializeField] private TMP_Text missionsBeatenText;
     [SerializeField] private RectTransform missionsBeatenRt;
+
+    [Header("Win screen")]
+    [SerializeField] private RectTransform catankedAllMissions;
+    [SerializeField] private RectTransform winCat;
+
+    [Header("Other stuff")]
+    [SerializeField] private RectTransform secondOverlay;
+    [SerializeField] private GameObject restartQuitCanvasPrefab;
+    [SerializeField] private RectTransform enemyCountBar;
+    [SerializeField] private TMP_Text enemyCountText;
     [SerializeField] private RectTransform optionsPanel;
 
     private void Start() {
@@ -48,12 +55,6 @@ public class ClassicUIManager : MonoBehaviour
         LeanTween.moveX(missionCompleteBar, 2100f, 0f).setIgnoreTimeScale(true);
     }
 
-    public void ReturnToHome() {
-        if (RoomManager.Instance != null) RoomManager.Instance.DestroyIt();
-        EnemySpawner.reset();
-        SceneManager.LoadScene("TitleScreen");
-    }
-
     public void StartScreenEnter(int missionNum) {
         missionText.text = "Mission " + missionNum;
 
@@ -69,15 +70,20 @@ public class ClassicUIManager : MonoBehaviour
         LeanTween.scale(enemyCountBar, new Vector3(0.35f, 0.35f, 0.35f), 1f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
-    private void WinScreenEnter() { }
+    public void WinScreenEnter() {
+        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
+        overlayImage.color = CatPFP.Brown;
+        leftWaveImage.color = CatPFP.Brown;
+        rightWaveImage.color = CatPFP.Brown;
 
-    public void MissionCompleteEnter(bool beatClassicMode) {
-        if (beatClassicMode) {
-            // if lvl 50 complete then display the end game screen instead
-            WinScreenEnter();
-            return;
-        }
+        LeanTween.moveX(overlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveY(enemyCountBar, 700f, 0.9f).setEaseInExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(catankedAllMissions, 0f, 1f).setDelay(0.15f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(winCat, 0f, 1f).setDelay(0.30f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(optionsPanel, 0f, 1f).setDelay(0.45f).setEaseOutExpo().setIgnoreTimeScale(true);
+    }
 
+    public void MissionCompleteEnter() {
         secondOverlay.gameObject.SetActive(true);
         LeanTween.moveX(secondOverlay, 2100f, 0f).setIgnoreTimeScale(true);
         LeanTween.moveX(secondOverlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true).setOnComplete(() => {
@@ -97,11 +103,11 @@ public class ClassicUIManager : MonoBehaviour
     }
 
     public void MissionCompleteLeave() {
-        LeanTween.moveX(missionCompleteBar, -2100f, 1f).setDelay(0.05f).setEaseInExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(missionCompleteBar, -2100f, 1f).setDelay(0.15f).setEaseInExpo().setIgnoreTimeScale(true);
 
         for (var i = stickers.Length - 1; i >= 0; i--) {
             var sticker = stickers[i];
-            LeanTween.scale(sticker, Vector3.zero, 1f).setDelay((i + 1f) * 0.04f + 0.07f).setEaseInExpo()
+            LeanTween.scale(sticker, Vector3.zero, 1f).setDelay(i * 0.04f).setEaseInExpo()
                      .setIgnoreTimeScale(true);
         }
     }
