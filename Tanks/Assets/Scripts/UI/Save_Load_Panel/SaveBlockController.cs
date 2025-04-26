@@ -34,13 +34,17 @@ public class SaveBlockController : MonoBehaviour
             highestUnlockedLevel.text = state.GetLatestLevelNameFormatted(i);
         }
 
+        var ts = state.GetTimePlayed(i);
+        totalPlayTime.text = $"{ts.Days}d / {ts.Hours}h / {ts.Minutes}m / {ts.Seconds}s";
+
         lastPlayed.text = state.GetLastPlayedTime(i).ToLongDateString();
-        totalPlayTime.text = state.GetTimePlayed(i).ToString();
         started.text = state.GetStartTime(i).ToLongDateString();
         btn_Delete.onClick.AddListener(delete);
         btn_LoadSave.onClick.AddListener(() => StartCoroutine(_LoadSave()));
-        for (var j = 0; j < 5; j++) {
-            if (j < state.GetUnlockedCharacters(i).Count) {
+
+        var numUnlockedChars = state.GetUnlockedCharacters(i).Count;
+        for (var j = 0; j < 2; j++) {
+            if (j + 1 < numUnlockedChars) {
                 Instantiate(unlockedSign, catsUnlocked.transform);
             }
             else {

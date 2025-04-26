@@ -1,25 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-[System.Serializable]
+[Serializable]
 public class CreditEntry
 {
     public string role;
     public List<string> names;
 }
 
-[System.Serializable]
+[Serializable]
 public class CreditSection
 {
     public string section;
     public List<CreditEntry> credits;
 }
 
-[System.Serializable]
+[Serializable]
 public class CreditsData
 {
     public string title;
@@ -27,7 +29,7 @@ public class CreditsData
     public List<CreditSection> data;
 }
 
-public class CreditScreenController : MonoBehaviour
+public class CreditScreenController : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     public ScrollRect scrollRect;
     public float scrollSpeed;
@@ -36,38 +38,40 @@ public class CreditScreenController : MonoBehaviour
     public GameObject content;
     public TextAsset jsonFile;
     public Button returnBtn;
+    private bool isScrolling;
 
-    private bool readyToScroll = false;
+    private bool readyToScroll;
 
-    private void Awake()
-    {
+    private void Awake() {
+        isScrolling = false;
         GenerateCredits();
         StartCoroutine(InitAndStartScroll());
-        returnBtn.onClick.AddListener(returnToMain);
+        returnBtn.onClick.AddListener(() => StartCoroutine(ReturnToMain()));
     }
 
-    public void returnToMain()
-    {
-        SceneManager.LoadScene("TitleScreen");
+    private static IEnumerator ReturnToMain() {
+        SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
+
+        var operation = SceneManager.LoadSceneAsync("TitleScreen")!;
+        operation.allowSceneActivation = false;
+
+        yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
+
+        operation.allowSceneActivation = true;
     }
 
-    private void GenerateCredits()
-    {
+    private void GenerateCredits() {
         content.SetActive(true); // Must be active before building
-        GameObject temp1 = Instantiate(prefab_SectionTitle, content.transform);
-        temp1.GetComponent<TMP_Text>().text = "  ";
 
-        CreditsData creditsData = JsonUtility.FromJson<CreditsData>(jsonFile.text);
-        foreach (CreditSection section in creditsData.data)
-        {
-            GameObject sectionTitle = Instantiate(prefab_SectionTitle, content.transform);
+        var creditsData = JsonUtility.FromJson<CreditsData>(jsonFile.text);
+        foreach (var section in creditsData.data) {
+            var sectionTitle = Instantiate(prefab_SectionTitle, content.transform);
             sectionTitle.GetComponent<TMP_Text>().text = section.section;
-            foreach (CreditEntry entry in section.credits)
-            {
-                GameObject block = Instantiate(prefab_CreditsBlock, content.transform);
-                TMP_Text[] texts = block.GetComponentsInChildren<TMP_Text>();
-                if (texts.Length >= 2)
-                {
+
+            foreach (var entry in section.credits) {
+                var block = Instantiate(prefab_CreditsBlock, content.transform);
+                var texts = block.GetComponentsInChildren<TMP_Text>();
+                if (texts.Length >= 2) {
                     texts[0].text = entry.role;
                     texts[1].text = string.Join("\n", entry.names);
                 }
@@ -75,8 +79,7 @@ public class CreditScreenController : MonoBehaviour
         }
     }
 
-    private IEnumerator InitAndStartScroll()
-    {
+    private IEnumerator InitAndStartScroll() {
         // Force layout rebuild
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(content.GetComponent<RectTransform>());
@@ -90,11 +93,17 @@ public class CreditScreenController : MonoBehaviour
         readyToScroll = true;
     }
 
-    private void Update()
-    {
-        if (readyToScroll && scrollRect.verticalNormalizedPosition > 0)
-        {
+    private void Update() {
+        if (readyToScroll && scrollRect.verticalNormalizedPosition > 0 && !isScrolling) {
             scrollRect.verticalNormalizedPosition -= scrollSpeed * Time.deltaTime / 100f;
         }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData) {
+        isScrolling = true;
+    }
+
+    public void OnEndDrag(PointerEventData eventData) {
+        isScrolling = false;
     }
 }

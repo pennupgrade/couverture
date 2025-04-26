@@ -16,27 +16,32 @@ public abstract class TankState
 
     public virtual TankState HandleGunRotation(Vector2 val)
     {
-        // Debug.Log(Camera.main);
-        var ray = Camera.main.ScreenPointToRay(val);
+        if (Camera.main == false) {
+            return null;
+        }
+        if (Camera.main.enabled) {
+            var ray = Camera.main.ScreenPointToRay(val);
 
-        var plane = new Plane(Vector3.up, tank.gun.transform.position);
+            var plane = new Plane(Vector3.up, tank.gun.transform.position);
 
-        float dist;
-        plane.Raycast(ray, out dist);
+            float dist;
+            plane.Raycast(ray, out dist);
 
-        var point = ray.GetPoint(dist);
+            var point = ray.GetPoint(dist);
 
-        var offset = (point - tank.gun.transform.position).normalized;
-        Vector3 dir = new(offset.x, 0, offset.z);
+            var offset = (point - tank.gun.transform.position).normalized;
+            Vector3 dir = new(offset.x, 0, offset.z);
 
-        var angle = Vector3.SignedAngle(tank.Body.transform.forward, dir, Vector3.up);
+            var angle = Vector3.SignedAngle(tank.Body.transform.forward, dir, Vector3.up);
 
-        Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, Color.green);
+            Debug.DrawRay(tank.gun.transform.position, point - tank.gun.transform.position, Color.green);
 
-        Quaternion s0 = tank.gun.transform.localRotation;
-        //tank.gun.transform.localRotation = Quaternion.Slerp(s0, Quaternion.Euler(0, angle, 0), 12.8f * Time.deltaTime);
-        tank.gun.transform.localRotation = Quaternion.Euler(0, angle, 0);
-        return this;
+            Quaternion s0 = tank.gun.transform.localRotation;
+            //tank.gun.transform.localRotation = Quaternion.Slerp(s0, Quaternion.Euler(0, angle, 0), 12.8f * Time.deltaTime);
+            tank.gun.transform.localRotation = Quaternion.Euler(0, angle, 0);
+            return this;
+        }
+        return null;
     }
 
     protected bool spawnInsideWallCheck()

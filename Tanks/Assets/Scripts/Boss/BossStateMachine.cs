@@ -74,12 +74,7 @@ public class BossStateMachine : MonoBehaviour
     }
 
     private void Update() {
-        if (!boss.isUnplugged()) {
-            chargeRange = 1f;
-        }
-        else {
-            chargeRange = 3.5f;
-        }
+        chargeRange = 3.5f;
 
         if (playerIsStunned) {
             if (dummyTransform.GetComponent<TankDummy>().StunOver()) {
@@ -285,7 +280,7 @@ public class BossStateMachine : MonoBehaviour
         }
 
         if (currentAttack == Attack.Charge && col.gameObject.tag == "Environment") {
-            anim.SetTrigger("Stun");
+            //anim.SetTrigger("Stun");
         }
     }
 
