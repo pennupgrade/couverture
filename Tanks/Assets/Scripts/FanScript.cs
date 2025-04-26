@@ -13,12 +13,21 @@ public class FanScript : MonoBehaviour
     public bool active;
     public bool canEffectEnemy;
 
+    public GameObject fanBladeModel;
+
     // Start is called before the first frame update
     private void Start() {
         basePushPower = 0.4f;
         exponentialPushPower = 2f;
         maxEffectiveDistance = fanCollider.transform.lossyScale.y;
         effect.startLifetime = fanCollider.transform.lossyScale.y / 6 * 1.3f;
+    }
+
+    private void Update()
+    {
+        if (!active)
+            return;
+        fanBladeModel.transform.localEulerAngles = Vector3.forward * (fanBladeModel.transform.localEulerAngles.z + 480f * Time.deltaTime);
     }
 
     public void pushPlayer(Collider player) {

@@ -336,6 +336,8 @@ public class RoomManager : MonoBehaviour
 
         SaveStateManagerGameObject.ExitLevel();
         SaveStateManagerGameObject.SaveToFile();
+        SaveStateManagerGameObject.ExitCurrentSave();
+        
         SceneManager.LoadScene("TitleScreen");
     }
 }

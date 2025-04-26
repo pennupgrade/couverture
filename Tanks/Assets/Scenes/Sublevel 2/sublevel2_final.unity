@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -519,6 +519,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7264768890681827657, guid: a8d1430d703098c45988da09a28550e3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f9abfe47496d4c0badc363468cba89b, type: 2}
     - target: {fileID: 7522136982680660621, guid: a8d1430d703098c45988da09a28550e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.28
@@ -648,6 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80075fda2b561c440973fadef2a59b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResetNormal: {x: 0, y: 0, z: 0}
 --- !u!65 &41201718
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -676,7 +681,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41201715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2232,6 +2237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80075fda2b561c440973fadef2a59b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResetNormal: {x: 0, y: 0, z: 0}
 --- !u!1 &317077726
 GameObject:
   m_ObjectHideFlags: 0
@@ -5446,6 +5452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7264768890681827657, guid: a8d1430d703098c45988da09a28550e3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 195f3a87b0f584790a617e4069160400, type: 2}
     - target: {fileID: 7522136982680660621, guid: a8d1430d703098c45988da09a28550e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.3
@@ -7000,6 +7010,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7264768890681827657, guid: a8d1430d703098c45988da09a28550e3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2383d5412b4eb4b9db9af9b88e421773, type: 2}
     - target: {fileID: 7522136982680660621, guid: a8d1430d703098c45988da09a28550e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.18
@@ -13315,6 +13329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80075fda2b561c440973fadef2a59b52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResetNormal: {x: 0, y: 0, z: 0}
 --- !u!65 &1985846092
 BoxCollider:
   m_ObjectHideFlags: 0

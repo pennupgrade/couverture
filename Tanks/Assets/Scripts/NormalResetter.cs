@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class NormalResetter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Vector3 ResetNormal;
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider c)
     {
-        
+        Tank t = c.gameObject.GetComponent<Tank>();
+        if (t is not null)
+        {
+
+        }
     }
 }
