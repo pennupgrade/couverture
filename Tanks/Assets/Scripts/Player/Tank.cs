@@ -6,7 +6,21 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tank : MonoBehaviour, IDestroyable
 {
-    public Character character = null;
+    private Character _character = null;
+
+    public Character character {
+        get => _character;
+        set {
+            _character = value;
+            if (_character is BubbleChar) {
+                bubbleCatModel.SetActive(true);
+                normalCatModel.SetActive(false);
+            } else {
+                bubbleCatModel.SetActive(false);
+                normalCatModel.SetActive(true);
+            }
+        }
+    }
 
     public const float RELOAD_TIME = 1.3f;
     public const float COOLDOWN_TIME = 0.33f;
@@ -16,6 +30,9 @@ public class Tank : MonoBehaviour, IDestroyable
     public TankState tankState;
     public TankCharacterController tankController;
     public AudioManager audioManager;
+
+    [SerializeField] private GameObject normalCatModel;
+    [SerializeField] private GameObject bubbleCatModel;
 
     // Necessary Components
     [HideInInspector] public Rigidbody rb;
