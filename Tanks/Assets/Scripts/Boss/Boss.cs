@@ -102,7 +102,6 @@ public class Boss : MonoBehaviour, IDestroyable
 
     private void Update()
     {
-        gun.transform.LookAt(player.transform);
 
         if (!unplugged) {
             foreach (WireDeath wd in wires) {
@@ -181,7 +180,7 @@ public class Boss : MonoBehaviour, IDestroyable
     public void ShootMissile()
     {
         Vector3 shootPosition = gun.transform.position + new Vector3(0, 0, 0);
-        GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
+        GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(shootPosition, player.transform.position);
     }
