@@ -18,6 +18,10 @@ public class SceneJumper : MonoBehaviour
         }
     }
 
+    private void Start() {
+        Debug.Log(nextScene);
+    }
+
     private void ButtonPressed(Collider playerCollider) {
         var tank = playerCollider.gameObject.GetComponent<Tank>();
         if (tank) {

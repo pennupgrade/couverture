@@ -23,8 +23,8 @@ public class UIManager : MonoBehaviour
     private void StartGame() {
         CloseAllPanels();
         Gameplay_Panel.SetActive(true);
-        bool defaultCat = Tank.FindPlayer().character is DefaultChar;
-        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(!defaultCat);
+        GameplayHUDManager hudManager = Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>();
+        hudManager.ActivateAbilityIcon();
     }
 
     private void CloseAllPanels() {
@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
 
     public void QuitFrom_CatSelectionPanel_DuringGame(bool hasAbility) {
         Gameplay_Panel.SetActive(true);
-        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(hasAbility);
+        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().ActivateAbilityIcon();
         if (GameManager.Instance != null) {
             GameManager.Instance.ResumeGame();
         }
