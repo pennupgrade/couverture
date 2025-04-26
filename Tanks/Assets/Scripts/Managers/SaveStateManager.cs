@@ -104,6 +104,7 @@ public class SaveStateManager
         latestLevel = new LevelSaveData();
         latestLevel.LevelName = NULL_LEVEL_NAME;
         startTime = DateTimeSerializable.Now();
+        startOfSession = DateTime.Now;
         lastPlayedTime = DateTimeSerializable.Now();
         timePlayed = new TimeSpanSerializable(TimeSpan.Zero);
     }
