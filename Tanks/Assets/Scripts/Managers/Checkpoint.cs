@@ -10,6 +10,8 @@ public class Checkpoint : MonoBehaviour
     private Material flagMaterial;
     private bool isActivated;
 
+    public Animator animator;
+
     void OnTriggerEnter(Collider c) {
         Tank t = c.gameObject.GetComponent<Tank>();
         if (t is not null) {
@@ -31,6 +33,8 @@ public class Checkpoint : MonoBehaviour
         }
 
         isActivated = true;
+
+        animator.SetBool("Stop", true);
     }
 
     private IEnumerator StatusAnimation()
