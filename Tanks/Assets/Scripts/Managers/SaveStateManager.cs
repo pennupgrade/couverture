@@ -181,10 +181,7 @@ public class SaveStateManager
             currentLevel = new LevelSaveData();
             currentLevel.LevelName = levelName;
         }
-
-        // load currentlevel
-        CurrCharacter = currentLevel.CurrCharacter;
-
+        
         // load current character
         SwitchCharacter(t, currentLevel.CurrCharacter);
 
