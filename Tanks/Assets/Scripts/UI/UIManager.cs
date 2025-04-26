@@ -23,8 +23,8 @@ public class UIManager : MonoBehaviour
     private void StartGame() {
         CloseAllPanels();
         Gameplay_Panel.SetActive(true);
-        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>()
-                      .EnableAbilityBar(Tank.FindPlayer().character is not DefaultChar);
+        bool defaultCat = Tank.FindPlayer().character is DefaultChar;
+        Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>().EnableAbilityBar(!defaultCat);
     }
 
     private void CloseAllPanels() {

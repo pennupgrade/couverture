@@ -13,13 +13,13 @@ public class HomingRocket : Projectile
     protected override void Awake() {
         base.Awake();
         bulletSpeed = 3f;
-        turnTimer = 0.1f;
         homingStr = 160;
         disabled = false;
         Cturn = Random.value < 0.5f ? 50 : -50;
     }
 
     private void Start() {
+        turnTimer = 0.1f;
         rb = GetComponent<Rigidbody>();
     }
 
