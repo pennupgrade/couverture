@@ -9,26 +9,37 @@ public class Bubble : MonoBehaviour
     private Material shieldMat;
     void Start() {
         shieldMat = GetComponent<MeshRenderer>().material;
-        shieldMat.SetFloat("_Dissolve", 0);
+        shieldMat.SetFloat("_End_Alpha", -1);
         StartCoroutine(activateShield());
     }
 
     private IEnumerator activateShield() {
         Vector3 origScale = transform.localScale;
         float i = 0.1f;
+        
+        // Scale up
         while (i < 1) {
             float f = Mathf.SmoothStep(0.2f, 1.2f, i);
             transform.localScale = f * origScale;
+
+            // Lerp _End_Alpha from -1 to 1
+            float alpha = Mathf.Lerp(-1f, 1f, i);
+            shieldMat.SetFloat("_End_Alpha", alpha);
+
             i += 8 * Time.deltaTime;
             yield return null;
         }
+
         i = 0.1f;
+
+        // Scale down
         while (i < 1) {
             float f = Mathf.SmoothStep(1.2f, 1, i);
             transform.localScale = f * origScale;
             i += 25 * Time.deltaTime;
             yield return null;
         }
+
         transform.localScale = origScale;
     }
 
@@ -45,10 +56,16 @@ public class Bubble : MonoBehaviour
     private IEnumerator deactivateShield() {
         float i = 0;
         while (i < 1) {
-            i += 5 * Time.deltaTime;
-            shieldMat.SetFloat("_Dissolve", i);
+            i += Time.deltaTime;
+
+            // Lerp _End_Alpha from 1 back to -1
+            float alpha = Mathf.Lerp(1f, -1f, i);
+            shieldMat.SetFloat("_End_Alpha", alpha);
+
+
             yield return null;
         }
+
         Destroy(gameObject);
     }
 
