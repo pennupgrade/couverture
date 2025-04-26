@@ -9,7 +9,7 @@ public class Artemis_Alert : EnemyAlertState
     public Artemis_Alert(Enemy enemy) : base(enemy) {
         enemy.audioManager.Stop("Engine");
         enemy.cSpeed = 0;
-        ((Artemis)enemy).toggleLaser();
+        ((Artemis)enemy).toggleLaser(1);
         enemy.playSound("Laser");
     }
 
@@ -61,7 +61,7 @@ public class Artemis_Alert : EnemyAlertState
                     enemy.StopCoroutine(enemy.wayPointUpdate);
                     enemy.wayPointUpdate = null;
                 }
-                ((Artemis)enemy).toggleLaser();
+                ((Artemis)enemy).toggleLaser(0);
                 enemy.audioManager.Play("Engine");
                 enemy.cSpeed = enemy.speed;
                 return new Artemis_Idle(enemy);
@@ -90,11 +90,14 @@ public class Artemis_Alert : EnemyAlertState
         ((Artemis)enemy).stopTurnA = true;
         yield return new WaitForSeconds(1.4f);
         ((Artemis)enemy).stopTurnA = false;
+        ((Artemis)enemy).toggleLaser(2);
         while (true) {
             float playerDist = getDist();
             if (lineOfSightCheck() && isAimed() && playerDist < enemy.gunRange && checkFriendlyFire(playerDist)) {
                 if (((Artemis)enemy).hitPlayer()) {
+                    ((Artemis)enemy).toggleLaser(1);
                     yield return new WaitForSeconds(enemy.reload);
+                    ((Artemis)enemy).toggleLaser(2);
                 } else {
                     yield return new WaitForSeconds(0.1f);
                 }

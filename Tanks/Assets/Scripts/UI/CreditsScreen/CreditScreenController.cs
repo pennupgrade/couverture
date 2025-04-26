@@ -39,6 +39,7 @@ public class CreditScreenController : MonoBehaviour, IBeginDragHandler, IEndDrag
     public TextAsset jsonFile;
     public Button returnBtn;
     private bool isScrolling;
+    public GameObject terribleHackToAddPadding;
 
     private bool readyToScroll;
 
@@ -66,7 +67,7 @@ public class CreditScreenController : MonoBehaviour, IBeginDragHandler, IEndDrag
         var creditsData = JsonUtility.FromJson<CreditsData>(jsonFile.text);
         foreach (var section in creditsData.data) {
             var sectionTitle = Instantiate(prefab_SectionTitle, content.transform);
-            sectionTitle.GetComponent<TMP_Text>().text = section.section;
+            sectionTitle.transform.GetChild(0).GetComponent<TMP_Text>().text = section.section;
 
             foreach (var entry in section.credits) {
                 var block = Instantiate(prefab_CreditsBlock, content.transform);
@@ -77,6 +78,8 @@ public class CreditScreenController : MonoBehaviour, IBeginDragHandler, IEndDrag
                 }
             }
         }
+
+        Instantiate(terribleHackToAddPadding, content.transform);
     }
 
     private IEnumerator InitAndStartScroll() {
