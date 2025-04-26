@@ -22,7 +22,7 @@ public class EnemySpawner : Activatable
     [SerializeField] int section;
     [SerializeField] int levelNumber;
     public GameObject[] enemies;
-    private float spawnDelay = 2f;
+    private float spawnDelay = 2.8f;
 
     //call at start
     public static void reset() {

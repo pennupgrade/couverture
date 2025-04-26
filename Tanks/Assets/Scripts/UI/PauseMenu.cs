@@ -91,6 +91,7 @@ public class PauseMenu : MonoBehaviour
         }
         else {
             // Classic does not have restart
+            UIManager.Instance.pauseMenu.HidePanel();
             RoomManager.Instance.ResetToLevelOne();
         }
     }
