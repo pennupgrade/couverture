@@ -198,7 +198,15 @@ public class Tank : MonoBehaviour, IDestroyable
         }
 
         if (!noRotation) {
-            tankState = tankState.HandleGunRotation(gunRot);
+            if (gunRot == null) {
+                gunRot = this.transform.forward;
+            }
+            TankState ts = tankState.HandleGunRotation(gunRot);
+            
+            if (ts == null) {
+                ts = new TankIdleState(this);
+            }
+            tankState = ts;
         }
 
         for (var i = 0; i < effects.Count; i++) {

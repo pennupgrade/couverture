@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Artemis : Enemy
 {
     public GameObject laser;
+    public GameObject warningLaser;
     [HideInInspector] public bool stopTurnA;
     [HideInInspector] public Vector3 homePoint;
     void Awake() {
@@ -83,8 +84,19 @@ public class Artemis : Enemy
         return false;
     }
 
-    public void toggleLaser() {
-        laser.SetActive(!laser.activeSelf);
-        laser.GetComponent<LaserPointer2>().setPos();
+    public void toggleLaser(int setting) {
+        if (setting == 0) {
+            laser.SetActive(false);
+            warningLaser.SetActive(false);
+        } else if (setting == 1) {
+            laser.SetActive(false);
+            warningLaser.SetActive(true);
+            warningLaser.GetComponent<LaserPointer2>().setPos();
+        } else {
+            laser.SetActive(true);
+            warningLaser.SetActive(false);
+            laser.GetComponent<LaserPointer2>().setPos();
+        }
+        
     }
 }
