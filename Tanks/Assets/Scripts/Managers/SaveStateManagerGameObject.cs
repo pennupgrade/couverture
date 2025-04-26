@@ -158,6 +158,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
             return 6;
         }
 
+        if (sceneName == "ALL LEVELS UNLOCKED") {
+            return 6;
+        }
+
         return -1;
     }
 
