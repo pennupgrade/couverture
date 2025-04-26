@@ -29,6 +29,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
+    [SerializeField] private GameObject healthBar;
     private List<List<GameObject>> enemies;
     public bool isStarted = false;
     
@@ -151,6 +152,7 @@ public class Boss : MonoBehaviour, IDestroyable
 
     public void takeDamage(int dmg)
     {
+        if (!shield.activeSelf == true)
         health -= dmg;
         df.CallDamageFlash(this);
         if (health < 0)
@@ -167,6 +169,7 @@ public class Boss : MonoBehaviour, IDestroyable
 
     public void Die()
     {
+        healthBar.SetActive(false);
         exitWall.activate();
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -179,8 +182,8 @@ public class Boss : MonoBehaviour, IDestroyable
     }
     public void ShootMissile()
     {
-        Vector3 shootPosition = gun.transform.position + new Vector3(0, 0, 0);
-        GameObject missile = Instantiate(missilePrefab, transform.position, Quaternion.identity);
+        Vector3 shootPosition = gun.transform.position + new Vector3(0, 100, 0);
+        GameObject missile = Instantiate(missilePrefab, shootPosition, Quaternion.identity);
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(shootPosition, player.transform.position);
     }
