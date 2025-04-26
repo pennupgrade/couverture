@@ -14,6 +14,6 @@ public class ShieldFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = follow.position;
+        this.transform.position = follow.position + new Vector3(0, 0.3f, 0);
     }
 }
