@@ -129,7 +129,7 @@ public class RoomManager : MonoBehaviour
         else if (LevelNum == 12 || LevelNum == 50) {
             StartCoroutine(LoadAsyncScene("Classic12"));
         }
-        else if (LevelNum == 13 || LevelNum == 32) {
+        else if (LevelNum == 13 || LevelNum == 32 || LevelNum == 39) {
             StartCoroutine(LoadAsyncScene("Classic13"));
         }
         else if (LevelNum == 18 || LevelNum == 36) {
