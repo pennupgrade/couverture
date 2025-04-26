@@ -105,8 +105,8 @@ public abstract class Enemy_State
             enemy.rb.position - (enemy.playerRB.position + 0.2f * Vector3.up), getDist(), 1 << 3);
     }
     protected bool checkFriendlyFire(float dist) {
-        return !Physics.Raycast(enemy.gunShotPos.position + 0.3f * enemy.gun.transform.forward,
-            enemy.playerRB.position - enemy.rb.position, dist, 1 << 8);
+        return !Physics.Raycast(enemy.gunShotPos.position + 0.2f * enemy.gun.transform.forward,
+            enemy.gun.transform.forward, dist, 1 << 8);
     }
     protected bool isAimed() {
         return Vector3.Dot(enemy.TargetDir, enemy.gun.transform.forward) > 0.975f;
