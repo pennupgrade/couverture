@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class CreditEntry
@@ -34,6 +35,7 @@ public class CreditScreenController : MonoBehaviour
     public GameObject prefab_SectionTitle;
     public GameObject content;
     public TextAsset jsonFile;
+    public Button returnBtn;
 
     private bool readyToScroll = false;
 
@@ -41,6 +43,12 @@ public class CreditScreenController : MonoBehaviour
     {
         GenerateCredits();
         StartCoroutine(InitAndStartScroll());
+        returnBtn.onClick.AddListener(returnToMain);
+    }
+
+    public void returnToMain()
+    {
+        SceneManager.LoadScene("TitleScreen");
     }
 
     private void GenerateCredits()
@@ -61,7 +69,7 @@ public class CreditScreenController : MonoBehaviour
                 if (texts.Length >= 2)
                 {
                     texts[0].text = entry.role;
-                    texts[1].text = string.Join(", ", entry.names);
+                    texts[1].text = string.Join("\n", entry.names);
                 }
             }
         }
