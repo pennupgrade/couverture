@@ -843,6 +843,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardbox (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1084,6 +1096,107 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164384759}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &166686640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 166686641}
+  - component: {fileID: 166686643}
+  - component: {fileID: 166686642}
+  - component: {fileID: 166686644}
+  m_Layer: 0
+  m_Name: cattunnel (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &166686641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166686640}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1.318, y: 0.344, z: -1.936}
+  m_LocalScale: {x: 206.55981, y: 174.23068, z: 174.23068}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2761556019019272965}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!23 &166686642
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166686640}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1095b642f2323c14d8ace8d24627a271, type: 2}
+  - {fileID: 2100000, guid: c8598de6685537f40b01a9014df43331, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &166686643
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166686640}
+  m_Mesh: {fileID: -2430927432915415974, guid: 5f77bacb585b023449287d7e8f84b634, type: 3}
+--- !u!114 &166686644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166686640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b21d5f4a42a3f48aa17b48362bec79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slideOffset: {x: 0, y: 0, z: 1.1}
+  activatesNeeded: 1
+  speed: 1.5
+  useEaseOutQuint: 0
 --- !u!1001 &171611723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1339,11 +1452,124 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardbox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+--- !u!1 &234557866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234557867}
+  - component: {fileID: 234557870}
+  - component: {fileID: 234557869}
+  - component: {fileID: 234557868}
+  m_Layer: 0
+  m_Name: cattunnel (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &234557867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234557866}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1.297, y: 0.344, z: -6.229}
+  m_LocalScale: {x: 206.55981, y: 174.23068, z: 174.23068}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2761556019019272965}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &234557868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234557866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b21d5f4a42a3f48aa17b48362bec79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slideOffset: {x: 0, y: 0, z: -1.1}
+  activatesNeeded: 1
+  speed: 1.5
+  useEaseOutQuint: 0
+--- !u!23 &234557869
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234557866}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1095b642f2323c14d8ace8d24627a271, type: 2}
+  - {fileID: 2100000, guid: c8598de6685537f40b01a9014df43331, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &234557870
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234557866}
+  m_Mesh: {fileID: -2430927432915415974, guid: 5f77bacb585b023449287d7e8f84b634, type: 3}
 --- !u!1 &241082491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,6 +2402,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardboxajar
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0f05a3d20f8b874998fd278c9700e43, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2950,6 +3180,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardboxajar
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0f05a3d20f8b874998fd278c9700e43, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3160,6 +3394,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardbox (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3193,8 +3439,8 @@ Transform:
   m_GameObject: {fileID: 537081698}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.004876163, z: -0, w: 0.99998814}
-  m_LocalPosition: {x: -27.72, y: 7.41, z: -12.3893}
-  m_LocalScale: {x: 0.97602123, y: 4, z: 8.80632}
+  m_LocalPosition: {x: -27.72, y: 7.4826, z: -12.3893}
+  m_LocalScale: {x: 0.97602123, y: 4.1452, z: 8.80632}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -4815,6 +5061,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardbox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4881,6 +5139,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2030646234351067124, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3415023807733294440, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151592459635557678, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5233745431207938219, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -4888,6 +5158,14 @@ PrefabInstance:
     - target: {fileID: 6438893119427970835, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
       propertyPath: m_Name
       value: CardboardBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438893119427970835, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837001884031135907, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8391581043364839174, guid: f2006542c8b06fe4ab585689ad37272d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5067,8 +5345,8 @@ Transform:
   m_GameObject: {fileID: 748100868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.72, y: 7.3, z: -2.13}
-  m_LocalScale: {x: 1.0795771, y: 4.4244, z: 1.1156372}
+  m_LocalPosition: {x: -27.6155, y: 7.3, z: -2.13}
+  m_LocalScale: {x: 1.2886912, y: 4.4244, z: 1.1156372}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -7704,7 +7982,6 @@ Transform:
   - {fileID: 649184226}
   - {fileID: 268033276}
   - {fileID: 1646385261}
-  - {fileID: 1079533790}
   - {fileID: 739405755}
   - {fileID: 1992194520}
   - {fileID: 1887426003}
@@ -7795,8 +8072,9 @@ GameObject:
   - component: {fileID: 1079533793}
   - component: {fileID: 1079533792}
   - component: {fileID: 1079533795}
+  - component: {fileID: 1079533796}
   m_Layer: 3
-  m_Name: Wall (71)
+  m_Name: ActivateOnDefeat
   m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7811,11 +8089,11 @@ Transform:
   m_GameObject: {fileID: 1079533789}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.027089592, z: -0, w: 0.999633}
-  m_LocalPosition: {x: -27.778, y: 8.73, z: -6.646}
-  m_LocalScale: {x: 0.7430006, y: 1.8487622, z: 2.8017843}
+  m_LocalPosition: {x: -22.50903, y: 0.120206796, z: 5.06614}
+  m_LocalScale: {x: 0.74280035, y: 1.8487622, z: 2.5451393}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1067637863}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -3.105, z: 0}
 --- !u!65 &1079533792
 BoxCollider:
@@ -7845,7 +8123,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079533789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -7895,7 +8173,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079533789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: befc088cc929bca4b8d9bc9b505dedae, type: 3}
   m_Name: 
@@ -7903,6 +8181,24 @@ MonoBehaviour:
   enemies:
   - {fileID: 386294664}
   - {fileID: 1221860470}
+--- !u!114 &1079533796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079533789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5cc91bb4741055479f503a3286ac76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+  - {fileID: 386294664}
+  - {fileID: 1221860470}
+  activateObjects:
+  - {fileID: 234557866}
+  - {fileID: 166686640}
 --- !u!1 &1121405100
 GameObject:
   m_ObjectHideFlags: 0
@@ -8216,6 +8512,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardboxajar (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0f05a3d20f8b874998fd278c9700e43, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8249,8 +8549,8 @@ Transform:
   m_GameObject: {fileID: 1170084659}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -25.9944, y: 8.85, z: 2.7806}
-  m_LocalScale: {x: 7.0400267, y: 0.34679228, z: 3.0505223}
+  m_LocalPosition: {x: -25.9944, y: 8.9258, z: 2.7806}
+  m_LocalScale: {x: 7.0400267, y: 0.56651825, z: 3.0505223}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -9781,7 +10081,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.004876163, z: -0, w: 0.99998814}
   m_LocalPosition: {x: -22.4197, y: 8.5389, z: -9.5789}
-  m_LocalScale: {x: 10.47776, y: 0.3424, z: 58.298603}
+  m_LocalScale: {x: 10.47776, y: 0.3396, z: 58.298603}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -12180,6 +12480,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardboardbox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12422,8 +12734,8 @@ Transform:
   m_GameObject: {fileID: 1878352264}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.004876163, z: -0, w: 0.99998814}
-  m_LocalPosition: {x: -27.72, y: 7.41, z: -3.9235}
-  m_LocalScale: {x: 0.97602123, y: 4, z: 2.728584}
+  m_LocalPosition: {x: -27.6592, y: 7.4826, z: -3.9235}
+  m_LocalScale: {x: 1.0944126, y: 4.1452, z: 2.728584}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -12566,6 +12878,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f0f05a3d20f8b874998fd278c9700e43, type: 3}
       propertyPath: m_Name
       value: cardboardboxajar
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0f05a3d20f8b874998fd278c9700e43, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12766,6 +13082,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
       propertyPath: m_Name
       value: cardboardbox
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5658427313072423598, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183158809353520714, guid: d6e6822b8b98780488eb76c983cacd61, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13203,8 +13531,8 @@ Transform:
   m_GameObject: {fileID: 2038582124}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.004876163, z: -0, w: 0.99998814}
-  m_LocalPosition: {x: -30.4449, y: 8.5403, z: -11.1669}
-  m_LocalScale: {x: 5.5320168, y: 0.3396, z: 17.346764}
+  m_LocalPosition: {x: -30.3978, y: 8.5389, z: -11.1669}
+  m_LocalScale: {x: 5.623295, y: 0.3396, z: 17.346764}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1067637863}
@@ -13851,6 +14179,8 @@ Transform:
   m_Children:
   - {fileID: 8850899943176163017}
   - {fileID: 880337302}
+  - {fileID: 234557867}
+  - {fileID: 166686641}
   - {fileID: 441089485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14157,6 +14487,7 @@ SceneRoots:
   - {fileID: 1162780349}
   - {fileID: 1732376914}
   - {fileID: 1035199723}
+  - {fileID: 1079533790}
   - {fileID: 524141762}
   - {fileID: 648591893}
   - {fileID: 88286393}
