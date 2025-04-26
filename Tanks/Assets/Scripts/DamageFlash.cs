@@ -36,9 +36,9 @@ public class DamageFlash
         _damageFlashCorountine = mono.StartCoroutine(DamageFlasher());
     }
 
-    public void CallDissolve(MonoBehaviour mono, float dissolveTime)
+    public void CallDissolve(MonoBehaviour mono, float dissolveTime, bool reverse = false)
     {
-        mono.StartCoroutine(Dissolve(dissolveTime));
+        mono.StartCoroutine(Dissolve(dissolveTime, reverse));
     }
     public void CallInvisFlicker(MonoBehaviour mono, float duration)
     {
@@ -109,7 +109,7 @@ public class DamageFlash
         invisDamageCor = null;
     }
 
-    private IEnumerator Dissolve(float dissolveTime)
+    private IEnumerator Dissolve(float dissolveTime, bool reverse)
     {
         float elapsedTime = 0f;
         float reducedDissolveTime = Mathf.Max(0.01f, dissolveTime - 0.1f);
@@ -119,12 +119,18 @@ public class DamageFlash
             elapsedTime += Time.deltaTime * 1.2f;
 
             float dissolveAmount = Mathf.Lerp(0f, 1f, (elapsedTime) / reducedDissolveTime);
+            if (reverse) {
+                dissolveAmount = 1 - dissolveAmount;
+            }
             SetFloatUniform("_Dissolve", dissolveAmount);
 
             yield return null;
         }
-
-        SetFloatUniform("_Dissolve", 1.0f);
+        if (reverse) {
+            SetFloatUniform("_Dissolve", 0f);
+        } else {
+            SetFloatUniform("_Dissolve", 1.0f);
+        }
     }
     private IEnumerator InvisFlicker(float duration)
     {
