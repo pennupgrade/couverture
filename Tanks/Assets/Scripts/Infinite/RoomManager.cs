@@ -258,7 +258,7 @@ public class RoomManager : MonoBehaviour
     }
 
     public void changeEnemyCountUI() {
-        if (LevelNum != 50) {
+        if (LevelNum != 50 && LevelNum != 45) {
             uiManager.UpdateEnemyCount(EnemySpawner.EnemiesRemaining);
         }
     }
