@@ -50,7 +50,16 @@ public class GameManager : MonoBehaviour
 
     private static IEnumerator _GoToNextLevel(float duration, string nextSceneName,
                                               TransitionType transitionType) {
-        SaveStateManagerGameObject.FinishLevel(nextSceneName, true);
+        var sceneNameToSave = nextSceneName;
+        if (sceneNameToSave == "CreditsScreen") {
+            sceneNameToSave = null;
+        }
+
+        SaveStateManagerGameObject.FinishLevel(sceneNameToSave, true);
+
+        if (sceneNameToSave == null) {
+            SaveStateManagerGameObject.ExitCurrentSave();
+        }
 
         var levelNumber = SaveStateManagerGameObject.GetLevelNumberFromSceneName(nextSceneName);
 

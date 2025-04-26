@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDestroyable
 {
-    [HideInInspector] public float health = 3000f;
+    public float health = 100f;
 
     public GameObject bulletPrefab;
     private GameObject player;
@@ -22,13 +22,14 @@ public class Boss : MonoBehaviour, IDestroyable
     private int ind; 
     [SerializeField] private GameObject wirePlug;
     private List<Rigidbody> enemySpawned;
-    [SerializeField] private SlidingWall exitWall;
+    
     private float timer = 0;
     private const float MOVE_TIME = 1.25f;
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
     [SerializeField] private GameObject missilePrefab;
+    [SerializeField] private BossDeath bd;
     [SerializeField] private GameObject healthBar;
     private List<List<GameObject>> enemies;
     public bool isStarted = false;
@@ -155,30 +156,23 @@ public class Boss : MonoBehaviour, IDestroyable
         if (!shield.activeSelf == true)
         health -= dmg;
         df.CallDamageFlash(this);
-        if (health < 0)
+        if (health <= 0)
         {
             player.GetComponent<Tank>().enabled = true;
-            Die();
+            bd.StartDeathScene();
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                for (int j = 0; j < enemies[i].Count; j++)
+                {
+                    enemies[i][j].GetComponent<Enemy>().takeDamage(9999999);
+                }
+            }
         }
     }
 
     public void incapacitate(float time)
     {
         // Not Implemented
-    }
-
-    public void Die()
-    {
-        healthBar.SetActive(false);
-        exitWall.activate();
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            for (int j = 0; j < enemies[i].Count; j++)
-            {
-                enemies[i][j].GetComponent<Enemy>().takeDamage(9999999);
-            }
-        }
-        Destroy(gameObject);
     }
     public void ShootMissile()
     {
@@ -187,4 +181,6 @@ public class Boss : MonoBehaviour, IDestroyable
         MissileScript missileScript = missile.GetComponent<MissileScript>();
         missileScript.initialize(shootPosition, player.transform.position);
     }
+
+    
 }
