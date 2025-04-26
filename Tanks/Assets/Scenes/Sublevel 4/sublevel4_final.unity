@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731722, g: 0.13414752, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.1341472, b: 0.121078566, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4744,6 +4744,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7264768890681827657, guid: a8d1430d703098c45988da09a28550e3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6bc417ac061eb4708bcd64ce2b84f147, type: 2}
     - target: {fileID: 7522136982680660621, guid: a8d1430d703098c45988da09a28550e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.066
@@ -6021,7 +6025,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1563453943}
   - {fileID: 203926376}
   - {fileID: 2093163494}
   m_Father: {fileID: 0}
@@ -8045,7 +8048,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1142432953}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3944663123617855354, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
       propertyPath: tank
@@ -8168,11 +8171,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
---- !u!224 &1563453943 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4088235150986766474, guid: 67f10b956770a4f9fb162fbb1b258c33, type: 3}
-  m_PrefabInstance: {fileID: 1563453942}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1586248038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12173,6 +12171,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 803553871}
+  - {fileID: 1563453942}
   - {fileID: 660016469}
   - {fileID: 139045281}
   - {fileID: 227071350}
