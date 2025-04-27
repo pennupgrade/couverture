@@ -18,6 +18,7 @@ public class CrabBucket : MonoBehaviour
 
     [SerializeField] private GameObject sphere_indicator;
     [SerializeField] private LayerMask obstacleLayer;
+    private bool stopAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,9 @@ public class CrabBucket : MonoBehaviour
             {
                 // Should we have a delay before the swipe so the player can get ready, or some visual indicator - Anthony
                 Attack();
+                if (stopAttack) {
+                    attacking = false;
+                }
                 attackWaitTimeCounter = 0;
             }
             else
@@ -45,8 +49,8 @@ public class CrabBucket : MonoBehaviour
                 attackWaitTimeCounter += Time.fixedDeltaTime;
             }
             // what happens to attackWaitTimeCounter if you aren't attacking, do you want it to go down - Anthony
-            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 2.666f,
-            1, attackWaitTimeCounter * 2.666f);
+            sphere_indicator.transform.localScale = new Vector3(attackWaitTimeCounter * 2.3333f,
+            attackWaitTimeCounter * 2.333f, attackWaitTimeCounter * 2.333f);
         }
     }
 
@@ -62,12 +66,11 @@ public class CrabBucket : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            attacking = false;
-            attackWaitTimeCounter = attackWaitTime; 
+            stopAttack = true;
             // if you go in and out of the trigger, the crab will immediately attack
             // I fee like attackWaitTimeCounter should start at 0 - Anthony
-            sphere_indicator.transform.localScale = new Vector3(0.1f,
-            1, 0.1f);
+            // sphere_indicator.transform.localScale = new Vector3(0.1f,
+            // 1, 0.1f);
         }
     }
 
