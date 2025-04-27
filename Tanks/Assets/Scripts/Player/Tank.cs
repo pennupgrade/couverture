@@ -158,6 +158,7 @@ public class Tank : MonoBehaviour, IDestroyable
     }
 
     private void Update() {
+        Debug.Log(reloadCoroutine);
         var moveDir = controls.TankControls.Move.ReadValue<Vector2>();
         var gunRot = controls.TankControls.MousePos.ReadValue<Vector2>();
 

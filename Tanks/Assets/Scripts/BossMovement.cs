@@ -18,6 +18,8 @@ public class BossMovement : MonoBehaviour
     [SerializeField] private float guardRange;
     [SerializeField] private float turnSpeed;
 
+    public Vector3 offset;
+
     public enum bmState {
         Idle,
         Guarding,
@@ -42,36 +44,28 @@ public class BossMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        top.transform.position = this.transform.position + offset;
         if (boss.isUnplugged()) {
             moveSpeed = 0.85f;
             agent.speed = 0.85f;
         }
-
         if (bossState.currentAttack != BossStateMachine.Attack.Charge) {
-            Vector3 newtarget = player.transform.position;
-            newtarget.y = transform.position.y;
-            top.transform.LookAt(newtarget);
+            top.transform.SetParent(this.transform.parent);
+            Vector3 direction = player.transform.position - this.transform.position;
+            direction.y = 0;
+            top.transform.rotation = Quaternion.LookRotation(direction);
             currMoveSpeed = moveSpeed;
             agent.enabled = true;
             agent.speed = moveSpeed;
         } else {
+            top.transform.parent = this.transform;
             agent.enabled = false;
             currMoveSpeed = 0f;
         }
         
         Vector3 bossToPlayer = new Vector3(player.transform.position.x - this.transform.position.x, 
                             0, player.transform.position.z - this.transform.position.z);
-
-        Vector3 bossToPlug = new Vector3(transform.position.x - plugBase.position.x, 0,
-                            transform.position.z - plugBase.position.z);
-
-        Vector3 playerToPlug =  new Vector3(player.transform.position.x - plugBase.position.x, 
-                            0, player.transform.position.z - plugBase.position.z);
-        bossToPlayer.Normalize();
-        // float angle = Mathf.Acos(Vector3.Dot(dir, new Vector3(0, 0, 1)));
-        // Debug.Log(angle);
-        // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, angle, 0), 1.0f);
-        
+        bossToPlayer.Normalize();   
         if (Time.time > stateStart + stateDur) {
             int r = UnityEngine.Random.Range(0,2);
             print("Switch to" + r);
@@ -108,14 +102,6 @@ public class BossMovement : MonoBehaviour
         } else {
             agent.destination = plugDir/2;
         }
-        
-        // Vector3 crossedWith = new Vector3(0, 1, 0);
-        // Vector3 lr = Vector3.Cross(plugDir, crossedWith);
-        // dir.Normalize();
-        // dir = (lr * Vector3.Dot(dir, lr)).normalized;
-        // if (rb.GetAccumulatedForce().magnitude < 25 && rb.velocity.magnitude < currMoveSpeed) {
-        //     rb.velocity = dir * currMoveSpeed;
-        // }
     }
     public void Chase() {
         if (boss.isUnplugged()) {

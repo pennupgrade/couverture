@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShieldFollow : MonoBehaviour
+public class BossDamageFlash : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Transform follow;
-    public ParticleSystem ps;
+    private DamageFlash df;
     void Start()
     {
-        
+        df = new DamageFlash(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = follow.position + new Vector3(0, 0.3f, 0);
+        
+    }
+
+    public void damageFlash() {
+        df.CallDamageFlash(this);
     }
 }
