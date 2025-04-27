@@ -140,7 +140,7 @@ public class RoomManager : MonoBehaviour
         }
         else if (LevelNum == 25 || LevelNum == 33 || LevelNum == 40) {
             var pTank = Tank.FindPlayer();
-            if ((LevelNum == 25 && (pTank.CharacterHasAbility() || pTank.character.GetType() == typeof(BubbleChar))) ||
+            if ((LevelNum == 25 && (SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT)) ||
                 LevelNum == 40) {
                 StartCoroutine(LoadAsyncScene("Classic25alt"));
             }
