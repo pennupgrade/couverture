@@ -165,16 +165,4 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return -1;
     }
 
-    public static SaveStateManager.CharacterOption GetCurrentCharacterOption() {
-        var tank = Tank.FindPlayer();
-
-        if (tank == null) throw new ArgumentNullException();
-
-        return tank.character switch {
-            DefaultChar => SaveStateManager.CharacterOption.DEFAULT_CAT,
-            RocketChar => SaveStateManager.CharacterOption.ROCKET_CAT,
-            BubbleChar => SaveStateManager.CharacterOption.BUBBLE_CAT,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
 }
