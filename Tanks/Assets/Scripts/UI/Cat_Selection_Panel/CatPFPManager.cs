@@ -38,7 +38,7 @@ public class CatPFPManager : MonoBehaviour
         }
 
         var unlockedCharacters = SaveStateManagerGameObject.GetUnlockedCharacters();
-        var currentCharacter = SaveStateManagerGameObject.GetCurrentCharacterOption();
+        var currentCharacter = SaveStateManagerGameObject.GetCurrentCharacter();
 
         foreach (var character in unlockedCharacters) {
             // DEFAULT_CAT has no ability, so why make it an option? - Anthony

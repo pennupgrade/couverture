@@ -20,7 +20,7 @@ public class GameplayHUDManager : MonoBehaviour
 
     public void ActivateAbilityIcon()
     {
-        SaveStateManager.CharacterOption characterOption = SaveStateManagerGameObject.GetCurrentCharacterOption();
+        SaveStateManager.CharacterOption characterOption = SaveStateManagerGameObject.GetCurrentCharacter();
         if (characterOption == SaveStateManager.CharacterOption.DEFAULT_CAT)
         {
             EnableAbilityBar(false);
