@@ -28,6 +28,7 @@ public class Boss : MonoBehaviour, IDestroyable
     [SerializeField] private GameObject shield;
     [SerializeField] private BossMovement bm;
     protected DamageFlash df;
+    public List<BossDamageFlash> bodyparts;
     [SerializeField] private GameObject missilePrefab;
     [SerializeField] private BossDeath bd;
     [SerializeField] private GameObject healthBar;
@@ -155,7 +156,11 @@ public class Boss : MonoBehaviour, IDestroyable
     {
         if (!shield.activeSelf == true)
         health -= dmg;
-        df.CallDamageFlash(this);
+        foreach (BossDamageFlash g in bodyparts) {
+            g.damageFlash();
+            //df.callDamageFlash(this)
+        }
+        
         if (health <= 0)
         {
             player.GetComponent<Tank>().enabled = true;

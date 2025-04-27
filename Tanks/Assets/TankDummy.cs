@@ -16,7 +16,9 @@ public class TankDummy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Time.time > startTime + 2f) {
+            stunOver = true;
+        }
     }
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer ==  LayerMask.NameToLayer("Obstacle") && Time.time - startTime > 0.25f) {
