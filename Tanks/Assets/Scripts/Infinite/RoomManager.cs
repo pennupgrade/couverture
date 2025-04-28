@@ -95,12 +95,17 @@ public class RoomManager : MonoBehaviour
         noPause = false;
     }
 
-    public void roomTransition() {
+    public void roomTransition(bool skip = false) {
         if (loading) return;
 
         SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
-        LevelNum++;
+        if (skip) {
+            EnemySpawner.reset();
+            LevelNum = 25;
+        } else {
+            LevelNum++;
+        }
         Debug.Log("Loading Level" + LevelNum);
 
         //scene transition
@@ -248,9 +253,27 @@ public class RoomManager : MonoBehaviour
     private void changeBGM(bool play) {
         if (play) {
             audioManager.Play("BGM");
+            /*
+            if (LevelNum < 12) {
+                audioManager.Play("BGM");
+            } else if (LevelNum >= 12 && LevelNum < 30) {
+                audioManager.Play("BGM2");
+            } else {
+                audioManager.Play("BGM3");
+            }
+            */
         }
         else {
             audioManager.Stop("BGM");
+            /*
+            if (LevelNum < 12) {
+                audioManager.Stop("BGM");
+            } else if (LevelNum >= 12 && LevelNum < 30) {
+                audioManager.Stop("BGM2");
+            } else {
+                audioManager.Stop("BGM3");
+            }
+            */
         }
     }
 
