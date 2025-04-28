@@ -22,7 +22,7 @@ public class Guardian3 : EnemyOmniMove
         numBullets = magSize;
         bulletSpeed = 3.2f;
         leadChance = 0.33f;
-        speed = 1.6f;
+        speed = 1.5f;
         turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
@@ -73,5 +73,10 @@ public class Guardian3 : EnemyOmniMove
                                 (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(25);
+        StartCoroutine(activateShield());
     }
 }

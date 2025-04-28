@@ -99,7 +99,7 @@ public class Guardian6 : EnemyOmniMove
     }
 
     protected override IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(16);
         StartCoroutine(activateShield());
     }
 }

@@ -22,7 +22,7 @@ public class Aegis : EnemyOmniMove
         numBullets = magSize;
         bulletSpeed = 3.2f;
         leadChance = 0.33f;
-        speed = 1.6f;
+        speed = 1.5f;
         turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

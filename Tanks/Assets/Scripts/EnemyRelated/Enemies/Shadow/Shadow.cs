@@ -22,7 +22,7 @@ public class Shadow : EnemyOmniMove
         magSize = 5;
         bulletSpeed = 5.2f;
         leadChance = 0.5f;
-        speed = 1.6f;
+        speed = 1.5f;
         turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much

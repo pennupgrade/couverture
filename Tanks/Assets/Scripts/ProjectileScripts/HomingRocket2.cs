@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HomingRocket2 : Projectile
 {
-    public GameObject player;
+    private GameObject player;
     private Rigidbody rb;
 
     private bool disabled, stopHoming;
@@ -18,6 +18,9 @@ public class HomingRocket2 : Projectile
         Cturn = 0;
         stopHoming = false;
     }
+    public void setPlayer(GameObject p) {
+        this.player = p;
+    }
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -27,7 +30,7 @@ public class HomingRocket2 : Projectile
         lifetime -= Time.deltaTime;
         if (lifetime < 0) Destroy(gameObject);
 
-        if (player == null) return;
+        if (player == null) {Cturn = 0; return;}
 
         if (disabled && (Vector3.Distance(player.transform.position, transform.position) < 2.4f ||
                          Vector3.Dot(player.transform.position - transform.position, transform.forward) < 0.1f)) {
