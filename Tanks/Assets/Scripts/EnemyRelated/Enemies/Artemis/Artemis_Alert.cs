@@ -63,7 +63,6 @@ public class Artemis_Alert : EnemyAlertState
                 }
                 ((Artemis)enemy).toggleLaser(0);
                 enemy.audioManager.Play("Engine");
-                enemy.cSpeed = enemy.speed;
                 return new Artemis_Idle(enemy);
             }
         }
@@ -88,16 +87,19 @@ public class Artemis_Alert : EnemyAlertState
     }
     private IEnumerator shootCor() {
         ((Artemis)enemy).stopTurnA = true;
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(1.2f);
         ((Artemis)enemy).stopTurnA = false;
         ((Artemis)enemy).toggleLaser(2);
+        enemy.cSpeed = 0;
+        yield return new WaitForSeconds(0.25f);
         while (true) {
             float playerDist = getDist();
             if (lineOfSightCheck() && isAimed() && playerDist < enemy.gunRange && checkFriendlyFire(playerDist)) {
                 if (((Artemis)enemy).hitPlayer()) {
                     ((Artemis)enemy).toggleLaser(1);
-                    yield return new WaitForSeconds(enemy.reload);
+                    yield return new WaitForSeconds(enemy.reload - 0.25f);
                     ((Artemis)enemy).toggleLaser(2);
+                    yield return new WaitForSeconds(0.25f);
                 } else {
                     yield return new WaitForSeconds(0.1f);
                 }

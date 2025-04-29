@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Artemis_Idle : G1_Idle
 {
-    public Artemis_Idle(Enemy enemy) : base(enemy) {}
+    public Artemis_Idle(Enemy enemy) : base(enemy) {    
+        ((Artemis)enemy).stopTurnA = false;
+        enemy.cSpeed = enemy.speed;
+    }
     public override Enemy_State Patrol(Vector3 playerPos)
     {
         frameTimer--;

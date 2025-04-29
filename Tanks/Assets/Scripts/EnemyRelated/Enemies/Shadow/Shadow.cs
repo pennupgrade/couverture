@@ -76,7 +76,7 @@ public class Shadow : EnemyOmniMove
 
     private IEnumerator flickerCor() {
         while (true) {
-            yield return new WaitForSeconds(1.5f + 1.5f * Random.value);
+            yield return new WaitForSeconds(1.1f + 1.2f * Random.value);
             if (invisActive) {
                 flickering = true;
                 damageFlash.CallInvisFlicker(this, 1.5f);
