@@ -86,11 +86,11 @@ public class G5_Alert : G2_Alert
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
-                if (enemy.getHealth() < 400) {
-                    enemy.numBullets += 3;
+                if (enemy.getHealth() < 300) {
+                    enemy.numBullets += 2;
                 } else {
-                    if (Random.value < 0.22f) {
-                        enemy.numBullets += 3;
+                    if (Random.value < 0.3f) {
+                        enemy.numBullets += 2;
                     } else {
                         enemy.numBullets++;
                     }
