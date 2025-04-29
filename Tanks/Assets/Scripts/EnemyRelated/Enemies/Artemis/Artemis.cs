@@ -20,7 +20,7 @@ public class Artemis : Enemy
         gunRange = 14;
         sightRange = 14;
         FOV = 1.6f;
-        rotSpeed = 13;
+        rotSpeed = 10;
         reload = 3f;
         speed = 1;
         turnSpeed = 120;
