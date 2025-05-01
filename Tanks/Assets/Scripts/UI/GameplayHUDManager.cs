@@ -13,7 +13,7 @@ public class GameplayHUDManager : MonoBehaviour
 
     private Vector3 abilityIconStartPosition;
 
-    private void Start()
+    private void Awake()
     {
         abilityIconStartPosition = abilityIcon.anchoredPosition;
     }
