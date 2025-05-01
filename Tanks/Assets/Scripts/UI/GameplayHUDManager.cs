@@ -15,7 +15,8 @@ public class GameplayHUDManager : MonoBehaviour
 
     private void Start()
     {
-        abilityIconStartPosition = abilityIcon.anchoredPosition;
+        abilityIconStartPosition = new Vector3(330, 45, 0);
+        //abilityIconStartPosition = abilityIcon.anchoredPosition;
     }
 
     public void ActivateAbilityIcon()
@@ -46,7 +47,6 @@ public class GameplayHUDManager : MonoBehaviour
     }
 
     public void StartFillAbilityBar(float reloadTime) {
-        Debug.Log("Here we are filling the ability bar: " + reloadTime);
         abilityBarFill.fillAmount = 0;
         readyTag.gameObject.SetActive(false);
 
@@ -115,7 +115,6 @@ public class GameplayHUDManager : MonoBehaviour
 
     private void EnableAbilityBar(bool enable) {
         if (enable) {
-            abilityIcon.gameObject.SetActive(false);
             LeanTween.moveY(abilityIcon, -250f, 0f);
             StartCoroutine(EnableAbilityIconAnimation());
         }
@@ -126,6 +125,7 @@ public class GameplayHUDManager : MonoBehaviour
 
     private IEnumerator EnableAbilityIconAnimation()
     {
+        abilityIcon.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
         LeanTween.moveY(abilityIcon, 45f, 1f).setEase(LeanTweenType.easeOutBack).setIgnoreTimeScale(true);
         abilityIcon.gameObject.SetActive(true);
