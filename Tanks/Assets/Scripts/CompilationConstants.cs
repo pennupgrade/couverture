@@ -2,9 +2,9 @@ public class CompilationConstants {
     // save file path
         // Steam save file paths 
         # if STEAM && UNITY_STANDALONE_WIN
-            public const string SAVE_DATA_PATH = "%USERPROFILE%\\AppData\\Local\\UPGRADE\\Catanks\\SAVE_DATA";
+            public const string SAVE_DATA_PATH = "%USERPROFILE%\\AppData\\Local\\UPGRADE\\Catanks\\SAVE_DATA\\";
         # elif STEAM && UNITY_STANDALONE_LINUX
-            public const string SAVE_DATA_PATH = "";
+            public const string SAVE_DATA_PATH = "$XDG\_DATA\_HOME/UPGRADE/Catanks/SAVE_DATA/";
         # elif STEAM && UNITY_STANDALONE_OSX
             public const string SAVE_DATA_PATH = "";
         // Non-Steam save file paths (in-editor and non-steam release versions)
