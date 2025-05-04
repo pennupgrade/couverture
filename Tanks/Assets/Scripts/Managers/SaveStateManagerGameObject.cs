@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SaveStateManagerGameObject : MonoBehaviour
 {
-    private const string SAVE_FILE_PREFIX = CompilationConstants.SAVE_DATA_PATH + "save_data_";
-    public const string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
+    private static readonly string SAVE_FILE_PREFIX = CompilationConstants.SAVE_DATA_PATH + "save_data_";
+    public static readonly string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
     public static SaveStateManagerGameObject Instance;
 
     private SaveStateManager stateManager;
