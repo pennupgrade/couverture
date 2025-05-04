@@ -18,7 +18,12 @@ public class SaveStateManager
         }
     }
 
+    private static void CreateSaveDirectory() {
+        Directory.CreateDirectory(CompilationConstants.SAVE_DATA_PATH);
+    }
+
     public static SaveStateManager LoadInventory(string saveLocation) {
+        CreateSaveDirectory();
         SaveStateManager outManager;
         using (StreamReader reader = new(saveLocation)) {
             string jsonData = reader.ReadToEnd();
@@ -30,6 +35,7 @@ public class SaveStateManager
     }
 
     public static SaveStateManager CreateSave(string saveLocation) {
+        CreateSaveDirectory(); // this shouldn't ever be used, but it's here just for safety
         SaveStateManager outManager = new();
         outManager.CreateNewSave(saveLocation);
         return outManager;
