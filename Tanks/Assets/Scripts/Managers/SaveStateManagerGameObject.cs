@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SaveStateManagerGameObject : MonoBehaviour
 {
-    private static readonly string SAVE_FILE_PREFIX = CompilationConstants.SAVE_DATA_PATH + "save_data_";
-    public static readonly string CLASSIC_MODE_SAVE_FILE = SAVE_FILE_PREFIX + "classic_mode.json";
+    private static readonly string SAVE_FILE_PREFIX = "save_data_";
+    public static readonly string CLASSIC_MODE_SAVE_FILE = SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + "classic_mode.json");
     public static SaveStateManagerGameObject Instance;
 
     private SaveStateManager stateManager;
@@ -21,7 +21,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
     }
 
-    public static string GetSaveLocation(int saveNumber) => SAVE_FILE_PREFIX + saveNumber + ".json";
+    public static string GetSaveLocation(int saveNumber) => SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + saveNumber + ".json");
 
     // returns true if save was loaded, false if save was created
     private static bool LoadSave(string saveLocation) {

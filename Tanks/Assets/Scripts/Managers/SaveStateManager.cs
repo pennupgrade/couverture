@@ -9,6 +9,8 @@ public class SaveStateManager
 {
     private const string NULL_LEVEL_NAME = "NOT_A_LEVEL";
 
+    public static string GetFullSavePath(string save_name) => Path.GetFullPath(save_name, CompilationConstants.SAVE_DATA_PATH);
+
     public static SaveStateManager TryLoadSaveState(string saveFilePath) {
         try {
             return LoadInventory(saveFilePath);
