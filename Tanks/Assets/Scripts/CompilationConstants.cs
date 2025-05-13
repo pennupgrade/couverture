@@ -6,7 +6,9 @@ public class CompilationConstants {
     // Steam game data path 
     #if STEAM
         public static readonly string GAME_DATA_PATH = Path.GetFullPath("./UPGRADE/Catanks/", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-    #else
+    #elif UNITY_EDITOR // game data path when using unity editor
+        public static readonly string GAME_DATA_PATH = Environment.CurrentDirectory;
+    #else // itch.io, github release game data path
         public static readonly string GAME_DATA_PATH = AppDomain.CurrentDomain.BaseDirectory;
     #endif
 
