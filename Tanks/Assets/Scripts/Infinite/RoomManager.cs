@@ -97,14 +97,16 @@ public class RoomManager : MonoBehaviour
         noPause = false;
     }
 
-    public void roomTransition(bool skip = false) {
+    public void roomTransition(int section = 1) {
         if (loading) return;
 
         SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
-        if (skip) {
-            EnemySpawner.reset();
-            LevelNum = 25;
+        EnemySpawner.reset();
+        if (section == 2) {
+            LevelNum = 12;
+        } else if (section == 3) {
+            LevelNum = 30;
         } else {
             LevelNum++;
         }

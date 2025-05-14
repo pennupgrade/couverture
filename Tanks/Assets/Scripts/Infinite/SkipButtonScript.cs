@@ -2,29 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkipButtonScript : Activatable
+public class SkipButtonScript : BulletActivatorButton
 {
-    public Sentry sentryEnemy;
-    bool alreadyPressed;
+    public int levelReq;
+    public GameObject buttonGroup;
+    private bool disabled;
 
     void Start() {
-        alreadyPressed = false;
-        
-        
+        disabled = false;
         ClassicModeInfo info = new();
         int i = info.GetClassicModeHighScore();
-        if (i < 25) {
-            gameObject.SetActive(false);
-        }
-        
+        if (i < levelReq) {
+            buttonGroup.SetActive(false);
+        } 
     }
-    public override void activate() {
-        if (alreadyPressed) return;
-        alreadyPressed = true;
-        if (sentryEnemy == null) return;
-        RoomManager.Instance.roomTransition(true);
-        
-        sentryEnemy.unsubscribeDeathEvents();
-        sentryEnemy.takeDamage(300);
+
+    protected override void buttonPressed() {
+        if (audioManager != null) {
+            audioManager.Play("Press");
+        }
+        foreach (GameObject g in toChange) {
+            if (g.activeInHierarchy) {
+                if (g.TryGetComponent<Activatable>(out Activatable aObj)) {
+                    aObj.activate();
+                } else if (g.TryGetComponent<SkipButtonScript>(out SkipButtonScript button)) {
+                    button.activate();
+                } else {
+                    g.SetActive(false);
+                }
+            }
+        }
+        StartCoroutine(transformButton());
+    }
+    public void activate() {
+        if (disabled) return;
+        disabled = true;
+        StartCoroutine(transformButton());
     }
 }

@@ -22,7 +22,7 @@ public class ActivatorButton : MonoBehaviour
             buttonPressed();
         }
     }
-    protected void buttonPressed() {
+    protected virtual void buttonPressed() {
         if (audioManager != null) {
             audioManager.Play("Press");
         }
