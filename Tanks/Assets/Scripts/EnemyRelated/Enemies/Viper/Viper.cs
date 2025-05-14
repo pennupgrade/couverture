@@ -65,7 +65,7 @@ public class Viper : ShieldedEnemy
     public void fireRocket() {
         fireSound();
         GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position, Quaternion.LookRotation(gun.transform.forward));
-        bulletPrefab.GetComponent<HomingRocket>().player = this.player;
+        rocket.GetComponent<HomingRocket>().setPlayer(this.player);
     }
 
     public void toggleLaser() {

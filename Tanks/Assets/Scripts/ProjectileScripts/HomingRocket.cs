@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HomingRocket : Projectile
 {
-    public GameObject player;
+    private GameObject player;
     private Rigidbody rb;
 
     private bool disabled;
@@ -17,6 +17,9 @@ public class HomingRocket : Projectile
         disabled = false;
         Cturn = Random.value < 0.5f ? 50 : -50;
     }
+    public void setPlayer(GameObject p) {
+        this.player = p;
+    }
 
     private void Start() {
         turnTimer = 0.1f;
@@ -27,7 +30,7 @@ public class HomingRocket : Projectile
         lifetime -= Time.deltaTime;
         if (lifetime < 0) Destroy(gameObject);
 
-        if (player == null) return;
+        if (player == null) {Cturn = 0; return;}
 
         if (disabled) {
             bulletSpeed += Time.deltaTime * 2;
@@ -41,7 +44,6 @@ public class HomingRocket : Projectile
             disabled = true;
             return;
         }
-
 
         if (turnTimer < 0.01f) {
             var v = player.transform.position - transform.position;
@@ -98,7 +100,7 @@ public class HomingRocket : Projectile
     private float TimerF(float val) {
         if (val > 0) {
             val -= Time.deltaTime;
-            if (val <= 0) val = 0;
+            if (val < 0) val = 0;
         }
 
         return val;

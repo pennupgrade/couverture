@@ -22,7 +22,7 @@ public class Shadow : EnemyOmniMove
         magSize = 5;
         bulletSpeed = 5.2f;
         leadChance = 0.5f;
-        speed = 1.6f;
+        speed = 1.5f;
         turnSpeed = 160;
         
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
@@ -76,7 +76,7 @@ public class Shadow : EnemyOmniMove
 
     private IEnumerator flickerCor() {
         while (true) {
-            yield return new WaitForSeconds(1.5f + 1.5f * Random.value);
+            yield return new WaitForSeconds(1.1f + 1.2f * Random.value);
             if (invisActive) {
                 flickering = true;
                 damageFlash.CallInvisFlicker(this, 1.5f);

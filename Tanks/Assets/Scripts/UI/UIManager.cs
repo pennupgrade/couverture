@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     private void StartGame() {
         CloseAllPanels();
         Gameplay_Panel.SetActive(true);
-        GameplayHUDManager hudManager = Gameplay_Panel.transform.GetChild(0).GetComponent<GameplayHUDManager>();
+        GameplayHUDManager hudManager = Gameplay_Panel.GetComponentInChildren<GameplayHUDManager>();
         hudManager.ActivateAbilityIcon();
     }
 

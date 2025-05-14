@@ -11,13 +11,16 @@ public class BossDeath : MonoBehaviour
     [SerializeField] private Camera doorOpenCam;
     [SerializeField] private SlidingWall exitWall;
     [SerializeField] private GameObject bossTank;
+    [SerializeField] private GameObject top;
 
     public Vector3 offSet;
     private GameObject player;
+    private bool spinning;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        spinning = false;
     }
 
     // Update is called once per frame
@@ -25,6 +28,9 @@ public class BossDeath : MonoBehaviour
     {
         if (bossTank != null) {
             bossDeathCam.transform.position = bossTank.transform.position + offSet;
+        }
+        if (spinning) {
+            top.transform.rotation = Quaternion.Euler(top.transform.rotation.eulerAngles + new Vector3(0, 1080 * Time.deltaTime, 0));
         }
     }
 
@@ -42,13 +48,15 @@ public class BossDeath : MonoBehaviour
         bossTank.GetComponent<NavMeshAgent>().speed = 0;
         bossTank.GetComponent<BossStateMachine>().enabled = false;
         bossTank.GetComponent<Boss>().enabled = false;
+        
         yield return new WaitForSeconds(.5f);
 
-        bossTank.GetComponent<Animator>().SetTrigger("Stun");
+        spinning = true;
         
         yield return new WaitForSeconds(1.5f);
         Instantiate(bossExplosion, bossTank.transform.position, Quaternion.identity);
         Destroy(bossTank);
+        Destroy(top.gameObject);
         
         //Destroy(gameObject);
         yield return new WaitForSeconds(2f);

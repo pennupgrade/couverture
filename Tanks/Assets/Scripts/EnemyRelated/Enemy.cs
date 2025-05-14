@@ -191,6 +191,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         onDeath = null;
         isDead = true;
     }
+    public void unsubscribeDeathEvents() {
+        onDeath = null;
+    }
 
     public void incapacitate(float time) {
         StartCoroutine(stunTimer(time));

@@ -13,14 +13,14 @@ public class GameplayHUDManager : MonoBehaviour
 
     private Vector3 abilityIconStartPosition;
 
-    private void Start()
+    private void Awake()
     {
         abilityIconStartPosition = abilityIcon.anchoredPosition;
     }
 
     public void ActivateAbilityIcon()
     {
-        SaveStateManager.CharacterOption characterOption = SaveStateManagerGameObject.GetCurrentCharacterOption();
+        SaveStateManager.CharacterOption characterOption = SaveStateManagerGameObject.GetCurrentCharacter();
         if (characterOption == SaveStateManager.CharacterOption.DEFAULT_CAT)
         {
             EnableAbilityBar(false);

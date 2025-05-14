@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BossStateMachine : MonoBehaviour
@@ -84,8 +86,14 @@ public class BossStateMachine : MonoBehaviour
                 pc.SetPlayer(player);
                 bm.SetPlayer(player);
                 playerTank.takeDamage(25);
-                playerTank.gameObject.SetActive(true);
-                playerTank.tankState.ResetReload();
+                //playerTank.gameObject.SetActive(true);
+
+                //reenables Player
+                playerTank.GetComponent<Collider>().enabled = true;
+                playerTank.enabled = true;
+                playerTank.transform.GetChild(1).gameObject.SetActive(true);
+
+                //playerTank.tankState.ResetReload();
                 playerIsStunned = false;
             }
         }
@@ -107,7 +115,7 @@ public class BossStateMachine : MonoBehaviour
         if (currentState == State.Idle) {
             if (missileTimer > missileCheckTime) {
                 var yScaleFactor = (player.transform.position.y + 1.244195f) / (1.244f - 0.4f) * 2f + 1f;
-                if (Random.Range(0f, 1f) <= missileShootProbability * yScaleFactor) {
+                if (UnityEngine.Random.Range(0f, 1f) <= missileShootProbability * yScaleFactor) {
                     boss.ShootMissile();
                 }
 
@@ -152,20 +160,20 @@ public class BossStateMachine : MonoBehaviour
 
         if (newState == State.Attacking) {
             if (!boss.isUnplugged()) {
-                timeUntilAttack = Random.Range(4, 6);
+                timeUntilAttack = UnityEngine.Random.Range(4, 6);
             }
             else {
-                timeUntilAttack = Random.Range(2.5f, 3f);
+                timeUntilAttack = UnityEngine.Random.Range(2.5f, 3f);
                 missileCheckTime = 2f;
             }
 
             Debug.Log("Switching To Attack State");
             if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE) {
                 // Chose between shotgun and melee
-                var rand = Random.Range(0, 2);
+                var rand = UnityEngine.Random.Range(0, 2);
                 if (rand == 0 && Time.time > chargeStartTime + chargeCD) {
                     currentAttack = Attack.Charge;
-                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 10f) {
+                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 5f) {
                         InitializeCharge();
                     }
                 }
@@ -175,13 +183,13 @@ public class BossStateMachine : MonoBehaviour
             }
             else {
                 // Choose between summon, shoot, and charge
-                var rand = Random.Range(0, 5);
+                var rand = UnityEngine.Random.Range(0, 5);
                 if (enemies.Count < MAX_NUMBER_SUMMONS && rand <= 1) {
                     currentAttack = Attack.Summon;
                 }
                 else if (Time.time > chargeStartTime + chargeCD && rand == 2) {
                     currentAttack = Attack.Charge;
-                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 10f) {
+                    if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 5f) {
                         InitializeCharge();
                     }
                 }
@@ -226,6 +234,9 @@ public class BossStateMachine : MonoBehaviour
             break;
         case Attack.Charge:
             //boss.Charge(chargeStartTime, chargeStart, chargeRange); 
+            if (Time.time > chargeStartTime + 1f) {
+                GetComponent<Rigidbody>().isKinematic = false;
+            }
             if (Time.time > chargeStartTime + 2.2f ||
                 (transform.position - chargeStart).magnitude > chargeRange) {
                 switchToState(State.Idle);
@@ -259,7 +270,7 @@ public class BossStateMachine : MonoBehaviour
 
             var tank = col.gameObject.GetComponent<Tank>();
             var diff = (player.transform.position - transform.position).normalized;
-            var add = new Vector3(Random.Range(0.5f, 1.5f), 1, Random.Range(0.5f, 1.5f));
+            var add = new Vector3(UnityEngine.Random.Range(0.5f, 1.5f), 1, UnityEngine.Random.Range(0.5f, 1.5f));
             var knock = new Vector3(diff.x * add.x, 1f, diff.z * add.z) * 5;
 
             //new Vector3(* 0.003f, 20f, diff.z * add.z * 0.003f);
@@ -271,9 +282,10 @@ public class BossStateMachine : MonoBehaviour
             stunStart = Time.time;
             pc.SetPlayer(dummy);
             bm.SetPlayer(dummy);
-            player.SetActive(false);
 
-            //playerTank.takeDamage(25);
+            playerTank.GetComponent<Collider>().enabled = false;
+            playerTank.enabled = false;
+            playerTank.transform.GetChild(1).gameObject.SetActive(false);
 
             switchToState(State.Idle);
             chargeHitAlready = true;
@@ -285,11 +297,13 @@ public class BossStateMachine : MonoBehaviour
     }
 
     private void InitializeCharge() {
+        GetComponent<Rigidbody>().isKinematic = true;
         chargeStart = transform.position;
         chargeStartTime = Time.time;
         var chargeDir = player.transform.position - transform.position;
         chargeDir.Normalize();
         chargeDir.y = 0;
+        this.transform.rotation = Quaternion.LookRotation(chargeDir);
         var indicatorLoc = transform.position + chargeDir * chargeRange / 2 - chargeDir * 0.25f;
         var rot = Quaternion.LookRotation(chargeDir).eulerAngles;
         rot.x = -90;
@@ -298,4 +312,5 @@ public class BossStateMachine : MonoBehaviour
         chargeStart = transform.position;
         anim.SetTrigger("Charge");
     }
+
 }

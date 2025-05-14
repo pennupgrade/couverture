@@ -6,6 +6,7 @@ public class ShieldFollow : MonoBehaviour
 {
     // Start is called before the first frame update
     public Transform follow;
+    public ParticleSystem ps;
     void Start()
     {
         
