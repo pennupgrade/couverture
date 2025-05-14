@@ -6,6 +6,7 @@ using Random = System.Random;
 
 public class RoomManager : MonoBehaviour
 {
+    public static bool playerIsRocket;
     [HideInInspector] public bool paused, noPause;
     public static RoomManager Instance { get; private set; }
     public static int LevelNum { get; private set; }
@@ -74,6 +75,7 @@ public class RoomManager : MonoBehaviour
 
         uiManager.Reset();
         var pTank = Tank.FindPlayer();
+        playerIsRocket = SaveStateManagerGameObject.GetCurrentCharacter() == SaveStateManager.CharacterOption.ROCKET_CAT;
         pTank.Freeze(false);
 
         uiManager.StartScreenEnter(LevelNum);

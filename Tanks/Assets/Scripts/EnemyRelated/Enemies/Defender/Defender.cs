@@ -43,7 +43,7 @@ public class Defender : ShieldedEnemy
     }
 
     protected override IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(RoomManager.playerIsRocket ? 7 : 15);
         StartCoroutine(activateShield());
     }
 }

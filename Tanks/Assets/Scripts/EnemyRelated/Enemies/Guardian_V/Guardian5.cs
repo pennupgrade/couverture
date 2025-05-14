@@ -71,8 +71,4 @@ public class Guardian5 : EnemyOmniMove
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
     }
-    protected override IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(16);
-        StartCoroutine(activateShield());
-    }
 }

@@ -68,7 +68,7 @@ public class ShieldedEnemy : Enemy
         }
     }
     protected virtual IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(RoomManager.playerIsRocket ? 10 : 20);
         StartCoroutine(activateShield());
     }
 

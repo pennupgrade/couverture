@@ -76,7 +76,7 @@ public class Guardian3 : EnemyOmniMove
     }
 
     protected override IEnumerator reactivateShield() {
-        yield return new WaitForSeconds(25);
+        yield return new WaitForSeconds(RoomManager.playerIsRocket ? 7 : 25);
         StartCoroutine(activateShield());
     }
 }
