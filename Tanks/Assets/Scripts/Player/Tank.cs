@@ -312,7 +312,7 @@ public class Tank : MonoBehaviour, IDestroyable
         }
         else {
             audioManager.Play("Meow");
-            cameraShake.Shake(dmg);
+            cameraShake.Shake(200);
         }
 
         if (health <= 100) {

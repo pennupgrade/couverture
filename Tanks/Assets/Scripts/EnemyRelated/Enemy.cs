@@ -256,7 +256,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
                 spawnBulletBoom();
             }
         }
-
+        CameraShake.Instance.Shake(400);
         Destroy(gameObject);
     }
 

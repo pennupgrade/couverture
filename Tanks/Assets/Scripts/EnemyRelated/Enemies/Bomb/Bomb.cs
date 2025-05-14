@@ -75,6 +75,7 @@ public class Bomb : Enemy
             }
         }
 
+        CameraShake.Instance.Shake(1000);
         base.destruction();
     }
     

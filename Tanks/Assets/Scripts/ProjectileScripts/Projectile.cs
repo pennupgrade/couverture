@@ -54,7 +54,7 @@ public abstract class Projectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected bool defaultCollisionChecks(Collision collision) {
+    protected bool defaultCollisionChecks(Collision collision, bool playerRocket = false) {
         if (collision.gameObject.TryGetComponent(out IDestroyable d)) // hit a player
         {
             if (startLifetime - lifetime > dontDamageOnSpawnDelay || parent != collision.gameObject) {
@@ -85,7 +85,7 @@ public abstract class Projectile : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag == "Projectile" ||
+        if (!playerRocket && collision.gameObject.tag == "Projectile" ||
             collision.gameObject.tag == "NoBounce") // Parry other projectile or no bounce
         {
             destruction();

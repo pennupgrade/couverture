@@ -29,7 +29,11 @@ public class Rocket : Projectile
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (defaultCollisionChecks(collision)) return;
+        if (defaultCollisionChecks(collision, damage >= 600)) return;
+
+        if (damage >= 600) {
+            GetComponent<Rigidbody>().velocity = transform.forward * bulletSpeed;
+        }
 
         if (collision.gameObject.tag == "Environment" || collision.gameObject.tag == "Untagged")
         {

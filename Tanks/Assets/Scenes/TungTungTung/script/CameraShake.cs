@@ -6,8 +6,14 @@ public class CameraShake : MonoBehaviour
 {
     public float baseShake = 0.3f;
 
-    public float delay = 0.1f;
+    public float delay = 0.08f;
+
+    public static CameraShake Instance;
     
+    void Awake() {
+        Instance = this;
+    }
+
     public void Shake(float intensity)
     {
         StartCoroutine(ShakeCam(intensity));
@@ -24,7 +30,11 @@ public class CameraShake : MonoBehaviour
         yield return new WaitForSeconds(0.03f);
         transform.position -= randShake;
         yield return new WaitForSeconds(0.02f);
-        transform.position += randShake / 1.5f;
+        transform.position += randShake;
+        yield return new WaitForSeconds(0.02f);
+        transform.position += randShake;
+        yield return new WaitForSeconds(0.015f);
+        transform.position -= randShake / 1.5f;
     }
 
 }
