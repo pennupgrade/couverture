@@ -247,15 +247,6 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
             Destroy(expl, 5);
         }
-
-        if (bulletExplosionPrefab != null)
-        {
-            // 4am code
-            for (int i = 0; i < 4; i++)
-            {
-                spawnBulletBoom();
-            }
-        }
         CameraShake.Instance.Shake(400);
         Destroy(gameObject);
     }
