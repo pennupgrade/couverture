@@ -256,28 +256,38 @@ public class RoomManager : MonoBehaviour
 
     private void changeBGM(bool play) {
         if (play) {
-            audioManager.Play("BGM");
-            /*
-            if (LevelNum < 12) {
+            
+            if (LevelNum == 12 || LevelNum == 50 || LevelNum == 45 || LevelNum == 40 || 
+                (LevelNum == 25 && SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT)) {
+                audioManager.Play("SnowBGM");
+            } else if (LevelNum < 12) {
                 audioManager.Play("BGM");
             } else if (LevelNum >= 12 && LevelNum < 30) {
                 audioManager.Play("BGM2");
             } else {
                 audioManager.Play("BGM3");
             }
-            */
         }
         else {
-            audioManager.Stop("BGM");
-            /*
-            if (LevelNum < 12) {
+            int prevLevelNum = LevelNum - 1;
+            if (prevLevelNum == 12 || prevLevelNum == 50 || prevLevelNum == 45 || prevLevelNum == 40 ||
+                (prevLevelNum == 25 && SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT))
+            {
+                audioManager.Stop("SnowBGM");
+            }
+            else if (prevLevelNum < 12)
+            {
                 audioManager.Stop("BGM");
-            } else if (LevelNum >= 12 && LevelNum < 30) {
+            }
+            else if (prevLevelNum >= 12 && prevLevelNum < 30)
+            {
                 audioManager.Stop("BGM2");
-            } else {
+            }
+            else
+            {
                 audioManager.Stop("BGM3");
             }
-            */
+            
         }
     }
 
