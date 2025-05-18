@@ -140,6 +140,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static SaveStateManager.CharacterOption GetCurrentCharacter() => Instance.stateManager.CurrCharacter;
 
+    public static HashSet<StaticSaveStateManager.Achievement> GetAchievements() {
+        return Instance.staticStateManager.GetAchievements();
+    }
+
     public static int GetLevelNumberFromSceneName(string sceneName) {
         if (sceneName.Contains('1')) {
             return 1;
