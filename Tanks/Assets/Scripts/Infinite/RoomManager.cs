@@ -174,8 +174,6 @@ public class RoomManager : MonoBehaviour
 
                 uiManager.WinScreenEnter();
 
-                SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
-
                 //classic mode complete sound effect
                 changeBGM(false);
                 audioManager.Play("WinSound");
