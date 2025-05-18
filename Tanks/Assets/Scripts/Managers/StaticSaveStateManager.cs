@@ -30,6 +30,9 @@ public class StaticSaveStateManager : SaveStateManager {
 
     [SerializeField] private int classicModeHighScore;
     [SerializeField] private List<Achievement> unlockedAchievements;
+
+
+    public bool inClassicMode = false; 
     
     public enum Achievement {
         NO_SKIP_CLASSIC, NO_SKIP_CLASSIC_PART_TWO, NO_SKIP_CLASSIC_PART_ONE
@@ -47,6 +50,12 @@ public class StaticSaveStateManager : SaveStateManager {
 
     public HashSet<Achievement> GetAchievements() {
         return new(unlockedAchievements);
+    }
+
+    public override void ExitSaveFile()
+    {
+        inClassicMode = false;
+        base.ExitSaveFile();
     }
 
 }

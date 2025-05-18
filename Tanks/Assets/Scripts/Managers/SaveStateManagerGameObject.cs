@@ -121,6 +121,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
             return;
         }
 
+        Instance.staticStateManager.inClassicMode = true;
         Instance.stateManager = Instance.staticStateManager;
         var allChars = (SaveStateManager.CharacterOption[])Enum.GetValues(typeof(SaveStateManager.CharacterOption));
         if (!GetUnlockedCharacters().SetEquals(allChars)) {

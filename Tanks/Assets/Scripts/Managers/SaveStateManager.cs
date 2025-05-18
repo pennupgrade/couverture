@@ -241,7 +241,7 @@ public class SaveStateManager
     }
 
     // Save play time on game exit
-    public void ExitSaveFile() {
+    public virtual void ExitSaveFile() {
         WriteToSaveFile();
     }
 
