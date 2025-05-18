@@ -83,7 +83,7 @@ public class StaticSaveStateManager : SaveStateManager {
     // helper functions
     private Func<bool> NoSkipClassicModeTest(int levelNumber) {
         // probably don't needto check inClassicMode because only called when in classic mode, but just for safety
-        return () => isInNoSkipModeClassic && inClassicMode && RoomManager.LevelNum == levelNumber;
+        return () => isInNoSkipModeClassic && inClassicMode && GetJustFinishedClassicLevel() == levelNumber;
     }
 
     // TODO: Map achievements to AchievementCheckers, create lists, connect lists to SaveStateManagerGameObject
@@ -164,13 +164,18 @@ public class StaticSaveStateManager : SaveStateManager {
     // call when changing level
     public void FinishLevelAchievementCheck(string levelFinished) {
         if (inClassicMode) {
-            FinishLevelClassicModeAchievementCheck(RoomManager.LevelNum - 1); // this is always called after RoomManager increments the level number
+            FinishLevelClassicModeAchievementCheck(GetJustFinishedClassicLevel());
         }
+    }
+
+    private int GetJustFinishedClassicLevel() { // this is always called after RoomManager increments the level number
+        return RoomManager.LevelNum - 1;
     }
 
     public void LoadLevelAchievementCheck(string loadingLevel) {
         if (inClassicMode && RoomManager.LevelNum == 1) { // resets isInNoSkipModeClassic when first level of classic mode is loaded
             isInNoSkipModeClassic = true;
+            oldClassicLevelNum = 1;
         }
     }
 }
