@@ -1,8 +1,8 @@
 public class ClassicModeInfo {
-    private SaveStateManager classicModeSave;
+    private StaticSaveStateManager classicModeSave;
     
     public ClassicModeInfo() {
-        classicModeSave = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE);
+        classicModeSave = StaticSaveStateManager.LoadStaticSave();
     }
 
     public int GetClassicModeHighScore() {

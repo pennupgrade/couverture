@@ -91,7 +91,6 @@ public class SaveStateManager
     [SerializeField] private DateTimeSerializable lastPlayedTime;
 
     [SerializeField] private TimeSpanSerializable timePlayed;
-    [SerializeField] private int classicModeHighScore;
 
     private string saveLocation;
     private LevelSaveData currentLevel;
@@ -246,7 +245,7 @@ public class SaveStateManager
         WriteToSaveFile();
     }
 
-    private void WriteToSaveFile() {
+    protected virtual void WriteToSaveFile() {
         // calculate last played time and total play time
         DateTime now = DateTime.Now;
 
@@ -279,18 +278,12 @@ public class SaveStateManager
         File.Delete(file);
     }
 
-    public void UpdateClassicModeHighScore(int newScore) {
-        // checks if new score is larger than current max score
-        if (newScore > classicModeHighScore) {
-            classicModeHighScore = newScore;
-        }
-    }
+    
 
     public void SaveToFile() {
         WriteToSaveFile();
     }
 
-    public int GetClassicModeHighScore() => classicModeHighScore;
 
 
     public bool UnlockCheckpoint(int i, TankStats t) {

@@ -10,9 +10,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     private SaveStateManager stateManager;
 
+    private StaticSaveStateManager staticStateManager;
+
     private void Awake() {
         if (Instance is null) {
             Instance = this;
+            staticStateManager = StaticSaveStateManager.LoadStaticSave();
             Application.quitting += ExitCurrentSave;
             DontDestroyOnLoad(gameObject);
         }
@@ -86,6 +89,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
 
         Instance.stateManager.ExitSaveFile();
+        if (Instance.stateManager != Instance.staticStateManager) {
+            Instance.staticStateManager.ExitSaveFile();
+        }
         Instance.stateManager = null;
     }
 
@@ -98,7 +104,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void UpdateClassicModeHighScore(int newScore) {
-        Instance.stateManager.UpdateClassicModeHighScore(newScore);
+        Instance.staticStateManager.UpdateClassicModeHighScore(newScore);
     }
 
     public static string GetLatestLevelName() => Instance.stateManager.GetLatestLevelName();
@@ -107,7 +113,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.SaveToFile();
     }
 
-    public static int GetClassicModeHighScore() => Instance.stateManager.GetClassicModeHighScore();
+    public static int GetClassicModeHighScore() => Instance.staticStateManager.GetClassicModeHighScore();
 
     public static void LoadClassicModeSave() {
         if (Instance.stateManager != null) {
@@ -115,7 +121,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
             return;
         }
 
-        LoadSave(CLASSIC_MODE_SAVE_FILE);
+        Instance.stateManager = Instance.staticStateManager;
         var allChars = (SaveStateManager.CharacterOption[])Enum.GetValues(typeof(SaveStateManager.CharacterOption));
         if (!GetUnlockedCharacters().SetEquals(allChars)) {
             // if unlocked characters arent all characters, won't handle updates that remove characters well
