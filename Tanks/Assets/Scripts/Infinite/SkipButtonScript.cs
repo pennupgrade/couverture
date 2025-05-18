@@ -10,8 +10,7 @@ public class SkipButtonScript : BulletActivatorButton
 
     void Start() {
         disabled = false;
-        ClassicModeInfo info = new();
-        int i = info.GetClassicModeHighScore();
+        int i = SaveStateManagerGameObject.GetClassicModeHighScore();
         if (i < levelReq) {
             buttonGroup.SetActive(false);
         } 

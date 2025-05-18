@@ -19,7 +19,7 @@ public class StaticSaveStateManager : SaveStateManager {
             }
             return outManager;
         }
-        catch (FileNotFoundException) {
+        catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
             StaticSaveStateManager outManager = new();
             outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
             outManager.SaveToFile();
