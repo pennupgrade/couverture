@@ -306,4 +306,11 @@ public class SaveStateManager
 
         return currentLevel.CheckpointIndex;
     }
+
+    public string GetCurrentLevelName() {
+        if (currentLevel is null) {
+            return null;
+        }
+        return currentLevel.LevelName;
+    }
 }

@@ -65,7 +65,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.GetUnlockedCharacters();
 
     public static void FinishLevel(string nextLevelName, bool toSave) {
+        string finishedLevelName = Instance.stateManager.GetCurrentLevelName();
         Instance.stateManager.FinishLevel(nextLevelName, new TankStats(Tank.FindPlayer()), toSave);
+        Instance.staticStateManager.FinishLevelAchievementCheck(finishedLevelName);
     }
 
     public static void ExitLevel() {

@@ -68,7 +68,8 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     // Achievement Checker Lists
-    private HashSet<AchievementChecker> nextLevelClassicMode = new();
+    private HashSet<AchievementChecker> finishLevelClassicModeList = new();
+
 
 
     // variables to help testing for achievements
@@ -89,11 +90,11 @@ public class StaticSaveStateManager : SaveStateManager {
     private AchievementChecker MapAchievementsToChecker(Achievement achievement) {
         switch (achievement) {
             case Achievement.NO_SKIP_CLASSIC:
-                return new(this, NoSkipClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, nextLevelClassicMode);
+                return new(this, NoSkipClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.NO_SKIP_CLASSIC_PART_ONE:
-                return new(this, NoSkipClassicModeTest(RoomManager.PART_ONE_LEVEL_NUM), achievement, nextLevelClassicMode);
+                return new(this, NoSkipClassicModeTest(RoomManager.PART_ONE_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.NO_SKIP_CLASSIC_PART_TWO:
-                return new(this, NoSkipClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, nextLevelClassicMode);
+                return new(this, NoSkipClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, finishLevelClassicModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
@@ -152,7 +153,7 @@ public class StaticSaveStateManager : SaveStateManager {
     // methods to test for achievements
 
     // call when changing level in classic mode
-    private void LevelChangeClassicMode() {
+    private void FinishLevelClassicModeAchievementCheck() {
         int levelNum = RoomManager.LevelNum;
         if (levelNum == 0) {
             isInNoSkipModeClassic = true;
@@ -160,13 +161,13 @@ public class StaticSaveStateManager : SaveStateManager {
             isInNoSkipModeClassic = false;
         }
         oldClassicLevelNum = levelNum;
-        CheckAchievements(nextLevelClassicMode);
+        CheckAchievements(finishLevelClassicModeList);
     }
 
     // call when changing level
-    public void LevelChange() {
+    public void FinishLevelAchievementCheck(string levelFinished) {
         if (inClassicMode) {
-            LevelChangeClassicMode();
+            FinishLevelClassicModeAchievementCheck();
         }
     }
 }

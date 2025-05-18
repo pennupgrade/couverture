@@ -171,6 +171,7 @@ public class RoomManager : MonoBehaviour
             if (LevelNum == 51) {
                 noPause = true;
                 Tank.FindPlayer().FreezeEndOfLevel();
+                SaveStateManagerGameObject.FinishLevel("no_more_levels_placeholder", false);
 
                 uiManager.WinScreenEnter();
 
