@@ -20,7 +20,7 @@ public class SaveStateManager
         }
     }
 
-    private static void CreateSaveDirectory() {
+    protected static void CreateSaveDirectory() {
         Directory.CreateDirectory(CompilationConstants.SAVE_DATA_PATH);
     }
 
