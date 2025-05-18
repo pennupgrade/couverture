@@ -26,19 +26,44 @@ public class StaticSaveStateManager : SaveStateManager {
     }
 
 
+    public enum Achievement {
+        NO_SKIP_CLASSIC, NO_SKIP_CLASSIC_PART_TWO, NO_SKIP_CLASSIC_PART_ONE
+    }
 
+    private class AchievementChecker {
+        private Func<bool> unlockTest;
+        private HashSet<AchievementChecker>[] addedLists;
+        private Achievement correspondingAchievement;
+        private StaticSaveStateManager outer;
+
+        public AchievementChecker(StaticSaveStateManager outerClass, Func<bool> test, HashSet<AchievementChecker>[] toAddLists, Achievement achievement) {
+            unlockTest = test;
+            addedLists = toAddLists;
+            correspondingAchievement = achievement;
+            outer = outerClass;
+            foreach (HashSet<AchievementChecker> i in toAddLists) {
+                i.Add(this);
+            }
+        }
+
+        public void attemptUnlock() {
+            if (unlockTest()) {
+                foreach (HashSet<AchievementChecker> i in addedLists) { // when calling this make sure not in a foreach loop of the lists (create a copy)
+                    i.Remove(this);
+                }
+                outer.unlockedAchievements.Add(correspondingAchievement);
+            }
+        }
+    }
 
     [SerializeField] private int classicModeHighScore;
     [SerializeField] private List<Achievement> unlockedAchievements;
 
 
-    public bool inClassicMode = false; 
+    public bool inClassicMode = false;
     
-    public enum Achievement {
-        NO_SKIP_CLASSIC, NO_SKIP_CLASSIC_PART_TWO, NO_SKIP_CLASSIC_PART_ONE
-    }
-
-
+    // TODO: Map achievements to AchievementCheckers, create lists, connect lists to SaveStateManagerGameObject
+    
     public void UpdateClassicModeHighScore(int newScore) {
         // checks if new score is larger than current max score
         if (newScore > classicModeHighScore) {
