@@ -15,6 +15,7 @@ public class StaticSaveStateManager : SaveStateManager {
                 string jsonData = reader.ReadToEnd();
                 outManager = JsonUtility.FromJson<StaticSaveStateManager>(jsonData);
                 outManager.SetSaveLocation(CLASSIC_MODE_SAVE_PATH);
+                outManager.Setup();
             }
             return outManager;
         }
@@ -22,6 +23,7 @@ public class StaticSaveStateManager : SaveStateManager {
             StaticSaveStateManager outManager = new();
             outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
             outManager.SaveToFile();
+            outManager.Setup();
             return outManager;
         }
     }
@@ -93,6 +95,17 @@ public class StaticSaveStateManager : SaveStateManager {
                 return new(this, NoSkipClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, nextLevelClassicMode);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
+        }
+    }
+
+    public void Setup() {
+        // find all achievements that have not been unlocked
+        HashSet<Achievement> notUnlockedAchievements = new HashSet<Achievement>((Achievement[])Enum.GetValues(typeof(Achievement)));
+        notUnlockedAchievements.ExceptWith(unlockedAchievements);
+
+        // create an AchievementChecker for each not unlocked achievement
+        foreach (Achievement achievement in notUnlockedAchievements) {
+            MapAchievementsToChecker(achievement);
         }
     }
 
