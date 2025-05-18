@@ -105,7 +105,7 @@ public class SaveStateManager
     // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
     public void CreateNewSave(string saveLocation) {
         // set save location
-        this.saveLocation = saveLocation;
+        SetSaveLocation(saveLocation);
 
         // initialize values
         latestLevel = new LevelSaveData();
