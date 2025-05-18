@@ -73,7 +73,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     // variables to help testing for achievements
-    public bool inClassicMode = false;
+    [NonSerialized] public bool inClassicMode = false;
     private bool isInNoSkipModeClassic = false;
 
 
