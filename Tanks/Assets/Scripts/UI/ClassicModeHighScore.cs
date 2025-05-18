@@ -8,6 +8,6 @@ public class ClassicModeHighScore : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start() {
-        scoreText.text = $"{prefix} {Mathf.Clamp(SaveStateManagerGameObject.GetClassicModeHighScore(), 0, 50)}";
+        scoreText.text = $"{prefix} {Mathf.Clamp(SaveStateManagerGameObject.GetClassicModeHighScore(), 0, RoomManager.MAX_LEVEL_NUM)}";
     }
 }
