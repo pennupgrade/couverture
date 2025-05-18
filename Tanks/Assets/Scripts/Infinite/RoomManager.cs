@@ -15,6 +15,10 @@ public class RoomManager : MonoBehaviour
     private AudioManager audioManager;
     [SerializeField] private int overrideLevel;
 
+    public const int MAX_LEVEL_NUM = 50;
+    public const int PART_ONE_LEVEL_NUM = 12;
+    public const int PART_TWO_LEVEL_NUM = 30;
+
     //call when exiting
     public void DestroyIt() {
         LevelNum = 1;
