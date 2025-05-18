@@ -168,7 +168,7 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
-    private int GetJustFinishedClassicLevel() { // this is always called after RoomManager increments the level number
+    private int GetJustFinishedClassicLevel() { // this is always called after RoomManager increments the level number, hence why it subtracts 1 from the current level number.  Should only be called after a level is finished
         return RoomManager.LevelNum - 1;
     }
 
