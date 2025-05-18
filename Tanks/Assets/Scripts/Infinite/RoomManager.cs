@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour
     [HideInInspector] public bool paused, noPause;
     public static RoomManager Instance { get; private set; }
     public static int LevelNum { get; private set; } = 1;
+    public static int LevelJustFinished {get; private set;} = 0;
     private bool loading;
     private ClassicUIManager uiManager;
     private AudioManager audioManager;
@@ -22,6 +23,7 @@ public class RoomManager : MonoBehaviour
     //call when exiting
     public void DestroyIt() {
         LevelNum = 1;
+        LevelJustFinished = 0;
         Destroy(gameObject);
         Instance = null;
     }
@@ -105,6 +107,7 @@ public class RoomManager : MonoBehaviour
         if (loading) return;
 
         SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
+        LevelJustFinished = LevelNum;
 
         EnemySpawner.reset();
         if (section == 2) {
