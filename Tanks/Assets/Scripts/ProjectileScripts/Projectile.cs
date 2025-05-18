@@ -10,7 +10,7 @@ public abstract class Projectile : MonoBehaviour
     protected bool destroyed;
     public GameObject parent;
 
-    public float dontDamageOnSpawnDelay = 0.08f;
+    public float dontDamageOnSpawnDelay = 0.03f;
 
     protected float startLifetime;
 

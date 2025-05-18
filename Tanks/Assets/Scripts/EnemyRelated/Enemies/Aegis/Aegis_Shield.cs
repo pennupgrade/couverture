@@ -96,7 +96,7 @@ public class Aegis_Shield : EnemyAlertState
         yield return new WaitForSeconds(0.2f);
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
-                yield return new WaitForSeconds(enemy.reload / 2);
+                yield return new WaitForSeconds(enemy.reload);
                 enemy.numBullets++;
             } else {
                 yield return null;
