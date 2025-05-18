@@ -20,7 +20,7 @@ public class SaveStateManager
         }
     }
 
-    private static void CreateSaveDirectory() {
+    protected static void CreateSaveDirectory() {
         Directory.CreateDirectory(CompilationConstants.SAVE_DATA_PATH);
     }
 
@@ -91,7 +91,6 @@ public class SaveStateManager
     [SerializeField] private DateTimeSerializable lastPlayedTime;
 
     [SerializeField] private TimeSpanSerializable timePlayed;
-    [SerializeField] private int classicModeHighScore;
 
     private string saveLocation;
     private LevelSaveData currentLevel;
@@ -106,7 +105,7 @@ public class SaveStateManager
     // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
     public void CreateNewSave(string saveLocation) {
         // set save location
-        this.saveLocation = saveLocation;
+        SetSaveLocation(saveLocation);
 
         // initialize values
         latestLevel = new LevelSaveData();
@@ -242,11 +241,11 @@ public class SaveStateManager
     }
 
     // Save play time on game exit
-    public void ExitSaveFile() {
+    public virtual void ExitSaveFile() {
         WriteToSaveFile();
     }
 
-    private void WriteToSaveFile() {
+    protected virtual void WriteToSaveFile() {
         // calculate last played time and total play time
         DateTime now = DateTime.Now;
 
@@ -279,18 +278,12 @@ public class SaveStateManager
         File.Delete(file);
     }
 
-    public void UpdateClassicModeHighScore(int newScore) {
-        // checks if new score is larger than current max score
-        if (newScore > classicModeHighScore) {
-            classicModeHighScore = newScore;
-        }
-    }
+    
 
     public void SaveToFile() {
         WriteToSaveFile();
     }
 
-    public int GetClassicModeHighScore() => classicModeHighScore;
 
 
     public bool UnlockCheckpoint(int i, TankStats t) {
@@ -314,5 +307,10 @@ public class SaveStateManager
         return currentLevel.CheckpointIndex;
     }
 
-    // return the current character.  this should always be correct because all character changes go through the savestatemanager
+    public string GetCurrentLevelName() {
+        if (currentLevel is null) {
+            return null;
+        }
+        return currentLevel.LevelName;
+    }
 }

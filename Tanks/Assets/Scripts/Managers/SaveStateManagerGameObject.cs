@@ -10,9 +10,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     private SaveStateManager stateManager;
 
+    private StaticSaveStateManager staticStateManager;
+
     private void Awake() {
         if (Instance is null) {
             Instance = this;
+            staticStateManager = StaticSaveStateManager.LoadStaticSave();
             Application.quitting += ExitCurrentSave;
             DontDestroyOnLoad(gameObject);
         }
@@ -52,6 +55,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // load save data for level that is currently in
     public static void LoadLevel(string levelName) {
         Instance.stateManager.LoadLevel(levelName, Tank.FindPlayer());
+        Instance.staticStateManager.LoadLevelAchievementCheck(levelName);
     }
 
     public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
@@ -62,7 +66,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.GetUnlockedCharacters();
 
     public static void FinishLevel(string nextLevelName, bool toSave) {
+        string finishedLevelName = Instance.stateManager.GetCurrentLevelName();
         Instance.stateManager.FinishLevel(nextLevelName, new TankStats(Tank.FindPlayer()), toSave);
+        Instance.staticStateManager.FinishLevelAchievementCheck(finishedLevelName);
     }
 
     public static void ExitLevel() {
@@ -86,6 +92,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
 
         Instance.stateManager.ExitSaveFile();
+        if (Instance.stateManager != Instance.staticStateManager) {
+            Instance.staticStateManager.ExitSaveFile();
+        }
         Instance.stateManager = null;
     }
 
@@ -98,7 +107,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void UpdateClassicModeHighScore(int newScore) {
-        Instance.stateManager.UpdateClassicModeHighScore(newScore);
+        Instance.staticStateManager.UpdateClassicModeHighScore(newScore);
     }
 
     public static string GetLatestLevelName() => Instance.stateManager.GetLatestLevelName();
@@ -107,7 +116,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.stateManager.SaveToFile();
     }
 
-    public static int GetClassicModeHighScore() => Instance.stateManager.GetClassicModeHighScore();
+    public static int GetClassicModeHighScore() => Instance.staticStateManager.GetClassicModeHighScore();
 
     public static void LoadClassicModeSave() {
         if (Instance.stateManager != null) {
@@ -115,7 +124,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
             return;
         }
 
-        LoadSave(CLASSIC_MODE_SAVE_FILE);
+        Instance.staticStateManager.inClassicMode = true;
+        Instance.stateManager = Instance.staticStateManager;
         var allChars = (SaveStateManager.CharacterOption[])Enum.GetValues(typeof(SaveStateManager.CharacterOption));
         if (!GetUnlockedCharacters().SetEquals(allChars)) {
             // if unlocked characters arent all characters, won't handle updates that remove characters well
@@ -132,6 +142,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static int? GetCurrentCheckpoint() => Instance.stateManager.GetCurrentCheckpoint();
 
     public static SaveStateManager.CharacterOption GetCurrentCharacter() => Instance.stateManager.CurrCharacter;
+
+    public static HashSet<StaticSaveStateManager.Achievement> GetAchievements() {
+        return Instance.staticStateManager.GetAchievements();
+    }
 
     public static int GetLevelNumberFromSceneName(string sceneName) {
         if (sceneName.Contains('1')) {

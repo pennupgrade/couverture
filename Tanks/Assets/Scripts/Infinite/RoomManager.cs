@@ -9,15 +9,21 @@ public class RoomManager : MonoBehaviour
     public static bool playerIsRocket;
     [HideInInspector] public bool paused, noPause;
     public static RoomManager Instance { get; private set; }
-    public static int LevelNum { get; private set; }
+    public static int LevelNum { get; private set; } = 1;
+    public static int LevelJustFinished {get; private set;} = 0;
     private bool loading;
     private ClassicUIManager uiManager;
     private AudioManager audioManager;
     [SerializeField] private int overrideLevel;
 
+    public const int MAX_LEVEL_NUM = 50;
+    public const int PART_ONE_LEVEL_NUM = 12;
+    public const int PART_TWO_LEVEL_NUM = 30;
+
     //call when exiting
     public void DestroyIt() {
         LevelNum = 1;
+        LevelJustFinished = 0;
         Destroy(gameObject);
         Instance = null;
     }
@@ -99,6 +105,7 @@ public class RoomManager : MonoBehaviour
 
     public void roomTransition(int section = 1) {
         if (loading) return;
+        LevelJustFinished = LevelNum;
 
         SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
@@ -167,10 +174,9 @@ public class RoomManager : MonoBehaviour
             if (LevelNum == 51) {
                 noPause = true;
                 Tank.FindPlayer().FreezeEndOfLevel();
+                SaveStateManagerGameObject.FinishLevel("no_more_levels_placeholder", false);
 
                 uiManager.WinScreenEnter();
-
-                SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
 
                 //classic mode complete sound effect
                 changeBGM(false);
