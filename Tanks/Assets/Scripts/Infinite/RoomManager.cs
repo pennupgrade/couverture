@@ -9,7 +9,7 @@ public class RoomManager : MonoBehaviour
     public static bool playerIsRocket;
     [HideInInspector] public bool paused, noPause;
     public static RoomManager Instance { get; private set; }
-    public static int LevelNum { get; private set; }
+    public static int LevelNum { get; private set; } = 1;
     private bool loading;
     private ClassicUIManager uiManager;
     private AudioManager audioManager;
