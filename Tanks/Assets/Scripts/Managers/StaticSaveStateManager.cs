@@ -153,8 +153,7 @@ public class StaticSaveStateManager : SaveStateManager {
     // methods to test for achievements
 
     // call when changing level in classic mode
-    private void FinishLevelClassicModeAchievementCheck() {
-        int levelNum = RoomManager.LevelNum;
+    private void FinishLevelClassicModeAchievementCheck(int levelNum) {
         if (levelNum > oldClassicLevelNum + 1 || levelNum < oldClassicLevelNum) { // check to make sure current level is either the same (in case of unexpected behavior) or 1 above
             isInNoSkipModeClassic = false;
         }
@@ -165,7 +164,7 @@ public class StaticSaveStateManager : SaveStateManager {
     // call when changing level
     public void FinishLevelAchievementCheck(string levelFinished) {
         if (inClassicMode) {
-            FinishLevelClassicModeAchievementCheck();
+            FinishLevelClassicModeAchievementCheck(RoomManager.LevelNum - 1); // this is always called after RoomManager increments the level number
         }
     }
 
