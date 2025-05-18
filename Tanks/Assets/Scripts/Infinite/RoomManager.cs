@@ -105,9 +105,9 @@ public class RoomManager : MonoBehaviour
 
     public void roomTransition(int section = 1) {
         if (loading) return;
+        LevelJustFinished = LevelNum;
 
         SaveStateManagerGameObject.UpdateClassicModeHighScore(LevelNum);
-        LevelJustFinished = LevelNum;
 
         EnemySpawner.reset();
         if (section == 2) {
