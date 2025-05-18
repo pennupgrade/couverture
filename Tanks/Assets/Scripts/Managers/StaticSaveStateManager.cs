@@ -155,9 +155,7 @@ public class StaticSaveStateManager : SaveStateManager {
     // call when changing level in classic mode
     private void FinishLevelClassicModeAchievementCheck() {
         int levelNum = RoomManager.LevelNum;
-        if (levelNum == 0) {
-            isInNoSkipModeClassic = true;
-        } else if (levelNum > oldClassicLevelNum + 1 || levelNum < oldClassicLevelNum) { // check to make sure current level is either the same (in case of unexpected behavior) or 1 above
+        if (levelNum > oldClassicLevelNum + 1 || levelNum < oldClassicLevelNum) { // check to make sure current level is either the same (in case of unexpected behavior) or 1 above
             isInNoSkipModeClassic = false;
         }
         oldClassicLevelNum = levelNum;
@@ -168,6 +166,12 @@ public class StaticSaveStateManager : SaveStateManager {
     public void FinishLevelAchievementCheck(string levelFinished) {
         if (inClassicMode) {
             FinishLevelClassicModeAchievementCheck();
+        }
+    }
+
+    public void LoadLevelAchievementCheck(string loadingLevel) {
+        if (inClassicMode && RoomManager.LevelNum == 1) { // resets isInNoSkipModeClassic when first level of classic mode is loaded
+            isInNoSkipModeClassic = true;
         }
     }
 }

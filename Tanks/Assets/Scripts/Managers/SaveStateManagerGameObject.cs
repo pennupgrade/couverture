@@ -55,6 +55,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     // load save data for level that is currently in
     public static void LoadLevel(string levelName) {
         Instance.stateManager.LoadLevel(levelName, Tank.FindPlayer());
+        Instance.staticStateManager.LoadLevelAchievementCheck(levelName);
     }
 
     public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
