@@ -5,7 +5,7 @@ using UnityEngine;
 public class SaveStateManagerGameObject : MonoBehaviour
 {
     private static readonly string SAVE_FILE_PREFIX = "save_data_";
-    public static readonly string CLASSIC_MODE_SAVE_FILE = SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + "classic_mode.json");
+    public static readonly string CLASSIC_MODE_SAVE_FILE = SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + "static.json");
     public static SaveStateManagerGameObject Instance;
 
     private SaveStateManager stateManager;
