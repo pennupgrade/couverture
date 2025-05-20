@@ -30,7 +30,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        NO_SKIP_CLASSIC, NO_SKIP_CLASSIC_PART_TWO, NO_SKIP_CLASSIC_PART_ONE
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL
     }
 
     private class AchievementChecker {
@@ -81,20 +81,23 @@ public class StaticSaveStateManager : SaveStateManager {
     private int oldClassicLevelNum = 0;
     
     // helper functions
-    private Func<bool> NoSkipClassicModeTest(int levelNumber) {
+    private Func<bool> ClassicModeTest(int levelNumber) { // creates a function that tests whether in classic mode and just finished a particular level
         // probably don't needto check inClassicMode because only called when in classic mode, but just for safety
-        return () => isInNoSkipModeClassic && inClassicMode && RoomManager.LevelJustFinished == levelNumber;
+        return () => inClassicMode && RoomManager.LevelJustFinished == levelNumber;
     }
 
-    // TODO: Map achievements to AchievementCheckers, create lists, connect lists to SaveStateManagerGameObject
+    // Creates a checker for each achievement
     private AchievementChecker MapAchievementsToChecker(Achievement achievement) {
         switch (achievement) {
-            case Achievement.NO_SKIP_CLASSIC:
-                return new(this, NoSkipClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
-            case Achievement.NO_SKIP_CLASSIC_PART_ONE:
-                return new(this, NoSkipClassicModeTest(RoomManager.PART_ONE_LEVEL_NUM), achievement, finishLevelClassicModeList);
-            case Achievement.NO_SKIP_CLASSIC_PART_TWO:
-                return new(this, NoSkipClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, finishLevelClassicModeList);
+            case Achievement.WIN_CLASSIC_FULL_NO_SKIP:
+                Func<bool> testClassicModeNoSkip = () => isInNoSkipModeClassic && ClassicModeTest(RoomManager.MAX_LEVEL_NUM)();
+                return new(this, testClassicModeNoSkip, achievement, finishLevelClassicModeList);
+            case Achievement.WIN_CLASSIC_PART_ONE:
+                return new(this, ClassicModeTest(RoomManager.PART_ONE_LEVEL_NUM), achievement, finishLevelClassicModeList);
+            case Achievement.WIN_CLASSIC_PART_TWO:
+                return new(this, ClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, finishLevelClassicModeList);
+            case Achievement.WIN_CLASSIC_FULL:
+                return new(this, ClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
