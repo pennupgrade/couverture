@@ -101,7 +101,7 @@ public class StaticSaveStateManager : SaveStateManager {
             case Achievement.WIN_CLASSIC_FULL:
                 return new(this, ClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.WIN_CAMPAIGN_MODE:
-                Func<bool> testWinCampaignMode = () => !inClassicMode && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == GameManager.MAX_LEVEL_NUMBER;
+                Func<bool> testWinCampaignMode = () => !inClassicMode && lastLevelFinished != null && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == GameManager.MAX_LEVEL_NUMBER;
                 return new(this, testWinCampaignMode, achievement, finishLevelCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
