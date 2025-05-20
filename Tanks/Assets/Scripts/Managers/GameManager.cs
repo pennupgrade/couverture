@@ -5,6 +5,8 @@ using TransitionType = SceneTransition.TransitionType;
 
 public class GameManager : MonoBehaviour
 {
+    public const int MAX_LEVEL_NUMBER = 6; // maximum level number
+
     public static GameManager Instance { get; private set; }
     public bool IsPaused { get; set; }
 

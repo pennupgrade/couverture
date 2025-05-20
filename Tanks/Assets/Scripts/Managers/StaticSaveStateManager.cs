@@ -30,7 +30,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE
     }
 
     private class AchievementChecker {
@@ -69,6 +69,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
     // Achievement Checker Lists
     private HashSet<AchievementChecker> finishLevelClassicModeList = new();
+    private HashSet<AchievementChecker> finishLevelCampaignModeList = new();
 
 
 
@@ -79,6 +80,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
     // helper variables
     private int oldClassicLevelNum = 0;
+    private string lastLevelFinished;
     
     // helper functions
     private Func<bool> ClassicModeTest(int levelNumber) { // creates a function that tests whether in classic mode and just finished a particular level
@@ -98,6 +100,9 @@ public class StaticSaveStateManager : SaveStateManager {
                 return new(this, ClassicModeTest(RoomManager.PART_TWO_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.WIN_CLASSIC_FULL:
                 return new(this, ClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
+            case Achievement.WIN_CAMPAIGN_MODE:
+                Func<bool> testWinCampaignMode = () => !inClassicMode && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == GameManager.MAX_LEVEL_NUMBER;
+                return new(this, testWinCampaignMode, achievement, finishLevelCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
@@ -168,10 +173,17 @@ public class StaticSaveStateManager : SaveStateManager {
         CheckAchievements(finishLevelClassicModeList);
     }
 
+    private void FinishLevelCampaignModeAchievementCheck(string levelFinished) {
+        lastLevelFinished = levelFinished;
+        CheckAchievements(finishLevelCampaignModeList);
+    }
+
     // call when changing level
     public void FinishLevelAchievementCheck(string levelFinished) {
         if (inClassicMode) {
             FinishLevelClassicModeAchievementCheck(RoomManager.LevelJustFinished);
+        } else {
+            FinishLevelCampaignModeAchievementCheck(levelFinished);
         }
     }
 
