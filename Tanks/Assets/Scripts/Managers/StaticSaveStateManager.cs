@@ -63,8 +63,8 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
-    [SerializeField] private int classicModeHighScore;
-    [SerializeField] private List<Achievement> unlockedAchievements;
+    [SerializeField] private int classicModeHighScore = 0;
+    [SerializeField] private List<Achievement> unlockedAchievements = new();
 
 
     // Achievement Checker Lists
