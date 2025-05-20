@@ -40,6 +40,7 @@ public class SaveStateManager
         CreateSaveDirectory(); // this shouldn't ever be used, but it's here just for safety
         SaveStateManager outManager = new();
         outManager.CreateNewSave(saveLocation);
+        outManager.SaveToFile();
         return outManager;
     }
 
@@ -117,12 +118,9 @@ public class SaveStateManager
     }
 
     // call when session is started (save file is selected!)
-    // instantiates startOfSession and saves file
+    // instantiates startOfSession but does not save file
     public void BeginSession() {
         startOfSession = DateTime.Now;
-
-        // should it be saved here?
-        WriteToSaveFile();
     }
 
     // character management

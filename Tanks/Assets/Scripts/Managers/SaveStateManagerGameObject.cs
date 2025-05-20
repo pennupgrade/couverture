@@ -83,7 +83,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void CreateSave(int saveSlot) {
-        SaveStateManager.CreateSave(GetSaveLocation(saveSlot)).SaveToFile();
+        SaveStateManager.CreateSave(GetSaveLocation(saveSlot));
     }
 
     public static void ExitCurrentSave() {

@@ -22,8 +22,8 @@ public class StaticSaveStateManager : SaveStateManager {
         catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
             StaticSaveStateManager outManager = new();
             outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
-            outManager.SaveToFile();
             outManager.Setup();
+            outManager.SaveToFile();
             return outManager;
         }
     }
@@ -117,6 +117,8 @@ public class StaticSaveStateManager : SaveStateManager {
         foreach (Achievement achievement in notUnlockedAchievements) {
             MapAchievementsToChecker(achievement);
         }
+
+        BeginSession();
     }
 
 
