@@ -29,7 +29,7 @@ public class BossDeath : MonoBehaviour
         if (bossTank != null) {
             bossDeathCam.transform.position = bossTank.transform.position + offSet;
         }
-        if (spinning) {
+        if (spinning && top != null) {
             top.transform.rotation = Quaternion.Euler(top.transform.rotation.eulerAngles + new Vector3(0, 1080 * Time.deltaTime, 0));
         }
     }
