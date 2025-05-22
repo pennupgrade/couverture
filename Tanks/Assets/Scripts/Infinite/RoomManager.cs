@@ -111,9 +111,9 @@ public class RoomManager : MonoBehaviour
 
         EnemySpawner.reset();
         if (section == 2) {
-            LevelNum = 12;
+            LevelNum = PART_ONE_LEVEL_NUM;
         } else if (section == 3) {
-            LevelNum = 30;
+            LevelNum = PART_TWO_LEVEL_NUM;
         } else {
             LevelNum++;
         }

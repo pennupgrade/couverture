@@ -11,7 +11,9 @@ public class Classic1Spawner : MonoBehaviour
     }
 
     IEnumerator spawn() {
-        EnemySpawner.EnemiesRemaining++;
+        if (EnemySpawner.EnemiesRemaining == 0) {
+            EnemySpawner.EnemiesRemaining++;
+        }
         yield return new WaitForSeconds(2.8f);
         enemy.gameObject.SetActive(true);
         enemy.GetComponent<Enemy>().onDeath += enemyDestroyed;
