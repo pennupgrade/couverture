@@ -89,7 +89,8 @@ public class SaveStateManager
     }
 
     // call when session is started (save file is selected!)
-    // make sure it is not needed to be run before newly created save manager is created 
+    // make sure it is not needed to be run before newly created save manager is created
+    // is run every time the save state is loaded (but after the save state is created and saved)
     public virtual void BeginSession() { }
 
     // character management
