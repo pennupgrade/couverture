@@ -15,14 +15,14 @@ public class StaticSaveStateManager : SaveStateManager {
                 string jsonData = reader.ReadToEnd();
                 outManager = JsonUtility.FromJson<StaticSaveStateManager>(jsonData);
                 outManager.SetSaveLocation(CLASSIC_MODE_SAVE_PATH);
-                outManager.Setup();
+                outManager.BeginSession();
             }
             return outManager;
         }
         catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
             StaticSaveStateManager outManager = new();
             outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
-            outManager.Setup();
+            outManager.BeginSession();
             outManager.SaveToFile();
             return outManager;
         }
@@ -108,7 +108,7 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
-    public void Setup() {
+    public override void BeginSession() {
         // find all achievements that have not been unlocked
         HashSet<Achievement> notUnlockedAchievements = new HashSet<Achievement>((Achievement[])Enum.GetValues(typeof(Achievement)));
         notUnlockedAchievements.ExceptWith(unlockedAchievements);
@@ -118,7 +118,7 @@ public class StaticSaveStateManager : SaveStateManager {
             MapAchievementsToChecker(achievement);
         }
 
-        BeginSession();
+        base.BeginSession();
     }
 
 

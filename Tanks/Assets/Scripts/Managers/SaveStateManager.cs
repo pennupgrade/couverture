@@ -11,37 +11,8 @@ public class SaveStateManager
 
     public static string GetFullSavePath(string save_name) => Path.GetFullPath(save_name, CompilationConstants.SAVE_DATA_PATH);
 
-    public static SaveStateManager TryLoadSaveState(string saveFilePath) {
-        try {
-            return LoadInventory(saveFilePath);
-        }
-        catch (FileNotFoundException) {
-            return null;
-        }
-    }
-
     protected static void CreateSaveDirectory() {
         Directory.CreateDirectory(CompilationConstants.SAVE_DATA_PATH);
-    }
-
-    public static SaveStateManager LoadInventory(string saveLocation) {
-        CreateSaveDirectory();
-        SaveStateManager outManager;
-        using (StreamReader reader = new(saveLocation)) {
-            string jsonData = reader.ReadToEnd();
-            outManager = JsonUtility.FromJson<SaveStateManager>(jsonData);
-            outManager.SetSaveLocation(saveLocation);
-        }
-
-        return outManager;
-    }
-
-    public static SaveStateManager CreateSave(string saveLocation) {
-        CreateSaveDirectory(); // this shouldn't ever be used, but it's here just for safety
-        SaveStateManager outManager = new();
-        outManager.CreateNewSave(saveLocation);
-        outManager.SaveToFile();
-        return outManager;
     }
 
     [Serializable]
@@ -75,41 +46,29 @@ public class SaveStateManager
 
     [SerializeField] private LevelSaveData latestLevel;
 
-    [SerializeField] private DateTimeSerializable startTime;
-
-    [SerializeField] private DateTimeSerializable lastPlayedTime;
-
-    [SerializeField] private TimeSpanSerializable timePlayed;
+    
 
     private string saveLocation;
     private LevelSaveData currentLevel;
     public CharacterOption CurrCharacter {get; private set;}
     private HashSet<CharacterOption> unlockedChars;
-    private DateTime startOfSession;
 
     public void SetSaveLocation(string saveLocation) {
         this.saveLocation = saveLocation;
     }
 
     // sets up the current SaveStateManager as a new save, DOES NOT SET startOfSession OR SAVE TO FILE!
-    public void CreateNewSave(string saveLocation) {
+    public virtual void CreateNewSave(string saveLocation) {
         // set save location
         SetSaveLocation(saveLocation);
-
         // initialize values
         latestLevel = new LevelSaveData();
         latestLevel.LevelName = NULL_LEVEL_NAME;
-        startTime = DateTimeSerializable.Now();
-        startOfSession = DateTime.Now;
-        lastPlayedTime = DateTimeSerializable.Now();
-        timePlayed = new TimeSpanSerializable(TimeSpan.Zero);
     }
 
     // call when session is started (save file is selected!)
     // instantiates startOfSession but does not save file
-    public void BeginSession() {
-        startOfSession = DateTime.Now;
-    }
+    public virtual void BeginSession() { }
 
     // character management
     public HashSet<CharacterOption> GetUnlockedCharacters() {
@@ -232,25 +191,11 @@ public class SaveStateManager
     }
 
     protected virtual void WriteToSaveFile() {
-        // calculate last played time and total play time
-        DateTime now = DateTime.Now;
-
-        // TODO: could have issues if crossing between time zones
-        lastPlayedTime = new DateTimeSerializable(now);
-        timePlayed = new TimeSpanSerializable(GetTimePlayed().Add(now.Subtract(startOfSession)));
-        startOfSession = now;
-
         // write JSON to file
         File.WriteAllText(saveLocation, JsonUtility.ToJson(this, true));
     }
 
     // Getters
-    public DateTime GetStartTime() => startTime.ToDateTime();
-
-    public DateTime GetLastPlayedTime() => lastPlayedTime.ToDateTime();
-
-    public TimeSpan GetTimePlayed() => timePlayed.ToTimeSpan();
-
     public string GetLatestLevelName() {
         if (latestLevel is null) {
             // TODO: WHAT TO DO IN THIS CASE?
