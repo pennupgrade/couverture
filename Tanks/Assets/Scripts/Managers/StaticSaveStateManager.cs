@@ -97,8 +97,9 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public override void BeginSession() {
+        UnlockAllCharacters();
         // find all achievements that have not been unlocked
-        HashSet<Achievement> notUnlockedAchievements = new HashSet<Achievement>((Achievement[])Enum.GetValues(typeof(Achievement)));
+        HashSet<Achievement> notUnlockedAchievements = new((Achievement[])Enum.GetValues(typeof(Achievement)));
         notUnlockedAchievements.ExceptWith(unlockedAchievements);
 
         // create an AchievementChecker for each not unlocked achievement
@@ -107,6 +108,14 @@ public class StaticSaveStateManager : SaveStateManager {
         }
 
         base.BeginSession();
+    }
+
+    private void UnlockAllCharacters() { // force unlock all characters for classic mode
+        var allChars = (CharacterOption[])Enum.GetValues(typeof(CharacterOption));
+        if (!GetUnlockedCharacters().SetEquals(allChars)) {
+            // if unlocked characters arent all characters, won't handle updates that remove characters well
+            ForceUnlockCharacters(allChars);
+        }
     }
 
 

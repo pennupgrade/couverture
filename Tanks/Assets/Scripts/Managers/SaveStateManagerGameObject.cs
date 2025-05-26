@@ -123,13 +123,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
         Instance.staticStateManager.inClassicMode = true;
         Instance.stateManager = Instance.staticStateManager;
-        var allChars = (SaveStateManager.CharacterOption[])Enum.GetValues(typeof(SaveStateManager.CharacterOption));
-        if (!GetUnlockedCharacters().SetEquals(allChars)) {
-            // if unlocked characters arent all characters, won't handle updates that remove characters well
-            Instance.stateManager.ForceUnlockCharacters(allChars);
-            LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
-            ExitLevel();
-        }
+        LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
+        ExitLevel();
     }
 
     public static void UnlockCheckpoint(int i) {
