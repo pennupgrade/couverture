@@ -21,10 +21,10 @@ public class StaticSaveStateManager : SaveStateManager {
     }
 
     private class AchievementChecker {
-        private Func<bool> unlockTest;
-        private HashSet<AchievementChecker>[] addedLists;
-        private Achievement correspondingAchievement;
-        private StaticSaveStateManager outer;
+        private readonly Func<bool> unlockTest;
+        private readonly HashSet<AchievementChecker>[] addedLists;
+        private readonly Achievement correspondingAchievement;
+        private readonly StaticSaveStateManager outer;
 
         public AchievementChecker(StaticSaveStateManager outerClass, Func<bool> test, Achievement achievement, params HashSet<AchievementChecker>[] toAddLists) {
             unlockTest = test;
