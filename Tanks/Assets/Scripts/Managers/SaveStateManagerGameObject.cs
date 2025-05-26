@@ -35,12 +35,9 @@ public class SaveStateManagerGameObject : MonoBehaviour
         var wasLoaded = true;
         Instance.stateManager = CampaignSaveStateManager.TryLoadSaveState(saveLocation);
         if (Instance.stateManager is null) {
-            Instance.stateManager = CampaignSaveStateManager.CreateSave(saveLocation);
+            Instance.stateManager = CampaignSaveStateManager.CreateCampaignSave(saveLocation);
             wasLoaded = false;
         }
-
-        // start the session
-        Instance.stateManager.BeginSession();
         return wasLoaded;
     }
 
@@ -83,7 +80,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void CreateSave(int saveSlot) {
-        CampaignSaveStateManager.CreateSave(GetSaveLocation(saveSlot));
+        CampaignSaveStateManager.CreateCampaignSave(GetSaveLocation(saveSlot));
     }
 
     public static void ExitCurrentSave() {

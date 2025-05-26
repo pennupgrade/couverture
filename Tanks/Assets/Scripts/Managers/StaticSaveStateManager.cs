@@ -8,23 +8,11 @@ using UnityEngine;
 public class StaticSaveStateManager : SaveStateManager {
     public static readonly string CLASSIC_MODE_SAVE_PATH = SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE;
     public static StaticSaveStateManager LoadStaticSave() {
-        CreateSaveDirectory();
         try {
-            StaticSaveStateManager outManager;
-            using (StreamReader reader = new(CLASSIC_MODE_SAVE_PATH)) {
-                string jsonData = reader.ReadToEnd();
-                outManager = JsonUtility.FromJson<StaticSaveStateManager>(jsonData);
-                outManager.SetSaveLocation(CLASSIC_MODE_SAVE_PATH);
-                outManager.BeginSession();
-            }
-            return outManager;
+            return LoadSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
         }
         catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
-            StaticSaveStateManager outManager = new();
-            outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
-            outManager.BeginSession();
-            outManager.SaveToFile();
-            return outManager;
+            return CreateSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
         }
     }
 
@@ -107,6 +95,7 @@ public class StaticSaveStateManager : SaveStateManager {
                 throw new InvalidOperationException("Achievement not mapped");
         }
     }
+
 
     public override void BeginSession() {
         // find all achievements that have not been unlocked

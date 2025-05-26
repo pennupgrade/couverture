@@ -15,6 +15,28 @@ public class SaveStateManager
         Directory.CreateDirectory(CompilationConstants.SAVE_DATA_PATH);
     }
 
+    public static T LoadSave<T>(string saveLocation) where T : SaveStateManager {
+        CreateSaveDirectory();
+        T outManager;
+        using (StreamReader reader = new(saveLocation)) {
+            string jsonData = reader.ReadToEnd();
+            outManager = JsonUtility.FromJson<T>(jsonData);
+            outManager.SetSaveLocation(saveLocation);
+            // start the session
+            outManager.BeginSession();
+        }
+        return outManager;
+    }
+
+    public static T CreateSave<T>(string saveLocation) where T : SaveStateManager, new() {
+        CreateSaveDirectory();
+        T outManager = new();
+        outManager.CreateNewSave(saveLocation);
+        outManager.SaveToFile();
+        outManager.BeginSession();
+        return outManager;
+    }
+
     [Serializable]
     private class LevelSaveData
     {
@@ -67,7 +89,7 @@ public class SaveStateManager
     }
 
     // call when session is started (save file is selected!)
-    // instantiates startOfSession but does not save file
+    // make sure it is not needed to be run before newly created save manager is created 
     public virtual void BeginSession() { }
 
     // character management

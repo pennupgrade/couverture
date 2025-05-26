@@ -17,23 +17,11 @@ public class CampaignSaveStateManager : SaveStateManager {
     }
 
     public static CampaignSaveStateManager LoadInventory(string saveLocation) {
-        CreateSaveDirectory();
-        CampaignSaveStateManager outManager;
-        using (StreamReader reader = new(saveLocation)) {
-            string jsonData = reader.ReadToEnd();
-            outManager = JsonUtility.FromJson<CampaignSaveStateManager>(jsonData);
-            outManager.SetSaveLocation(saveLocation);
-        }
-
-        return outManager;
+        return LoadSave<CampaignSaveStateManager>(saveLocation);
     }
 
-    public static CampaignSaveStateManager CreateSave(string saveLocation) {
-        CreateSaveDirectory(); // this shouldn't ever be used, but it's here just for safety
-        CampaignSaveStateManager outManager = new();
-        outManager.CreateNewSave(saveLocation);
-        outManager.SaveToFile();
-        return outManager;
+    public static CampaignSaveStateManager CreateCampaignSave(string saveLocation) {
+        return CreateSave<CampaignSaveStateManager>(saveLocation);
     }
 
     [SerializeField] private DateTimeSerializable startTime;
