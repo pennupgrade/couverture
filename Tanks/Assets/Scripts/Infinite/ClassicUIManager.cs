@@ -66,15 +66,15 @@ public class ClassicUIManager : MonoBehaviour
     }
 
     public void StartScreenLeave() {
-        LeanTween.moveX(missionPanel, -2100f, 1f).setEaseInExpo().setIgnoreTimeScale(true);
-        LeanTween.moveX(overlay, -2100f, 1f).setDelay(0.15f).setEaseInExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(missionPanel, -2800f, 1f).setEaseInExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(overlay, -2800f, 1f).setDelay(0.15f).setEaseInExpo().setIgnoreTimeScale(true);
 
         LeanTween.moveY(enemyCountBar, 470f, 1f).setEaseOutExpo().setIgnoreTimeScale(true);
         LeanTween.scale(enemyCountBar, new Vector3(0.35f, 0.35f, 0.35f), 1f).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
     public void WinScreenEnter() {
-        LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveX(overlay, 2800f, 0f).setIgnoreTimeScale(true);
         overlayImage.color = CatPFP.Brown;
         leftWaveImage.color = CatPFP.Brown;
         rightWaveImage.color = CatPFP.Brown;
@@ -88,14 +88,14 @@ public class ClassicUIManager : MonoBehaviour
 
     public void MissionCompleteEnter() {
         secondOverlay.gameObject.SetActive(true);
-        LeanTween.moveX(secondOverlay, 2100f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveX(secondOverlay, 2800f, 0f).setIgnoreTimeScale(true);
         LeanTween.moveX(secondOverlay, 0f, 1f).setEaseOutExpo().setIgnoreTimeScale(true).setOnComplete(() => {
             LeanTween.moveY(enemyCountBar, 700f, 0f).setIgnoreTimeScale(true);
             LeanTween.moveX(overlay, 0f, 0f).setIgnoreTimeScale(true);
             secondOverlay.gameObject.SetActive(false);
         });
 
-        LeanTween.moveX(missionCompleteBar, 2100f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveX(missionCompleteBar, 2800f, 0f).setIgnoreTimeScale(true);
         LeanTween.moveX(missionCompleteBar, 0f, 1f).setDelay(0.15f).setEaseOutExpo().setIgnoreTimeScale(true);
 
         for (var i = 0; i < stickers.Length; i++) {
@@ -106,7 +106,7 @@ public class ClassicUIManager : MonoBehaviour
     }
 
     public void MissionCompleteLeave() {
-        LeanTween.moveX(missionCompleteBar, -2100f, 1f).setDelay(0.15f).setEaseInExpo().setIgnoreTimeScale(true);
+        LeanTween.moveX(missionCompleteBar, -2800f, 1f).setDelay(0.15f).setEaseInExpo().setIgnoreTimeScale(true);
 
         for (var i = stickers.Length - 1; i >= 0; i--) {
             var sticker = stickers[i];
@@ -115,40 +115,35 @@ public class ClassicUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEnemyCount(int count)
-    {
-        if (count == 1)
-        {
+    public void UpdateEnemyCount(int count) {
+        if (count == 1) {
             enemyCountFlashCor = StartCoroutine(FlashText());
         }
-        else
-        {
+        else {
             StopTextFlash();
         }
+
         enemyCountText.text = $"Enemies left <b>\u00d7 {count}</b>";
     }
-    
-    private IEnumerator FlashText()
-    {
+
+    private IEnumerator FlashText() {
         originalColor = enemyCountText.color;
-        Color brightRed = new Color(1f, 0.4f, 0.4f);
+        var brightRed = new Color(1f, 0.4f, 0.4f);
         yield return new WaitForSeconds(2.4f);
-        while (true)
-        {
+        while (true) {
             yield return new WaitForSeconds(0.8f);
             enemyCountText.color = brightRed;
             yield return new WaitForSeconds(0.8f);
             enemyCountText.color = originalColor;
         }
     }
-    private void StopTextFlash()
-    {
+
+    private void StopTextFlash() {
         StopCoroutine(enemyCountFlashCor);
         enemyCountText.color = originalColor;
     }
 
-    public void DeathScreenEnter(int levelNum)
-    {
+    public void DeathScreenEnter(int levelNum) {
         StopTextFlash();
 
         missionsBeatenText.text = $"Reached Mission {levelNum} out of 50";
