@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,8 @@ public class ClassicUIManager : MonoBehaviour
     [SerializeField] private GameObject restartQuitCanvasPrefab;
     [SerializeField] private RectTransform enemyCountBar;
     [SerializeField] private TMP_Text enemyCountText;
+    private Coroutine enemyCountFlashCor;
+    private Color originalColor;
     [SerializeField] private RectTransform optionsPanel;
 
     private void Start() {
@@ -112,11 +115,42 @@ public class ClassicUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEnemyCount(int count) {
+    public void UpdateEnemyCount(int count)
+    {
+        if (count == 1)
+        {
+            enemyCountFlashCor = StartCoroutine(FlashText());
+        }
+        else
+        {
+            StopTextFlash();
+        }
         enemyCountText.text = $"Enemies left <b>\u00d7 {count}</b>";
     }
+    
+    private IEnumerator FlashText()
+    {
+        originalColor = enemyCountText.color;
+        Color brightRed = new Color(1f, 0.4f, 0.4f);
+        yield return new WaitForSeconds(2.4f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.8f);
+            enemyCountText.color = brightRed;
+            yield return new WaitForSeconds(0.8f);
+            enemyCountText.color = originalColor;
+        }
+    }
+    private void StopTextFlash()
+    {
+        StopCoroutine(enemyCountFlashCor);
+        enemyCountText.color = originalColor;
+    }
 
-    public void DeathScreenEnter(int levelNum) {
+    public void DeathScreenEnter(int levelNum)
+    {
+        StopTextFlash();
+
         missionsBeatenText.text = $"Reached Mission {levelNum} out of 50";
 
         LeanTween.moveX(overlay, 2100f, 0f).setIgnoreTimeScale(true);
@@ -134,6 +168,7 @@ public class ClassicUIManager : MonoBehaviour
         var obj = Instantiate(restartQuitCanvasPrefab);
         var restartQuit = obj.GetComponent<ClassicRestartQuitCanvas>();
 
+        StopTextFlash();
         restartQuit.Restart();
 
         return restartQuit;
