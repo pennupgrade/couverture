@@ -50,6 +50,8 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
+    protected override string InitialLevelName {get;} = "NULL";
+
     [SerializeField] private int classicModeHighScore = 0;
     [SerializeField] private List<Achievement> unlockedAchievements = new();
 
@@ -93,11 +95,6 @@ public class StaticSaveStateManager : SaveStateManager {
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
-    }
-
-    protected override string GetInitialLevelName()
-    {
-        return "NULL";
     }
 
     public override void BeginSession() {

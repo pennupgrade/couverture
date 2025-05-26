@@ -69,7 +69,7 @@ public class SaveStateManager
     [SerializeField] private LevelSaveData latestLevel;
 
     
-
+    protected virtual string InitialLevelName {get;} = NULL_LEVEL_NAME;
     private string saveLocation;
     private LevelSaveData currentLevel;
     public CharacterOption CurrCharacter {get; private set;}
@@ -85,11 +85,7 @@ public class SaveStateManager
         SetSaveLocation(saveLocation);
         // initialize values
         latestLevel = new LevelSaveData();
-        latestLevel.LevelName = GetInitialLevelName();
-    }
-
-    protected virtual string GetInitialLevelName() {
-        return NULL_LEVEL_NAME;
+        latestLevel.LevelName = InitialLevelName;
     }
 
     // call when session is started (save file is selected!)
