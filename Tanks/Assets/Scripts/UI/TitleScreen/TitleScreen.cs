@@ -49,9 +49,9 @@ public class TitleScreen : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        LeanTween.moveX(catanks, -2100f, 1f).setEaseInExpo();
-        LeanTween.moveX(classicText, -2100f, 1f).setDelay(0.1f).setEaseInExpo();
-        LeanTween.moveX(highScorePanel, -2100f, 1f).setDelay(0.2f).setEaseInExpo();
+        LeanTween.moveX(catanks, -2800f, 1f).setEaseInExpo();
+        LeanTween.moveX(classicText, -2800f, 1f).setDelay(0.1f).setEaseInExpo();
+        LeanTween.moveX(highScorePanel, -2800f, 1f).setDelay(0.2f).setEaseInExpo();
 
         var brown = new Color32(78, 63, 56, 255);
         var cream = new Color32(255, 238, 229, 255);
