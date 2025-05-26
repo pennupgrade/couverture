@@ -4,11 +4,11 @@ using System.Collections.Generic;
 public class SaveStateMenuInfo
 {
     private const int NUMBER_OF_SAVES = 3;
-    private readonly SaveStateManager[] saves = new SaveStateManager[NUMBER_OF_SAVES];
+    private readonly CampaignSaveStateManager[] saves = new CampaignSaveStateManager[NUMBER_OF_SAVES];
 
     public SaveStateMenuInfo() {
         for (var i = 0; i < NUMBER_OF_SAVES; i++) {
-            saves[i] = SaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
+            saves[i] = CampaignSaveStateManager.TryLoadSaveState(SaveStateManagerGameObject.GetSaveLocation(i));
         }
     }
 
