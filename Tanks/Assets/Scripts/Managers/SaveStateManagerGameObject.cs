@@ -27,25 +27,22 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static string GetSaveLocation(int saveNumber) => SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + saveNumber + ".json");
 
     // returns true if save was loaded, false if save was created
-    private static bool LoadSave(string saveLocation) {
+    private static bool LoadCampaignSave(string saveLocation) {
         if (Instance.stateManager != null) {
             throw new InvalidOperationException("A Save State is Already Open!");
         }
 
         var wasLoaded = true;
-        Instance.stateManager = SaveStateManager.TryLoadSaveState(saveLocation);
+        Instance.stateManager = CampaignSaveStateManager.TryLoadSaveState(saveLocation);
         if (Instance.stateManager is null) {
-            Instance.stateManager = SaveStateManager.CreateSave(saveLocation);
+            Instance.stateManager = CampaignSaveStateManager.CreateCampaignSave(saveLocation);
             wasLoaded = false;
         }
-
-        // start the session
-        Instance.stateManager.BeginSession();
         return wasLoaded;
     }
 
     public static void LoadSaveSlot(int saveNumber) {
-        LoadSave(GetSaveLocation(saveNumber));
+        LoadCampaignSave(GetSaveLocation(saveNumber));
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
@@ -83,7 +80,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void CreateSave(int saveSlot) {
-        SaveStateManager.CreateSave(GetSaveLocation(saveSlot));
+        CampaignSaveStateManager.CreateCampaignSave(GetSaveLocation(saveSlot));
     }
 
     public static void ExitCurrentSave() {
@@ -126,13 +123,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
         Instance.staticStateManager.inClassicMode = true;
         Instance.stateManager = Instance.staticStateManager;
-        var allChars = (SaveStateManager.CharacterOption[])Enum.GetValues(typeof(SaveStateManager.CharacterOption));
-        if (!GetUnlockedCharacters().SetEquals(allChars)) {
-            // if unlocked characters arent all characters, won't handle updates that remove characters well
-            Instance.stateManager.ForceUnlockCharacters(allChars);
-            LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
-            ExitLevel();
-        }
     }
 
     public static void UnlockCheckpoint(int i) {

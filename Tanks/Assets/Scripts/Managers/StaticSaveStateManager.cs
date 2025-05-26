@@ -1,30 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
 public class StaticSaveStateManager : SaveStateManager {
     public static readonly string CLASSIC_MODE_SAVE_PATH = SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE;
     public static StaticSaveStateManager LoadStaticSave() {
-        CreateSaveDirectory();
         try {
-            StaticSaveStateManager outManager;
-            using (StreamReader reader = new(CLASSIC_MODE_SAVE_PATH)) {
-                string jsonData = reader.ReadToEnd();
-                outManager = JsonUtility.FromJson<StaticSaveStateManager>(jsonData);
-                outManager.SetSaveLocation(CLASSIC_MODE_SAVE_PATH);
-                outManager.Setup();
-            }
-            return outManager;
+            return LoadSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
         }
         catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
-            StaticSaveStateManager outManager = new();
-            outManager.CreateNewSave(CLASSIC_MODE_SAVE_PATH);
-            outManager.Setup();
-            outManager.SaveToFile();
-            return outManager;
+            return CreateSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
         }
     }
 
@@ -108,9 +95,15 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
-    public void Setup() {
+    protected override string GetInitialLevelName()
+    {
+        return "NULL";
+    }
+
+    public override void BeginSession() {
+        UnlockAllCharacters();
         // find all achievements that have not been unlocked
-        HashSet<Achievement> notUnlockedAchievements = new HashSet<Achievement>((Achievement[])Enum.GetValues(typeof(Achievement)));
+        HashSet<Achievement> notUnlockedAchievements = new((Achievement[])Enum.GetValues(typeof(Achievement)));
         notUnlockedAchievements.ExceptWith(unlockedAchievements);
 
         // create an AchievementChecker for each not unlocked achievement
@@ -118,7 +111,15 @@ public class StaticSaveStateManager : SaveStateManager {
             MapAchievementsToChecker(achievement);
         }
 
-        BeginSession();
+        base.BeginSession();
+    }
+
+    private void UnlockAllCharacters() { // force unlock all characters for classic mode
+        var allChars = (CharacterOption[])Enum.GetValues(typeof(CharacterOption));
+        if (!GetUnlockedCharacters().SetEquals(allChars)) {
+            // if unlocked characters arent all characters, won't handle updates that remove characters well
+            ForceUnlockCharacters(allChars);
+        }
     }
 
 
