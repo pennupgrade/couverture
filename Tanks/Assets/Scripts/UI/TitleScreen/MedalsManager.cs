@@ -17,14 +17,32 @@ public class MedalsManager : MonoBehaviour
     }
 
     private void Start() {
-        UnlockMedal(MedalType.Silver);
-        UnlockMedal(MedalType.Diamond);
+        var achievements = SaveStateManagerGameObject.GetAchievements();
+#if UNITY_EDITOR
+        Debug.Log($"Unlocked achievements: {string.Join(", ", achievements)}");
+#endif
+
+        if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_PART_ONE)) {
+            UnlockMedal(MedalType.Bronze);
+        }
+
+        if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_PART_TWO)) {
+            UnlockMedal(MedalType.Silver);
+        }
+
+        if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_FULL)) {
+            UnlockMedal(MedalType.Gold);
+        }
+
+        if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_FULL_NO_SKIP)) {
+            UnlockMedal(MedalType.Diamond);
+        }
     }
 
-    private static void EnableMedalForeground(GameObject medal) =>
-        medal.transform.GetChild(1).gameObject.SetActive(true);
-
     private void UnlockMedal(MedalType type) {
+        var EnableMedalForeground =
+            new Action<GameObject>(medal => medal.transform.GetChild(1).gameObject.SetActive(true));
+
         switch (type) {
         case MedalType.Bronze:
             EnableMedalForeground(bronze);
@@ -39,7 +57,7 @@ public class MedalsManager : MonoBehaviour
             EnableMedalForeground(diamond);
             break;
         default:
-            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            throw new ArgumentOutOfRangeException(nameof(type), type, "Medal type not handled");
         }
     }
 }
