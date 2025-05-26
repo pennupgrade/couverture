@@ -14,6 +14,7 @@ public class RoomManager : MonoBehaviour
     private bool loading;
     private ClassicUIManager uiManager;
     private AudioManager audioManager;
+    private bool[] songPlaying = new bool[4];
     [SerializeField] private int overrideLevel;
 
     public const int MAX_LEVEL_NUM = 50;
@@ -262,36 +263,49 @@ public class RoomManager : MonoBehaviour
 
     private void changeBGM(bool play) {
         if (play) {
-            
-            if (LevelNum == 12 || LevelNum == 50 || LevelNum == 45 || LevelNum == 40 || 
-                (LevelNum == 25 && SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT)) {
+
+            if (LevelNum == 12 || LevelNum == 50 || LevelNum == 45 || LevelNum == 40 ||
+                (LevelNum == 25 && SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT))
+            {
                 audioManager.Play("SnowBGM");
-            } else if (LevelNum < 12) {
+                songPlaying[0] = true;
+            }
+            else if (LevelNum < 12)
+            {
                 audioManager.Play("BGM");
-            } else if (LevelNum >= 12 && LevelNum < 30) {
+                songPlaying[1] = true;
+            }
+            else if (LevelNum >= 12 && LevelNum < 30)
+            {
                 audioManager.Play("BGM2");
-            } else {
+                songPlaying[2] = true;
+            }
+            else
+            {
                 audioManager.Play("BGM3");
+                songPlaying[3] = true;
             }
         }
         else {
-            int prevLevelNum = LevelNum - 1;
-            if (prevLevelNum == 12 || prevLevelNum == 50 || prevLevelNum == 45 || prevLevelNum == 40 ||
-                (prevLevelNum == 25 && SaveStateManagerGameObject.GetCurrentCharacter() != SaveStateManager.CharacterOption.DEFAULT_CAT))
+            if (songPlaying[0])
             {
                 audioManager.Stop("SnowBGM");
+                songPlaying[0] = false;
             }
-            else if (prevLevelNum < 12)
+            else if (songPlaying[1])
             {
                 audioManager.Stop("BGM");
+                songPlaying[1] = false;
             }
-            else if (prevLevelNum >= 12 && prevLevelNum < 30)
+            else if (songPlaying[2])
             {
                 audioManager.Stop("BGM2");
+                songPlaying[2] = false;
             }
             else
             {
                 audioManager.Stop("BGM3");
+                songPlaying[3] = false;
             }
             
         }
