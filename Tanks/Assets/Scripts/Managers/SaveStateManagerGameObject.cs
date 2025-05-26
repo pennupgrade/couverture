@@ -123,8 +123,6 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
         Instance.staticStateManager.inClassicMode = true;
         Instance.stateManager = Instance.staticStateManager;
-        LoadLevel("NULL"); // this works fine as long as there is no level with scene name "NULL", but it is a tad bit jank...
-        ExitLevel();
     }
 
     public static void UnlockCheckpoint(int i) {

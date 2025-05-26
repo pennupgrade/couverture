@@ -85,7 +85,11 @@ public class SaveStateManager
         SetSaveLocation(saveLocation);
         // initialize values
         latestLevel = new LevelSaveData();
-        latestLevel.LevelName = NULL_LEVEL_NAME;
+        latestLevel.LevelName = GetInitialLevelName();
+    }
+
+    protected virtual string GetInitialLevelName() {
+        return NULL_LEVEL_NAME;
     }
 
     // call when session is started (save file is selected!)

@@ -95,6 +95,10 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
+    protected override string GetInitialLevelName()
+    {
+        return "NULL";
+    }
 
     public override void BeginSession() {
         UnlockAllCharacters();
