@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Guardian5 : EnemyOmniMove
 {
-    void Awake() {
+    void Awake()
+    {
         enemyState = new G5_Start(this);
     }
     // Start is called before the first frame update
@@ -24,7 +25,7 @@ public class Guardian5 : EnemyOmniMove
         leadChance = 0.5f;
         speed = 1.9f;
         turnSpeed = 180;
-        
+
         damageFlash = new DamageFlash(transform.Find("Body").gameObject); // I hate this so much
         findPlayer();
         agentSetup();
@@ -43,32 +44,42 @@ public class Guardian5 : EnemyOmniMove
 
         gun.transform.eulerAngles += cTurretTurn * Time.deltaTime * Vector3.up;
     }
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         agent.nextPosition = transform.position;
         if (isStunned) return;
 
         //dodging
         stopTurns = detectBullet(1.9f);
-        if (stopTurns) {
+        if (stopTurns)
+        {
             dodge();
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
-            if (!accel) {
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
+            if (!accel)
+            {
                 alert();
             }
         }
         //turning
-        else if (moveStraightTimer == null) {
+        else if (moveStraightTimer == null)
+        {
             enemyState = enemyState.Move(playerRB.position);
             transform.eulerAngles += cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
-            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up; 
+            gun.transform.eulerAngles -= cTurnSpeed * Time.fixedDeltaTime * Vector3.up;
         }
 
         //moving
-        if (accel && moveStraightTimer == null) {
-            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) : 
+        if (accel && moveStraightTimer == null)
+        {
+            cSpeed = (backwards ? (Mathf.Max(-speed, cSpeed - 10 * Time.fixedDeltaTime)) :
                                 (Mathf.Min(speed, cSpeed + 10 * Time.fixedDeltaTime)));
         }
         transform.position += cSpeed * Time.fixedDeltaTime * transform.forward;
+    }
+    
+    protected override IEnumerator reactivateShield() {
+        yield return new WaitForSeconds(RoomManager.playerIsRocket ? 6 : 20);
+        StartCoroutine(activateShield());
     }
 }
