@@ -47,31 +47,19 @@ public class SaveStateManager
     [Serializable]
     private class LevelSaveData
     {
-        public string LevelName;
+        public string LevelName = null;
         public TankStats Stats = new();
         public CharacterOption CurrCharacter = CharacterOption.DEFAULT_CAT;
 
         // checkpoint save data
-        public int CheckpointIndex;
-        public List<CharacterOption> AdditionalUnlockedChars;
-
-        public LevelSaveData() {
-            ResetData();
-        }
+        public int CheckpointIndex = -1;
+        public List<CharacterOption> AdditionalUnlockedChars = new();
 
         public void Save(TankStats t, CharacterOption c, int checkpointIndex, List<CharacterOption> unlockedChars) {
             Stats = t;
             CurrCharacter = c;
             CheckpointIndex = checkpointIndex;
             AdditionalUnlockedChars = unlockedChars;
-        }
-
-        public void ResetData() {
-            LevelName = null;
-            Stats = new TankStats();
-            CurrCharacter = CharacterOption.DEFAULT_CAT;
-            CheckpointIndex = -1;
-            AdditionalUnlockedChars = new List<CharacterOption>();
         }
     }
 
