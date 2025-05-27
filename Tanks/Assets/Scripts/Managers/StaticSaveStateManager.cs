@@ -15,9 +15,11 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
+    private const int NUM_ENEMIES_KILLED_ACHIEVEMENT_ONE = 100;
+
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE
     }
 
     private class AchievementChecker {
@@ -55,10 +57,13 @@ public class StaticSaveStateManager : SaveStateManager {
     [SerializeField] private int classicModeHighScore = 0;
     [SerializeField] private List<Achievement> unlockedAchievements = new();
 
+    [SerializeField] private int numEnemiesKilled = 0;
+
 
     // Achievement Checker Lists
     private HashSet<AchievementChecker> finishLevelClassicModeList = new();
     private HashSet<AchievementChecker> finishLevelCampaignModeList = new();
+    private HashSet<AchievementChecker> enemyKilledList = new();
 
 
 
@@ -92,6 +97,9 @@ public class StaticSaveStateManager : SaveStateManager {
             case Achievement.WIN_CAMPAIGN_MODE:
                 Func<bool> testWinCampaignMode = () => !inClassicMode && lastLevelFinished != null && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == GameManager.MAX_LEVEL_NUMBER;
                 return new(this, testWinCampaignMode, achievement, finishLevelCampaignModeList);
+            case Achievement.NUM_ENEMIES_KILLED_ONE:
+                Func<bool> testNumEnemiesKilledOne = () => numEnemiesKilled >= NUM_ENEMIES_KILLED_ACHIEVEMENT_ONE;
+                return new(this, testNumEnemiesKilledOne, achievement, enemyKilledList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
@@ -188,4 +196,9 @@ public class StaticSaveStateManager : SaveStateManager {
     }
 
     public void LoadLevelAchievementCheck(string loadingLevel) { }
+
+    public void EnemyKilledAchievementCheck() { // maybe include type of enemy as parameter?
+        numEnemiesKilled++;
+        CheckAchievements(enemyKilledList);
+    }
 }
