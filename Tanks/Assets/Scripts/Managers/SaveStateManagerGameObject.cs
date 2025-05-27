@@ -137,6 +137,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return Instance.staticStateManager.GetAchievements();
     }
 
+    public static void EnemyKilledByPlayer() {
+        Instance.staticStateManager.EnemyKilledAchievementCheck();
+    }
+
     public static int GetLevelNumberFromSceneName(string sceneName) {
         if (sceneName.Contains('1')) {
             return 1;

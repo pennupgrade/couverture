@@ -66,6 +66,8 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
     // Ricochet related
     private bool isRicochetHit;
 
+    private bool tookDamageFromPlayer = false;
+
     protected void findPlayer() {
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) {
@@ -164,6 +166,14 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
         }
         return val;
     }
+
+    // when an enemy takes damage from a player
+    public void TakeDamageFromPlayer(int dmg) {
+        tookDamageFromPlayer = true;
+        takeDamage(dmg);
+        tookDamageFromPlayer = false;
+    }
+
     public virtual void takeDamage(int dmg) {
         health -= dmg;
         damageFlash.CallDamageFlash(this);
@@ -186,6 +196,9 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
     protected void die() {
         if (isDead) return;
+        if (tookDamageFromPlayer) {
+            SaveStateManagerGameObject.EnemyKilledByPlayer();
+        }
         onDeath?.Invoke();
         destruction();
         onDeath = null;

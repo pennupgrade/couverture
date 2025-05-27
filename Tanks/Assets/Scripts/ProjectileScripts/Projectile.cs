@@ -77,7 +77,11 @@ public abstract class Projectile : MonoBehaviour
                         }
                     }
 
-                    d.takeDamage(damage);
+                    if (enemy != null && parent.GetComponent<Tank>() != null) {
+                        enemy.TakeDamageFromPlayer(damage);
+                    } else {
+                        d.takeDamage(damage);
+                    }
                 }
 
                 destruction();
