@@ -5,13 +5,13 @@ using UnityEngine;
 
 [Serializable]
 public class StaticSaveStateManager : SaveStateManager {
-    public static readonly string CLASSIC_MODE_SAVE_PATH = SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE;
+    public static readonly string STATIC_SAVE_PATH = SaveStateManagerGameObject.CLASSIC_MODE_SAVE_FILE;
     public static StaticSaveStateManager LoadStaticSave() {
         try {
-            return LoadSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
+            return LoadSave<StaticSaveStateManager>(STATIC_SAVE_PATH);
         }
         catch (FileNotFoundException) { // NOTE: Could break if there is a saving error!
-            return CreateSave<StaticSaveStateManager>(CLASSIC_MODE_SAVE_PATH);
+            return CreateSave<StaticSaveStateManager>(STATIC_SAVE_PATH);
         }
     }
 
