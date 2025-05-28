@@ -139,7 +139,7 @@ public class SaveStateManager
         };
     }
 
-    public virtual void LoadLevel(string levelName, Tank t) {
+    public void LoadLevel(string levelName, Tank t) {
         if (latestLevel is null || latestLevel.LevelName == NULL_LEVEL_NAME) {
             latestLevel = new LevelSaveData();
             latestLevel.LevelName = levelName;

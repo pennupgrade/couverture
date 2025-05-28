@@ -26,14 +26,6 @@ public class CampaignSaveStateManager : SaveStateManager {
     }
 
     
-    [Serializable]
-    public class LevelActionData {
-        public int numEnemiesKilled = 0;
-        public bool damageDealtToEnemies = false;
-        public bool damageTaken = false;
-        public bool hasDied = false;
-        public List<CharacterOption> charactersUsed = new();
-    }
 
     [SerializeField] private DateTimeSerializable startTime;
 
@@ -41,8 +33,7 @@ public class CampaignSaveStateManager : SaveStateManager {
 
     [SerializeField] private TimeSpanSerializable timePlayed;
 
-    [SerializeField] private bool firstRunIsValid = true;
-    [SerializeField] private List<LevelActionData> levelAchievementData = new();
+    [SerializeField] public StaticSaveStateManager.CampaignModeAchievementData levelAchievementData = new();
 
     private DateTime startOfSession;
 
@@ -74,24 +65,6 @@ public class CampaignSaveStateManager : SaveStateManager {
         startOfSession = now;
 
         base.WriteToSaveFile();
-    }
-
-    public override void LoadLevel(string levelName, Tank t)
-    {
-        if (firstRunIsValid) { // only do valid run checks if the run is currently valid
-            string latestLevelName = GetLatestLevelName();
-            int latestLevelNum = SaveStateManagerGameObject.GetLevelNumberFromSceneName(latestLevelName);
-            if (latestLevelName == ALL_LEVELS_UNLOCKED) {
-                latestLevelNum = MAX_LEVEL_NUMBER + 1;
-            }
-            int loadingLevelNum = SaveStateManagerGameObject.GetLevelNumberFromSceneName(levelName);
-            if (loadingLevelNum < latestLevelNum) { // if goes to previous level, then invalidate run
-                firstRunIsValid = false;
-                levelAchievementData = new();
-                WriteToSaveFile();
-            }
-        }
-        base.LoadLevel(levelName, t);
     }
 
     // Getters

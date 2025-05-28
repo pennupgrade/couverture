@@ -52,6 +52,21 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
+    [Serializable]
+    public class LevelAchievementData {
+        public int numEnemiesKilled = 0;
+        public bool damageDealtToEnemies = false;
+        public bool damageTaken = false;
+        public bool hasDied = false;
+        public List<CharacterOption> charactersUsed = new();
+    }
+
+    [Serializable]
+    public class CampaignModeAchievementData {
+        public bool runIsValid = true;
+        public List<LevelAchievementData> levelAchievementInfo = new();
+    }
+
     protected override string InitialLevelName {get;} = "NULL";
 
     [SerializeField] private int classicModeHighScore = 0;
@@ -75,6 +90,10 @@ public class StaticSaveStateManager : SaveStateManager {
     // helper variables
     private int oldClassicLevelNum = 0;
     private string lastLevelFinished;
+
+
+    // campaign mode variable
+    private CampaignModeAchievementData campaignLevelData;
     
     // helper functions
     private Func<bool> ClassicModeTest(int levelNumber) { // creates a function that tests whether in classic mode and just finished a particular level
@@ -184,6 +203,9 @@ public class StaticSaveStateManager : SaveStateManager {
     private void FinishLevelCampaignModeAchievementCheck(string levelFinished) {
         lastLevelFinished = levelFinished;
         CheckAchievements(finishLevelCampaignModeList);
+        if (SaveStateManagerGameObject.GetLevelNumberFromSceneName(levelFinished) == CampaignSaveStateManager.MAX_LEVEL_NUMBER) { // set the campaign level data to null if finishing a campaign mode run
+            campaignLevelData = null;
+        }
     }
 
     // call when changing level
@@ -195,7 +217,47 @@ public class StaticSaveStateManager : SaveStateManager {
         }
     }
 
-    public void LoadLevelAchievementCheck(string loadingLevel) { }
+    public void LoadLevelAchievementCheck(string loadingLevel) {
+        if (!inClassicMode) {
+            LoadLevelCampaignModeAchievementCheck(loadingLevel);
+        }
+    }
+
+    private void LoadLevelCampaignModeAchievementCheck(string loadingLevel) {
+        SetupCampaignRunAchievementsData(loadingLevel);
+    }
+
+    private void SetupCampaignRunAchievementsData(string loadingLevel) {
+        CampaignSaveStateManager campaignSave = SaveStateManagerGameObject.Instance.StateManager as CampaignSaveStateManager ?? throw new InvalidOperationException("SaveStateManagerGameObject State Manager not an instance of CampaignSaveStateManager!");
+        CampaignModeAchievementData campaignSaveAchievementData = campaignSave.levelAchievementData;
+        int levelNum = SaveStateManagerGameObject.GetLevelNumberFromSceneName(loadingLevel);
+
+        if (loadingLevel == campaignSave.GetLatestLevelName() && campaignLevelData != null && campaignLevelData.runIsValid) { // if the user's current campaign run reaches the latest level and thus should be saved
+            campaignSave.levelAchievementData = campaignLevelData;
+        } else if (campaignSaveAchievementData.runIsValid) {
+            campaignLevelData = campaignSaveAchievementData;
+            if (loadingLevel != campaignSave.GetLatestLevelName()) { // set firstRunIsValid to false if not valid
+                campaignSaveAchievementData.runIsValid = false;
+                campaignSaveAchievementData.levelAchievementInfo = new();
+            }
+        } else if (campaignLevelData is null) { // if the current campaign mode run is not the first one on the current save file and there is no other currently loaded campaign mode level data
+            campaignLevelData = new();
+            if (levelNum > 1) {
+                campaignLevelData.runIsValid = false;
+            }
+        }
+        if (campaignLevelData.levelAchievementInfo.Count < levelNum) { // add enough additional elements so that current level has a data slot
+            LevelAchievementData[] tempArray = new LevelAchievementData[levelNum - campaignLevelData.levelAchievementInfo.Count];
+            for (int i = 0; i < tempArray.Length; i++) {
+                tempArray[i] = new();
+            }
+            campaignLevelData.levelAchievementInfo.AddRange(tempArray); // there is probably a better way to do this
+        }
+    }
+
+    public void ExitLevelAchievementCheck() {
+        campaignLevelData = null;
+    }
 
     public void EnemyKilledAchievementCheck() { // maybe include type of enemy as parameter?
         numEnemiesKilled++;

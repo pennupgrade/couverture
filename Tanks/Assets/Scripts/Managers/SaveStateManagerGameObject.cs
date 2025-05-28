@@ -8,7 +8,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
     public static readonly string CLASSIC_MODE_SAVE_FILE = SaveStateManager.GetFullSavePath(SAVE_FILE_PREFIX + "static.json");
     public static SaveStateManagerGameObject Instance;
 
-    private SaveStateManager stateManager;
+    public SaveStateManager StateManager {get; private set;}
 
     private StaticSaveStateManager staticStateManager;
 
@@ -28,14 +28,14 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     // returns true if save was loaded, false if save was created
     private static bool LoadCampaignSave(string saveLocation) {
-        if (Instance.stateManager != null) {
+        if (Instance.StateManager != null) {
             throw new InvalidOperationException("A Save State is Already Open!");
         }
 
         var wasLoaded = true;
-        Instance.stateManager = CampaignSaveStateManager.TryLoadSaveState(saveLocation);
-        if (Instance.stateManager is null) {
-            Instance.stateManager = CampaignSaveStateManager.CreateCampaignSave(saveLocation);
+        Instance.StateManager = CampaignSaveStateManager.TryLoadSaveState(saveLocation);
+        if (Instance.StateManager is null) {
+            Instance.StateManager = CampaignSaveStateManager.CreateCampaignSave(saveLocation);
             wasLoaded = false;
         }
         return wasLoaded;
@@ -46,35 +46,36 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void UnlockCharacter(SaveStateManager.CharacterOption c) {
-        Instance.stateManager.UnlockCharacter(c);
+        Instance.StateManager.UnlockCharacter(c);
     }
 
     // load save data for level that is currently in
     public static void LoadLevel(string levelName) {
-        Instance.stateManager.LoadLevel(levelName, Tank.FindPlayer());
+        Instance.StateManager.LoadLevel(levelName, Tank.FindPlayer());
         Instance.staticStateManager.LoadLevelAchievementCheck(levelName);
     }
 
     public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
-        Instance.stateManager.SwitchCharacter(Tank.FindPlayer(), c);
+        Instance.StateManager.SwitchCharacter(Tank.FindPlayer(), c);
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() =>
-        Instance.stateManager.GetUnlockedCharacters();
+        Instance.StateManager.GetUnlockedCharacters();
 
     public static void FinishLevel(string nextLevelName, bool toSave) {
-        string finishedLevelName = Instance.stateManager.GetCurrentLevelName();
-        Instance.stateManager.FinishLevel(nextLevelName, new TankStats(Tank.FindPlayer()), toSave);
+        string finishedLevelName = Instance.StateManager.GetCurrentLevelName();
+        Instance.StateManager.FinishLevel(nextLevelName, new TankStats(Tank.FindPlayer()), toSave);
         Instance.staticStateManager.FinishLevelAchievementCheck(finishedLevelName);
     }
 
     public static void ExitLevel() {
-        Instance.stateManager.OnExitLevel();
+        Instance.StateManager.OnExitLevel();
+        Instance.staticStateManager.ExitLevelAchievementCheck();
     }
 
     // debug method so tests can be run from Unity editor from simply starting scene
     public static void DebugLoadSave() {
-        if (Instance.stateManager is null) {
+        if (Instance.StateManager is null) {
             LoadSaveSlot(1);
         }
     }
@@ -84,19 +85,19 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void ExitCurrentSave() {
-        if (Instance is null || Instance.stateManager is null) {
+        if (Instance is null || Instance.StateManager is null) {
             return;
         }
 
-        Instance.stateManager.ExitSaveFile();
-        if (Instance.stateManager != Instance.staticStateManager) {
+        Instance.StateManager.ExitSaveFile();
+        if (Instance.StateManager != Instance.staticStateManager) {
             Instance.staticStateManager.ExitSaveFile();
         }
-        Instance.stateManager = null;
+        Instance.StateManager = null;
     }
 
     public static void PlayerDied() {
-        Instance.stateManager.OnPlayerDeath();
+        Instance.StateManager.OnPlayerDeath();
     }
 
     public static void DeleteSaveSlot(int saveNumber) {
@@ -107,31 +108,31 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.staticStateManager.UpdateClassicModeHighScore(newScore);
     }
 
-    public static string GetLatestLevelName() => Instance.stateManager.GetLatestLevelName();
+    public static string GetLatestLevelName() => Instance.StateManager.GetLatestLevelName();
 
     public static void SaveToFile() {
-        Instance.stateManager.SaveToFile();
+        Instance.StateManager.SaveToFile();
     }
 
     public static int GetClassicModeHighScore() => Instance.staticStateManager.GetClassicModeHighScore();
 
     public static void LoadClassicModeSave() {
-        if (Instance.stateManager != null) {
+        if (Instance.StateManager != null) {
             // only load classic mode save once
             return;
         }
 
         Instance.staticStateManager.inClassicMode = true;
-        Instance.stateManager = Instance.staticStateManager;
+        Instance.StateManager = Instance.staticStateManager;
     }
 
     public static void UnlockCheckpoint(int i) {
-        Instance.stateManager.UnlockCheckpoint(i, new TankStats(Tank.FindPlayer()));
+        Instance.StateManager.UnlockCheckpoint(i, new TankStats(Tank.FindPlayer()));
     }
 
-    public static int? GetCurrentCheckpoint() => Instance.stateManager.GetCurrentCheckpoint();
+    public static int? GetCurrentCheckpoint() => Instance.StateManager.GetCurrentCheckpoint();
 
-    public static SaveStateManager.CharacterOption GetCurrentCharacter() => Instance.stateManager.CurrCharacter;
+    public static SaveStateManager.CharacterOption GetCurrentCharacter() => Instance.StateManager.CurrCharacter;
 
     public static HashSet<StaticSaveStateManager.Achievement> GetAchievements() {
         return Instance.staticStateManager.GetAchievements();
@@ -154,5 +155,4 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
         return -1;
     }
-
 }
