@@ -235,12 +235,15 @@ public class StaticSaveStateManager : SaveStateManager {
         if (loadingLevel == campaignSave.GetLatestLevelName() && campaignLevelData != null && campaignLevelData.runIsValid) { // if the user's current campaign run reaches the latest level and thus should be saved
             campaignSave.levelAchievementData = campaignLevelData;
         } else if (campaignSaveAchievementData.runIsValid) {
-            campaignLevelData = campaignSaveAchievementData;
             if (loadingLevel != campaignSave.GetLatestLevelName()) { // set firstRunIsValid to false if not valid
                 campaignSaveAchievementData.runIsValid = false;
                 campaignSaveAchievementData.levelAchievementInfo = new();
+                campaignLevelData = null;
+            } else {
+                campaignLevelData = campaignSaveAchievementData;
             }
-        } else if (campaignLevelData is null) { // if the current campaign mode run is not the first one on the current save file and there is no other currently loaded campaign mode level data
+        } 
+        if (campaignLevelData is null) { // if the current campaign mode run is not the first one on the current save file and there is no other currently loaded campaign mode level data
             campaignLevelData = new();
             if (levelNum > 1) {
                 campaignLevelData.runIsValid = false;
