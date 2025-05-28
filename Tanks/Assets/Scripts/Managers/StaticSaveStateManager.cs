@@ -19,8 +19,10 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET
     }
+
+    // TODO: UPDATE DEATHS, DAMAGE, ETC WHEN IT HAPPENS
 
     private class AchievementChecker {
         private readonly Func<bool> unlockTest;
@@ -79,6 +81,7 @@ public class StaticSaveStateManager : SaveStateManager {
     private HashSet<AchievementChecker> finishLevelClassicModeList = new();
     private HashSet<AchievementChecker> finishLevelCampaignModeList = new();
     private HashSet<AchievementChecker> enemyKilledList = new();
+    private HashSet<AchievementChecker> finishCampaignModeList = new();
 
 
 
@@ -101,6 +104,24 @@ public class StaticSaveStateManager : SaveStateManager {
         return () => inClassicMode && RoomManager.LevelJustFinished == levelNumber;
     }
 
+    private Func<bool> CampaignModeTestsLogicalAndOverAllLevels(Func<LevelAchievementData, bool> func) {
+        return () => {
+            if (!campaignLevelData.runIsValid) {
+                return false;
+            }
+            foreach (LevelAchievementData i in campaignLevelData.levelAchievementInfo) {
+                if (!func(i)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    }
+
+    private Func<bool> CampaignModeWithoutCharacterTest(CharacterOption character) {
+        return CampaignModeTestsLogicalAndOverAllLevels(levelData => levelData.charactersUsed.Contains(character));
+    }
+
     // Creates a checker for each achievement
     private AchievementChecker MapAchievementsToChecker(Achievement achievement) {
         switch (achievement) {
@@ -115,10 +136,17 @@ public class StaticSaveStateManager : SaveStateManager {
                 return new(this, ClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.WIN_CAMPAIGN_MODE:
                 Func<bool> testWinCampaignMode = () => !inClassicMode && lastLevelFinished != null && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == CampaignSaveStateManager.MAX_LEVEL_NUMBER;
-                return new(this, testWinCampaignMode, achievement, finishLevelCampaignModeList);
+                return new(this, testWinCampaignMode, achievement, finishCampaignModeList);
             case Achievement.NUM_ENEMIES_KILLED_ONE:
                 Func<bool> testNumEnemiesKilledOne = () => numEnemiesKilled >= NUM_ENEMIES_KILLED_ACHIEVEMENT_ONE;
                 return new(this, testNumEnemiesKilledOne, achievement, enemyKilledList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_DYING:
+                Func<LevelAchievementData, bool> testCampaignModeNoDeathsHelper = levelData => levelData.hasDied;
+                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoDeathsHelper), achievement, finishCampaignModeList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_BUBBLE:
+                return new(this, CampaignModeWithoutCharacterTest(CharacterOption.BUBBLE_CAT), achievement, finishCampaignModeList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_ROCKET:
+                return new(this, CampaignModeWithoutCharacterTest(CharacterOption.ROCKET_CAT), achievement, finishCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
@@ -203,7 +231,9 @@ public class StaticSaveStateManager : SaveStateManager {
     private void FinishLevelCampaignModeAchievementCheck(string levelFinished) {
         lastLevelFinished = levelFinished;
         CheckAchievements(finishLevelCampaignModeList);
-        if (SaveStateManagerGameObject.GetLevelNumberFromSceneName(levelFinished) == CampaignSaveStateManager.MAX_LEVEL_NUMBER) { // set the campaign level data to null if finishing a campaign mode run
+        if (SaveStateManagerGameObject.GetLevelNumberFromSceneName(levelFinished) == CampaignSaveStateManager.MAX_LEVEL_NUMBER) {
+            CheckAchievements(finishCampaignModeList);
+            // set the campaign level data to null if finishing a campaign mode run
             campaignLevelData = null;
         }
     }
@@ -262,6 +292,7 @@ public class StaticSaveStateManager : SaveStateManager {
         campaignLevelData = null;
     }
 
+    // TODO: UPDATE HAS KILLED ENEMY IN CAMPAIGN RUN MODE
     public void EnemyKilledAchievementCheck() { // maybe include type of enemy as parameter?
         numEnemiesKilled++;
         CheckAchievements(enemyKilledList);
