@@ -19,7 +19,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET, CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE, CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY, CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY
     }
 
     // TODO: UPDATE DEATHS, DAMAGE, ETC WHEN IT HAPPENS
@@ -56,7 +56,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
     [Serializable]
     public class LevelAchievementData {
-        public int numEnemiesKilled = 0;
+        public bool enemiesKilled = false;
         public bool damageDealtToEnemies = false;
         public bool damageTaken = false;
         public bool hasDied = false;
@@ -147,6 +147,15 @@ public class StaticSaveStateManager : SaveStateManager {
                 return new(this, CampaignModeWithoutCharacterTest(CharacterOption.BUBBLE_CAT), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_ROCKET:
                 return new(this, CampaignModeWithoutCharacterTest(CharacterOption.ROCKET_CAT), achievement, finishCampaignModeList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE:
+                Func<LevelAchievementData, bool> testCampaignModeNoTakingDamageHelper = levelData => levelData.damageTaken;
+                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoTakingDamageHelper), achievement, finishCampaignModeList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY:
+                Func<LevelAchievementData, bool> testCampaignModeKillingEnemyHelper = levelData => levelData.enemiesKilled;
+                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeKillingEnemyHelper), achievement, finishCampaignModeList);
+            case Achievement.CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY:
+                Func<LevelAchievementData, bool> testCampaignModeDamagingEnemyHelper = levelData => levelData.damageDealtToEnemies;
+                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeDamagingEnemyHelper), achievement, finishCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
