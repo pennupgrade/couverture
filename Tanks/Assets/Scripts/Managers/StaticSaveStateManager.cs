@@ -119,7 +119,7 @@ public class StaticSaveStateManager : SaveStateManager {
     }
 
     private Func<bool> CampaignModeWithoutCharacterTest(CharacterOption character) {
-        return CampaignModeTestsLogicalAndOverAllLevels(levelData => levelData.charactersUsed.Contains(character));
+        return CampaignModeTestsLogicalAndOverAllLevels(levelData => !levelData.charactersUsed.Contains(character));
     }
 
     // Creates a checker for each achievement
@@ -141,20 +141,20 @@ public class StaticSaveStateManager : SaveStateManager {
                 Func<bool> testNumEnemiesKilledOne = () => numEnemiesKilled >= NUM_ENEMIES_KILLED_ACHIEVEMENT_ONE;
                 return new(this, testNumEnemiesKilledOne, achievement, enemyKilledList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_DYING:
-                Func<LevelAchievementData, bool> testCampaignModeNoDeathsHelper = levelData => levelData.hasDied;
+                Func<LevelAchievementData, bool> testCampaignModeNoDeathsHelper = levelData => !levelData.hasDied;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoDeathsHelper), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_BUBBLE:
                 return new(this, CampaignModeWithoutCharacterTest(CharacterOption.BUBBLE_CAT), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_ROCKET:
                 return new(this, CampaignModeWithoutCharacterTest(CharacterOption.ROCKET_CAT), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE:
-                Func<LevelAchievementData, bool> testCampaignModeNoTakingDamageHelper = levelData => levelData.damageTaken;
+                Func<LevelAchievementData, bool> testCampaignModeNoTakingDamageHelper = levelData => !levelData.damageTaken;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoTakingDamageHelper), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY:
-                Func<LevelAchievementData, bool> testCampaignModeKillingEnemyHelper = levelData => levelData.enemiesKilled;
+                Func<LevelAchievementData, bool> testCampaignModeKillingEnemyHelper = levelData => !levelData.enemiesKilled;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeKillingEnemyHelper), achievement, finishCampaignModeList);
             case Achievement.CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY:
-                Func<LevelAchievementData, bool> testCampaignModeDamagingEnemyHelper = levelData => levelData.damageDealtToEnemies;
+                Func<LevelAchievementData, bool> testCampaignModeDamagingEnemyHelper = levelData => !levelData.damageDealtToEnemies;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeDamagingEnemyHelper), achievement, finishCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
@@ -304,6 +304,17 @@ public class StaticSaveStateManager : SaveStateManager {
     // TODO: UPDATE HAS KILLED ENEMY IN CAMPAIGN RUN MODE
     public void EnemyKilledAchievementCheck() { // maybe include type of enemy as parameter?
         numEnemiesKilled++;
+        LevelAchievementData currentLevelData = GetCurrentCampaignLevelAchievementData();
+        if (currentLevelData != null) {
+            currentLevelData.enemiesKilled = true;
+        } 
         CheckAchievements(enemyKilledList);
+    }
+
+    private LevelAchievementData GetCurrentCampaignLevelAchievementData() {
+        if (campaignLevelData is null) {
+            return null;
+        }
+        return campaignLevelData.levelAchievementInfo[^1];
     }
 }
