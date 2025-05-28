@@ -301,20 +301,20 @@ public class StaticSaveStateManager : SaveStateManager {
         campaignLevelData = null;
     }
 
-    // TODO: UPDATE HAS KILLED ENEMY IN CAMPAIGN RUN MODE
     public void EnemyKilledAchievementCheck() { // maybe include type of enemy as parameter?
         numEnemiesKilled++;
-        LevelAchievementData currentLevelData = GetCurrentCampaignLevelAchievementData();
-        if (currentLevelData != null) {
-            currentLevelData.enemiesKilled = true;
-        } 
+        UpdateLevelData(levelData => levelData.enemiesKilled = true);
         CheckAchievements(enemyKilledList);
     }
 
-    private LevelAchievementData GetCurrentCampaignLevelAchievementData() {
+    public void EnemyDamagedByPlayerAchievementCheck(int dmg) {
+        UpdateLevelData(levelData => levelData.damageDealtToEnemies = true);
+    }
+
+    private void UpdateLevelData(Action<LevelAchievementData> func) {
         if (campaignLevelData is null) {
-            return null;
+            return;
         }
-        return campaignLevelData.levelAchievementInfo[^1];
+        func(campaignLevelData.levelAchievementInfo[^1]);
     }
 }

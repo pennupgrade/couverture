@@ -169,6 +169,7 @@ public abstract class Enemy : MonoBehaviour, IDestroyable, IAlertableEnemy
 
     // when an enemy takes damage from a player
     public void TakeDamageFromPlayer(int dmg) {
+        SaveStateManagerGameObject.EnemyDamagedByPlayer(dmg);
         tookDamageFromPlayer = true;
         takeDamage(dmg);
         tookDamageFromPlayer = false;

@@ -142,6 +142,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
         Instance.staticStateManager.EnemyKilledAchievementCheck();
     }
 
+    public static void EnemyDamagedByPlayer(int dmg) {
+        Instance.staticStateManager.EnemyDamagedByPlayerAchievementCheck(dmg);
+    }
+
     public static int GetLevelNumberFromSceneName(string sceneName) {
         for (int i = 1; i <= CampaignSaveStateManager.MAX_LEVEL_NUMBER; i++) {
             if (sceneName.Contains(i.ToString())) {
