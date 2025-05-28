@@ -95,7 +95,7 @@ public class StaticSaveStateManager : SaveStateManager {
             case Achievement.WIN_CLASSIC_FULL:
                 return new(this, ClassicModeTest(RoomManager.MAX_LEVEL_NUM), achievement, finishLevelClassicModeList);
             case Achievement.WIN_CAMPAIGN_MODE:
-                Func<bool> testWinCampaignMode = () => !inClassicMode && lastLevelFinished != null && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == GameManager.MAX_LEVEL_NUMBER;
+                Func<bool> testWinCampaignMode = () => !inClassicMode && lastLevelFinished != null && SaveStateManagerGameObject.GetLevelNumberFromSceneName(lastLevelFinished) == CampaignSaveStateManager.MAX_LEVEL_NUMBER;
                 return new(this, testWinCampaignMode, achievement, finishLevelCampaignModeList);
             case Achievement.NUM_ENEMIES_KILLED_ONE:
                 Func<bool> testNumEnemiesKilledOne = () => numEnemiesKilled >= NUM_ENEMIES_KILLED_ACHIEVEMENT_ONE;

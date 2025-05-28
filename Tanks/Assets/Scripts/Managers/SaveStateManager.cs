@@ -8,6 +8,7 @@ using UnityEngine;
 public class SaveStateManager
 {
     private const string NULL_LEVEL_NAME = "NOT_A_LEVEL";
+    public const string ALL_LEVELS_UNLOCKED = "ALL_LEVELS_UNLOCKED";
 
     public static string GetFullSavePath(string save_name) => Path.GetFullPath(save_name, CompilationConstants.SAVE_DATA_PATH);
 
@@ -138,7 +139,7 @@ public class SaveStateManager
         };
     }
 
-    public void LoadLevel(string levelName, Tank t) {
+    public virtual void LoadLevel(string levelName, Tank t) {
         if (latestLevel is null || latestLevel.LevelName == NULL_LEVEL_NAME) {
             latestLevel = new LevelSaveData();
             latestLevel.LevelName = levelName;
@@ -183,7 +184,7 @@ public class SaveStateManager
         else {
             latestLevel = new LevelSaveData();
             latestLevel.Save(t, CurrCharacter, -1, new List<CharacterOption>());
-            latestLevel.LevelName = "ALL LEVELS UNLOCKED";
+            latestLevel.LevelName = ALL_LEVELS_UNLOCKED;
         }
 
         if (toSave) {

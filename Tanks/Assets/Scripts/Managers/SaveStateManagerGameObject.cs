@@ -142,32 +142,14 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static int GetLevelNumberFromSceneName(string sceneName) {
-        if (sceneName.Contains('1')) {
-            return 1;
+        for (int i = 1; i <= CampaignSaveStateManager.MAX_LEVEL_NUMBER; i++) {
+            if (sceneName.Contains(i.ToString())) {
+                return i;
+            }
         }
 
-        if (sceneName.Contains('2')) {
-            return 2;
-        }
-
-        if (sceneName.Contains('3')) {
-            return 3;
-        }
-
-        if (sceneName.Contains('4')) {
-            return 4;
-        }
-
-        if (sceneName.Contains('5')) {
-            return 5;
-        }
-
-        if (sceneName.Contains('6')) {
-            return 6;
-        }
-
-        if (sceneName == "ALL LEVELS UNLOCKED") {
-            return 6;
+        if (sceneName == SaveStateManager.ALL_LEVELS_UNLOCKED) { // return the max level number if all levels have been unlocked
+            return CampaignSaveStateManager.MAX_LEVEL_NUMBER;
         }
 
         return -1;

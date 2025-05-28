@@ -5,8 +5,6 @@ using TransitionType = SceneTransition.TransitionType;
 
 public class GameManager : MonoBehaviour
 {
-    public const int MAX_LEVEL_NUMBER = 6; // maximum level number
-
     public static GameManager Instance { get; private set; }
     public bool IsPaused { get; set; }
 
@@ -21,7 +19,7 @@ public class GameManager : MonoBehaviour
         currentLevel = SceneManager.GetActiveScene().name;
 
         // this is OK because SaveStateManagerGameObject has execution order -1, Tank has execution order -2
-        player = GameObject.FindWithTag("Player").GetComponent<Tank>();
+        player = Tank.FindPlayer();
         SaveStateManagerGameObject.DebugLoadSave();
         SaveStateManagerGameObject.LoadLevel(currentLevel);
     }
