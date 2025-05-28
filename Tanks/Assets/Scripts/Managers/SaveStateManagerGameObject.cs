@@ -57,6 +57,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static void SwitchCharacter(SaveStateManager.CharacterOption c) {
         Instance.StateManager.SwitchCharacter(Tank.FindPlayer(), c);
+        Instance.staticStateManager.SwitchCharacterAchievementCheck(c);
     }
 
     public static HashSet<SaveStateManager.CharacterOption> GetUnlockedCharacters() =>
@@ -98,6 +99,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static void PlayerDied() {
         Instance.StateManager.OnPlayerDeath();
+        Instance.staticStateManager.PlayerDiedAchievementCheck();
     }
 
     public static void DeleteSaveSlot(int saveNumber) {
@@ -144,6 +146,10 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
     public static void EnemyDamagedByPlayer(int dmg) {
         Instance.staticStateManager.EnemyDamagedByPlayerAchievementCheck(dmg);
+    }
+
+    public static void PlayerDamaged(int dmg) {
+        Instance.staticStateManager.PlayerDamagedAchievementCheck(dmg);
     }
 
     public static int GetLevelNumberFromSceneName(string sceneName) {

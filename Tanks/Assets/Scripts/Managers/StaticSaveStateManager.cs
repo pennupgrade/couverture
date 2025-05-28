@@ -311,6 +311,21 @@ public class StaticSaveStateManager : SaveStateManager {
         UpdateLevelData(levelData => levelData.damageDealtToEnemies = true);
     }
 
+    public void PlayerDamagedAchievementCheck(int dmg) {
+        UpdateLevelData(levelData => levelData.damageTaken = true);
+    }
+
+    public void PlayerDiedAchievementCheck() {
+        UpdateLevelData(levelData => levelData.hasDied = true);
+    }
+
+    public void SwitchCharacterAchievementCheck(CharacterOption character) {
+        UpdateLevelData(levelData => {
+            if (!levelData.charactersUsed.Contains(character)) {
+                levelData.charactersUsed.Add(character);
+            }});
+    }
+
     private void UpdateLevelData(Action<LevelAchievementData> func) {
         if (campaignLevelData is null) {
             return;

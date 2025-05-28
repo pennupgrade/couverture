@@ -286,7 +286,9 @@ public class Tank : MonoBehaviour, IDestroyable
             return;
         }
 
-        health -= dmg < 600 ? 100 : dmg;
+        int damageThatIsTaken = dmg < 600 ? 100 : dmg;
+        health -= damageThatIsTaken;
+        SaveStateManagerGameObject.PlayerDamaged(damageThatIsTaken);
         damageFlash.CallDamageFlash(this);
         if (health <= 0) {
             if (explosionPrefab != null) {
