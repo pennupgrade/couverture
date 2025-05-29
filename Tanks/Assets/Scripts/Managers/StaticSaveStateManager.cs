@@ -274,6 +274,10 @@ public class StaticSaveStateManager : SaveStateManager {
         CampaignModeAchievementData campaignSaveAchievementData = campaignSave.levelAchievementData;
         int levelNum = SaveStateManagerGameObject.GetLevelNumberFromSceneName(loadingLevel);
 
+        if (levelNum == 1 && SaveStateManagerGameObject.GetCurrentCheckpoint() is null) {
+            campaignLevelData = new();
+        }
+
         if (loadingLevel == campaignSave.GetLatestLevelName() && campaignLevelData != null && campaignLevelData.runIsValid) { // if the user's current campaign run reaches the latest level and thus should be saved
             campaignSave.levelAchievementData = campaignLevelData;
         } else if (campaignSaveAchievementData.runIsValid) {
