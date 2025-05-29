@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Unlock_Zone : MonoBehaviour
 {
-
-    // [Header("Write BUBBLE_CAT or ROCKET_CAT.")]
-    // [Header("It's probably case sensitive.")]
-    // [Header("Make sure you spell the thing corectly")]
-    // [Header("Otherwise I think it's going to creash.")]
     [Header("Choose which cat you want to unlock.")]
     [SerializeField] public SaveStateManager.CharacterOption characterToUnlock;
     // Start is called before the first frame update
