@@ -17,10 +17,12 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] private Image overlayImage;
     [SerializeField] private Image leftWaveImage;
     [SerializeField] private Image rightWaveImage;
+    [SerializeField] private GameObject achievementsUIObj;
 
     public void StartCampaign() => StartCoroutine(_StartCampaign());
 
-    private static IEnumerator _StartCampaign() {
+    private static IEnumerator _StartCampaign()
+    {
         SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
 
         var operation = SceneManager.LoadSceneAsync("Save Select")!;
@@ -33,7 +35,8 @@ public class TitleScreen : MonoBehaviour
 
     public void StartClassicMode() => StartCoroutine(_StartClassicMode());
 
-    private IEnumerator _StartClassicMode() {
+    private IEnumerator _StartClassicMode()
+    {
         secondCanvasRaycaster.enabled = true;
 
         // SceneTransition should not exist in classic mode
@@ -55,7 +58,8 @@ public class TitleScreen : MonoBehaviour
 
         var brown = new Color32(78, 63, 56, 255);
         var cream = new Color32(255, 238, 229, 255);
-        LeanTween.value(overlay.gameObject, value => {
+        LeanTween.value(overlay.gameObject, value =>
+        {
             overlayImage.color = value;
             leftWaveImage.color = value;
             rightWaveImage.color = value;
@@ -68,7 +72,8 @@ public class TitleScreen : MonoBehaviour
 
     public void OpenCredits() => StartCoroutine(_OpenCredits());
 
-    private static IEnumerator _OpenCredits() {
+    private static IEnumerator _OpenCredits()
+    {
         SceneTransition.I.Appear(SceneTransition.TransitionType.Fade);
 
         var operation = SceneManager.LoadSceneAsync("CreditsScreen")!;
@@ -77,6 +82,16 @@ public class TitleScreen : MonoBehaviour
         yield return new WaitWhile(() => SceneTransition.I.IsAnimating);
 
         operation.allowSceneActivation = true;
+    }
+
+    public void OpenAchievements()
+    {
+        if (achievementsUIObj.GetComponent<AchievementsUI>().IsAnimating)
+        {
+            return;
+        }
+
+        achievementsUIObj.SetActive(true);
     }
 
     public void Quit() => Application.Quit();
