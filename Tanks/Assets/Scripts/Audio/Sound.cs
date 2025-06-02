@@ -31,4 +31,6 @@ public class Sound
     public float spatialBlend = 1f;
 
     public SoundEffect[] effects;
+
+    public bool isBGM;
 }

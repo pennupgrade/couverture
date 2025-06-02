@@ -60,17 +60,6 @@ MonoBehaviour:
   sounds:
   - name: Menu
     clip: {fileID: 8300000, guid: 5d2292ccbc95e394f8187becf1b4aea8, type: 3}
-    volume: 0.2
-    loop: 1
-    playOnAwake: 0
-    destroyOnComplete: 0
-    pool: 0
-    pitch: 1
-    source: {fileID: 0}
-    spatialBlend: 0
-    effects: []
-  - name: BGM
-    clip: {fileID: 8300000, guid: 2df6a21582679104581a1547f83a3bb7, type: 3}
     volume: 0.15
     loop: 1
     playOnAwake: 0
@@ -80,5 +69,18 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 0
     effects: []
+    isBGM: 1
+  - name: BGM
+    clip: {fileID: 8300000, guid: 2df6a21582679104581a1547f83a3bb7, type: 3}
+    volume: 0.1
+    loop: 1
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    pitch: 1
+    source: {fileID: 0}
+    spatialBlend: 0
+    effects: []
+    isBGM: 1
   singleton: 0
   playedSounds: []
