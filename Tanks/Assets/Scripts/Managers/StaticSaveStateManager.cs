@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+#if !DISABLESTEAMWORKS
+using Steamworks;
+#endif
 
 [Serializable]
 public class StaticSaveStateManager : SaveStateManager {
@@ -50,6 +53,11 @@ public class StaticSaveStateManager : SaveStateManager {
             }
             MonoBehaviour.print("Unlocked Achievement: " + correspondingAchievement);
             outer.unlockedAchievements.Add(correspondingAchievement);
+            #if !DISABLESTEAMWORKS
+            if (SteamManager.Initialized) {
+                SteamUserStats.SetAchievement(correspondingAchievement.ToString());
+            }
+            #endif
             // TODO: Unlock in Steam Achievements!
         }
     }
@@ -222,6 +230,11 @@ public class StaticSaveStateManager : SaveStateManager {
                 checker.UnlockAchievement();
             }
             SaveToFile();
+            #if !DISABLESTEAMWORKS
+            if (SteamManager.Initialized) {
+                SteamUserStats.StoreStats();
+            }
+            #endif
         }
     }
 
