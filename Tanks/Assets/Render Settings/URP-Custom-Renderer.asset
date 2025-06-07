@@ -61,7 +61,8 @@ MonoBehaviour:
   - {fileID: -7544882574666406789}
   - {fileID: 2610741552663100950}
   - {fileID: -2418386592447268191}
-  m_RendererFeatureMap: 7b64f9d845314b9716fed51e9c373b24a1fa9c13352a70de
+  - {fileID: 2306542071815744716}
+  m_RendererFeatureMap: 7b64f9d845314b9716fed51e9c373b24a1fa9c13352a70decc2c1232cb7b0220
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -100,6 +101,25 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &2306542071815744716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2349e2e879a904b039c7f1902709195a, type: 3}
+  m_Name: OutlineMaskFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  outlineLayerMask:
+    serializedVersion: 2
+    m_Bits: 4
+  OutlineMaskTexture: {fileID: 8600000, guid: 6ca858c855bf54b4780208de04fc4bf0, type: 2}
+  _OutlineMaskEvent: 300
+  outlineMaskMaterial: {fileID: 2100000, guid: 5d073d7354c8b489db3d1a3201958645, type: 2}
 --- !u!114 &2610741552663100950
 MonoBehaviour:
   m_ObjectHideFlags: 0
