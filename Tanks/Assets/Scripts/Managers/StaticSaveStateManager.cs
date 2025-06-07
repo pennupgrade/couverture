@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+#if !DISABLESTEAMWORKS
+using Steamworks;
+#endif
 
 [Serializable]
 public class StaticSaveStateManager : SaveStateManager {
@@ -50,6 +53,11 @@ public class StaticSaveStateManager : SaveStateManager {
             }
             MonoBehaviour.print("Unlocked Achievement: " + correspondingAchievement);
             outer.unlockedAchievements.Add(correspondingAchievement);
+            #if !DISABLESTEAMWORKS
+            if (SteamManager.Initialized) {
+                SteamUserStats.SetAchievement(correspondingAchievement.ToString());
+            }
+            #endif
             // TODO: Unlock in Steam Achievements!
         }
     }
@@ -166,6 +174,21 @@ public class StaticSaveStateManager : SaveStateManager {
 
     public override void BeginSession() {
         UnlockAllCharacters();
+
+        #if !DISABLESTEAMWORKS
+        // if using steam, recreate unlockedAchievements from Steam data
+        if (SteamManager.Initialized) {
+            HashSet<Achievement> allAchievements = new((Achievement[])Enum.GetValues(typeof(Achievement)));
+            unlockedAchievements = new();
+            foreach (Achievement i in allAchievements) {
+                SteamUserStats.GetAchievement(i.ToString(), out bool hasUnlockedAchievement);
+                if (hasUnlockedAchievement) {
+                    unlockedAchievements.Add(i);
+                }
+            }
+        }
+        #endif
+
         // find all achievements that have not been unlocked
         HashSet<Achievement> notUnlockedAchievements = new((Achievement[])Enum.GetValues(typeof(Achievement)));
         notUnlockedAchievements.ExceptWith(unlockedAchievements);
@@ -222,6 +245,11 @@ public class StaticSaveStateManager : SaveStateManager {
                 checker.UnlockAchievement();
             }
             SaveToFile();
+            #if !DISABLESTEAMWORKS
+            if (SteamManager.Initialized) {
+                SteamUserStats.StoreStats();
+            }
+            #endif
         }
     }
 
