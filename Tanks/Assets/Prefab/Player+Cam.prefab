@@ -456,9 +456,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7615726474613048892}
     m_Modifications:
+    - target: {fileID: 223997170154733054, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 259834041627840154, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_Layer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 259834041627840154, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 524395369565624213, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -516,6 +524,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 666766869bef41a44a30a917b3bed543, type: 2}
+    - target: {fileID: 599010163150792516, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1465239515326990439, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -621,6 +633,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 39640088860960870}
     - target: {fileID: 5421411469498413301, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
+      propertyPath: normalCatModel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5421411469498413301, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       propertyPath: vignetteAnimation
       value: 
       objectReference: {fileID: 4841382989025656108}
@@ -678,7 +694,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6922871839290126407, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 599010163150792516, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7603108256866851323, guid: 09c3be625e01a5b49a9980f3cc73ffa4, type: 3}
       insertIndex: -1
@@ -731,6 +748,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 1
     effects: []
+    isBGM: 0
   - name: Explosion
     clip: {fileID: 8300000, guid: 9037c21b7203448418468405aee51b62, type: 3}
     volume: 0.66
@@ -742,6 +760,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 1
     effects: []
+    isBGM: 0
   - name: Reloaded
     clip: {fileID: 8300000, guid: 717017b9bb27ab345958d072c2ae4084, type: 3}
     volume: 0.45
@@ -753,6 +772,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 1
     effects: []
+    isBGM: 0
   - name: Meow
     clip: {fileID: 8300000, guid: 10650ec118b5c404fa4c16f239ecb7e7, type: 3}
     volume: 0.8
@@ -764,6 +784,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 1
     effects: []
+    isBGM: 0
   - name: Engine
     clip: {fileID: 8300000, guid: 664d6eb80e7091e4880fda8e9b12415c, type: 3}
     volume: 0.03
@@ -775,6 +796,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 0
     effects: []
+    isBGM: 0
   - name: Blank
     clip: {fileID: 8300000, guid: adab6bc030b666b4d8c14ade8e906c30, type: 3}
     volume: 0.5
@@ -786,6 +808,7 @@ MonoBehaviour:
     source: {fileID: 0}
     spatialBlend: 0
     effects: []
+    isBGM: 0
   singleton: 0
   playedSounds: []
 --- !u!114 &3772262592335051483
