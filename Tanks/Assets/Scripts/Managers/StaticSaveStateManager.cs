@@ -22,7 +22,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET, CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE, CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY, CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY, CAMPAIGN_MODE_WITHOUT_SWITCHING_CHARACTER
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET, CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE, CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY, CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY
     }
 
     // TODO: UPDATE DEATHS, DAMAGE, ETC WHEN IT HAPPENS
@@ -164,9 +164,6 @@ public class StaticSaveStateManager : SaveStateManager {
             case Achievement.CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY:
                 Func<LevelAchievementData, bool> testCampaignModeDamagingEnemyHelper = levelData => !levelData.damageDealtToEnemies;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeDamagingEnemyHelper), achievement, finishCampaignModeList);
-            case Achievement.CAMPAIGN_MODE_WITHOUT_SWITCHING_CHARACTER:
-                Func<LevelAchievementData, bool> testCampaignModeNoSwitchingHelper = levelData => levelData.charactersUsed.Count == 0;
-                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoSwitchingHelper), achievement, finishCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
