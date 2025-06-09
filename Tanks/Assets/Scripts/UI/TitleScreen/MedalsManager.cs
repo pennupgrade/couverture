@@ -19,7 +19,7 @@ public class MedalsManager : MonoBehaviour
     private void Start() {
         var achievements = SaveStateManagerGameObject.GetAchievements();
 #if UNITY_EDITOR
-        Debug.Log($"Unlocked achievements: {string.Join(", ", achievements)}");
+        Debug.Log($"[EditorOnly] Unlocked achievements: {(achievements.Count == 0 ? "NONE" : string.Join(", ", achievements))}");
 #endif
 
         if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_PART_ONE)) {

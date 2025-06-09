@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +8,9 @@ public class Medal : MonoBehaviour
     [SerializeField] private Image maskImage;
     [SerializeField] private Image medalImage;
 
-    private void Awake()
+    private void Start()
     {
-        if (achievementData == null) return;
-
-        SetMedalTexture(achievementData.medal);  
+        SetMedalTexture(achievementData.medal);
     }
 
     public void SetMedalTexture(Sprite sprite)
@@ -20,5 +19,13 @@ public class Medal : MonoBehaviour
 
         maskImage.sprite = sprite;
         medalImage.sprite = sprite;
+    }
+
+    public void CheckToEnable(HashSet<StaticSaveStateManager.Achievement> unlockedAchievements)
+    {
+        if (unlockedAchievements.Contains(achievementData.associatedEnum))
+        {
+            medalImage.gameObject.SetActive(true);
+        }
     }
 }

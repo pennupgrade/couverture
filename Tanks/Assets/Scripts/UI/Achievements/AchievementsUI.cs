@@ -11,8 +11,9 @@ public class AchievementsUI : MonoBehaviour
     [SerializeField] private RectTransform frame;
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text subtitle;
+    [SerializeField] private GameObject gridObj;
 
-    private HashSet<StaticSaveStateManager.Achievement> cachedAchievements;
+    private HashSet<StaticSaveStateManager.Achievement> cachedUnlockedAchievements;
 
     private void OnEnable()
     {
@@ -31,13 +32,20 @@ public class AchievementsUI : MonoBehaviour
 
     private void Start()
     {
-        cachedAchievements = SaveStateManagerGameObject.GetAchievements();
+        cachedUnlockedAchievements = SaveStateManagerGameObject.GetAchievements();
 
-        var unlocked = cachedAchievements.Count;
+        var unlocked = cachedUnlockedAchievements.Count;
         var total = Enum.GetValues(typeof(StaticSaveStateManager.Achievement)).Length;
-        var percentage = Mathf.RoundToInt(unlocked / (float)total);
+        var percentage = Mathf.RoundToInt(unlocked / (float)total * 100);
 
         subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked";
+
+        foreach (Transform medalTransform in gridObj.transform)
+        {
+            var medalObj = medalTransform.gameObject;
+            var medal = medalObj.GetComponent<Medal>();
+            medal.CheckToEnable(cachedUnlockedAchievements);
+        }
     }
 
     public void Close()
