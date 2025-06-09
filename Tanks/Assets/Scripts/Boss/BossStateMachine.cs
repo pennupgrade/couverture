@@ -313,4 +313,11 @@ public class BossStateMachine : MonoBehaviour
         anim.SetTrigger("Charge");
     }
 
+    private bool CanCharge() {
+        Vector3 chargeDir = (player.transform.position - transform.position) * -1;
+        chargeDir.Normalize();
+        chargeDir.y = 0;
+        return !Physics.Raycast(transform.position, chargeDir, -1.6867f, LayerMask.GetMask("Obstacle"));
+    }
+
 }
