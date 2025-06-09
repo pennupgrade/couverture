@@ -31,6 +31,8 @@ public class Medal : MonoBehaviour
             LeanTween.cancel(rt);
             LeanTween.scale(rt, Vector3.one, exitTime).setEaseInOutExpo();
         };
+
+        rt.Rotate(Vector3.forward, Random.Range(-6f, 6f));
     }
 
     public void SetMedalTexture(Sprite sprite)
