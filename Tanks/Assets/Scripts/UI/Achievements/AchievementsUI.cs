@@ -38,7 +38,7 @@ public class AchievementsUI : MonoBehaviour
         var total = Enum.GetValues(typeof(StaticSaveStateManager.Achievement)).Length;
         var percentage = Mathf.RoundToInt(unlocked / (float)total * 100);
 
-        subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked";
+        subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked. Click a medal to learn more about it.";
 
         foreach (Transform medalTransform in gridObj.transform)
         {
