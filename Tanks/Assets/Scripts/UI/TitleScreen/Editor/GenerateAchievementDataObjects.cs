@@ -26,7 +26,7 @@ public class GenerateAchievementDataObjects
             {
                 if (path.Contains(enumValue.ToString()))
                 {
-                    achievementData.medal = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                    achievementData.medal = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                     break;
                 }
             }

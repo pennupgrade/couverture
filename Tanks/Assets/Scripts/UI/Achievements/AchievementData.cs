@@ -7,5 +7,5 @@ public class AchievementData : ScriptableObject
     [TextArea(2, 10)]
     public string description;
     public StaticSaveStateManager.Achievement associatedEnum;
-    public Texture2D medal;
+    public Sprite medal;
 }
