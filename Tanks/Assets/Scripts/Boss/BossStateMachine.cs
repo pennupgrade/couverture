@@ -171,7 +171,7 @@ public class BossStateMachine : MonoBehaviour
             if (Vector3.Distance(player.transform.position, transform.position) < MELEE_DISTANCE) {
                 // Chose between shotgun and melee
                 var rand = UnityEngine.Random.Range(0, 2);
-                if (rand == 0 && Time.time > chargeStartTime + chargeCD) {
+                if (rand == 0 && Time.time > chargeStartTime + chargeCD && CanCharge()) {
                     currentAttack = Attack.Charge;
                     if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 5f) {
                         InitializeCharge();
@@ -187,7 +187,7 @@ public class BossStateMachine : MonoBehaviour
                 if (enemies.Count < MAX_NUMBER_SUMMONS && rand <= 1) {
                     currentAttack = Attack.Summon;
                 }
-                else if (Time.time > chargeStartTime + chargeCD && rand == 2) {
+                else if (Time.time > chargeStartTime + chargeCD && rand == 2 && CanCharge()) {
                     currentAttack = Attack.Charge;
                     if (Time.time > chargeStartTime + chargeCD && Time.time > startTime + 5f) {
                         InitializeCharge();
@@ -317,7 +317,7 @@ public class BossStateMachine : MonoBehaviour
         Vector3 chargeDir = (player.transform.position - transform.position) * -1;
         chargeDir.Normalize();
         chargeDir.y = 0;
-        return !Physics.Raycast(transform.position, chargeDir, -1.6867f, LayerMask.GetMask("Obstacle"));
+        return !Physics.Raycast(transform.position, chargeDir, 1.6867f, LayerMask.GetMask("Obstacle"));
     }
 
 }
