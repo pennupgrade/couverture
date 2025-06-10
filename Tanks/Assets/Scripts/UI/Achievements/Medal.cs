@@ -13,12 +13,17 @@ public class Medal : MonoBehaviour
     [SerializeField] private float exitTime;
 
     private readonly static float SCALE_FACTOR = 1.3f;
+    private AchievementsUI achievementUI;
 
     private void Start()
     {
+        // Don't run for the big medal in the Medal Detail UI
+        if (handler == null || achievementData == null) return;
+
+        rt.Rotate(Vector3.forward, Random.Range(-6f, 6f));
         SetMedalTexture(achievementData.medal);
 
-        handler.HandlePointerClick = () => Debug.Log("clicked!");
+        handler.HandlePointerClick = () => achievementUI.UpdateMedalDetailUI(achievementData, rt);
 
         handler.HandlePointerEnter = () =>
         {
@@ -31,8 +36,6 @@ public class Medal : MonoBehaviour
             LeanTween.cancel(rt);
             LeanTween.scale(rt, Vector3.one, exitTime).setEaseInOutExpo();
         };
-
-        rt.Rotate(Vector3.forward, Random.Range(-6f, 6f));
     }
 
     public void SetMedalTexture(Sprite sprite)
@@ -43,11 +46,16 @@ public class Medal : MonoBehaviour
         medalImage.sprite = sprite;
     }
 
-    public void CheckToEnable(HashSet<StaticSaveStateManager.Achievement> unlockedAchievements)
+    public void UnlockMedal() => medalImage.gameObject.SetActive(true);
+    public void LockMedal() => medalImage.gameObject.SetActive(false);
+
+    public void Init(HashSet<StaticSaveStateManager.Achievement> unlockedAchievements, AchievementsUI achievementUI)
     {
+        this.achievementUI = achievementUI;
+
         if (unlockedAchievements.Contains(achievementData.associatedEnum))
         {
-            medalImage.gameObject.SetActive(true);
+            UnlockMedal();
         }
     }
 }

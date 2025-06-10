@@ -13,6 +13,10 @@ public class AchievementsUI : MonoBehaviour
     [SerializeField] private TMP_Text subtitle;
     [SerializeField] private GameObject gridObj;
 
+    [Header("Medal Detail UI")]
+    [SerializeField] private CanvasGroup secondOverlay;
+    [SerializeField] private RectTransform bigMedalRt;
+
     private HashSet<StaticSaveStateManager.Achievement> cachedUnlockedAchievements;
 
     private void OnEnable()
@@ -38,13 +42,13 @@ public class AchievementsUI : MonoBehaviour
         var total = Enum.GetValues(typeof(StaticSaveStateManager.Achievement)).Length;
         var percentage = Mathf.RoundToInt(unlocked / (float)total * 100);
 
-        subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked. Click a medal to learn more about it.";
+        subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked. Click a medal to learn more!";
 
         foreach (Transform medalTransform in gridObj.transform)
         {
             var medalObj = medalTransform.gameObject;
             var medal = medalObj.GetComponent<Medal>();
-            medal.CheckToEnable(cachedUnlockedAchievements);
+            medal.Init(cachedUnlockedAchievements, this);
         }
     }
 
@@ -75,4 +79,38 @@ public class AchievementsUI : MonoBehaviour
     }
 
     public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(frame);
+
+    public void UpdateMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
+    {
+        var originalWorldPos = sourceRt.position;
+        var newLocalPos = bigMedalRt.parent.transform.InverseTransformPoint(originalWorldPos);
+
+        bigMedalRt.localPosition = newLocalPos;
+        bigMedalRt.localScale = sourceRt.localScale * 0.5f; // Big medal scale is half of everything
+        bigMedalRt.localRotation = sourceRt.localRotation;
+
+        var bigMedal = bigMedalRt.gameObject.GetComponent<Medal>();
+        bigMedal.SetMedalTexture(achievement.medal);
+
+        if (cachedUnlockedAchievements.Contains(achievement.associatedEnum))
+        {
+            bigMedal.UnlockMedal();
+        }
+        else
+        {
+            bigMedal.LockMedal();
+        }
+
+        StartCoroutine(OpenMedalDetailUI());
+    }
+
+    private IEnumerator OpenMedalDetailUI()
+    {
+        secondOverlay.gameObject.SetActive(true);
+        bigMedalRt.gameObject.SetActive(true);
+
+        // animate rotate to zero degrees
+        // todo: remove unused achievements
+        yield return null;
+    }
 }
