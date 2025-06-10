@@ -16,6 +16,8 @@ public class AchievementsUI : MonoBehaviour
     [Header("Medal Detail UI")]
     [SerializeField] private CanvasGroup secondOverlay;
     [SerializeField] private RectTransform bigMedalRt;
+    [SerializeField] private Button medalDetailButton;
+    [SerializeField] private RectTransform medalDetailPanelRt;
 
     private HashSet<StaticSaveStateManager.Achievement> cachedUnlockedAchievements;
 
@@ -78,7 +80,7 @@ public class AchievementsUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(frame) || LeanTween.isTweening(secondOverlay.gameObject) || LeanTween.isTweening(bigMedalRt) || LeanTween.isTweening(bigMedalRt.gameObject);
+    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(frame) || LeanTween.isTweening(secondOverlay.gameObject) || LeanTween.isTweening(bigMedalRt) || LeanTween.isTweening(bigMedalRt.gameObject) || LeanTween.isTweening(medalDetailPanelRt);
 
     private void UpdateMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
     {
@@ -104,6 +106,8 @@ public class AchievementsUI : MonoBehaviour
 
     public void OpenMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
     {
+        if (IsAnimating) return;
+
         UpdateMedalDetailUI(achievement, sourceRt);
         OpenMedalDetailUI();
     }
@@ -118,6 +122,8 @@ public class AchievementsUI : MonoBehaviour
         }, 0f, 1f, 0.1f);
         secondOverlay.gameObject.SetActive(true);
 
+        closeButton.interactable = true;
+
         var originalZAngle = bigMedalRt.localEulerAngles.z;
         LeanTween.value(bigMedalRt.gameObject, value =>
         {
@@ -125,8 +131,29 @@ public class AchievementsUI : MonoBehaviour
         }, 0f, 359f, 1f).setEaseOutExpo();
         bigMedalRt.localEulerAngles = new Vector3(0f, 0f, originalZAngle);
 
-        bigMedalRt.gameObject.SetActive(true);
+        LeanTween.value(bigMedalRt.gameObject, value =>
+        {
+            bigMedalRt.localScale = value;
+        }, bigMedalRt.localScale, new Vector3(1.4f, 1.4f, 1.4f), 1.1f).setEaseOutExpo();
 
-        closeButton.interactable = true;
+        LeanTween.move(bigMedalRt, new Vector3(516f, -540f, 0f), 1.1f).setEaseOutExpo();
+        LeanTween.moveY(medalDetailPanelRt, 0f, 0.8f).setEaseOutExpo();
+
+        bigMedalRt.gameObject.SetActive(true);
+    }
+
+    public void CloseMedalDetailUI()
+    {
+        if (IsAnimating) return;
+
+        medalDetailButton.interactable = false;
+
+        LeanTween.value(secondOverlay.gameObject, value =>
+        {
+            secondOverlay.alpha = value;
+        }, 1f, 0f, 0.1f).setOnComplete(() => secondOverlay.gameObject.SetActive(false));
+
+        LeanTween.moveY(medalDetailPanelRt, -1000f, 0.25f).setEaseInExpo().setOnComplete(() => { medalDetailButton.interactable = true; });
+        LeanTween.moveY(bigMedalRt, -1540f, 0.25f).setEaseInExpo().setOnComplete(() => bigMedalRt.gameObject.SetActive(false));
     }
 }
