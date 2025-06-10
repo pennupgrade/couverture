@@ -23,7 +23,7 @@ public class Medal : MonoBehaviour
         rt.Rotate(Vector3.forward, Random.Range(-6f, 6f));
         SetMedalTexture(achievementData.medal);
 
-        handler.HandlePointerClick = () => achievementUI.UpdateMedalDetailUI(achievementData, rt);
+        handler.HandlePointerClick = () => achievementUI.OpenMedalDetailUI(achievementData, rt);
 
         handler.HandlePointerEnter = () =>
         {

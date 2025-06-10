@@ -78,9 +78,9 @@ public class AchievementsUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(frame);
+    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(frame) || LeanTween.isTweening(secondOverlay.gameObject) || LeanTween.isTweening(bigMedalRt);
 
-    public void UpdateMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
+    private void UpdateMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
     {
         var originalWorldPos = sourceRt.position;
         var newLocalPos = bigMedalRt.parent.transform.InverseTransformPoint(originalWorldPos);
@@ -100,17 +100,30 @@ public class AchievementsUI : MonoBehaviour
         {
             bigMedal.LockMedal();
         }
-
-        StartCoroutine(OpenMedalDetailUI());
     }
 
-    private IEnumerator OpenMedalDetailUI()
+    public void OpenMedalDetailUI(AchievementData achievement, RectTransform sourceRt)
     {
+        UpdateMedalDetailUI(achievement, sourceRt);
+        OpenMedalDetailUI();
+    }
+
+    private void OpenMedalDetailUI()
+    {
+        closeButton.interactable = false;
+
+        LeanTween.value(secondOverlay.gameObject, value =>
+        {
+            secondOverlay.alpha = value;
+        }, 0f, 1f, 0.1f);
         secondOverlay.gameObject.SetActive(true);
+
+        LeanTween.rotate(bigMedalRt, 0f, 1f).setEaseOutExpo();
+
         bigMedalRt.gameObject.SetActive(true);
 
-        // animate rotate to zero degrees
         // todo: remove unused achievements
-        yield return null;
+
+        closeButton.interactable = true;
     }
 }
