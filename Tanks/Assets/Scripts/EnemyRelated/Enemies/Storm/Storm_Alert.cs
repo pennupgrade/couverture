@@ -5,10 +5,12 @@ using UnityEngine.AI;
 
 public class Storm_Alert : G2_Alert
 {
-    private bool left;
-    public Storm_Alert(Enemy enemy) : base(enemy) {
+    private bool left, rotateLeft;
+    public Storm_Alert(Enemy enemy) : base(enemy)
+    {
         enemy.numBullets = enemy.magSize;
         left = false;
+        rotateLeft = false;
     }
 
     public override Enemy_State Move(Vector3 _)
@@ -72,7 +74,26 @@ public class Storm_Alert : G2_Alert
         return this;
     }
     public override Enemy_State RotateTurret(Vector3 _) {
-        turnTurretTowardPlayer(false);
+        if (enemy.playerRB == null) {
+            return this;
+        }
+        enemy.TargetDir = (enemy.playerRB.position - enemy.rb.position).normalized;
+
+        float dir = Vector3.Dot(-enemy.gun.transform.right, enemy.TargetDir);
+        if (dir < -0.6f) {
+            rotateLeft = false;
+        } else if (dir > 0.6f) {
+            rotateLeft = true;
+        }
+        
+        if (rotateLeft)
+        {
+            enemy.cTurretTurn = Mathf.Max(-enemy.rotSpeed, enemy.cTurretTurn - 700 * Time.deltaTime);
+        }
+        else
+        {
+            enemy.cTurretTurn = Mathf.Min(enemy.rotSpeed, enemy.cTurretTurn + 700 * Time.deltaTime);
+        }
         return this;
     }
     public override Enemy_State Shoot(Vector3 _) {

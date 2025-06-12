@@ -86,11 +86,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void ExitCurrentSave() {
-        if (Instance is null || Instance.StateManager is null) {
+        if (Instance is null) {
             return;
         }
-
-        Instance.StateManager.ExitSaveFile();
+        if (Instance.StateManager != null) {
+            Instance.StateManager.ExitSaveFile();
+        }
         if (Instance.StateManager != Instance.staticStateManager) {
             Instance.staticStateManager.ExitSaveFile();
         }
