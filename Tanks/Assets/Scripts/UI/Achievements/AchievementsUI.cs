@@ -11,7 +11,10 @@ public class AchievementsUI : MonoBehaviour
     [SerializeField] private RectTransform frame;
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text subtitle;
-    [SerializeField] private GameObject gridObj;
+
+    [Header("Grids")]
+    [SerializeField] private GameObject campaignGridObj;
+    [SerializeField] private GameObject classicGridObj;
 
     [Header("Medal Detail UI")]
     [SerializeField] private CanvasGroup secondOverlay;
@@ -46,7 +49,14 @@ public class AchievementsUI : MonoBehaviour
 
         subtitle.text = $"<b>{unlocked}/{total} ({percentage}%)</b> unlocked. Click a medal to learn more!";
 
-        foreach (Transform medalTransform in gridObj.transform)
+        foreach (Transform medalTransform in campaignGridObj.transform)
+        {
+            var medalObj = medalTransform.gameObject;
+            var medal = medalObj.GetComponent<Medal>();
+            medal.Init(cachedUnlockedAchievements, this);
+        }
+
+        foreach (Transform medalTransform in classicGridObj.transform)
         {
             var medalObj = medalTransform.gameObject;
             var medal = medalObj.GetComponent<Medal>();
