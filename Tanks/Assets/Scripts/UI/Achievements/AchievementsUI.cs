@@ -33,9 +33,7 @@ public class AchievementsUI : MonoBehaviour
         }, 0f, 1f, 0.15f);
 
         LeanTween.moveY(frame, -1500f, 0);
-        LeanTween.moveY(frame, 0f, 0.5f).setEaseOutExpo();
-
-        closeButton.interactable = true;
+        LeanTween.moveY(frame, 0f, 0.5f).setEaseOutExpo().setOnComplete(() => closeButton.interactable = true);
     }
 
     private void Start()
