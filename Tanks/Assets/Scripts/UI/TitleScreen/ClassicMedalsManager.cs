@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class MedalsManager : MonoBehaviour
+public class ClassicMedalsManager : MonoBehaviour
 {
     [SerializeField] private GameObject bronze;
     [SerializeField] private GameObject silver;
@@ -18,9 +18,6 @@ public class MedalsManager : MonoBehaviour
 
     private void Start() {
         var achievements = SaveStateManagerGameObject.GetAchievements();
-#if UNITY_EDITOR
-        Debug.Log($"Unlocked achievements: {string.Join(", ", achievements)}");
-#endif
 
         if (achievements.Contains(StaticSaveStateManager.Achievement.WIN_CLASSIC_PART_ONE)) {
             UnlockMedal(MedalType.Bronze);
