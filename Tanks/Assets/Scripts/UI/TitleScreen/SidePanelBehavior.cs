@@ -12,7 +12,7 @@ public class SidePanelBehavior : MonoBehaviour
         var sizeDeltaX = rt.sizeDelta.x;
 
 #if !(DISABLESTEAMWORKS || UNITY_EDITOR)
-        // Decrease vertical layout group's height because achivements button is missing
+        // Decrease vertical layout group's height because achievements button is missing
         rt.sizeDelta = new Vector2(sizeDeltaX, 420f);
         achievementsButton.SetActive(false);
 #else
