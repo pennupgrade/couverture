@@ -18,6 +18,8 @@ public class AchievementsUI : MonoBehaviour
     [SerializeField] private RectTransform bigMedalRt;
     [SerializeField] private Button medalDetailButton;
     [SerializeField] private RectTransform medalDetailPanelRt;
+    [SerializeField] private TMP_Text title;
+    [SerializeField] private TMP_Text description;
 
     private HashSet<StaticSaveStateManager.Achievement> cachedUnlockedAchievements;
 
@@ -91,15 +93,19 @@ public class AchievementsUI : MonoBehaviour
         bigMedalRt.localScale = sourceRt.localScale * 0.5f; // Big medal scale is half of everything
         bigMedalRt.localRotation = sourceRt.localRotation;
 
+        description.text = achievement.title;
+
         var bigMedal = bigMedalRt.gameObject.GetComponent<Medal>();
         bigMedal.SetMedalTexture(achievement.medal);
 
         if (cachedUnlockedAchievements.Contains(achievement.associatedEnum))
         {
+            title.text = achievement.title;
             bigMedal.UnlockMedal();
         }
         else
         {
+            title.text = "??? (Locked)";
             bigMedal.LockMedal();
         }
     }
@@ -114,15 +120,13 @@ public class AchievementsUI : MonoBehaviour
 
     private void OpenMedalDetailUI()
     {
-        closeButton.interactable = false;
+        medalDetailButton.interactable = false;
 
         LeanTween.value(secondOverlay.gameObject, value =>
         {
             secondOverlay.alpha = value;
         }, 0f, 1f, 0.1f);
         secondOverlay.gameObject.SetActive(true);
-
-        closeButton.interactable = true;
 
         var originalZAngle = bigMedalRt.localEulerAngles.z;
         LeanTween.value(bigMedalRt.gameObject, value =>
@@ -137,7 +141,7 @@ public class AchievementsUI : MonoBehaviour
         }, bigMedalRt.localScale, new Vector3(1.4f, 1.4f, 1.4f), 1.1f).setEaseOutExpo();
 
         LeanTween.move(bigMedalRt, new Vector3(516f, -540f, 0f), 1.1f).setEaseOutExpo();
-        LeanTween.moveY(medalDetailPanelRt, 0f, 0.8f).setEaseOutExpo();
+        LeanTween.moveY(medalDetailPanelRt, 0f, 0.8f).setEaseOutExpo().setOnComplete(() => medalDetailButton.interactable = true);
 
         bigMedalRt.gameObject.SetActive(true);
     }
