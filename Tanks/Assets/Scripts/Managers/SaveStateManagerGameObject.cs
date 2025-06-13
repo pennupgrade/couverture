@@ -166,4 +166,20 @@ public class SaveStateManagerGameObject : MonoBehaviour
 
         return -1;
     }
+
+    public static float GetSFXVolume() {
+        return Instance.staticStateManager.GetSFXVolume();
+    }
+
+    public static float GetMusicVolume() {
+        return Instance.staticStateManager.GetMusicVolume();
+    }
+
+    public static void SetMusicVolume(float volume) {
+        Instance.staticStateManager.SetMusicVolume(volume);
+    }
+
+    public static void SetSFXVolume(float volume) {
+        Instance.staticStateManager.SetSFXVolume(volume);
+    }
 }

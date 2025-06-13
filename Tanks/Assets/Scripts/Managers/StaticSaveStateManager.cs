@@ -83,6 +83,8 @@ public class StaticSaveStateManager : SaveStateManager {
     [SerializeField] private List<Achievement> unlockedAchievements = new();
 
     [SerializeField] private int numEnemiesKilled = 0;
+    [SerializeField] private float sfxVolume;
+    [SerializeField] private float musicVolume;
 
 
     // Achievement Checker Lists
@@ -363,5 +365,33 @@ public class StaticSaveStateManager : SaveStateManager {
             return;
         }
         func(campaignLevelData.levelAchievementInfo[^1]);
+    }
+
+    public void SetSFXVolume(float volume) {
+        if (volume < 0  || volume > 1) {
+            throw new InvalidOperationException("trying to set SFX volume to less than 0 or greater than 1");
+        }
+        sfxVolume = volume;
+    }
+
+    public void SetMusicVolume(float volume) {
+        if (volume < 0  || volume > 1) {
+            throw new InvalidOperationException("trying to set Music volume to less than 0 or greater than 1");
+        }
+        musicVolume = volume;
+    }
+
+    public float GetMusicVolume() {
+        if (musicVolume < 0 || musicVolume > 1) {
+            musicVolume = 1;
+        }
+        return musicVolume;
+    }
+
+    public float GetSFXVolume() {
+        if (sfxVolume < 0 || sfxVolume > 1) {
+            sfxVolume = 1;
+        }
+        return sfxVolume;
     }
 }
