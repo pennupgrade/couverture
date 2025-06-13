@@ -370,7 +370,9 @@ public class StaticSaveStateManager : SaveStateManager {
     public void SetVolume(float volumeSFX, float volumeMusic) {
         SetSFXVolume(volumeSFX);
         SetMusicVolume(volumeMusic);
-        SaveToFile();
+        if (volumeSFX != sfxVolume || volumeMusic != musicVolume) {
+            SaveToFile();
+        }
     }
 
     private void SetSFXVolume(float volume) {
