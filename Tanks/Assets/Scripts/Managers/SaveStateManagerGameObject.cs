@@ -175,11 +175,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         return Instance.staticStateManager.GetMusicVolume();
     }
 
-    public static void SetMusicVolume(float volume) {
-        Instance.staticStateManager.SetMusicVolume(volume);
-    }
-
-    public static void SetSFXVolume(float volume) {
-        Instance.staticStateManager.SetSFXVolume(volume);
+    public static void SetVolume(float sfxVolume, float musicVolume) {
+        Instance.staticStateManager.SetVolume(sfxVolume, musicVolume);
     }
 }

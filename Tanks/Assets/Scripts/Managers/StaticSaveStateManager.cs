@@ -367,14 +367,20 @@ public class StaticSaveStateManager : SaveStateManager {
         func(campaignLevelData.levelAchievementInfo[^1]);
     }
 
-    public void SetSFXVolume(float volume) {
+    public void SetVolume(float volumeSFX, float volumeMusic) {
+        SetSFXVolume(volumeSFX);
+        SetMusicVolume(volumeMusic);
+        SaveToFile();
+    }
+
+    private void SetSFXVolume(float volume) {
         if (volume < 0  || volume > 1) {
             throw new InvalidOperationException("trying to set SFX volume to less than 0 or greater than 1");
         }
         sfxVolume = volume;
     }
 
-    public void SetMusicVolume(float volume) {
+    private void SetMusicVolume(float volume) {
         if (volume < 0  || volume > 1) {
             throw new InvalidOperationException("trying to set Music volume to less than 0 or greater than 1");
         }
