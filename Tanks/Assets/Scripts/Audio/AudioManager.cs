@@ -8,8 +8,8 @@ using System.Collections.Generic;
 
 public partial class AudioManager : MonoBehaviour
 {
-    public static float SFXMasterVolume = 1f;
-    public static float BGMMasterVolume = 1f;
+    private static float SFXMasterVolume = -1;
+    private static float BGMMasterVolume = -1;
     public Sound[] sounds;
 
     public static AudioManager instance;
@@ -33,7 +33,14 @@ public partial class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
+        if (SFXMasterVolume < 0)
+        {
+            SFXMasterVolume = SaveStateManagerGameObject.GetMusicVolume();
+            BGMMasterVolume = SaveStateManagerGameObject.GetSFXVolume();
+        }
+
         playedSounds = new List<Sound>();
+
 
         foreach (Sound s in sounds)
         {
