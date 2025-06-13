@@ -83,8 +83,8 @@ public class StaticSaveStateManager : SaveStateManager {
     [SerializeField] private List<Achievement> unlockedAchievements = new();
 
     [SerializeField] private int numEnemiesKilled = 0;
-    [SerializeField] private float sfxVolume;
-    [SerializeField] private float musicVolume;
+    [SerializeField] private float sfxVolume = 1f;
+    [SerializeField] private float musicVolume = 1f;
 
 
     // Achievement Checker Lists
