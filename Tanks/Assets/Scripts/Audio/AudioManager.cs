@@ -35,8 +35,8 @@ public partial class AudioManager : MonoBehaviour
 
         if (SFXMasterVolume < 0)
         {
-            SFXMasterVolume = SaveStateManagerGameObject.GetMusicVolume();
-            BGMMasterVolume = SaveStateManagerGameObject.GetSFXVolume();
+            SFXMasterVolume = SaveStateManagerGameObject.GetSFXVolume();
+            BGMMasterVolume = SaveStateManagerGameObject.GetMusicVolume();
         }
 
         playedSounds = new List<Sound>();
