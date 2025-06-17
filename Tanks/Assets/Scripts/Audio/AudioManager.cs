@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 public partial class AudioManager : MonoBehaviour
 {
-    public static float SFXMasterVolume = 1f;
-    public static float BGMMasterVolume = 1f;
     public Sound[] sounds;
 
     public static AudioManager instance;
@@ -35,6 +33,7 @@ public partial class AudioManager : MonoBehaviour
 
         playedSounds = new List<Sound>();
 
+
         foreach (Sound s in sounds)
         {
             //GameObject newObj = Instantiate(new GameObject(), null);
@@ -43,7 +42,7 @@ public partial class AudioManager : MonoBehaviour
             s.source.playOnAwake = false;
             s.source.clip = s.clip;
 
-            s.source.volume = s.volume * (s.isBGM ? BGMMasterVolume : SFXMasterVolume);
+            UpdateSoundVolume(s);
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
@@ -101,13 +100,14 @@ public partial class AudioManager : MonoBehaviour
         s.source.Stop();
     }
 
-    public static void SetSFXVol(float vol)
-    {
-        SFXMasterVolume = vol;
+    private void UpdateSoundVolume(Sound s) {
+        s.source.volume = s.volume * (s.isBGM ? SaveStateManagerGameObject.GetMusicVolume() : SaveStateManagerGameObject.GetSFXVolume());
     }
-    public static void SetBGMVol(float vol)
-    {
-        BGMMasterVolume = vol;
+
+    public void UpdateAllSoundVolume() {
+        foreach (Sound s in sounds) {
+            UpdateSoundVolume(s);
+        }
     }
 }
 

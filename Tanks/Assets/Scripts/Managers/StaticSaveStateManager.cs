@@ -22,7 +22,7 @@ public class StaticSaveStateManager : SaveStateManager {
 
 
     public enum Achievement {
-        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE,NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET, CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE, CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY, CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY, CAMPAIGN_MODE_WITHOUT_SWITCHING_CHARACTER
+        WIN_CLASSIC_FULL_NO_SKIP, WIN_CLASSIC_PART_TWO, WIN_CLASSIC_PART_ONE, WIN_CLASSIC_FULL, WIN_CAMPAIGN_MODE, NUM_ENEMIES_KILLED_ONE, CAMPAIGN_MODE_WITHOUT_DYING, CAMPAIGN_MODE_WITHOUT_BUBBLE, CAMPAIGN_MODE_WITHOUT_ROCKET, CAMPAIGN_MODE_WITHOUT_TAKING_DAMAGE, CAMPAIGN_MODE_WITHOUT_KILLING_ENEMY, CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY
     }
 
     // TODO: UPDATE DEATHS, DAMAGE, ETC WHEN IT HAPPENS
@@ -83,6 +83,8 @@ public class StaticSaveStateManager : SaveStateManager {
     [SerializeField] private List<Achievement> unlockedAchievements = new();
 
     [SerializeField] private int numEnemiesKilled = 0;
+    [SerializeField] private float sfxVolume = 1f;
+    [SerializeField] private float musicVolume = 1f;
 
 
     // Achievement Checker Lists
@@ -164,9 +166,6 @@ public class StaticSaveStateManager : SaveStateManager {
             case Achievement.CAMPAIGN_MODE_WITHOUT_DAMAGING_ENEMY:
                 Func<LevelAchievementData, bool> testCampaignModeDamagingEnemyHelper = levelData => !levelData.damageDealtToEnemies;
                 return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeDamagingEnemyHelper), achievement, finishCampaignModeList);
-            case Achievement.CAMPAIGN_MODE_WITHOUT_SWITCHING_CHARACTER:
-                Func<LevelAchievementData, bool> testCampaignModeNoSwitchingHelper = levelData => levelData.charactersUsed.Count == 0;
-                return new(this, CampaignModeTestsLogicalAndOverAllLevels(testCampaignModeNoSwitchingHelper), achievement, finishCampaignModeList);
             default:
                 throw new InvalidOperationException("Achievement not mapped");
         }
@@ -366,5 +365,41 @@ public class StaticSaveStateManager : SaveStateManager {
             return;
         }
         func(campaignLevelData.levelAchievementInfo[^1]);
+    }
+
+    public void SetVolume(float volumeSFX, float volumeMusic) {
+        SetSFXVolume(volumeSFX);
+        SetMusicVolume(volumeMusic);
+        if (volumeSFX != sfxVolume || volumeMusic != musicVolume) {
+            SaveToFile();
+        }
+    }
+
+    private void SetSFXVolume(float volume) {
+        if (volume < 0  || volume > 1) {
+            throw new InvalidOperationException("trying to set SFX volume to less than 0 or greater than 1");
+        }
+        sfxVolume = volume;
+    }
+
+    private void SetMusicVolume(float volume) {
+        if (volume < 0  || volume > 1) {
+            throw new InvalidOperationException("trying to set Music volume to less than 0 or greater than 1");
+        }
+        musicVolume = volume;
+    }
+
+    public float GetMusicVolume() {
+        if (musicVolume < 0 || musicVolume > 1) {
+            musicVolume = 1;
+        }
+        return musicVolume;
+    }
+
+    public float GetSFXVolume() {
+        if (sfxVolume < 0 || sfxVolume > 1) {
+            sfxVolume = 1;
+        }
+        return sfxVolume;
     }
 }

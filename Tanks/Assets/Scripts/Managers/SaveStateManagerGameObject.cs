@@ -86,11 +86,12 @@ public class SaveStateManagerGameObject : MonoBehaviour
     }
 
     public static void ExitCurrentSave() {
-        if (Instance is null || Instance.StateManager is null) {
+        if (Instance is null) {
             return;
         }
-
-        Instance.StateManager.ExitSaveFile();
+        if (Instance.StateManager != null) {
+            Instance.StateManager.ExitSaveFile();
+        }
         if (Instance.StateManager != Instance.staticStateManager) {
             Instance.staticStateManager.ExitSaveFile();
         }
@@ -164,5 +165,28 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public static float GetSFXVolume() {
+        return Instance.staticStateManager.GetSFXVolume();
+    }
+
+    public static float GetMusicVolume() {
+        return Instance.staticStateManager.GetMusicVolume();
+    }
+
+    public static void SetVolume(float sfxVolume, float musicVolume) {
+        float oldSfx = GetSFXVolume();
+        float oldMusic = GetMusicVolume();
+        Instance.staticStateManager.SetVolume(sfxVolume, musicVolume);
+        
+        // If the volume was changed update currently playing sounds
+        if (oldSfx != sfxVolume || oldMusic != musicVolume) {
+            // inactive objects are included just in case audiomanagers are disabled (I don't know how AudioManager works or whether one would ever be inactive)
+            foreach (AudioManager i in FindObjectsByType<AudioManager>(FindObjectsInactive.Include, FindObjectsSortMode.None)) {
+                i.UpdateAllSoundVolume();
+            }
+        }
+
     }
 }

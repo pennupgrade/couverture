@@ -83,7 +83,7 @@ public class RoomManager : MonoBehaviour
         uiManager.Reset();
         var pTank = Tank.FindPlayer();
         playerIsRocket = SaveStateManagerGameObject.GetCurrentCharacter() == SaveStateManager.CharacterOption.ROCKET_CAT;
-        pTank.Freeze(false);
+        pTank.Freeze(true);
 
         uiManager.StartScreenEnter(LevelNum);
         yield return new WaitForSeconds(0.3f);
@@ -97,9 +97,9 @@ public class RoomManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         changeBGM(true);
-        pTank.Unfreeze();
 
         yield return new WaitWhile(() => uiManager.IsAnimating);
+        pTank.Unfreeze();
 
         noPause = false;
     }

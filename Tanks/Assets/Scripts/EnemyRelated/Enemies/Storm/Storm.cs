@@ -16,7 +16,7 @@ public class Storm : EnemyOmniMove
         gunRange = 13;
         sightRange = 13;
         FOV = 1.5f;
-        rotSpeed = 80;
+        rotSpeed = 70;
         cooldownTime = 0.5f;
         reload = 5f;
         magSize = 2;
@@ -76,8 +76,8 @@ public class Storm : EnemyOmniMove
 
     public void fireRocket(bool left) {
         fireSound();
-        Vector3 rocketDir = Quaternion.AngleAxis(36 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
-        GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position + ((left) ? -0.3f : 0.3f) * gunShotPos.forward, Quaternion.LookRotation(rocketDir));
+        Vector3 rocketDir = Quaternion.AngleAxis(16 * ((left) ? -1 : 1), Vector3.up) * gun.transform.forward;
+        GameObject rocket = Instantiate(bulletPrefab, gunShotPos.position + ((left) ? -0.35f : 0.35f) * gunShotPos.forward, Quaternion.LookRotation(rocketDir));
         rocket.GetComponent<HomingRocket2>().setPlayer(this.player);
     }
 }
