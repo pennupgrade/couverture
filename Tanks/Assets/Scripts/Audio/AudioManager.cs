@@ -42,7 +42,7 @@ public partial class AudioManager : MonoBehaviour
             s.source.playOnAwake = false;
             s.source.clip = s.clip;
 
-            s.source.volume = s.volume * (s.isBGM ? SaveStateManagerGameObject.GetMusicVolume() : SaveStateManagerGameObject.GetSFXVolume());
+            UpdateSoundVolume(s);
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
@@ -98,6 +98,16 @@ public partial class AudioManager : MonoBehaviour
         Sound s = Array.Find(sounds, sound => sound.name == name);
 
         s.source.Stop();
+    }
+
+    private void UpdateSoundVolume(Sound s) {
+        s.source.volume = s.volume * (s.isBGM ? SaveStateManagerGameObject.GetMusicVolume() : SaveStateManagerGameObject.GetSFXVolume());
+    }
+
+    public void UpdateAllSoundVolume() {
+        foreach (Sound s in sounds) {
+            UpdateSoundVolume(s);
+        }
     }
 }
 
