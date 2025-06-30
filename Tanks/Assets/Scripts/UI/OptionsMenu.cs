@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,14 @@ public class OptionsMenu : MonoBehaviour
     [SerializeField] private RectTransform panelRt;
     [SerializeField] private CanvasGroup panelCg;
 
+    [Header("Music")]
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private TMP_Text musicPillText;
+
+    [Header("SFX")]
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private TMP_Text sfxPillText;
+
     [Header("Buttons")]
     [SerializeField] private Button openButton;
     [SerializeField] private Button closeButton;
@@ -18,6 +28,15 @@ public class OptionsMenu : MonoBehaviour
     private void Start()
     {
         overlay.alpha = 0f;
+
+        musicSlider.onValueChanged.AddListener((value) =>
+        {
+            var sfx = SaveStateManagerGameObject.GetSFXVolume();
+            SaveStateManagerGameObject.SetVolume(sfx, value / 100f);
+            musicPillText.text = Math.Truncate(value).ToString();
+        });
+
+        // TODO: sfx onvaluechanged
     }
 
     private void OnEnable()
@@ -31,9 +50,16 @@ public class OptionsMenu : MonoBehaviour
         }, 0f, 1f, 0.35f).setOnComplete(() => overlay.alpha = 1f).setEaseOutExpo().setIgnoreTimeScale(true);
 
         LeanTween.moveY(panelRt, -200f, 0f).setIgnoreTimeScale(true);
-        LeanTween.moveY(panelRt, 0f, 0.35f).setEaseOutExpo().setIgnoreTimeScale(true);
+        LeanTween.moveY(panelRt, 0f, 0.35f).setEaseOutExpo().setOnComplete(() => closeButton.interactable = true).setIgnoreTimeScale(true);
 
-        closeButton.interactable = true;
+        var music = SaveStateManagerGameObject.GetMusicVolume();
+        var sfx = SaveStateManagerGameObject.GetSFXVolume();
+
+        var musicValue = music * 100f;
+        musicSlider.value = musicValue;
+        musicPillText.text = Math.Truncate(musicValue).ToString();
+
+        // TODO: sfx onenable
     }
 
     public void CloseOptionsMenu()
@@ -54,5 +80,7 @@ public class OptionsMenu : MonoBehaviour
 
             gameObject.SetActive(false);
         }).setIgnoreTimeScale(true);
+
+        SaveStateManagerGameObject.SetVolume(sfxSlider.value / 100f, musicSlider.value / 100f);
     }
 }
