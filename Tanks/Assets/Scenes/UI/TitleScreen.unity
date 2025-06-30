@@ -2514,7 +2514,7 @@ RectTransform:
   m_Father: {fileID: 1409322653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 1, y: -3}
   m_SizeDelta: {x: 58.7364, y: 114.6386}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4383,7 +4383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1091550182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4481,6 +4481,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overlay: {fileID: 1282266075}
+  panelRt: {fileID: 1653240541}
+  panelCg: {fileID: 1653240544}
   openButton: {fileID: 2023699999}
   closeButton: {fileID: 1551318584}
 --- !u!1 &1092647078
@@ -7965,6 +7967,7 @@ GameObject:
   - component: {fileID: 1653240541}
   - component: {fileID: 1653240543}
   - component: {fileID: 1653240542}
+  - component: {fileID: 1653240544}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -8035,6 +8038,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653240540}
   m_CullTransparentMesh: 1
+--- !u!225 &1653240544
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653240540}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1679308374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8191,7 +8206,7 @@ RectTransform:
   m_Father: {fileID: 587551801}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -0.77438354, y: 0}
   m_SizeDelta: {x: 8.4512, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

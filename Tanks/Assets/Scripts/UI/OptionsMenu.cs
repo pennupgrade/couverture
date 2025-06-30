@@ -5,11 +5,15 @@ public class OptionsMenu : MonoBehaviour
 {
     [SerializeField] private CanvasGroup overlay;
 
+    [Header("Panel")]
+    [SerializeField] private RectTransform panelRt;
+    [SerializeField] private CanvasGroup panelCg;
+
     [Header("Buttons")]
     [SerializeField] private Button openButton;
     [SerializeField] private Button closeButton;
 
-    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject);
+    public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(panelRt);
 
     private void Start()
     {
@@ -23,8 +27,11 @@ public class OptionsMenu : MonoBehaviour
         LeanTween.value(overlay.gameObject, value =>
         {
             overlay.alpha = value;
-        }, 0f, 1f, 0.2f).setIgnoreTimeScale(true);
-        overlay.alpha = 1f;
+            panelCg.alpha = value;
+        }, 0f, 1f, 0.35f).setOnComplete(() => overlay.alpha = 1f).setEaseOutExpo().setIgnoreTimeScale(true);
+
+        LeanTween.moveY(panelRt, -200f, 0f).setIgnoreTimeScale(true);
+        LeanTween.moveY(panelRt, 0f, 0.35f).setEaseOutExpo().setIgnoreTimeScale(true);
 
         closeButton.interactable = true;
     }
@@ -37,10 +44,15 @@ public class OptionsMenu : MonoBehaviour
         LeanTween.value(overlay.gameObject, value =>
         {
             overlay.alpha = value;
-        }, 1f, 0f, 0.2f).setIgnoreTimeScale(true);
-        overlay.alpha = 0f;
+            panelCg.alpha = value;
+        }, 1f, 0f, 0.35f).setOnComplete(() => overlay.alpha = 0f).setEaseInExpo().setIgnoreTimeScale(true);
 
-        closeButton.interactable = true;
-        openButton.interactable = true;
+        LeanTween.moveY(panelRt, -200f, 0.35f).setEaseInExpo().setOnComplete(() =>
+        {
+            closeButton.interactable = true;
+            openButton.interactable = true;
+
+            gameObject.SetActive(false);
+        }).setIgnoreTimeScale(true);
     }
 }
