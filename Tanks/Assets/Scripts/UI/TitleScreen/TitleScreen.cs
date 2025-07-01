@@ -8,6 +8,12 @@ public class TitleScreen : MonoBehaviour
 {
     [SerializeField] private TMP_Text highScore;
 
+    [Header("Options menu")]
+    [SerializeField] private GameObject optionsCanvasObj;
+
+    [Header("Achievements UI")]
+    [SerializeField] private GameObject achievementsUIObj;
+
     [Header("Classic mode transition")]
     [SerializeField] private GraphicRaycaster secondCanvasRaycaster;
     [SerializeField] private RectTransform overlay;
@@ -17,7 +23,6 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] private Image overlayImage;
     [SerializeField] private Image leftWaveImage;
     [SerializeField] private Image rightWaveImage;
-    [SerializeField] private GameObject achievementsUIObj;
 
     public void StartCampaign() => StartCoroutine(_StartCampaign());
 
@@ -95,4 +100,12 @@ public class TitleScreen : MonoBehaviour
     }
 
     public void Quit() => Application.Quit();
+
+    public void OpenOptionsMenu()
+    {
+        var optionsMenu = optionsCanvasObj.GetComponent<OptionsMenu>();
+        if (optionsMenu.IsAnimating) return;
+
+        optionsCanvasObj.SetActive(true);
+    }
 }
