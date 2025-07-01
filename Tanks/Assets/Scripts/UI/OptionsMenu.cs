@@ -36,7 +36,12 @@ public class OptionsMenu : MonoBehaviour
             musicPillText.text = Math.Truncate(value).ToString();
         });
 
-        // TODO: sfx onvaluechanged
+        sfxSlider.onValueChanged.AddListener((value) =>
+        {
+            var music = SaveStateManagerGameObject.GetMusicVolume();
+            SaveStateManagerGameObject.SetVolume(value / 100f, music);
+            sfxPillText.text = Math.Truncate(value).ToString();
+        });
     }
 
     private void OnEnable()
@@ -52,14 +57,13 @@ public class OptionsMenu : MonoBehaviour
         LeanTween.moveY(panelRt, -200f, 0f).setIgnoreTimeScale(true);
         LeanTween.moveY(panelRt, 0f, 0.35f).setEaseOutExpo().setOnComplete(() => closeButton.interactable = true).setIgnoreTimeScale(true);
 
-        var music = SaveStateManagerGameObject.GetMusicVolume();
-        var sfx = SaveStateManagerGameObject.GetSFXVolume();
-
-        var musicValue = music * 100f;
+        var musicValue = SaveStateManagerGameObject.GetMusicVolume() * 100f;
         musicSlider.value = musicValue;
         musicPillText.text = Math.Truncate(musicValue).ToString();
 
-        // TODO: sfx onenable
+        var sfxValue = SaveStateManagerGameObject.GetSFXVolume() * 100f;
+        sfxSlider.value = sfxValue;
+        sfxPillText.text = Math.Truncate(sfxValue).ToString();
     }
 
     public void CloseOptionsMenu()
