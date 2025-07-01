@@ -189,4 +189,8 @@ public class SaveStateManagerGameObject : MonoBehaviour
         }
 
     }
+
+    public static void SaveStaticSaveStateManager() {
+        Instance.staticStateManager.SaveToFile();
+    }
 }

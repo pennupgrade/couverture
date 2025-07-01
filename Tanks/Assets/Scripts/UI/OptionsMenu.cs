@@ -83,6 +83,6 @@ public class OptionsMenu : MonoBehaviour
             gameObject.SetActive(false);
         }).setIgnoreTimeScale(true);
 
-        SaveStateManagerGameObject.SetVolume(sfxSlider.value / 100f, musicSlider.value / 100f);
+        SaveStateManagerGameObject.SaveStaticSaveStateManager();
     }
 }
