@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private TMP_Text restartButtonText;
     [SerializeField] private TMP_Text quitButtonText;
+    [SerializeField] private GameObject optionsCanvasObj;
 
     private RectTransform panelRt;
     private CanvasGroup panelCg;
@@ -97,7 +98,10 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void HandleOptions() {
-        Debug.LogWarning("HandleOptions(): TODO");
+        var optionsMenu = optionsCanvasObj.GetComponent<OptionsMenu>();
+        if (optionsMenu.IsAnimating) return;
+
+        optionsCanvasObj.SetActive(true);
     }
 
     public void HandleQuitToLevelSelect() {

@@ -31,16 +31,14 @@ public class OptionsMenu : MonoBehaviour
 
         musicSlider.onValueChanged.AddListener((value) =>
         {
-            var sfx = SaveStateManagerGameObject.GetSFXVolume();
-            SaveStateManagerGameObject.SetVolume(sfx, value / 100f);
             musicPillText.text = Math.Truncate(value).ToString();
+            SaveStateManagerGameObject.SetVolume(SaveStateManagerGameObject.GetSFXVolume(), value / 100f);
         });
 
         sfxSlider.onValueChanged.AddListener((value) =>
         {
-            var music = SaveStateManagerGameObject.GetMusicVolume();
-            SaveStateManagerGameObject.SetVolume(value / 100f, music);
             sfxPillText.text = Math.Truncate(value).ToString();
+            SaveStateManagerGameObject.SetVolume(value / 100f, SaveStateManagerGameObject.GetMusicVolume());
         });
     }
 
