@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
             }
             else {
                 ResumeGame();
-                UIManager.Instance.pauseMenu.HidePanel();
+                UIManager.Instance.pauseMenu.HandleHidingPanels();
             }
         }
     }

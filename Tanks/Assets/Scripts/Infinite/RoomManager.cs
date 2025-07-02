@@ -70,7 +70,7 @@ public class RoomManager : MonoBehaviour
             }
             else {
                 ResumeGame();
-                UIManager.Instance.pauseMenu.HidePanel();
+                UIManager.Instance.pauseMenu.HandleHidingPanels();
             }
         }
     }

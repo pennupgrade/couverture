@@ -24,6 +24,7 @@ public class OptionsMenu : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     public bool IsAnimating => LeanTween.isTweening(overlay.gameObject) || LeanTween.isTweening(panelRt);
+    public bool IsOpen => gameObject.activeSelf;
 
     private void Start()
     {

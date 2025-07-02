@@ -66,7 +66,7 @@ public class SceneTransition : MonoBehaviour
             UIManager.Instance.pauseMenu.SetStatus(scene.name);
 
             // These calls have no effect if the game isn't currently paused
-            UIManager.Instance.pauseMenu.HidePanel();
+            UIManager.Instance.pauseMenu.HandleHidingPanels();
             GameManager.Instance.ResumeGame();
         }
 

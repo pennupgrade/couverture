@@ -15,12 +15,14 @@ public class PauseMenu : MonoBehaviour
 
     private RectTransform panelRt;
     private CanvasGroup panelCg;
+    private OptionsMenu optionsMenu;
 
     private const float PanelAnimTime = 0.35f;
 
     private void Awake() {
         panelRt = panel.GetComponent<RectTransform>();
         panelCg = panel.GetComponent<CanvasGroup>();
+        optionsMenu = optionsCanvasObj.GetComponent<OptionsMenu>();
     }
 
     private void Start() {
@@ -36,7 +38,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public bool IsAnimating => LeanTween.isTweening(panel) || LeanTween.isTweening(panelRt);
+    public bool IsAnimating => LeanTween.isTweening(panel) || LeanTween.isTweening(panelRt) || optionsMenu.IsAnimating;
 
     public void ShowPanel() {
         panel.SetActive(true);
@@ -50,8 +52,10 @@ public class PauseMenu : MonoBehaviour
         LeanTween.moveY(panelRt, 0f, PanelAnimTime).setEaseOutExpo().setIgnoreTimeScale(true);
     }
 
-    public void HidePanel() {
-        LeanTween.value(panel, value => {
+    private void HidePanel()
+    {
+        LeanTween.value(panel, value =>
+        {
             panelCg.alpha = value;
             overlay.alpha = value;
         }, 1f, 0f, PanelAnimTime).setEaseInExpo().setIgnoreTimeScale(true);
@@ -59,6 +63,12 @@ public class PauseMenu : MonoBehaviour
         LeanTween.moveY(panelRt, -200f, PanelAnimTime).setEaseInExpo()
                  .setIgnoreTimeScale(true)
                  .setOnComplete(() => panel.SetActive(false));
+    }
+    
+    public void HandleHidingPanels()
+    {
+        HidePanel();
+        optionsMenu.CloseOptionsMenu();
     }
 
     public void SetStatus(string sceneName) {
@@ -81,24 +91,23 @@ public class PauseMenu : MonoBehaviour
             RoomManager.Instance.ResumeGame();
         }
 
-        HidePanel();
+        HandleHidingPanels();
     }
 
     public void HandleRestartLevel() {
         if (GameManager.Instance != null) {
             // Campaign mode
-            UIManager.Instance.pauseMenu.HidePanel();
+            UIManager.Instance.pauseMenu.HandleHidingPanels();
             GameManager.Instance.RestartLevel(PanelAnimTime + 0.01f);
         }
         else {
             // Classic does not have restart
-            UIManager.Instance.pauseMenu.HidePanel();
+            UIManager.Instance.pauseMenu.HandleHidingPanels();
             RoomManager.Instance.ResetToLevelOne();
         }
     }
 
     public void HandleOptions() {
-        var optionsMenu = optionsCanvasObj.GetComponent<OptionsMenu>();
         if (optionsMenu.IsAnimating) return;
 
         optionsCanvasObj.SetActive(true);
@@ -109,7 +118,7 @@ public class PauseMenu : MonoBehaviour
         SaveStateManagerGameObject.SaveToFile();
 
         if (RoomManager.Instance != null) {
-            UIManager.Instance.pauseMenu.HidePanel();
+            UIManager.Instance.pauseMenu.HandleHidingPanels();
             RoomManager.Instance.ReturnToMainMenu();
         }
         else {
@@ -120,7 +129,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     private static IEnumerator HandleQuitToLevelSelectFromCampaign() {
-        UIManager.Instance.pauseMenu.HidePanel();
+        UIManager.Instance.pauseMenu.HandleHidingPanels();
 
         yield return new WaitForSecondsRealtime(PanelAnimTime);
 
