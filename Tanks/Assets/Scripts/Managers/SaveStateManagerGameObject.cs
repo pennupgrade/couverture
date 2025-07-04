@@ -182,8 +182,7 @@ public class SaveStateManagerGameObject : MonoBehaviour
         
         // If the volume was changed update currently playing sounds
         if (oldSfx != sfxVolume || oldMusic != musicVolume) {
-            // inactive objects are included just in case audiomanagers are disabled (I don't know how AudioManager works or whether one would ever be inactive)
-            foreach (AudioManager i in FindObjectsByType<AudioManager>(FindObjectsInactive.Include, FindObjectsSortMode.None)) {
+            foreach (AudioManager i in FindObjectsByType<AudioManager>(FindObjectsSortMode.None)) {
                 i.UpdateAllSoundVolume();
             }
         }

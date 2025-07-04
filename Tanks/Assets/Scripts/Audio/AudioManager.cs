@@ -108,6 +108,15 @@ public partial class AudioManager : MonoBehaviour
         foreach (Sound s in sounds) {
             UpdateSoundVolume(s);
         }
+        
+        foreach (Sound s in playedSounds) {
+            UpdateSoundVolume(s);
+        }
+    }
+
+    void OnEnable() {
+        // ensures that sound volume is updated when audiomanager is enabled after being disabled during a volume change
+        UpdateAllSoundVolume();
     }
 }
 
