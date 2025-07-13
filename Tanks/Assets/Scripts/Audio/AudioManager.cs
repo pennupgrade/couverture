@@ -4,7 +4,6 @@ using UnityEngine;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 
-//Credit to Brackeys youtube tutorial on Audio managers, as the majority of this code and learning how to use it was made by him.
 
 public partial class AudioManager : MonoBehaviour
 {
@@ -20,15 +19,13 @@ public partial class AudioManager : MonoBehaviour
     {
         if (singleton)
         {
-            if (instance == null)
-                instance = this;
-            else
-            {
-                Destroy(gameObject);
+            if (instance != null) {
+			    Destroy(gameObject);
                 return;
-            }
-
-            DontDestroyOnLoad(gameObject);
+            } else {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+		    }
         }
 
         playedSounds = new List<Sound>();
@@ -92,7 +89,6 @@ public partial class AudioManager : MonoBehaviour
         }
     }
 
-    //this addition to the code was made by me, the rest was from Brackeys tutorial
     public void Stop(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
