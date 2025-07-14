@@ -146,10 +146,20 @@ SPDX-License-Identifier = "MPL-2.0"
 [[annotations]]
 path=[
     "Tanks/Assets/TextMesh Pro/Resources/TMP Settings.asset",
-    "Tanks/Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt",
-    "Tanks/Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt",
+    # is default style sheet licensed under Unity Companion License?
     "Tanks/Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset"
     ]
 precedence = "override"
 SPDX-FileCopyrightText = "2024 The Catanks Contributors"
 SPDX-License-Identifier = "MPL-2.0"
+
+# TextMesh Pro proprietary files
+[[annotations]]
+path=[
+    "Tanks/Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt",
+    "Tanks/Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt",
+    "Tanks/Assets/TextMesh Pro/Shaders/*"
+    ]
+precedence = "override"
+SPDX-FileCopyrightText = "2022 Unity Technologies ApS"
+SPDX-License-Identifier = "LicenseRef-Unity-Companion"
