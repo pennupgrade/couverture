@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: MPL-2.0
+
 using UnityEngine;
 
 public class Hornet_Start : EnemyStartState
