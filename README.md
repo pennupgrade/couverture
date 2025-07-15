@@ -1,12 +1,16 @@
-# couverture
+# Catanks
 
-I see the bad moon risin', I see trouble on the way
+UPGRADE's 2024-2025 game!
 
 Using Unity ver. 2022.3.16f1
 
+Available on:
+- Steam: **COMING SOON** 
+- [Itch.io](https://pennupgrade.itch.io/catanks)
+- [Github](https://github.com/pennupgrade/couverture/releases)
 
 ## Licensing
-Licensing for this repository is [REUSE](reuse.software) compliant.
+Licensing for this repository is [REUSE](reuse.software) compliant.  License information is either in the header of a file (for most script files) or in REUSE.toml
 
 ### Open Source
 Almost all content in this repository is licensed under an open source license.
@@ -15,14 +19,14 @@ All UPGRADE-contributed script, shader, material, prefab, and animation files ar
 
 All UPGRADE-contributed art is licesed under the CC BY-SA 4.0 license.
 
-Various sound effects (that were found on [freesound.org](https://freesound.org)) are licensed under a variety of open licenses (see REUSE.toml).  See the sound effects section for links to the original sounds.
+Various sound effects (that were found on [freesound.org](https://freesound.org)) are licensed under a variety of open licenses (see REUSE.toml).  See the [sound effects section](#sound-effects) for links to the original sounds.
 
-LeanTween and [BetterMinimal](https://github.com/seleb/Better-Minimal-WebGL-Template) are licensed under the MIT license.
+[LeanTween](https://assetstore.unity.com/packages/tools/animation/leantween-3595) and [BetterMinimal](https://github.com/seleb/Better-Minimal-WebGL-Template) are licensed under the MIT license.
 
 ### Proprietary
-The default TextMeshPro shaders (and a few other assorted files) are licensed under the Unity Companion License (due to TextMeshPro being licensed that way).
+The default TextMesh Pro shaders (and a few other assorted files) are licensed under the Unity Companion License (due to TextMesh Pro being licensed that way).
 
-UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own.
+UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own or have the rights to use.
 
 ## Sound Effects
 List of links to sounds used for sound effects:
@@ -50,3 +54,6 @@ List of links to sounds used for sound effects:
 - <https://freesound.org/s/467882/>
 - <https://freesound.org/s/136542/>
 - <https://freesound.org/s/410559/>
+
+## Building
+**Coming soon**
