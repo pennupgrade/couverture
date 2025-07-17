@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+// SPDX-FileCopyrightText: 2019 Sebastian Lague
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: LicenseRef-MIT-PathCreator
+// SPDX-License-Identifier: MPL-2.0
+
 using UnityEditor;
 using UnityEngine;
-using PathCreation;
-using Unity.VisualScripting;
-using System.IO;
-using System.Drawing.Printing;
-using static UnityEditor.FilePathAttribute;
-using UnityEngine.UIElements;
 using UnityEngine.Rendering;
-using log4net.Util;
-using System.Linq;
 
 namespace PathCreation
 {

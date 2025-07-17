@@ -1,5 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+// SPDX-FileCopyrightText: 2019 Sebastian Lague
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: LicenseRef-MIT-PathCreator
+// SPDX-License-Identifier: MPL-2.0
+
 using UnityEngine;
 using UnityEditor;
 

@@ -1,10 +1,14 @@
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: MPL-2.0
+
 using System;
 using System.IO;
 
 public class CompilationConstants {
     // game data path
     // Steam game data path 
-    #if STEAM
+    #if !DISABLESTEAMWORKS
         public static readonly string GAME_DATA_PATH = Path.GetFullPath("./UPGRADE/Catanks/", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
     #elif UNITY_EDITOR // game data path when using unity editor
         public static readonly string GAME_DATA_PATH = Environment.CurrentDirectory;

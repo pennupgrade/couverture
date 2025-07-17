@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: MPL-2.0
+
 // based on https://raw.githubusercontent.com/rlabrecque/SteamManager/master/SteamManager.cs
 
 #if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)

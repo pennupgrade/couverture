@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: MPL-2.0
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,7 +43,7 @@ public class GameManager : MonoBehaviour
             }
             else {
                 ResumeGame();
-                UIManager.Instance.pauseMenu.HidePanel();
+                UIManager.Instance.pauseMenu.HandleHidingPanels();
             }
         }
     }

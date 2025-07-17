@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2019 Sebastian Lague
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: LicenseRef-MIT-PathCreator
+// SPDX-License-Identifier: MPL-2.0
+
 using System;
 using System.Collections.Generic;
 //using UnityEditor;

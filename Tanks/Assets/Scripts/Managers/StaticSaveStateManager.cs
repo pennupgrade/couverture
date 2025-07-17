@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 The Catanks Contributors
+//
+// SPDX-License-Identifier: MPL-2.0
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -370,9 +374,6 @@ public class StaticSaveStateManager : SaveStateManager {
     public void SetVolume(float volumeSFX, float volumeMusic) {
         SetSFXVolume(volumeSFX);
         SetMusicVolume(volumeMusic);
-        if (volumeSFX != sfxVolume || volumeMusic != musicVolume) {
-            SaveToFile();
-        }
     }
 
     private void SetSFXVolume(float volume) {
