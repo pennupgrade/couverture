@@ -10,7 +10,7 @@ Using Unity ver. 2022.3.16f1
 - [Github](https://github.com/pennupgrade/couverture/releases)
 
 ## Features
-- 6 Campaign Mode levels
+- 6 Campaign levels
 - 50 Arcade-style Classic Mode levels
 - 2 Characters with special abilities
 - 12 Achievements to unlock (with achievement support on the Steam release and the Itch.io/Github release!)
