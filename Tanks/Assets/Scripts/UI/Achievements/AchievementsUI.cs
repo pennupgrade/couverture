@@ -105,7 +105,7 @@ public class AchievementsUI : MonoBehaviour
         bigMedalRt.localScale = sourceRt.localScale * 0.5f; // Big medal scale is half of everything
         bigMedalRt.localRotation = sourceRt.localRotation;
 
-        description.text = achievement.title;
+        description.text = achievement.description;
 
         var bigMedal = bigMedalRt.gameObject.GetComponent<Medal>();
         bigMedal.SetMedalTexture(achievement.medal);
