@@ -40,7 +40,7 @@ UPGRADE branding is not open source.  If you decide to fork this project, replac
 Build the game as normal, but ensure that the `DISABLESTEAMWORKS` compilation symbol is defined (see below).
 
 ## Steam Release
-Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Build the game as normal.
+Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Then, build the game as normal.
 
 ## Sound Effects
 List of links to sounds used for sound effects:
