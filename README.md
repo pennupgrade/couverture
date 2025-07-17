@@ -9,8 +9,15 @@ Using Unity ver. 2022.3.16f1
 - [Itch.io](https://pennupgrade.itch.io/catanks)
 - [Github](https://github.com/pennupgrade/couverture/releases)
 
+## Features
+- 6 Campaign Mode levels
+- 50 Arcade-style Classic Mode levels
+- 2 Characters with special abilities
+- 12 Achievements to unlock (with achievement support on the Steam release and the Itch.io/Github release!)
+- Multiple save slots
+
 ## Licensing
-Licensing for this repository is [REUSE](reuse.software) compliant.  License information is either in the header of a file (for most script files) or in REUSE.toml
+Licensing for this repository is [REUSE](reuse.software) compliant.  License information for each file is either in the header of the file (for most scripts) or in REUSE.toml
 
 ### Open Source
 Almost all content in this repository is licensed under an open source license.
@@ -27,6 +34,13 @@ Various sound effects (that were found on [freesound.org](https://freesound.org)
 The default TextMesh Pro shaders (and a few other assorted TextMeshPro files) are licensed under the Unity Companion License (due to TextMesh Pro being licensed that way).
 
 UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own or have the rights to use.
+
+## Building
+### Itch.io/Github Release
+Build the game as normal, but ensure that the `DISABLESTEAMWORKS` compilation symbol is defined (see below).
+
+## Steam Release
+Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Build the game as normal.
 
 ## Sound Effects
 List of links to sounds used for sound effects:
@@ -54,6 +68,3 @@ List of links to sounds used for sound effects:
 - <https://freesound.org/s/467882/>
 - <https://freesound.org/s/136542/>
 - <https://freesound.org/s/410559/>
-
-## Building
-**Coming soon**
