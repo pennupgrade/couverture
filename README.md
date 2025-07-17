@@ -24,7 +24,7 @@ Various sound effects (that were found on [freesound.org](https://freesound.org)
 [LeanTween](https://assetstore.unity.com/packages/tools/animation/leantween-3595) and [BetterMinimal](https://github.com/seleb/Better-Minimal-WebGL-Template) are licensed under the MIT license.
 
 ### Proprietary
-The default TextMesh Pro shaders (and a few other assorted files) are licensed under the Unity Companion License (due to TextMesh Pro being licensed that way).
+The default TextMesh Pro shaders (and a few other assorted TextMeshPro files) are licensed under the Unity Companion License (due to TextMesh Pro being licensed that way).
 
 UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own or have the rights to use.
 
