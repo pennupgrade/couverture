@@ -4,7 +4,7 @@ UPGRADE's 2024-2025 game!
 
 Using Unity ver. 2022.3.16f1
 
-Available on:
+## Available on
 - Steam: **COMING SOON** 
 - [Itch.io](https://pennupgrade.itch.io/catanks)
 - [Github](https://github.com/pennupgrade/couverture/releases)
