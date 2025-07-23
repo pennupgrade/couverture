@@ -17,7 +17,7 @@ Using Unity ver. 2022.3.16f1
 - Multiple save slots
 
 ## Licensing
-Licensing for this repository is [REUSE](reuse.software) compliant.  License information for each file is either in the header of the file (for most scripts) or in REUSE.toml
+Licensing for this repository is [REUSE](https://reuse.software) compliant.  License information for each file is either in the header of the file (for most scripts) or in REUSE.toml
 
 ### Open Source
 Almost all content in this repository is licensed under an open source license.
