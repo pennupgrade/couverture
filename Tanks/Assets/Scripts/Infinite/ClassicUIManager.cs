@@ -143,8 +143,11 @@ public class ClassicUIManager : MonoBehaviour
     }
 
     private void StopTextFlash() {
-        StopCoroutine(enemyCountFlashCor);
-        enemyCountText.color = originalColor;
+        if (enemyCountFlashCor != null) {
+            StopCoroutine(enemyCountFlashCor);
+            enemyCountFlashCor = null;
+            enemyCountText.color = originalColor;
+        }
     }
 
     public void DeathScreenEnter(int levelNum) {
