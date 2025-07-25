@@ -1,8 +1,12 @@
 # Catanks
+![image](MarketingImages/catanksdemocampaign.webp)
+![image](MarketingImages/catanksdemoclassic.webp)
+![image](MarketingImages/catanksdemohell.webp)
+Blast your way through feline fun with Catanks!  Follow an immersive level-styled campaign with unique rodent enemies and homely yet hazardous environments, or battle nonstop against explosive combatants in riveting classic missions.
 
-UPGRADE's 2024-2025 game!
 
-Using Unity ver. 2022.3.16f1
+Catanks is a 3D game created by students from UPGRADE (University of Pennsylvania Game Research and Development Environment), reimagining nostalgic tank combat with decisive third-person cat-piloted gameplay.
+
 
 ## Download From
 - Steam: **COMING SOON** 
@@ -36,6 +40,8 @@ The default TextMesh Pro shaders (and a few other assorted TextMeshPro files) ar
 UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own or have the rights to use.
 
 ## Building
+Catanks was made using Unity version 2022.3.16f1
+
 ### Itch.io/Github Release
 Build the game as normal, but ensure that the `DISABLESTEAMWORKS` compilation symbol is defined (see below).
 
