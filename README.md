@@ -1,6 +1,5 @@
 # Catanks
-![image](MarketingImages/catanksdemocampaign.webp)
-![image](MarketingImages/catanksdemoclassic.webp)
+![image](MarketingImages/catanksdemo2.webp)
 Blast your way through feline fun with Catanks!  Follow an immersive level-styled campaign with unique rodent enemies and homely yet hazardous environments, or battle nonstop against explosive combatants in riveting classic missions.
 
 
