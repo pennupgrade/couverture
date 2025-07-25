@@ -9,7 +9,7 @@ Catanks is a 3D game created by students from UPGRADE (University of Pennsylvani
 
 
 ## Download From
-- Steam: **COMING SOON** 
+- [Steam](https://store.steampowered.com/app/3793790)
 - [Itch.io](https://pennupgrade.itch.io/catanks)
 - [Github](https://github.com/pennupgrade/couverture/releases)
 
