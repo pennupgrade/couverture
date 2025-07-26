@@ -40,10 +40,12 @@ UPGRADE branding is not open source.  If you decide to fork this project, replac
 ## Building
 Catanks was made using Unity version 2022.3.16f1
 
+After building, place the `THIRD-PARTY-LICENSES.md` file into the root directory of the game before zipping the folder.
+
 ### Itch.io/Github Release
 Build the game as normal, but ensure that the `DISABLESTEAMWORKS` compilation symbol is defined (see below).
 
-## Steam Release
+### Steam Release
 Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Then, build the game as normal.
 
 ## Sound Effects
