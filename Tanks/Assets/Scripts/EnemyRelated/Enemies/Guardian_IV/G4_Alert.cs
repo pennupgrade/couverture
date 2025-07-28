@@ -19,7 +19,7 @@ public class G4_Alert : G2_Alert
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            if (enemy.getHealth() < 300 && Random.value < 0.5f) {
+            if (enemy.getHealth() < 200 && Random.value < 0.5f) {
                 enemy.destination = getRandomHidePoint(8);
             } else if (((Guardian4)enemy).defensive) {
                 if (Vector3.Distance(((Guardian4)enemy).homePoint, enemy.rb.position) > 6) {
@@ -27,7 +27,7 @@ public class G4_Alert : G2_Alert
                 } else {
                     enemy.destination = getRandomPoint(5);
                 }
-            } else if (getNumEnemies(9) < 3) {
+            } else if (getNumEnemies(9) < 2) {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4f);
             } else {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
@@ -44,7 +44,7 @@ public class G4_Alert : G2_Alert
                     Vector3 dir = (enemy.rb.position - enemy.playerRB.position).normalized;
                     dir.y = 0;
                     enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
-                } else if (enemy.getHealth() < 300 && Random.value < 0.5f) {
+                } else if (enemy.getHealth() < 200 && Random.value < 0.5f) {
                     enemy.destination = getRandomHidePoint(8);
                 } else if (i == 0 && ((Guardian4)enemy).defensive) {
                     if (Vector3.Distance(((Guardian4)enemy).homePoint, enemy.rb.position) > 6) {
@@ -52,7 +52,7 @@ public class G4_Alert : G2_Alert
                     } else {
                         enemy.destination = getRandomPoint(5);
                     }
-                } else if (i == 0 && getNumEnemies(9) < 3) {
+                } else if (i == 0 && getNumEnemies(9) < 2) {
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4.5f);
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);

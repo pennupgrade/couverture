@@ -19,9 +19,9 @@ public class G5_Alert : G2_Alert
         if (enemy.wayPointUpdate == null) {
             enemy.wayPointUpdate = enemy.StartCoroutine(recalcPath());
         } else if (hasReachedDest()) {
-            if (!((ShieldedEnemy)enemy).getShieldActivated() || (enemy.getHealth() < 300 && Random.value < 0.4f)) {
+            if (!((ShieldedEnemy)enemy).getShieldActivated() || (enemy.getHealth() < 200 && Random.value < 0.4f)) {
                 enemy.destination = getRandomHidePoint(8);
-            } else if (getNumEnemies(9) < 3) {
+            } else if (getNumEnemies(9) < 2) {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4f);
             } else {
                 enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
@@ -40,7 +40,7 @@ public class G5_Alert : G2_Alert
                     enemy.destination = getRandomNavPointAwayFromPlayer(enemy.rb.position + 4 * dir, 5, 3);
                 } else if (!((ShieldedEnemy)enemy).getShieldActivated()) {
                     enemy.destination = getRandomHidePoint(8);
-                } else if (i == 0 && getNumEnemies(9) < 3) {
+                } else if (i == 0 && getNumEnemies(9) < 2) {
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 9, 4.5f);
                 } else if (i == 0){
                     enemy.destination = getLOSPoint(enemy.playerRB.position, 6, 2.5f);
@@ -90,7 +90,7 @@ public class G5_Alert : G2_Alert
         while (true) {
             if (enemy.numBullets < enemy.magSize) {
                 yield return new WaitForSeconds(enemy.reload);
-                if (enemy.getHealth() < 300) {
+                if (enemy.getHealth() < 200) {
                     enemy.numBullets += 2;
                 } else {
                     if (Random.value < 0.3f) {

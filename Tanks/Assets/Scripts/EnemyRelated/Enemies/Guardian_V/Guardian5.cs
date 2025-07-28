@@ -16,7 +16,7 @@ public class Guardian5 : EnemyOmniMove
     void Start()
     {
         //set enemy values
-        health = 400;
+        health = 300;
         gunRange = 10;
         sightRange = 10;
         FOV = 1.9f;
