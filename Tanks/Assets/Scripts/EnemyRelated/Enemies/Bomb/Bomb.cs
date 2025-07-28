@@ -21,7 +21,7 @@ public class Bomb : Enemy
     void Start()
     {
         //set enemy values
-        health = 200;
+        health = 100;
         sightRange = 8;
         FOV = 1.4f;
         speed = 1.5f;
