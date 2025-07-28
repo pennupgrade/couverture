@@ -27,9 +27,11 @@ public class EnemySpawner : Activatable
     [SerializeField] int levelNumber;
     public GameObject[] enemies;
     private float spawnDelay = 2.8f;
+    [SerializeField] GameObject fog;
 
     //call at start
-    public static void reset() {
+    public static void reset()
+    {
         enemiesRemaining = 0;
     }
 
@@ -43,6 +45,11 @@ public class EnemySpawner : Activatable
 
     void Start()
     {
+        if (fog != null && RoomManager.LevelNum > 29)
+        {
+            fog.SetActive(true);
+        }
+        
         if (enemies.Length == 0) return;
         Tank pTank = Tank.FindPlayer();
         bool rocket = SaveStateManagerGameObject.GetCurrentCharacter() == SaveStateManager.CharacterOption.ROCKET_CAT;

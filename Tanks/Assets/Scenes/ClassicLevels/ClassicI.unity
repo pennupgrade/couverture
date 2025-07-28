@@ -244,6 +244,7 @@ MonoBehaviour:
   levelNumber: 0
   enemies:
   - {fileID: 218147631}
+  fog: {fileID: 0}
 --- !u!1 &67842408
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +298,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 1902050242}
   - {fileID: 659126136}
+  fog: {fileID: 0}
 --- !u!1 &102725691
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,6 +350,7 @@ MonoBehaviour:
   levelNumber: 0
   enemies:
   - {fileID: 920907197}
+  fog: {fileID: 629786716}
 --- !u!1001 &108781808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -603,7 +606,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: 350c0ced98ee26e48bcee12e766bc28f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1284,7 +1287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: 350c0ced98ee26e48bcee12e766bc28f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1365,6 +1368,7 @@ MonoBehaviour:
   levelNumber: 0
   enemies:
   - {fileID: 1480184044}
+  fog: {fileID: 0}
 --- !u!1001 &388056412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1511,7 +1515,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: 350c0ced98ee26e48bcee12e766bc28f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1616,7 +1620,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1778,6 +1782,7 @@ MonoBehaviour:
   - {fileID: 1984893976}
   - {fileID: 769739777}
   - {fileID: 302224135}
+  fog: {fileID: 0}
 --- !u!1 &430539505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1858,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1958,7 +1963,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2112,6 +2117,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 388056414}
   - {fileID: 449579047}
+  fog: {fileID: 0}
 --- !u!1 &518134020
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,8 +2170,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.4
+  m_Color: {r: 0.8207547, g: 0.59620863, b: 0.7538289, a: 1}
+  m_Intensity: 0.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2283,6 +2289,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 926401494}
   - {fileID: 108781810}
+  fog: {fileID: 0}
 --- !u!1001 &576140435
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2443,7 +2450,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c9b9caebbcd66f3448c7ac463f89595f, type: 2}
+  - {fileID: 2100000, guid: 486bedf2debd9ee43b1188b473ff0891, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2473,6 +2480,89 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622572056}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &629786716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 629786719}
+  - component: {fileID: 629786718}
+  - component: {fileID: 629786717}
+  m_Layer: 0
+  m_Name: Fog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!23 &629786717
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629786716}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: cb4c2ecd03174e340aec9b56b2527253, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &629786718
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629786716}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &629786719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629786716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16.9211, y: 3.67, z: 0.5}
+  m_LocalScale: {x: 6.3155403, y: 6.1326895, z: 3.9695826}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &645074270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2678,6 +2768,18 @@ PrefabInstance:
       propertyPath: transformToFollow
       value: 
       objectReference: {fileID: 1554612195}
+    - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.4575472
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.3172615
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.34362173
+      objectReference: {fileID: 0}
     - target: {fileID: 5839309312428559909, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
       propertyPath: m_Name
       value: Classic Camera
@@ -2847,6 +2949,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 111061874}
   - {fileID: 1676145172}
+  fog: {fileID: 0}
 --- !u!114 &738080431 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1155985348964352763, guid: 59083ec85392f114a8d75ab290183618, type: 3}
@@ -3145,6 +3248,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 924832265}
   - {fileID: 1433320087}
+  fog: {fileID: 0}
 --- !u!1001 &857179054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3393,6 +3497,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 798248608}
   - {fileID: 1174823319}
+  fog: {fileID: 0}
 --- !u!1001 &901105352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3763,7 +3868,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3991,6 +4096,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 411185851}
   - {fileID: 1807008150}
+  fog: {fileID: 0}
 --- !u!1001 &1104323903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4119,6 +4225,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 1104323905}
   - {fileID: 1223878296}
+  fog: {fileID: 0}
 --- !u!1001 &1138735409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4242,6 +4349,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 1865664161}
   - {fileID: 1742880911}
+  fog: {fileID: 0}
 --- !u!1001 &1174823317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4460,7 +4568,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: 350c0ced98ee26e48bcee12e766bc28f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4739,7 +4847,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e52f86b6df2f4ab4685cd1b4840dd8b5, type: 2}
+  - {fileID: 2100000, guid: dab189a5914218046b14dab049b62bfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4866,6 +4974,7 @@ MonoBehaviour:
   levelNumber: 0
   enemies:
   - {fileID: 706281808}
+  fog: {fileID: 0}
 --- !u!1001 &1393556907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5112,7 +5221,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c9b9caebbcd66f3448c7ac463f89595f, type: 2}
+  - {fileID: 2100000, guid: 486bedf2debd9ee43b1188b473ff0891, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5195,6 +5304,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 1948627018}
   - {fileID: 1773343625}
+  fog: {fileID: 0}
 --- !u!1 &1473480026
 GameObject:
   m_ObjectHideFlags: 0
@@ -5248,6 +5358,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 331656444}
   - {fileID: 1647483167}
+  fog: {fileID: 0}
 --- !u!1001 &1480184042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5481,6 +5592,7 @@ MonoBehaviour:
   - {fileID: 1219793911}
   - {fileID: 2063620133}
   - {fileID: 953655427}
+  fog: {fileID: 0}
 --- !u!1001 &1554612193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5663,6 +5775,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 775233917}
   - {fileID: 1480618054}
+  fog: {fileID: 0}
 --- !u!1001 &1647483165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5813,7 +5926,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6010,7 +6123,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c9b9caebbcd66f3448c7ac463f89595f, type: 2}
+  - {fileID: 2100000, guid: 486bedf2debd9ee43b1188b473ff0891, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6168,6 +6281,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 299366462}
   - {fileID: 2031659062}
+  fog: {fileID: 0}
 --- !u!1001 &1773343623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6397,7 +6511,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc05c5a7ed6c8994185b6b71b944e0f6, type: 2}
+  - {fileID: 2100000, guid: ed0f65a8f5ad9c04cb63bdb7f3e98e00, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7075,3 +7189,4 @@ SceneRoots:
   - {fileID: 1234757818}
   - {fileID: 166883915}
   - {fileID: 1190817607}
+  - {fileID: 629786719}

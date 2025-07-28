@@ -174,6 +174,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 383956392}
+  fog: {fileID: 0}
 --- !u!1001 &69290983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -392,6 +393,89 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2850616662786846900, guid: 70ecd3679b0f4da43839591f2613cb10, type: 3}
   m_PrefabInstance: {fileID: 133005632}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &145808521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 145808524}
+  - component: {fileID: 145808523}
+  - component: {fileID: 145808522}
+  m_Layer: 0
+  m_Name: Fog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!23 &145808522
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145808521}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 33837de9419ec814ab8b6beacf331d01, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &145808523
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145808521}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &145808524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145808521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17, y: 3.51, z: 0.5}
+  m_LocalScale: {x: 1.6588554, y: 1.9132966, z: 1.2384434}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &176887875
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +634,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 1732436105}
   - {fileID: 1465899820}
+  fog: {fileID: 0}
 --- !u!1 &261642303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,15 +1869,15 @@ PrefabInstance:
       objectReference: {fileID: 1554612195}
     - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.29411766
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.2784314
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4646681350501886875, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.24705882
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5839309312428559909, guid: 7ea95f86e63be0643b42a1cbb4b9793a, type: 3}
       propertyPath: m_Name
@@ -2255,6 +2340,7 @@ MonoBehaviour:
   levelNumber: 50
   enemies:
   - {fileID: 605789998}
+  fog: {fileID: 145808521}
 --- !u!1 &926990846
 GameObject:
   m_ObjectHideFlags: 0
@@ -2306,6 +2392,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 133005634}
+  fog: {fileID: 0}
 --- !u!1001 &951852175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2985,6 +3072,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 360143573}
+  fog: {fileID: 0}
 --- !u!1 &1190817604
 GameObject:
   m_ObjectHideFlags: 0
@@ -3409,6 +3497,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 374232780}
+  fog: {fileID: 0}
 --- !u!1001 &1323275434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3538,6 +3627,7 @@ MonoBehaviour:
   levelNumber: 50
   enemies:
   - {fileID: 1353859058}
+  fog: {fileID: 0}
 --- !u!1001 &1353859056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3729,6 +3819,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 1804579089}
+  fog: {fileID: 0}
 --- !u!1 &1464168494
 GameObject:
   m_ObjectHideFlags: 0
@@ -3756,8 +3847,8 @@ Transform:
   m_GameObject: {fileID: 1464168494}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 6.633791, y: 2.93, z: -1.6148207}
-  m_LocalScale: {x: 14.038711, y: 0.21596345, z: 1}
+  m_LocalPosition: {x: 6.633791, y: 2.93, z: -1.6257}
+  m_LocalScale: {x: 14.017573, y: 0.21596345, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 814996195}
@@ -9367,6 +9458,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 1117414660}
+  fog: {fileID: 0}
 --- !u!1 &1696037344
 GameObject:
   m_ObjectHideFlags: 0
@@ -9681,6 +9773,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 69290985}
+  fog: {fileID: 0}
 --- !u!1 &1792571926
 GameObject:
   m_ObjectHideFlags: 0
@@ -9708,8 +9801,8 @@ Transform:
   m_GameObject: {fileID: 1792571926}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -10.546207, y: 2.93, z: -1.6148207}
-  m_LocalScale: {x: 14.038711, y: 0.21596345, z: 1}
+  m_LocalPosition: {x: -10.546207, y: 2.93, z: -1.6257}
+  m_LocalScale: {x: 14.017573, y: 0.21596345, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 814996195}
@@ -10088,6 +10181,89 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1895986313}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1943458395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943458398}
+  - component: {fileID: 1943458397}
+  - component: {fileID: 1943458396}
+  m_Layer: 0
+  m_Name: Fog (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1943458396
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943458395}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 84169c95f1b71e044950f91e78cb7168, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1943458397
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943458395}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1943458398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943458395}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.1, y: 3.67, z: -3.9}
+  m_LocalScale: {x: 3.5058746, y: 9.899571, z: 4.055765}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1953731242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10280,6 +10456,7 @@ MonoBehaviour:
   levelNumber: 50
   enemies:
   - {fileID: 1323275436}
+  fog: {fileID: 0}
 --- !u!1 &2048337781
 GameObject:
   m_ObjectHideFlags: 0
@@ -10370,6 +10547,7 @@ MonoBehaviour:
   levelNumber: 12
   enemies:
   - {fileID: 1119239827}
+  fog: {fileID: 0}
 --- !u!1001 &2097032003
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10447,3 +10625,5 @@ SceneRoots:
   - {fileID: 2048337782}
   - {fileID: 1696037345}
   - {fileID: 1190817607}
+  - {fileID: 1943458398}
+  - {fileID: 145808524}
