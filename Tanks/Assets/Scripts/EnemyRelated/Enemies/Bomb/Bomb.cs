@@ -13,6 +13,7 @@ public class Bomb : Enemy
     public LayerMask explosionLM;
     public GameObject glowMatObj;
     private bool playerHit;
+    private bool isExploded = false;
     void Awake() {
         enemyState = new Bomb_Start(this);
         playerHit = false;
@@ -67,6 +68,10 @@ public class Bomb : Enemy
     }
     
     protected override void destruction() {
+        if (isExploded) {
+            return;
+        }
+        isExploded = true;
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLM);
         foreach (var hit in hitColliders) {
             if (hit.gameObject != this.gameObject && hit.gameObject.TryGetComponent<IDestroyable>(out IDestroyable d)) {
