@@ -61,11 +61,11 @@ public class Shadow_Alert : G2_Alert
     private IEnumerator shootCor() {
         yield return new WaitForSeconds(0.16f);
         while (true) {   
-            while (((Shadow)enemy).flickering) {
-                yield return null;
+            while (((Shadow)enemy).flickering || !lineOfSightCheck()) {
+                yield return new WaitForSeconds(0.2f);
             }
             ((Shadow)enemy).turnInvis(false);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             int r = Random.Range(3, enemy.magSize + 1);
             for (int i = 0; i < r; ++i) {
                 if (lineOfSightCheck() && isAimed() && getDist() < enemy.gunRange && checkFriendlyFire(5)) {
