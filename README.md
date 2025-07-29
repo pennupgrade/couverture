@@ -3,7 +3,7 @@
 Blast your way through feline fun with Catanks!  Follow an immersive level-styled campaign with unique rodent enemies and homely yet hazardous environments, or battle nonstop against explosive combatants in riveting classic missions.
 
 
-Catanks is a 3D game created by students from UPGRADE (University of Pennsylvania Game Research and Development Environment), reimagining nostalgic tank combat with decisive third-person cat-piloted gameplay.
+Catanks is a 3D game created by students from UPGRADE, reimagining nostalgic tank combat with decisive third-person cat-piloted gameplay.
 
 
 ## Download From
