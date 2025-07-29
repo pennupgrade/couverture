@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using UnityEngine;
 
 public class CompilationConstants {
     // game data path
@@ -13,7 +14,7 @@ public class CompilationConstants {
     #elif UNITY_EDITOR // game data path when using unity editor
         public static readonly string GAME_DATA_PATH = Environment.CurrentDirectory;
     #else // itch.io, github release game data path
-        public static readonly string GAME_DATA_PATH = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string GAME_DATA_PATH = Path.GetDirectoryName(Application.dataPath);
     #endif
 
     // Get absolute path (recommended by Microsoft: https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats#path-normalization)
