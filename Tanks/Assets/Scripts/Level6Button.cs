@@ -23,6 +23,9 @@ public class Level6Button : ActivatorButton
             ActivateBlinker(hits);
             hits++;
             Debug.Log("smacked");
+            if (audioManager != null) {
+                audioManager.Play("Press");
+            }
         } else
         {
             //StartCoroutine(cooldownTimer());

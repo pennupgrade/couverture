@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731725, g: 0.13414747, b: 0.121078715, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12594,6 +12594,7 @@ GameObject:
   - component: {fileID: 1160033994}
   - component: {fileID: 1160033993}
   - component: {fileID: 1160033997}
+  - component: {fileID: 1160033998}
   m_Layer: 3
   m_Name: PlugTower
   m_TagString: Untagged
@@ -12713,7 +12714,7 @@ MonoBehaviour:
   disableRotation: 0
   reusable: 1
   toChange: []
-  audioManager: {fileID: 0}
+  audioManager: {fileID: 1160033998}
   hitsToActivate: 4
   b: {fileID: 918944176}
   blinkers: []
@@ -12722,6 +12723,33 @@ MonoBehaviour:
   - 90
   - 90
   - 90
+--- !u!114 &1160033998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160033990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8023b0e8dc4929848adfa1300d6fc9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Press
+    clip: {fileID: 8300000, guid: 65787ed2147d14c48ad60379148381ae, type: 3}
+    volume: 1
+    loop: 0
+    playOnAwake: 0
+    destroyOnComplete: 0
+    pool: 0
+    pitch: 1
+    source: {fileID: 0}
+    spatialBlend: 0
+    effects: []
+    isBGM: 0
+  singleton: 0
+  playedSounds: []
 --- !u!1 &1163656981
 GameObject:
   m_ObjectHideFlags: 0
