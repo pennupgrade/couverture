@@ -17,13 +17,16 @@ public class SaveStateManagerGameObject : MonoBehaviour
     private StaticSaveStateManager staticStateManager;
 
     private void Awake() {
-        if (Instance is null) {
+        if (Instance is null)
+        {
             Instance = this;
             staticStateManager = StaticSaveStateManager.LoadStaticSave();
             Application.quitting += ExitCurrentSave;
             DontDestroyOnLoad(gameObject);
+            Cursor.lockState = CursorLockMode.Confined;
         }
-        else {
+        else
+        {
             Destroy(gameObject);
         }
     }
