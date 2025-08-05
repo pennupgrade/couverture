@@ -54,9 +54,8 @@ public class EnemySpawner : Activatable
         Tank pTank = Tank.FindPlayer();
         bool rocket = SaveStateManagerGameObject.GetCurrentCharacter() == SaveStateManager.CharacterOption.ROCKET_CAT;
         bool bubble = SaveStateManagerGameObject.GetCurrentCharacter() == SaveStateManager.CharacterOption.BUBBLE_CAT;
-        if (easyMode && (rocket || (bubble && RoomManager.LevelNum % 5 == 0))) return;
+        if (easyMode && (rocket || bubble)) return;
         if (hardMode) {
-            if (bubble && RoomManager.LevelNum % 5 != 0) return;
             if (!rocket && !bubble) return;
         }
         if (levelNumber > 0) {
