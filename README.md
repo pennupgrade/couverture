@@ -46,7 +46,7 @@ After building, place the `THIRD-PARTY-LICENSES.md` file into the root directory
 Build the game as normal, but ensure that the `DISABLESTEAMWORKS` compilation symbol is defined (see below).
 
 ### Steam Release
-Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Then, build the game as normal.  Make sure to add the `SOURCE-CODE-NOTIFICATION.md` file into the root directory of the game before zipping the folder.
+Remove the `DISABLESTEAMWORKS` compilation symbol.  This is done by going to `Edit>Project Settings>Player>Settings For Windows, Mac, Linux>Other Settings>Script Compilation>Scripting Define Symbols` in the Unity Editor and removing the entry that says `DISABLESTEAMWORKS`.  Then, build the game as normal.  Add the `SOURCE-CODE-NOTIFICATION.md` file into the root directory of the game before zipping the folder.
 
 ## Sound Effects
 List of links to sounds used for sound effects:
