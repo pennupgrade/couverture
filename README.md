@@ -38,7 +38,7 @@ The default TextMesh Pro shaders (and a few other assorted TextMeshPro files) ar
 UPGRADE branding is not open source.  If you decide to fork this project, replace the UPGRADE branding (located in `Tanks/Assets/UPGRADE Branding/`) with art that you own or have the rights to use.
 
 ## Building
-Catanks was made using Unity version 2022.3.16f1
+Catanks was made using Unity version 2022.3.62f2
 
 After building, place the `THIRD-PARTY-LICENSES.md` and `SOURCE-CODE-NOTIFICATION.md` files into the root directory of the game before zipping the folder.
 
